@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{f7a2dd82-407d-41de-9a22-6860ec4385ba}</ItemsProjectGuid>
+    <ItemsProjectName>OpenML.Shared</ItemsProjectName>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Circle2D.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Colision2DStatus.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Line2D.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Line3D.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Mat.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Mat2.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Mat3.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Mat4.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Orientation.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Plane3D.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Point2D.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Point3D.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Quat.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Rectangle2D.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SystemOfLinearEquations.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Triangle2D.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Vec2.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Vec4.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GlobalHeader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)OpenML.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Vec3.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Mat.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Mat2.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Mat3.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Mat4.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Point2D.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Point3D.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Quat.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Vec2.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Vec3.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Vec4.cpp" />
+  </ItemGroup>
+</Project>

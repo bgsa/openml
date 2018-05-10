@@ -1,5 +1,7 @@
 #include "Mat2.h"
 
+using namespace OpenML;
+
 template <typename T>
 Mat2<T>::Mat2()
 {

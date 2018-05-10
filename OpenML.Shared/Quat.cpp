@@ -1,5 +1,7 @@
 #include "Quat.h"
 
+using namespace OpenML;
+
 template <typename T>
 Quat<T>::Quat()
 {

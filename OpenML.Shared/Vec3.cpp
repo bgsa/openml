@@ -1,5 +1,7 @@
 #include "Vec3.h"
 
+using namespace OpenML;
+
 template <typename T>
 Vec3<T>::Vec3() {
 	values[0] = T(0.0f);

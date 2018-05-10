@@ -1,5 +1,6 @@
-#include "Mat4.h"
 #include "Vec4.h"
+
+using namespace OpenML;
 
 template <typename T>
 Vec4<T>::Vec4()

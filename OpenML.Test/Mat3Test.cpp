@@ -4,6 +4,7 @@
 #include <Mat3.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace OpenML;
 
 namespace OpenMLTest
 {

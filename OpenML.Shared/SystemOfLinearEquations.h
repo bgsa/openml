@@ -1,11 +1,9 @@
 #pragma once
 
-#include "GlobalHeader.h"
+#include "OpenML.h"
 #include <iomanip>
-#include "Vec2.h"
-#include "Vec3.h"
-#include "Mat3.h"
-#include "Mat4.h"
+
+using namespace OpenML;
 
 template <typename T>
 class SystemOfLinearEquations

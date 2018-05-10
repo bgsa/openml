@@ -71,7 +71,7 @@
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug-COLUMN_ORDER|x64'">
     <PlatformToolset>v141</PlatformToolset>
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-ROW_ORDER|x64'" Label="Configuration">
@@ -81,7 +81,7 @@
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release-COLUMN_ORDER|x64'">
     <PlatformToolset>v141</PlatformToolset>
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
@@ -114,33 +114,41 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)$(Configuration)\..\bin\$(PlatformTarget)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>OpenML</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-ROW_ORDER|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)$(Configuration)\..\bin\$(PlatformTarget)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>OpenML</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-COLUMN_ORDER|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)$(Configuration)\..\bin\$(PlatformTarget)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>OpenML</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-ROW_ORDER|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)$(Configuration)\..\bin\$(PlatformTarget)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>OpenML</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-COLUMN_ORDER|x64'">
     <OutDir>$(SolutionDir)$(Configuration)\..\bin\$(PlatformTarget)\$(Configuration)\</OutDir>
+    <TargetName>OpenML</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-ROW_ORDER|x64'">
     <OutDir>$(SolutionDir)$(Configuration)\..\bin\$(PlatformTarget)\$(Configuration)\</OutDir>
+    <TargetName>OpenML</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-COLUMN_ORDER|x64'">
     <OutDir>$(SolutionDir)$(Configuration)\..\bin\$(PlatformTarget)\$(Configuration)\</OutDir>
+    <TargetName>OpenML</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-ROW_ORDER|x64'">
     <OutDir>$(SolutionDir)$(Configuration)\..\bin\$(PlatformTarget)\$(Configuration)\</OutDir>
+    <TargetName>OpenML</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug-COLUMN_ORDER|Win32'">
     <ClCompile>

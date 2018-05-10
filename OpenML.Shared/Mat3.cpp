@@ -1,5 +1,7 @@
 #include "Mat3.h"
 
+using namespace OpenML;
+
 template <typename T>
 Mat3<T>::Mat3()
 {

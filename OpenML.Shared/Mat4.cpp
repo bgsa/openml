@@ -1,5 +1,7 @@
 #include "Mat4.h"
 
+using namespace OpenML;
+
 template <typename T>
 Mat4<T>::Mat4()
 {

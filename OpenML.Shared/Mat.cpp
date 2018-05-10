@@ -1,5 +1,5 @@
 #include "Mat.h"
 
-template class Mat<int>;
-template class Mat<float>;
-template class Mat<double>;
+template class OpenML::Mat<int>;
+template class OpenML::Mat<float>;
+template class OpenML::Mat<double>;

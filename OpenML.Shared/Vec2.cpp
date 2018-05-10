@@ -1,5 +1,7 @@
 #include "Vec2.h"
 
+using namespace OpenML;
+
 template <typename T>
 Vec2<T>::Vec2() { }
 

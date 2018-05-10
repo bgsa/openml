@@ -3,6 +3,10 @@
 ################################################################################
 
 /.vs
+/bin/x86/Debug
+/bin/x86/Release
+/bin/x64/Debug
+/bin/x64/Release
 /Debug
 /Debug-COLUMN_ORDER
 /Debug-ROW_ORDER
@@ -26,3 +30,6 @@
 /OpenML.Win32/Win32/Debug-COLUMN_ORDER
 /OpenML.Test/Release-COLUMN_ORDER
 /build
+/OpenML.Test/x64/Debug-COLUMN_ORDER
+/OpenML.Win32/Win32/Release-COLUMN_ORDER
+/OpenML.Win32/x64

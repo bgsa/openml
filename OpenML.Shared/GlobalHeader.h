@@ -17,23 +17,31 @@
 #include <sstream>
 #include <cassert>
 
-template <typename T>
-class Vec2;
-template <typename T>
-class Vec3;
-template <typename T>
-class Vec4;
+namespace OpenML 
+{
+	template <typename T>
+	class Vec2;
+	template <typename T>
+	class Vec3;
+	template <typename T>
+	class Vec4;
 
-template <typename T>
-class Mat;
-template <typename T>
-class Mat2;
-template <typename T>
-class Mat3;
-template <typename T>
-class Mat4;
+	template <typename T>
+	class Mat;
+	template <typename T>
+	class Mat2;
+	template <typename T>
+	class Mat3;
+	template <typename T>
+	class Mat4;
 
-template <typename T>
-class Quat;
+	template <typename T>
+	class Quat;
+
+	template <typename T>
+	class Point2D;
+	template <typename T>
+	class Point3D;
+}
 
 using namespace std;

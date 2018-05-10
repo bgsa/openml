@@ -13,6 +13,9 @@
 
 #include "Quat.h"
 
+#include "Point2D.h"
+#include "Point3D.h"
+
 namespace OpenML 
 {
 	const float DefaultErrorMargin = 0.0009f;

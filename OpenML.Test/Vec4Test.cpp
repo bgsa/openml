@@ -4,6 +4,7 @@
 #include <Vec4.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace OpenML;
 
 namespace OpenMLTest
 {
@@ -159,17 +160,6 @@ namespace OpenMLTest
 
 			for (size_t i = 0; i < VEC4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong value", LINE_INFO());
-		}
-
-		TEST_METHOD(Vec4_transformToUnit_Test)
-		{
-			Vec4<float> vector = { 3.0f, 1.0f, 2.0f, 10.f };
-			Vec4<float> expected = { 0.280975759f, 0.0936585814f, 0.187317163f, 0.936585784f };
-			
-			vector = vector.normalize();
-
-			for (size_t i = 0; i < VEC4_SIZE; i++)
-				Assert::AreEqual(expected[i], vector[i], L"Wrong value", LINE_INFO());
 		}
 
 		TEST_METHOD(Vec4_distance_Test)

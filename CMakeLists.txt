@@ -15,11 +15,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 MESSAGE(STATUS "Building ${PROJECT_NAME} ...")
 
-FILE(GLOB HEADERS
-	"${SOURCE_DIR}/OpenML.Shared/*.h")
-	
-FILE(GLOB SOURCES
-	"${SOURCE_DIR}/OpenML.Shared/*.cpp")
+FILE(GLOB HEADERS "OpenML.Shared/*.h")	
+FILE(GLOB SOURCES "OpenML.Shared/*.cpp")
 	
 #if (WIN32)
 #	list(APPEND SOURCES "${SOURCE_DIR}/OpenML.Win32/dllmain.cpp")

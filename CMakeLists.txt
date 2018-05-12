@@ -18,9 +18,9 @@ MESSAGE(STATUS "Building ${PROJECT_NAME} ...")
 FILE(GLOB HEADERS "OpenML.Shared/*.h")	
 FILE(GLOB SOURCES "OpenML.Shared/*.cpp")
 	
-#if (WIN32)
-#	list(APPEND SOURCES "${SOURCE_DIR}/OpenML.Win32/dllmain.cpp")
-#endif()
+if (WIN32)
+	list(APPEND SOURCES "OpenML.Win32/dllmain.cpp")
+endif()
 	
 if(BUILD_SHARED_LIBS)
 	add_library(${PROJECT_NAME} SHARED ${SOURCES})

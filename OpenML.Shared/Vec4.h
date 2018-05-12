@@ -137,7 +137,7 @@ namespace OpenML
 		/// Multiply this vector to a matrix
 		/// <summary>
 		API_INTERFACE
-			Vec4<T> operator*(Mat4<T> matrix4x4);
+			Vec4<T> operator*(OpenML::Mat4<T> matrix4x4);
 
 		/// <summary>
 		/// Divide the vector to a scalar

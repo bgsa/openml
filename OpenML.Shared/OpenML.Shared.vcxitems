@@ -38,6 +38,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Vec3.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Line2D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mat.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mat2.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mat3.cpp" />

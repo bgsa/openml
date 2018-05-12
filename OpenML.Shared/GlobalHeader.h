@@ -6,10 +6,20 @@
 	#else
 		#ifdef API_EXPORT
 			#define API_INTERFACE __declspec(dllexport)
+		#else
+			#define API_INTERFACE
 		#endif
 	#endif	
 #else
-	#define API_INTERFACE __attribute__((visibility("default")))
+	#ifdef API_IMPORT
+		#define API_INTERFACE __attribute__((visibility("hidden")))
+	#else
+		#ifdef API_EXPORT
+			#define API_INTERFACE __attribute__((visibility("default")))
+		#else
+			#define API_INTERFACE
+		#endif
+	#endif	
 #endif 
 
 #include <cmath>
@@ -42,6 +52,9 @@ namespace OpenML
 	class Point2D;
 	template <typename T>
 	class Point3D;
+
+	template <typename T>
+	class Line2D;
 }
 
 using namespace std;

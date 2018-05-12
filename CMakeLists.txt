@@ -18,11 +18,11 @@ MESSAGE(STATUS "Building ${PROJECT_NAME} ...")
 FILE(GLOB HEADERS "OpenML.Shared/*.h")	
 FILE(GLOB SOURCES "OpenML.Shared/*.cpp")
 	
-if (WIN32)
-	list(APPEND SOURCES "OpenML.Win32/dllmain.cpp")
-endif()
-	
 if(BUILD_SHARED_LIBS)
+	if (WIN32)
+		list(APPEND SOURCES "OpenML.Win32/dllmain.cpp")
+	endif()
+
 	add_library(${PROJECT_NAME} SHARED ${SOURCES})
 else()
 	add_library(${PROJECT_NAME} STATIC ${SOURCES})
@@ -37,7 +37,8 @@ if(NOT ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} STRLESS 3.1 AND ";${CMAKE_C
 endif()
 
 if (WIN32)
-	target_compile_definitions(${PROJECT_NAME} PRIVATE WINDOWS=1 API_EXPORT=1)
+	#target_compile_definitions(${PROJECT_NAME} PRIVATE WINDOWS=1 API_EXPORT=1)
+	target_compile_definitions(${PROJECT_NAME} PRIVATE WINDOWS=1)
 endif()
 
 if ( (NOT ${MAJOR_COLUMN_ORDER}) AND (NOT ${MAJOR_ROW_ORDER}))

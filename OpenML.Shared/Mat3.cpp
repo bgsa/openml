@@ -338,30 +338,30 @@ Mat3<T>* Mat3<T>::decomposeLU()
 	vector<Mat3<T>> elementarInverseMatrixes;
 	Mat3<T> elementarInverseMatrix;
 
-	size_t rowSize = MAT3_ROWSIZE;
-	size_t colSize = MAT3_ROWSIZE;
+	int rowSize = MAT3_ROWSIZE;
+	int colSize = MAT3_ROWSIZE;
 
 #if MAJOR_COLUMN_ORDER
-	size_t pivotRowIndex = 0;
+	int pivotRowIndex = 0;
 
-	for (size_t column = 0; column < colSize; column++)
+	for (int column = 0; column < colSize; column++)
 	{
 		T pivot = upperMatrix[pivotRowIndex * rowSize + column];
 		T pivotOperator = 1 / pivot;
 
-		for (size_t row = 0; row < rowSize; row++)
+		for (int row = 0; row < rowSize; row++)
 			upperMatrix[row * rowSize + column] *= pivotOperator;
 
 		elementarInverseMatrix = Mat3<T>::identity();
 		elementarInverseMatrix[pivotRowIndex * rowSize + column] = pivot;
 		elementarInverseMatrixes.push_back(elementarInverseMatrix);
 
-		for (size_t lowerColumns = column + 1; lowerColumns < rowSize; lowerColumns++)
+		for (int lowerColumns = column + 1; lowerColumns < rowSize; lowerColumns++)
 		{
 			pivot = upperMatrix[pivotRowIndex * rowSize + lowerColumns];
 			pivotOperator = -pivot;
 
-			for (size_t row = 0; row < rowSize; row++)
+			for (int row = 0; row < rowSize; row++)
 				upperMatrix[row * rowSize + lowerColumns] += pivotOperator * upperMatrix[row * rowSize + column];
 
 			elementarInverseMatrix = Mat3<T>::identity();
@@ -372,29 +372,29 @@ Mat3<T>* Mat3<T>::decomposeLU()
 		pivotRowIndex++;
 	}
 
-	for (size_t i = 0; i < elementarInverseMatrixes.size(); i++)
+	for (int i = 0; size_t(i) < elementarInverseMatrixes.size(); i++)
 		lowerMatrix *= elementarInverseMatrixes[i];
 #else
 	size_t pivotColumnIndex = 0;
 
 	for (size_t line = 0; line < rowSize; line++)
 	{
-		float pivot = upperMatrix[line * rowSize + pivotColumnIndex];
-		float pivotOperator = 1 / pivot;
+		T pivot = upperMatrix[line * rowSize + pivotColumnIndex];
+		T pivotOperator = 1 / pivot;
 
-		for (size_t column = 0; column < colSize; column++)
+		for (int column = 0; column < colSize; column++)
 			upperMatrix[line * rowSize + column] *= pivotOperator;
 
 		elementarInverseMatrix = Mat3<T>::identity();
 		elementarInverseMatrix[line * rowSize + pivotColumnIndex] = pivot;
 		elementarInverseMatrixes.push_back(elementarInverseMatrix);
 
-		for (size_t lowerLines = line + 1; lowerLines < rowSize; lowerLines++)
+		for (int lowerLines = line + 1; lowerLines < rowSize; lowerLines++)
 		{
 			pivot = upperMatrix[lowerLines * rowSize + pivotColumnIndex];
 			pivotOperator = -pivot;
 
-			for (size_t column = 0; column < colSize; column++)
+			for (int column = 0; column < colSize; column++)
 				upperMatrix[lowerLines * rowSize + column] += pivotOperator * upperMatrix[line * rowSize + column];
 
 			elementarInverseMatrix = Mat3<T>::identity();
@@ -405,7 +405,7 @@ Mat3<T>* Mat3<T>::decomposeLU()
 		pivotColumnIndex++;
 	}
 
-	for (size_t i = 0; i < elementarInverseMatrixes.size(); i++)
+	for (int i = 0; size_t(i) < elementarInverseMatrixes.size(); i++)
 		lowerMatrix *= elementarInverseMatrixes[i];
 #endif
 
@@ -424,28 +424,28 @@ Mat3<T>* Mat3<T>::decomposeLDU()
 	Mat3<T>* lowerAndUpperMatrixes = decomposeLU();
 
 	Mat3<T> upperMatrix = lowerAndUpperMatrixes[1];
-	unsigned short diagonalIndex = 0;
+	int diagonalIndex = 0;
 
 #if MAJOR_COLUMN_ORDER
-	for (size_t column = 0; column < MAT3_ROWSIZE; column++)
+	for (int column = 0; column < MAT3_ROWSIZE; column++)
 	{
 		T pivot = upperMatrix[diagonalIndex * MAT3_ROWSIZE + column];
 
 		diagonalMatrix[column * MAT3_ROWSIZE + diagonalIndex] = pivot;
 
-		for (size_t row = column; row < MAT3_ROWSIZE; row++)
+		for (int row = column; row < MAT3_ROWSIZE; row++)
 			upperMatrix[column * MAT3_ROWSIZE + row] /= pivot;
 
 		diagonalIndex++;
 	}
 #else
-	for (size_t row = 0; row < MAT3_ROWSIZE; row++)
+	for (int row = 0; row < MAT3_ROWSIZE; row++)
 	{
 		T pivot = upperMatrix[row * MAT3_ROWSIZE + diagonalIndex];
 
 		diagonalMatrix[row * MAT3_ROWSIZE + diagonalIndex] = pivot;
 
-		for (size_t column = row; column < MAT3_ROWSIZE; column++)
+		for (int column = row; column < MAT3_ROWSIZE; column++)
 			upperMatrix[row * MAT3_ROWSIZE + column] /= pivot;
 
 		diagonalIndex++;

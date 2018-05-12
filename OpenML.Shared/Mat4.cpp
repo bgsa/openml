@@ -415,7 +415,7 @@ Mat4<T> Mat4<T>::operator*(T value)
 {
 	Mat4<T> result;
 
-	for (size_t i = 0; i < MAT4_SIZE; i++)
+	for (int i = 0; i < MAT4_SIZE; i++)
 		result[i] = values[i] * value;
 
 	return result;
@@ -444,7 +444,7 @@ Mat4<T> Mat4<T>::operator+(Mat4<T> matrix)
 {
 	Mat4<T> result;
 
-	for (size_t i = 0; i < MAT4_SIZE; i++)
+	for (int i = 0; i < MAT4_SIZE; i++)
 		result[i] = values[i] + matrix[i];
 
 	return result;
@@ -455,7 +455,7 @@ Mat4<T> Mat4<T>::operator+(T value)
 {
 	Mat4<T> result;
 
-	for (size_t i = 0; i < MAT4_SIZE; i++)
+	for (int i = 0; i < MAT4_SIZE; i++)
 		result[i] = values[i] + value;
 
 	return result;
@@ -466,7 +466,7 @@ Mat4<T> Mat4<T>::operator-(Mat4<T> matrix)
 {
 	Mat4<T> result;
 
-	for (size_t i = 0; i < MAT4_SIZE; i++)
+	for (int i = 0; i < MAT4_SIZE; i++)
 		result[i] = values[i] - matrix[i];
 
 	return result;
@@ -477,7 +477,7 @@ Mat4<T> Mat4<T>::operator-(T value)
 {
 	Mat4<T> result;
 
-	for (size_t i = 0; i < MAT4_SIZE; i++)
+	for (int i = 0; i < MAT4_SIZE; i++)
 		result[i] = values[i] - value;
 
 	return result;
@@ -486,7 +486,7 @@ Mat4<T> Mat4<T>::operator-(T value)
 template <typename T>
 bool Mat4<T>::operator==(Mat4<T> matrix)
 {
-	for (size_t i = 0; i < MAT4_SIZE; i++)
+	for (int i = 0; i < MAT4_SIZE; i++)
 		if (values[i] != matrix[i])
 			return false;
 
@@ -496,7 +496,7 @@ bool Mat4<T>::operator==(Mat4<T> matrix)
 template <typename T>
 bool Mat4<T>::operator==(T value)
 {
-	for (size_t i = 0; i < MAT4_SIZE; i++)
+	for (int i = 0; i < MAT4_SIZE; i++)
 		if (values[i] != value)
 			return false;
 
@@ -506,7 +506,7 @@ bool Mat4<T>::operator==(T value)
 template <typename T>
 bool Mat4<T>::operator!=(Mat4<T> matrix)
 {
-	for (size_t i = 0; i < MAT4_SIZE; i++)
+	for (int i = 0; i < MAT4_SIZE; i++)
 		if (values[i] != matrix[i])
 			return true;
 
@@ -559,30 +559,30 @@ Mat4<T>* Mat4<T>::decomposeLU()
 	vector<Mat4<T>> elementarInverseMatrixes;
 	Mat4<T> elementarInverseMatrix;
 
-	size_t rowSize = MAT4_ROWSIZE;
-	size_t colSize = MAT4_ROWSIZE;
+	int rowSize = MAT4_ROWSIZE;
+	int colSize = MAT4_ROWSIZE;
 
 #if MAJOR_COLUMN_ORDER
-	size_t pivotRowIndex = 0;
+	int pivotRowIndex = 0;
 
-	for (size_t column = 0; column < colSize; column++)
+	for (int column = 0; column < colSize; column++)
 	{
 		T pivot = upperMatrix[pivotRowIndex * rowSize + column];
 		T pivotOperator = 1 / pivot;
 
-		for (size_t row = 0; row < rowSize; row++)
+		for (int row = 0; row < rowSize; row++)
 			upperMatrix[row * rowSize + column] *= pivotOperator;
 
 		elementarInverseMatrix = Mat4<T>::identity();
 		elementarInverseMatrix[pivotRowIndex * rowSize + column] = pivot;
 		elementarInverseMatrixes.push_back(elementarInverseMatrix);
 
-		for (size_t lowerColumns = column + 1; lowerColumns < rowSize; lowerColumns++)
+		for (int lowerColumns = column + 1; lowerColumns < rowSize; lowerColumns++)
 		{
 			pivot = upperMatrix[pivotRowIndex * rowSize + lowerColumns];
 			pivotOperator = -pivot;
 
-			for (size_t row = 0; row < rowSize; row++)
+			for (int row = 0; row < rowSize; row++)
 				upperMatrix[row * rowSize + lowerColumns] += pivotOperator * upperMatrix[row * rowSize + column];
 
 			elementarInverseMatrix = Mat4<T>::identity();
@@ -593,29 +593,29 @@ Mat4<T>* Mat4<T>::decomposeLU()
 		pivotRowIndex++;
 	}
 
-	for (size_t i = 0; i < elementarInverseMatrixes.size(); i++)
+	for (int i = 0; size_t(i) < elementarInverseMatrixes.size(); i++)
 		lowerMatrix *= elementarInverseMatrixes[i];
 #else
-	size_t pivotColumnIndex = 0;
+	int pivotColumnIndex = 0;
 
-	for (size_t line = 0; line < rowSize; line++)
+	for (int line = 0; line < rowSize; line++)
 	{
-		float pivot = upperMatrix[line * rowSize + pivotColumnIndex];
-		float pivotOperator = 1 / pivot;
+		T pivot = upperMatrix[line * rowSize + pivotColumnIndex];
+		T pivotOperator = 1 / pivot;
 
-		for (size_t column = 0; column < colSize; column++)
+		for (int column = 0; column < colSize; column++)
 			upperMatrix[line * rowSize + column] *= pivotOperator;
 
 		elementarInverseMatrix = Mat4<T>::identity();
 		elementarInverseMatrix[line * rowSize + pivotColumnIndex] = pivot;
 		elementarInverseMatrixes.push_back(elementarInverseMatrix);
 
-		for (size_t lowerLines = line + 1; lowerLines < rowSize; lowerLines++)
+		for (int lowerLines = line + 1; lowerLines < rowSize; lowerLines++)
 		{
 			pivot = upperMatrix[lowerLines * rowSize + pivotColumnIndex];
 			pivotOperator = -pivot;
 
-			for (size_t column = 0; column < colSize; column++)
+			for (int column = 0; column < colSize; column++)
 				upperMatrix[lowerLines * rowSize + column] += pivotOperator * upperMatrix[line * rowSize + column];
 
 			elementarInverseMatrix = Mat4<T>::identity();
@@ -626,7 +626,7 @@ Mat4<T>* Mat4<T>::decomposeLU()
 		pivotColumnIndex++;
 	}
 
-	for (size_t i = 0; i < elementarInverseMatrixes.size(); i++)
+	for (int i = 0; size_t(i) < elementarInverseMatrixes.size(); i++)
 		lowerMatrix *= elementarInverseMatrixes[i];
 #endif
 
@@ -648,13 +648,13 @@ Mat4<T>* Mat4<T>::decomposeLDU()
 	unsigned short diagonalIndex = 0;
 
 #if MAJOR_COLUMN_ORDER
-	for (size_t column = 0; column < MAT4_ROWSIZE; column++)
+	for (int column = 0; column < MAT4_ROWSIZE; column++)
 	{
 		T pivot = upperMatrix[diagonalIndex * MAT4_ROWSIZE + column];
 
 		diagonalMatrix[column * MAT4_ROWSIZE + diagonalIndex] = pivot;
 
-		for (size_t row = column; row < MAT4_ROWSIZE; row++)
+		for (int row = column; row < MAT4_ROWSIZE; row++)
 			upperMatrix[column * MAT4_ROWSIZE + row] /= pivot;
 
 		diagonalIndex++;

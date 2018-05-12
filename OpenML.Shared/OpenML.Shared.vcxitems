@@ -39,7 +39,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Line2D.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Mat.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mat2.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mat3.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mat4.cpp" />

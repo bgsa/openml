@@ -36,22 +36,22 @@ namespace OpenML
 #define degreesToHout(x)	((x) * 15.0))
 #define radiansToHour(x)	degreesToHout(radiansToDegrees(x))
 
-	API_INTERFACE
-	inline bool isEven(int value)
+	template <typename T>
+	inline bool API_INTERFACE isEven(T value)
 	{
 		return (value % 2) == 0;
 	}
 
-	API_INTERFACE
-	inline bool isOdd(int value)
+	template <typename T>
+	inline bool API_INTERFACE isOdd(T value)
 	{
 		return ! isEven(value);
 	}
 
-	API_INTERFACE
-	inline unsigned int isPow2(unsigned int value)
+	template <typename T>
+	inline unsigned int API_INTERFACE isPow2(T value)
 	{
-		unsigned int nPow2 = 1;
+		T nPow2 = T(1);
 
 		while (value > nPow2)
 			nPow2 = (nPow2 << 1);
@@ -59,8 +59,7 @@ namespace OpenML
 		return nPow2;
 	}
 
-	API_INTERFACE
-	inline unsigned int nextPowOf2(int value)
+	inline unsigned int API_INTERFACE nextPowOf2(int value)
 	{
 		int rval = 1;
 
@@ -70,9 +69,8 @@ namespace OpenML
 		return rval;
 	}
 		
-	template<typename T>	
-	API_INTERFACE
-	inline T round(T number, int decimals)
+	template<typename T>		
+	inline T API_INTERFACE round(T number, int decimals)
 	{
 		double m = (number < 0.0) ? -1.0 : 1.0;   // check if input is negative
 		double power = pow(10, decimals);
@@ -80,28 +78,25 @@ namespace OpenML
 		return T((floor(number * m * power + 0.5) / power) * m);
 	}
 
-	API_INTERFACE
-	inline float roundf(float number, int decimals)
+	inline float API_INTERFACE roundf(float number, int decimals)
 	{
 		return OpenML::round<float>(number, decimals);
 	}
 
 	
-	inline double roundd(double number, int decimals)
+	inline double API_INTERFACE roundd(double number, int decimals)
 	{
 		return OpenML::round<double>(number, decimals);
 	}
 
 	template<typename T>
-	API_INTERFACE
-	inline bool isCloseEnough(const T value, const T compare, const T epsilon)
+	inline bool API_INTERFACE isCloseEnough(const T value, const T compare, const T epsilon)
 	{
 		return T(abs(value - compare) < epsilon);
 	}
 
 	template<typename T>
-	API_INTERFACE
-	inline bool isCloseEnough(const T value, const T compare)
+	inline bool API_INTERFACE isCloseEnough(const T value, const T compare)
 	{
 		return isCloseEnough(value, compare, DefaultErrorMargin);
 	}

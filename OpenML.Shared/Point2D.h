@@ -46,21 +46,40 @@ namespace OpenML
 
 		/// <summary>
 		/// Check the points are equals
-		/// </summary>
-		API_INTERFACE
-		bool operator==(Point2D<T> otherPoint);
+		/// </summary>		
+		bool API_INTERFACE operator==(const Point2D<T> &otherPoint) const;
 
 		/// <summary>
 		/// Check the points are different
 		/// </summary>
-		API_INTERFACE
-		bool operator!=(Point2D<T> otherPoint);
+		bool API_INTERFACE operator!=(const Point2D<T> &otherPoint) const;
 
 		/// <summary>
 		/// Convert to a vector
 		/// </summary>
 		API_INTERFACE
 		operator Vec2<T>() const;
+
+		/// <summary>
+		/// Find the point that contain the minimum X value
+		/// </summary>		
+		static Point2D<T> API_INTERFACE findMinX(Point2D<T>* points, size_t pointsCount);
+
+		/// <summary>
+		/// Find the point that contain the minimum Y value
+		/// </summary>		
+		static Point2D<T> API_INTERFACE findMinY(Point2D<T>* points, size_t pointsCount);
+
+		/// <summary>
+		/// Find the point that contain the maximum X value
+		/// </summary>		
+		static Point2D<T> API_INTERFACE findMaxX(Point2D<T>* points, size_t pointsCount);
+
+		/// <summary>
+		/// Find the point that contain the maximum Y value
+		/// </summary>		
+		static Point2D<T> API_INTERFACE findMaxY(Point2D<T>* points, size_t pointsCount);
+
 	};
 
 	typedef Point2D<int> Point2Di;

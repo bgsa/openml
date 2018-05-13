@@ -60,10 +60,16 @@
     <ClCompile Include="Circle2DTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Point2DTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Asserts.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TestHeader.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

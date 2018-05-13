@@ -15,48 +15,42 @@ namespace OpenML
 		/// <summary>
 		/// Default constructor (0,0,0)
 		/// </summary>
-		API_INTERFACE
-		Point3D();
+		API_INTERFACE Point3D();
 
 		/// <summary>
 		/// Constructor with args
 		/// </summary>
-		API_INTERFACE
-		Point3D(T x, T y, T z);
+		API_INTERFACE Point3D(T x, T y, T z);
 
 		/// <summary>
 		/// Constructor from a 3D vector
 		/// </summary>
-		API_INTERFACE
-		Point3D(Vec3<T> vector);
+		API_INTERFACE Point3D(Vec3<T> vector);
 
 		/// <summary>
 		/// Constructor with values as array
 		/// </summary>
-		API_INTERFACE
-		Point3D(T* values);
+		API_INTERFACE Point3D(T* values);
 
 		/// <summary>
 		/// Get the distance between two 3D points
 		/// </summary>
-		API_INTERFACE
-		T distance(Point3D<T> otherPoint);
+		API_INTERFACE T distance(Point3D<T> otherPoint);
 
 		/// <summary>
 		/// Convert to a 3D vector
 		/// </summary>
-		API_INTERFACE
-		Vec3<T> toVec3();
+		API_INTERFACE Vec3<T> toVec3();
 
 		/// <summary>
 		/// Compare this point to another one. Compare each component.
 		/// </summary>
-		API_INTERFACE bool operator==(const Point3D<T> &other) const;
+		bool API_INTERFACE operator==(const Point3D<T> &other) const;
 
 		/// <summary>
 		/// Compare this point to another one. Compare each component.
 		/// </summary>
-		API_INTERFACE bool operator!=(const Point3D<T> &other) const;
+		bool API_INTERFACE operator!=(const Point3D<T> &other) const;
 	};
 
 	typedef Point3D<int> Point3Di;

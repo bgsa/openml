@@ -296,6 +296,7 @@
     <ClCompile Include="Mat3Test.cpp" />
     <ClCompile Include="Mat4Test.cpp" />
     <ClCompile Include="Plane3DTest.cpp" />
+    <ClCompile Include="Point2DTest.cpp" />
     <ClCompile Include="Point3DTest.cpp" />
     <ClCompile Include="QuatTest.cpp" />
     <ClCompile Include="Rectangle2DTest.cpp" />
@@ -307,6 +308,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Asserts.h" />
+    <ClInclude Include="TestHeader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

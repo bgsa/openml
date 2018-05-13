@@ -45,6 +45,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Point2D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Point3D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Quat.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Rectangle2D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Vec2.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Vec3.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Vec4.cpp" />

@@ -51,6 +51,36 @@ namespace OpenML
 		/// Compare this point to another one. Compare each component.
 		/// </summary>
 		bool API_INTERFACE operator!=(const Point3D<T> &other) const;
+
+		/// <summary>
+		/// Find the point that contain the minimum X value
+		/// </summary>		
+		static Point3D<T> API_INTERFACE findMinX(Point3D<T>* points, size_t pointsCount);
+
+		/// <summary>
+		/// Find the point that contain the minimum Y value
+		/// </summary>		
+		static Point3D<T> API_INTERFACE findMinY(Point3D<T>* points, size_t pointsCount);
+
+		/// <summary>
+		/// Find the point that contain the minimum Z value
+		/// </summary>		
+		static Point3D<T> API_INTERFACE findMinZ(Point3D<T>* points, size_t pointsCount);
+
+		/// <summary>
+		/// Find the point that contain the maximum X value
+		/// </summary>		
+		static Point3D<T> API_INTERFACE findMaxX(Point3D<T>* points, size_t pointsCount);
+
+		/// <summary>
+		/// Find the point that contain the maximum Y value
+		/// </summary>		
+		static Point3D<T> API_INTERFACE findMaxY(Point3D<T>* points, size_t pointsCount);
+
+		/// <summary>
+		/// Find the point that contain the maximum Y value
+		/// </summary>		
+		static Point3D<T> API_INTERFACE findMaxZ(Point3D<T>* points, size_t pointsCount);
 	};
 
 	typedef Point3D<int> Point3Di;

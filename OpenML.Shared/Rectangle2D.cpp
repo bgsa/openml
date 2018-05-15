@@ -95,7 +95,7 @@ Line2D<T>* Rectangle2D<T>::getLines()
 }
 
 template<typename T>
-Colision2DStatus API_INTERFACE Rectangle2D<T>::getSatusColision(Point2D<T> point)
+Colision2DStatus Rectangle2D<T>::getSatusColision(Point2D<T> point)
 {
 	T area1 = Triangle2D<T>(point1, point2, point).area();
 	T area2 = Triangle2D<T>(point2, point3, point).area();
@@ -179,6 +179,22 @@ bool Rectangle2D<T>::hasIntersection(Circle2D<T> circle)
 	}
 
 	return false;
+}
+
+template<typename T>
+Rectangle2D<T> Rectangle2D<T>::getBoundingBox(Point2D<T>* points, size_t pointsCount) 
+{
+	Point2D<T> minX = Point2D<T>::findMinX(points, pointsCount);
+	Point2D<T> minY = Point2D<T>::findMinY(points, pointsCount);
+	Point2D<T> maxX = Point2D<T>::findMaxX(points, pointsCount);
+	Point2D<T> maxY = Point2D<T>::findMaxY(points, pointsCount);
+	
+	return Rectangle2D<T>(
+		Point2D<T>(minX.x, minY.y),
+		Point2D<T>(maxX.x, minY.y),
+		Point2D<T>(maxX.x, maxY.y),
+		Point2D<T>(minX.x, maxY.y)
+		);
 }
 
 template class Rectangle2D<int>;

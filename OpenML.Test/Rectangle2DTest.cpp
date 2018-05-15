@@ -1,14 +1,10 @@
 #pragma once
 
-#include "CppUnitTest.h"
-#include <Rectangle2D.h>
-
-using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-using namespace OpenML;
+#include "TestHeader.h"
 
 namespace OpenMLTest
 {
-	TEST_CLASS(Square2DTest)
+	TEST_CLASS(Rectangle2DTest)
 	{
 	public:
 
@@ -218,6 +214,27 @@ namespace OpenMLTest
 			bool result = square.hasIntersection(circle);
 
 			Assert::IsFalse(result, L"Rectangle should NOT intersect the circle.", LINE_INFO());
+		}
+
+		TEST_METHOD(Rectangle2D_getBoundingBox_Test)
+		{
+			Point2Df point1 = { 0.3f, 0.0f };
+			Point2Df point2 = { 1.0f, 0.3f };
+			Point2Df point3 = { 0.7f, 1.0f };
+			Point2Df point4 = { 0.0f, 0.7f };
+			Point2Df points[] = { point1, point2, point3, point4 };
+
+			Rectangle2Df result = Rectangle2Df::getBoundingBox(points, 4);
+
+			Point2Df point1Expected = { 0.0f, 0.0f };
+			Point2Df point2Expected = { 1.0f, 0.0f };
+			Point2Df point3Expected = { 1.0f, 1.0f };
+			Point2Df point4Expected = { 0.0f, 1.0f };
+
+			Assert::AreEqual(point1Expected, result.point1, L"Wring value.", LINE_INFO());
+			Assert::AreEqual(point2Expected, result.point2, L"Wring value.", LINE_INFO());
+			Assert::AreEqual(point3Expected, result.point3, L"Wring value.", LINE_INFO());
+			Assert::AreEqual(point4Expected, result.point4, L"Wring value.", LINE_INFO());
 		}
 
 	};

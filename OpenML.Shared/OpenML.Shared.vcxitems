@@ -38,6 +38,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Vec3.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Circle2D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Line2D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mat2.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mat3.cpp" />
@@ -46,6 +47,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Point3D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Quat.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Rectangle2D.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Triangle2D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Vec2.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Vec3.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Vec4.cpp" />

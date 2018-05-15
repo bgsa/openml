@@ -2,20 +2,6 @@
 
 #include "GlobalHeader.h"
 
-#include "Vec2.h"
-#include "Vec3.h"
-#include "Vec4.h"
-
-#include "Mat.h"
-#include "Mat2.h"
-#include "Mat3.h"
-#include "Mat4.h"
-
-#include "Quat.h"
-
-#include "Point2D.h"
-#include "Point3D.h"
-
 namespace OpenML 
 {
 	const float DefaultErrorMargin = 0.0009f;
@@ -36,18 +22,27 @@ namespace OpenML
 #define degreesToHout(x)	((x) * 15.0))
 #define radiansToHour(x)	degreesToHout(radiansToDegrees(x))
 
+	///<summary>
+	///Check the number is even or not
+	///</summary>
 	template <typename T>
 	inline bool API_INTERFACE isEven(T value)
 	{
 		return (value % 2) == 0;
 	}
 
+	///<summary>
+	///Check the number is odd or not
+	///</summary>
 	template <typename T>
 	inline bool API_INTERFACE isOdd(T value)
 	{
 		return ! isEven(value);
 	}
 
+	///<summary>
+	///Check the number is power of 2
+	///</summary>
 	template <typename T>
 	inline unsigned int API_INTERFACE isPow2(T value)
 	{
@@ -59,6 +54,9 @@ namespace OpenML
 		return nPow2;
 	}
 
+	///<summary>
+	///Get the next number power of 2
+	///</summary>
 	inline unsigned int API_INTERFACE nextPowOf2(int value)
 	{
 		int rval = 1;
@@ -69,6 +67,9 @@ namespace OpenML
 		return rval;
 	}
 		
+	///<summary>
+	///Round the number given a amount of decimals
+	///</summary>
 	template<typename T>		
 	inline T API_INTERFACE round(T number, int decimals)
 	{
@@ -78,23 +79,35 @@ namespace OpenML
 		return T((floor(number * m * power + 0.5) / power) * m);
 	}
 
+	///<summary>
+	///Round the number (in float) given a amount of decimals
+	///</summary>
 	inline float API_INTERFACE roundf(float number, int decimals)
 	{
 		return OpenML::round<float>(number, decimals);
 	}
-
 	
+	///<summary>
+	///Round the number (in double) given a amount of decimals
+	///</summary>
 	inline double API_INTERFACE roundd(double number, int decimals)
 	{
 		return OpenML::round<double>(number, decimals);
 	}
 
+	///<summary>
+	///Check the number is close enough given a other number. It is used to check aproximation value and calculate the error measure.
+	///Epsilon is the tolerated value
+	///</summary>
 	template<typename T>
 	inline bool API_INTERFACE isCloseEnough(const T value, const T compare, const T epsilon)
 	{
 		return T(abs(value - compare) < epsilon);
 	}
 
+	///<summary>
+	///Check the number is close enough given a other number. It is used to check aproximation value and calculate the error measure.
+	///</summary>
 	template<typename T>
 	inline bool API_INTERFACE isCloseEnough(const T value, const T compare)
 	{
@@ -103,3 +116,23 @@ namespace OpenML
 	
 }
 
+#include "Colision2DStatus.h"
+
+#include "Vec2.h"
+#include "Vec3.h"
+#include "Vec4.h"
+
+#include "Mat.h"
+#include "Mat2.h"
+#include "Mat3.h"
+#include "Mat4.h"
+
+#include "Quat.h"
+
+#include "Point2D.h"
+#include "Point3D.h"
+
+#include "Line2D.h"
+#include "Circle2D.h"
+
+#include "Rectangle2D.h"

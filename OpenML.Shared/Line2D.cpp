@@ -181,6 +181,10 @@ T Line2D<T>::deltaY()
 	return T(fabs(point1.y - point2.y));
 }
 
-template class Line2D<int>;
-template class Line2D<float>;
-template class Line2D<double>;
+
+namespace OpenML
+{
+	template class Line2D<int>;
+	template class Line2D<float>;
+	template class Line2D<double>;
+}

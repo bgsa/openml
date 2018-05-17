@@ -378,7 +378,9 @@ Vec3<T> Vec4<T>::toVec3() {
 	return Vec3<T> { values[0], values[1], values[2] };
 }
 
-
-template class Vec4<int>;
-template class Vec4<float>;
-template class Vec4<double>;
+namespace OpenML
+{
+	template class Vec4<int>;
+	template class Vec4<float>;
+	template class Vec4<double>;
+}

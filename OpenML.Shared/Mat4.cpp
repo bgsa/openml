@@ -707,6 +707,9 @@ Mat3<T> Mat4<T>::toNormalMatrix()
 }
 */
 
-template class Mat4<int>;
-template class Mat4<float>;
-template class Mat4<double>;
+namespace OpenML
+{
+	template class Mat4<int>;
+	template class Mat4<float>;
+	template class Mat4<double>;
+}

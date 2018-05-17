@@ -128,7 +128,9 @@ Point3D<T> API_INTERFACE Point3D<T>::findMaxZ(Point3D<T>* points, size_t pointsC
 	return maxZValue;
 }
 
-
-template class Point3D<int>;
-template class Point3D<float>;
-template class Point3D<double>;
+namespace OpenML
+{
+	template class Point3D<int>;
+	template class Point3D<float>;
+	template class Point3D<double>;
+}

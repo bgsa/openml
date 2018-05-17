@@ -248,6 +248,9 @@ string Mat2<T>::toString()
 }
 
 
-template class Mat2<int>;
-template class Mat2<float>;
-template class Mat2<double>;
+namespace OpenML
+{
+	template class Mat2<int>;
+	template class Mat2<float>;
+	template class Mat2<double>;
+}

@@ -270,6 +270,9 @@ Vec2<T>::operator T*()
 	return values;
 }
 
-template class Vec2<int>;
-template class Vec2<float>;
-template class Vec2<double>;
+namespace OpenML
+{
+	template class Vec2<int>;
+	template class Vec2<float>;
+	template class Vec2<double>;
+}

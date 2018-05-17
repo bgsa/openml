@@ -313,6 +313,9 @@ Vec3<T>::operator T*()
 	return values;
 }
 
-template class Vec3<int>;
-template class Vec3<float>;
-template class Vec3<double>;
+namespace OpenML
+{
+	template class Vec3<int>;
+	template class Vec3<float>;
+	template class Vec3<double>;
+}

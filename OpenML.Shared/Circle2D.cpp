@@ -141,6 +141,10 @@ Point2D<T>* Circle2D<T>::findIntersection(Circle2D<T> circle2)
 	return result;
 }
 
-template class Circle2D<int>;;
-template class Circle2D<float>;
-template class Circle2D<double>;
+
+namespace OpenML
+{
+	template class Circle2D<int>;
+	template class Circle2D<float>;
+	template class Circle2D<double>;
+}

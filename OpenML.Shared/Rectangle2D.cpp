@@ -1,5 +1,3 @@
-#pragma once
-
 #include "Rectangle2D.h"
 
 template<typename T>
@@ -197,6 +195,9 @@ Rectangle2D<T> Rectangle2D<T>::getBoundingBox(Point2D<T>* points, size_t pointsC
 		);
 }
 
-template class Rectangle2D<int>;
-template class Rectangle2D<float>;
-template class Rectangle2D<double>;
+namespace OpenML
+{
+	template class Rectangle2D<int>;
+	template class Rectangle2D<float>;
+	template class Rectangle2D<double>;
+}

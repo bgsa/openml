@@ -19,7 +19,7 @@ namespace OpenMLTest
 			Assert::AreEqual(expected, result, L"Wrong value.", LINE_INFO());
 		}
 
-		TEST_METHOD(Point3D_findMinX_Test)
+		TEST_METHOD(Point3D_findMinX_Test1)
 		{
 			Point3Df point1 = { 0.3f, 0.0f, 0.0f };
 			Point3Df point2 = { 1.0f, 0.3f, 0.0f };
@@ -30,6 +30,25 @@ namespace OpenMLTest
 			Point3Df pointExpected = point4;
 
 			Point3Df result = Point3Df::findMinX(points, 4);
+
+			Assert::AreEqual(pointExpected, result, L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(Point3D_findMinX_Test2)
+		{
+			Point3Df point1 = { -0.0f, 100.0f, 0.0f };
+			Point3Df point2 = { -800.0f, 100.0f, 0.0f };
+			Point3Df point3 = { -800.0f, 100.0f, 600.0f };
+			Point3Df point4 = { -0.0f, 100.0f, 600.0f };
+			Point3Df point5 = { -0.0f, 0.0f, 0.0f };
+			Point3Df point6 = { -800.0f, 0.0f, 0.0f };
+			Point3Df point7 = { -800.0f, 0.0f, 600.0f };
+			Point3Df point8 = { -0.0f, 0.0f, 600.0f };
+			Point3Df points[] = { point1, point2, point3, point4, point5, point6, point7, point8 };
+
+			Point3Df pointExpected = point2;
+
+			Point3Df result = Point3Df::findMinX(points, 8);
 
 			Assert::AreEqual(pointExpected, result, L"Wrong value.", LINE_INFO());
 		}

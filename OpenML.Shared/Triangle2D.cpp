@@ -43,7 +43,7 @@ T Triangle2D<T>::perimeter()
 template<typename T>
 T Triangle2D<T>::height()
 {
-	T lengthVec1 = point1.getDistance(point2);
+	//T lengthVec1 = point1.getDistance(point2);
 	T lengthVec2 = point2.getDistance(point3);
 
 	T angle = point1.toVec2().angleRandians(point2.toVec2());
@@ -141,6 +141,9 @@ bool Triangle2D<T>::hasIntersection(Circle2D<T> circle)
 	return false;
 }
 
-template class Triangle2D<int>;
-template class Triangle2D<float>;
-template class Triangle2D<double>;
+namespace OpenML
+{
+	template class Triangle2D<int>;
+	template class Triangle2D<float>;
+	template class Triangle2D<double>;
+}

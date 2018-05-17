@@ -60,4 +60,5 @@ cmake --build . --config %BUILD_TYPE%
 copy ".\%BUILD_TYPE%\OpenML.lib" ".\..\bin\x64\%BUILD_TYPE%-COLUMN_ORDER"
 if %SHARED_LIB%==ON ( copy ".\%BUILD_TYPE%\OpenML.dll" ".\..\bin\x64\%BUILD_TYPE%-COLUMN_ORDER" )
 
+cd ..
 if exist %BUILD_DIR% ( rmdir /s/q %BUILD_DIR% )

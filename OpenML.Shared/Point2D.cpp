@@ -107,6 +107,9 @@ Point2D<T> Point2D<T>::findMaxY(Point2D<T>* points, size_t pointsCount)
 	return maxYValue;
 }
 
-template class Point2D<int>;
-template class Point2D<float>;
-template class Point2D<double>;
+namespace OpenML
+{
+	template class Point2D<int>;
+	template class Point2D<float>;
+	template class Point2D<double>;
+}

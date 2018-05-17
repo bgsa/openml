@@ -478,7 +478,9 @@ AutovalueAutovector3<T> Mat3<T>::getAutovalueAndAutovector(const unsigned short 
 	return AutovalueAutovector3<T>{ autovalue, autovector };
 }
 
-
-template class Mat3<int>;
-template class Mat3<float>;
-template class Mat3<double>;
+namespace OpenML
+{
+	template class Mat3<int>;
+	template class Mat3<float>;
+	template class Mat3<double>;
+}

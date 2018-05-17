@@ -271,6 +271,9 @@ Quat<T>::operator void*() const
 	return (void*)values;
 }
 
-template class Quat<int>;
-template class Quat<float>;
-template class Quat<double>;
+namespace OpenML
+{
+	template class Quat<int>;
+	template class Quat<float>;
+	template class Quat<double>;
+}

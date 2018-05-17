@@ -1,6 +1,7 @@
 #pragma once
 
 #include "OpenML.h"
+#include <cstring>
 #include <vector>
 
 namespace OpenML

@@ -22,21 +22,21 @@ namespace OpenML
 		}
 		Line3D(Point3D<T>* points)
 		{
-			assert(points[0] != point[1]);
+			assert(points[0] != points[1]);
 
 			this->point1 = points[0];
 			this->point2 = points[1];
 		}
 		Line3D(T* point1, T* point2)
 		{
-			assert(points[0] != point[1]);
+			assert(point1 != point2);
 
 			this->point1 = Point3D<T>(point1[0], point1[1], point1[2]);
 			this->point2 = Point3D<T>(point2[0], point2[1], point2[2]);
 		}
 		Line3D(Vec3<T> point1, Vec3<T> point2)
 		{
-			assert(points[0] != point[1]);
+			assert(point1 != point2);
 
 			this->point1 = Point3D<T>(point1[0], point1[1], point1[2]);
 			this->point2 = Point3D<T>(point2[0], point2[1], point2[2]);

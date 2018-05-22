@@ -567,7 +567,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Mat4_sizeInBytes_Test)
 		{
-			size_t result = Mat4<float>::identity().sizeInBytes();
+			size_t result = Mat4f::identity().sizeInBytes();
 			size_t expected = 4*16;
 
 			Assert::AreEqual(expected, result, L"Wrong value", LINE_INFO());

@@ -3,19 +3,20 @@
 using namespace OpenML;
 
 template <typename T>
-Vec4<T>::Vec4()
+Vec4<T>::Vec4(T defaultValue)
 {
-	values[0] = 0;
-	values[1] = 0;
-	values[2] = 0;
-	values[3] = 0;
+	values[0] = defaultValue;
+	values[1] = defaultValue;
+	values[2] = defaultValue;
+	values[3] = defaultValue;
 }
 
 template <typename T>
-Vec4<T>::Vec4(Vec3<T> vector, T w) {
-	values[0] = vector.x();;
-	values[1] = vector.y();
-	values[2] = vector.z();
+Vec4<T>::Vec4(const Vec3<T>& vector, T w) 
+{
+	values[0] = vector[0];
+	values[1] = vector[1];
+	values[2] = vector[2];
 	values[3] = w;
 }
 
@@ -29,25 +30,25 @@ Vec4<T>::Vec4(T x, T y, T z, T w)
 }
 
 template <typename T>
-T Vec4<T>::x() 
+T Vec4<T>::x() const
 {
 	return values[0];
 }
 
 template <typename T>
-T Vec4<T>::y() 
+T Vec4<T>::y() const
 {
 	return values[1];
 }
 
 template <typename T>
-T Vec4<T>::z() 
+T Vec4<T>::z() const
 {
 	return values[2];
 }
 
 template <typename T>
-T Vec4<T>::w() 
+T Vec4<T>::w() const
 {
 	return values[3];
 }
@@ -59,19 +60,19 @@ T* Vec4<T>::getValues()
 }
 
 template <typename T>
-T Vec4<T>::length()
+T Vec4<T>::length() const
 {
 	return T(sqrt(squared()));
 }
 
 template <typename T>
-T Vec4<T>::squared()
+T Vec4<T>::squared() const
 {
 	return (values[0] * values[0]) + (values[1] * values[1]) + (values[2] * values[2]) + (values[3] * values[3]);
 }
 
 template <typename T>
-T Vec4<T>::maximum()
+T Vec4<T>::maximum() const
 {
 	T value = values[0];
 
@@ -83,7 +84,7 @@ T Vec4<T>::maximum()
 }
 
 template <typename T>
-T Vec4<T>::minimum()
+T Vec4<T>::minimum() const
 {
 	T value = values[0];
 
@@ -192,6 +193,19 @@ Vec4<T> Vec4<T>::operator*(T value)
 }
 
 template <typename T>
+Vec4<T> Vec4<T>::operator*(T value) const
+{
+	Vec4<T> result;
+
+	result[0] = values[0] * value;
+	result[1] = values[1] * value;
+	result[2] = values[2] * value;
+	result[3] = values[3] * value;
+
+	return result;
+}
+
+template <typename T>
 Vec4<T> Vec4<T>::operator/(T value)
 {
 	Vec4<T> result;
@@ -266,7 +280,7 @@ Vec4<T> Vec4<T>::operator-(T value)
 }
 
 template <typename T>
-Vec4<T> Vec4<T>::operator*(Mat4<T> matrix4x4)
+Vec4<T> Vec4<T>::operator*(const Mat4<T>& matrix4x4) const
 {
 	Vec4<T> result;
 
@@ -362,7 +376,21 @@ T& Vec4<T>::operator[](int index)
 }
 
 template <typename T>
+T Vec4<T>::operator[](int index) const
+{
+	assert(index >= 0 && index < VEC4_SIZE);
+
+	return values[index];
+}
+
+template <typename T>
 Vec4<T>::operator void*() const
+{
+	return (void*)values;
+}
+
+template <typename T>
+Vec4<T>::operator void*()
 {
 	return (void*)values;
 }

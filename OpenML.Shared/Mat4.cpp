@@ -262,17 +262,19 @@ T Mat4<T>::determinant()
 }
 
 template <typename T>
-Mat4<T> Mat4<T>::multiply(Mat4<T> matrixB)
+Mat4<T> Mat4<T>::multiply(const Mat4<T> &matrixB)
 {
 	Mat4<T> result;
 
 #if MAJOR_COLUMN_ORDER
 	for (int line = 0; line < MAT4_ROWSIZE; line++)
 	{
-		T ai0 = values[(0 * MAT4_ROWSIZE) + line];
-		T ai1 = values[(1 * MAT4_ROWSIZE) + line];
-		T ai2 = values[(2 * MAT4_ROWSIZE) + line];
-		T ai3 = values[(3 * MAT4_ROWSIZE) + line];
+		const T ai0 = values[(0 * MAT4_ROWSIZE) + line];
+		const T ai1 = values[(1 * MAT4_ROWSIZE) + line];
+		const T ai2 = values[(2 * MAT4_ROWSIZE) + line];
+		const T ai3 = values[(3 * MAT4_ROWSIZE) + line];
+
+		T a = matrixB[0];
 
 		result[(0 * MAT4_ROWSIZE) + line] = ai0 * matrixB[(0 * MAT4_ROWSIZE) + 0] + ai1 * matrixB[(0 * MAT4_ROWSIZE) + 1] + ai2 * matrixB[(0 * MAT4_ROWSIZE) + 2] + ai3 * matrixB[(0 * MAT4_ROWSIZE) + 3];
 		result[(1 * MAT4_ROWSIZE) + line] = ai0 * matrixB[(1 * MAT4_ROWSIZE) + 0] + ai1 * matrixB[(1 * MAT4_ROWSIZE) + 1] + ai2 * matrixB[(1 * MAT4_ROWSIZE) + 2] + ai3 * matrixB[(1 * MAT4_ROWSIZE) + 3];
@@ -298,7 +300,7 @@ Mat4<T> Mat4<T>::multiply(Mat4<T> matrixB)
 }
 
 template <typename T>
-Vec4<T> Mat4<T>::multiply(Vec4<T> vector)
+Vec4<T> Mat4<T>::multiply(const Vec4<T> &vector)
 {
 	Vec4<T> result;
 
@@ -411,6 +413,17 @@ Mat4<T> Mat4<T>::clone()
 }
 
 template <typename T>
+Mat4<T> Mat4<T>::operator*(T value)  const
+{
+	Mat4<T> result;
+
+	for (int i = 0; i < MAT4_SIZE; i++)
+		result[i] = values[i] * value;
+
+	return result;
+}
+
+template <typename T>
 Mat4<T> Mat4<T>::operator*(T value)
 {
 	Mat4<T> result;
@@ -422,25 +435,25 @@ Mat4<T> Mat4<T>::operator*(T value)
 }
 
 template <typename T>
-void Mat4<T>::operator*=(Mat4<T> matrix)
+void Mat4<T>::operator*=(const Mat4<T> &matrix)
 {
 	memcpy(&this->values, multiply(matrix).values, sizeof(this->values));
 }
 
 template <typename T>
-Mat4<T> Mat4<T>::operator*(Mat4<T> matrix)
+Mat4<T> Mat4<T>::operator*(const Mat4<T> &matrix)
 {
 	return multiply(matrix);
 }
 
 template <typename T>
-Vec4<T> Mat4<T>::operator*(Vec4<T> vector)
+Vec4<T> Mat4<T>::operator*(const Vec4<T> &vector)
 {
 	return multiply(vector);
 }
 
 template <typename T>
-Mat4<T> Mat4<T>::operator+(Mat4<T> matrix)
+Mat4<T> Mat4<T>::operator+(const Mat4<T>& matrix)
 {
 	Mat4<T> result;
 
@@ -515,6 +528,14 @@ bool Mat4<T>::operator!=(Mat4<T> matrix)
 
 template <typename T>
 T& Mat4<T>::operator[](int index)
+{
+	assert(index >= 0 && index < MAT4_SIZE);
+
+	return values[index];
+}
+
+template <typename T>
+T Mat4<T>::operator[](int index) const
 {
 	assert(index >= 0 && index < MAT4_SIZE);
 

@@ -103,7 +103,7 @@ namespace OpenML
 				T(0), T(0), T(0), T(1)
 			};
 
-			Mat4 result;
+			Mat4<T> result;
 			memcpy(&result, identityMatrix, sizeof(values));
 
 			return result;
@@ -134,12 +134,12 @@ namespace OpenML
 		/// <summary>
 		/// Multiply this matrix with the parametrized matrix => AxB
 		/// <summary>
-		API_INTERFACE Mat4<T> multiply(Mat4<T> matrixB);
+		API_INTERFACE Mat4<T> multiply(const Mat4<T> &matrixB);
 
 		/// <summary>
 		/// Multiply this matrix with the parametrized vector => AxB
 		/// </summary>
-		API_INTERFACE Vec4<T> multiply(Vec4<T> vector);
+		API_INTERFACE Vec4<T> multiply(const Vec4<T> &vector);
 
 		/// <summary>
 		/// Get the inverse matrix from current matrix => A^-1
@@ -274,27 +274,31 @@ namespace OpenML
 		/// <summary>
 		/// Multiply the vector to a scalar
 		/// </summary>
+		API_INTERFACE Mat4<T> operator*(T value) const;
+		/// <summary>
+		/// Multiply the vector to a scalar
+		/// </summary>
 		API_INTERFACE Mat4<T> operator*(T value);
 
 		/// <summary>
 		/// Multiply the matrix to another one
 		/// </summary>
-		API_INTERFACE void operator*=(Mat4<T> matrix);
+		API_INTERFACE void operator*=(const Mat4<T>& matrix);
 
 		/// <summary>
 		/// Multiply the matrix to another one
 		/// </summary>
-		API_INTERFACE Mat4<T> operator*(Mat4<T> matrix);
+		API_INTERFACE Mat4<T> operator*(const Mat4<T>& matrix);
 
 		/// <summary>
 		/// Multiply the matrix to a vector
 		/// </summary>
-		API_INTERFACE Vec4<T> operator*(Vec4<T> vector);
-
+		API_INTERFACE Vec4<T> operator*(const Vec4<T> &vector);
+		
 		/// <summary>
 		/// Sum this matrix to another one
 		/// </summary>
-		API_INTERFACE Mat4<T> operator+(Mat4<T> matrix);
+		API_INTERFACE Mat4<T> operator+(const Mat4<T> &matrix);
 
 		/// <summary>
 		/// Sum a scalar to this matrix
@@ -330,6 +334,11 @@ namespace OpenML
 		/// Get a index from the vector
 		/// </summary>
 		API_INTERFACE T& operator[](int index);
+
+		/// <summary>
+		/// Get a index from the vector
+		/// </summary>
+		API_INTERFACE T operator[](int index) const;
 
 		/// <summary>
 		/// Auto convertion to void *

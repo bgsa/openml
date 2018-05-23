@@ -25,7 +25,7 @@ namespace OpenML
 		/// <summary>
 		/// Constructor from a 3D vector
 		/// </summary>
-		API_INTERFACE Point3D(Vec3<T> vector);
+		API_INTERFACE Point3D(const Vec3<T>& vector);
 
 		/// <summary>
 		/// Constructor with values as array
@@ -35,12 +35,12 @@ namespace OpenML
 		/// <summary>
 		/// Get the distance between two 3D points
 		/// </summary>
-		API_INTERFACE T distance(Point3D<T> otherPoint);
+		API_INTERFACE T distance(const Point3D<T>& otherPoint) const;
 
 		/// <summary>
 		/// Convert to a 3D vector
 		/// </summary>
-		API_INTERFACE Vec3<T> toVec3();
+		API_INTERFACE Vec3<T> toVec3() const;
 
 		/// <summary>
 		/// Compare this point to another one. Compare each component.

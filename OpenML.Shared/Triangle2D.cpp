@@ -4,7 +4,7 @@ template<typename T>
 Triangle2D<T>::Triangle2D() { };
 
 template<typename T>
-Triangle2D<T>::Triangle2D(Point2D<T> point1, Point2D<T> point2, Point2D<T> point3)
+Triangle2D<T>::Triangle2D(const Point2D<T>& point1, const Point2D<T>& point2, const Point2D<T>& point3)
 {
 	this->point1 = point1;
 	this->point2 = point2;
@@ -20,7 +20,7 @@ Triangle2D<T>::Triangle2D(T* point1, T* point2, T* point3)
 }
 
 template<typename T>
-T Triangle2D<T>::area()
+T Triangle2D<T>::area() const
 {
 	double numerator = fabs(point1.x * point2.y + point2.x * point3.y + point3.x * point1.y - point1.y * point2.x - point2.y * point3.x - point3.y * point1.x);
 	T area = T(numerator / 2);
@@ -29,7 +29,7 @@ T Triangle2D<T>::area()
 }
 
 template<typename T>
-T Triangle2D<T>::perimeter()
+T Triangle2D<T>::perimeter() const
 {
 	double term1 = sqrt((point1.x - point2.x) * (point1.x - point2.x) + (point1.y - point2.y) * (point1.y - point2.y));
 	double term2 = sqrt((point2.x - point3.x) * (point2.x - point3.x) + (point2.y - point3.y) * (point2.y - point3.y));
@@ -41,7 +41,7 @@ T Triangle2D<T>::perimeter()
 }
 
 template<typename T>
-T Triangle2D<T>::height()
+T Triangle2D<T>::height() const
 {
 	//T lengthVec1 = point1.getDistance(point2);
 	T lengthVec2 = point2.getDistance(point3);
@@ -54,7 +54,7 @@ T Triangle2D<T>::height()
 }
 
 template<typename T>
-Line2D<T>* Triangle2D<T>::getLines()
+Line2D<T>* Triangle2D<T>::getLines() const
 {
 	Line2D<T>* lines = new Line2D<T>[3];
 	lines[0] = Line2D<T>(point1, point2);
@@ -65,7 +65,7 @@ Line2D<T>* Triangle2D<T>::getLines()
 }
 
 template<typename T>
-Colision2DStatus Triangle2D<T>::getColisionStatus(Point2D<T> point)
+Colision2DStatus Triangle2D<T>::getColisionStatus(const Point2D<T>& point) const
 {
 	Line2D<T> line1 = Line2D<T>(point1, point2);
 	Line2D<T> line2 = Line2D<T>(point2, point3);
@@ -99,7 +99,7 @@ Colision2DStatus Triangle2D<T>::getColisionStatus(Point2D<T> point)
 }
 
 template<typename T>
-bool Triangle2D<T>::hasIntersection(Line2D<T> line)
+bool Triangle2D<T>::hasIntersection(const Line2D<T>& line) const
 {
 	Line2D<T> line1 = Line2D<T>(point1, point2);
 	Line2D<T> line2 = Line2D<T>(point2, point3);
@@ -124,7 +124,7 @@ bool Triangle2D<T>::hasIntersection(Line2D<T> line)
 }
 
 template<typename T>
-bool Triangle2D<T>::hasIntersection(Circle2D<T> circle)
+bool Triangle2D<T>::hasIntersection(const Circle2D<T>& circle) const
 {
 	Line2D<T>* linesOfTriangle = getLines();
 

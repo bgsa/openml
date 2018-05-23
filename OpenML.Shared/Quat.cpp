@@ -26,7 +26,7 @@ Quat<T>::Quat(T value1, T value2, T value3, T value4)
 }
 
 template <typename T>
-Quat<T>::Quat(Vec3<T> vector)
+Quat<T>::Quat(const Vec3<T>& vector)
 {
 	values[0] = vector[0];
 	values[1] = vector[1];
@@ -41,31 +41,31 @@ T* Quat<T>::getValues()
 }
 
 template <typename T>
-T Quat<T>::x()
+T Quat<T>::x() const
 {
 	return values[0];
 }
 
 template <typename T>
-T Quat<T>::y()
+T Quat<T>::y() const
 {
 	return values[1];
 }
 
 template <typename T>
-T Quat<T>::z()
+T Quat<T>::z() const
 {
 	return values[2];
 }
 
 template <typename T>
-T Quat<T>::w()
+T Quat<T>::w() const
 {
 	return values[3];
 }
 
 template <typename T>
-Quat<T> Quat<T>::add(Quat<T> quatB)
+Quat<T> Quat<T>::add(const Quat<T>& quatB) const
 {
 	Quat<T> result;
 
@@ -78,7 +78,7 @@ Quat<T> Quat<T>::add(Quat<T> quatB)
 }
 
 template <typename T>
-Quat<T> Quat<T>::subtract(Quat<T> quatB)
+Quat<T> Quat<T>::subtract(const Quat<T>& quatB) const
 {
 	Quat<T> result;
 
@@ -100,7 +100,7 @@ void Quat<T>::scale(T value)
 }
 
 template <typename T>
-Quat<T> Quat<T>::createScale(T value)
+Quat<T> Quat<T>::createScale(T value) const
 {
 	Quat<T> result;
 
@@ -113,7 +113,7 @@ Quat<T> Quat<T>::createScale(T value)
 }
 
 template <typename T>
-Quat<T> Quat<T>::multiply(Quat<T> quat)
+Quat<T> Quat<T>::multiply(const Quat<T>& quat) const
 {
 	Quat<T> result;
 
@@ -126,7 +126,7 @@ Quat<T> Quat<T>::multiply(Quat<T> quat)
 }
 
 template <typename T>
-T Quat<T>::length()
+T Quat<T>::length() const
 {
 	double value = sqrt(values[0] * values[0] + values[1] * values[1] + values[2] * values[2] + values[3] * values[3]);
 
@@ -134,7 +134,7 @@ T Quat<T>::length()
 }
 
 template <typename T>
-Quat<T> Quat<T>::normalize()
+Quat<T> Quat<T>::normalize() const
 {
 	Quat<T> quat;
 
@@ -149,7 +149,7 @@ Quat<T> Quat<T>::normalize()
 }
 
 template <typename T>
-Quat<T> Quat<T>::conjugate()
+Quat<T> Quat<T>::conjugate() const
 {
 	Quat<T> quat;
 
@@ -162,7 +162,7 @@ Quat<T> Quat<T>::conjugate()
 }
 
 template <typename T>
-T Quat<T>::dot(Quat<T> quatB)
+T Quat<T>::dot(Quat<T> quatB) const
 {
 	T result = T(sqrt(values[3] * quatB[3] + values[0] * quatB[0] + values[1] * quatB[1] + values[2] * quatB[2]));
 
@@ -170,7 +170,7 @@ T Quat<T>::dot(Quat<T> quatB)
 }
 
 template <typename T>
-Quat<T> Quat<T>::inverse()
+Quat<T> Quat<T>::inverse() const
 {
 	Quat<T> result(
 		values[0],
@@ -190,13 +190,13 @@ Quat<T> Quat<T>::inverse()
 }
 
 template <typename T>
-Quat<T> Quat<T>::rotate(Quat<T> r)
+Quat<T> Quat<T>::rotate(const Quat<T>& r) const
 {
 	return r * (*this * r.conjugate());
 }
 
 template <typename T>
-Quat<T> Quat<T>::rotate(double angleInRadians, Vec3<T> vector)
+Quat<T> Quat<T>::rotate(double angleInRadians, const Vec3<T>& vector) const
 {
 	Quat<T> rotationalQuaternion = Quat<T>::createRotate(angleInRadians, vector);
 
@@ -204,25 +204,25 @@ Quat<T> Quat<T>::rotate(double angleInRadians, Vec3<T> vector)
 }
 
 template <typename T>
-Quat<T> Quat<T>::linearInterpolate(Quat<T> quatB, T t)
+Quat<T> Quat<T>::linearInterpolate(const Quat<T>& quatB, T t) const
 {
 	return createScale(T(1) - t) + quatB.createScale(t);
 }
 
 template <typename T>
-Quat<T> Quat<T>::linearInterpolateNormalized(Quat<T> quatB, T t)
+Quat<T> Quat<T>::linearInterpolateNormalized(const Quat<T>& quatB, T t) const
 {
 	return linearInterpolate(quatB, t).normalize();
 }
 
 template <typename T>
-size_t Quat<T>::sizeInBytes()
+size_t Quat<T>::sizeInBytes() const
 {
 	return QUAT_SIZE * sizeof(T);
 }
 
 template <typename T>
-Vec3<T> Quat<T>::toVec3()
+Vec3<T> Quat<T>::toVec3() const
 {
 	return Vec3<T>(values[0], values[1], values[2]);
 }
@@ -236,39 +236,47 @@ T& Quat<T>::operator[](int index)
 }
 
 template <typename T>
-Quat<T> Quat<T>::operator+(Quat<T> quatB)
+T Quat<T>::operator[](int index) const
+{
+	assert(index >= 0 && index < QUAT_SIZE);
+
+	return values[index];
+}
+
+template <typename T>
+Quat<T> Quat<T>::operator+(const Quat<T>& quatB) const
 {
 	return add(quatB);
 }
 
 template <typename T>
-Quat<T> Quat<T>::operator-(Quat<T> quatB)
+Quat<T> Quat<T>::operator-(const Quat<T>& quatB) const
 {
 	return subtract(quatB);
 }
 
 template <typename T>
-Quat<T> Quat<T>::operator*(Quat<T> quat)
+Quat<T> Quat<T>::operator*(const Quat<T>& quat) const
 {
 	return multiply(quat);
 }
 
 template <typename T>
-Quat<T> Quat<T>::operator*(T value)
+Quat<T> Quat<T>::operator*(T value) const
 {
 	return createScale(value);
-}
-
-template <typename T>
-Quat<T>::operator Vec3<T>()
-{
-	return toVec3();
 }
 
 template <typename T>
 Quat<T>::operator void*() const
 {
 	return (void*)values;
+}
+
+template <typename T>
+Quat<T>::operator Vec3<T>() const
+{
+	return Vec3<T>(values[0], values[1], values[2]);
 }
 
 namespace OpenML

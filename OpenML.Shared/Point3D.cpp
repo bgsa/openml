@@ -14,7 +14,7 @@ Point3D<T>::Point3D(T x, T y, T z) {
 }
 
 template<typename T>
-Point3D<T>::Point3D(Vec3<T> vector) {
+Point3D<T>::Point3D(const Vec3<T>& vector) {
 	this->x = vector[0];
 	this->y = vector[1];
 	this->z = vector[2];
@@ -28,14 +28,14 @@ Point3D<T>::Point3D(T* values) {
 }
 
 template<typename T>
-T Point3D<T>::distance(Point3D<T> otherPoint)
+T Point3D<T>::distance(const Point3D<T>& otherPoint) const
 {
 	T distance = toVec3().distance(otherPoint.toVec3());
 	return distance;
 }
 
 template<typename T>
-Vec3<T> Point3D<T>::toVec3()
+Vec3<T> Point3D<T>::toVec3() const
 {
 	return Vec3<T>(x, y, z);
 }

@@ -5,7 +5,7 @@ Line2D<T>::Line2D() {
 };
 
 template <typename T>
-Line2D<T>::Line2D(Point2D<T> point1, Point2D<T> point2)
+Line2D<T>::Line2D(const Point2D<T>& point1, const Point2D<T>& point2)
 {
 	assert(point1 != point2);
 
@@ -23,7 +23,7 @@ Line2D<T>::Line2D(T* point1, T* point2)
 }
 
 template <typename T>
-T Line2D<T>::angle()
+T Line2D<T>::angle() const
 {
 	T deltaY = point2.y - point1.y;
 	T deltaX = point2.x - point1.x;
@@ -33,7 +33,7 @@ T Line2D<T>::angle()
 }
 
 template <typename T>
-T Line2D<T>::slope()
+T Line2D<T>::slope() const
 {
 	T deltaY = point2.y - point1.y;
 	T deltaX = point2.x - point1.x;
@@ -44,7 +44,7 @@ T Line2D<T>::slope()
 }
 
 template <typename T>
-Vec2<T> Line2D<T>::getParametricEquation()
+Vec2<T> Line2D<T>::getParametricEquation() const
 {
 	T m = slope();
 	T b = -(m * point1.x) + point1.y;
@@ -53,7 +53,7 @@ Vec2<T> Line2D<T>::getParametricEquation()
 }
 
 template <typename T>
-Vec3<T> Line2D<T>::getEquation()
+Vec3<T> Line2D<T>::getEquation() const
 {
 	Vec3<T> values = SystemOfLinearEquations<T>::getLineEquation(point1.toVec2(), point2.toVec2());
 
@@ -61,7 +61,7 @@ Vec3<T> Line2D<T>::getEquation()
 }
 
 template <typename T>
-bool Line2D<T>::isOnTheLine(Point2D<T> point)
+bool Line2D<T>::isOnTheLine(const Point2D<T>& point) const
 {
 	VerticalOrientation orientation = getOrientation(point);
 
@@ -83,19 +83,19 @@ bool Line2D<T>::isOnTheLine(Point2D<T> point)
 }
 
 template <typename T>
-bool Line2D<T>::isOnTheLeft(Point2D<T> point) {
+bool Line2D<T>::isOnTheLeft(const Point2D<T>& point) const {
 	VerticalOrientation orientation = getOrientation(point);
 	return orientation == VerticalOrientation::LEFT;
 }
 
 template <typename T>
-bool Line2D<T>::isOnTheRight(Point2D<T> point) {
+bool Line2D<T>::isOnTheRight(const Point2D<T>& point) const {
 	VerticalOrientation orientation = getOrientation(point);
 	return orientation == VerticalOrientation::RIGHT;
 }
 
 template <typename T>
-VerticalOrientation Line2D<T>::getOrientation(Point2D<T> point)
+VerticalOrientation Line2D<T>::getOrientation(const Point2D<T>& point) const
 {
 	Mat3<T> lineMatrix = {
 		T(1), T(1), T(1),
@@ -114,7 +114,7 @@ VerticalOrientation Line2D<T>::getOrientation(Point2D<T> point)
 }
 
 template <typename T>
-T Line2D<T>::getDistance(Point2D<T> point)
+T Line2D<T>::getDistance(Point2D<T> point) const
 {
 	Vec3<T> values = getEquation();
 
@@ -127,7 +127,7 @@ T Line2D<T>::getDistance(Point2D<T> point)
 }
 
 template <typename T>
-Point2D<T>* Line2D<T>::findIntersection(Line2D<T> otherLine)
+Point2D<T>* Line2D<T>::findIntersection(const Line2D<T>& otherLine) const
 {
 	Point2D<T> line2Point1 = otherLine.point1;
 	Point2D<T> line2Point2 = otherLine.point2;
@@ -155,7 +155,7 @@ Point2D<T>* Line2D<T>::findIntersection(Line2D<T> otherLine)
 }
 
 template <typename T>
-Colision2DStatus Line2D<T>::hasIntersections(Circle2D<T> circle)
+Colision2DStatus Line2D<T>::hasIntersections(const Circle2D<T>& circle) const
 {
 	double distanceCenterToLine = ceil(getDistance(circle.center));
 	double ray = ceil(circle.ray);
@@ -170,13 +170,13 @@ Colision2DStatus Line2D<T>::hasIntersections(Circle2D<T> circle)
 }
 
 template <typename T>
-T Line2D<T>::deltaX()
+T Line2D<T>::deltaX() const
 {
 	return T(fabs(point1.x - point2.x));
 }
 
 template <typename T>
-T Line2D<T>::deltaY()
+T Line2D<T>::deltaY() const
 {
 	return T(fabs(point1.y - point2.y));
 }

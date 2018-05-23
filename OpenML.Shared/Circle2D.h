@@ -11,23 +11,23 @@ namespace OpenML
 		T ray;
 		Point2D<T> center;
 
-		API_INTERFACE Circle2D();
-		API_INTERFACE Circle2D(Point2D<T> center, T ray);
-		API_INTERFACE Circle2D(Point2D<T> point1, Point2D<T> point2, Point2D<T> point3);
+		API_INTERFACE inline Circle2D();
+		API_INTERFACE inline Circle2D(const Point2D<T>& center, T ray);
+		API_INTERFACE inline Circle2D(const Point2D<T>& point1, const Point2D<T>& point2, const Point2D<T>& point3);
 
-		T API_INTERFACE area();
+		API_INTERFACE inline T area();
 
-		T API_INTERFACE circumference();
+		API_INTERFACE inline T circumference();
 
-		T* calculatePoints(size_t& pointsCount);
+		API_INTERFACE T* calculatePoints(size_t& pointsCount);
 
-		T API_INTERFACE getDistance(Point2D<T> point);
+		API_INTERFACE T getDistance(const Point2D<T>& point);
 
-		Colision2DStatus API_INTERFACE getColisionStatus(Point2D<T> point);
+		API_INTERFACE Colision2DStatus getColisionStatus(const Point2D<T> &point);
 
-		bool API_INTERFACE hasIntersection(Circle2D<T> circle2);
+		API_INTERFACE bool hasIntersection(const Circle2D<T>& circle2);
 
-		Point2D<T>* findIntersection(Circle2D<T> circle2);
+		API_INTERFACE Point2D<T>* findIntersection(const Circle2D<T>& circle2);
 
 	};
 

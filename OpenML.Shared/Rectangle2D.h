@@ -15,66 +15,66 @@ namespace OpenML
 		Point2D<T> point3;
 		Point2D<T> point4;
 
-		API_INTERFACE Rectangle2D();
-		API_INTERFACE Rectangle2D(Point2D<T>* points);
-		API_INTERFACE Rectangle2D(Point2D<T> point1, Point2D<T> point2, Point2D<T> point3, Point2D<T> point4);
-		API_INTERFACE Rectangle2D(T* point1, T* point2, T* point3, T* point4);
+		API_INTERFACE inline Rectangle2D();
+		API_INTERFACE inline Rectangle2D(Point2D<T>* points);
+		API_INTERFACE inline Rectangle2D(const Point2D<T>& point1, const Point2D<T>& point2, const Point2D<T>& point3, const Point2D<T>& point4);
+		API_INTERFACE inline Rectangle2D(T* point1, T* point2, T* point3, T* point4);
 
 		///<summary>
 		///Get the width of the rectangle
 		///</summary>
-		T API_INTERFACE width();
+		API_INTERFACE inline T width() const;
 
 		///<summary>
 		///Get the height of the rectangle
 		///</summary>
-		T API_INTERFACE height();
+		API_INTERFACE inline T height() const;
 
 		///<summary>
 		///Get the area of the rectangle
 		///</summary>
-		T API_INTERFACE area();
+		API_INTERFACE inline T area() const;
 
 		///<summary>
 		///Get the perimeter of the rectangle
 		///</summary>
-		T API_INTERFACE perimeter();
+		API_INTERFACE inline T perimeter() const;
 
 		///<summary>
 		///Get the length of the rectangle diagonal
 		///</summary>
-		T API_INTERFACE diagonalLength();
+		API_INTERFACE inline T diagonalLength() const;
 
 		///<summary>
 		///Get the lines that makes the rectangle
 		///</summary>
-		Line2D<T>* getLines();
+		inline Line2D<T>* getLines() const;
 
 		///<summary>
 		///Get the status of colision of the point into the rectangle
 		///</summary>
-		Colision2DStatus getSatusColision(Point2D<T> point);
+		inline Colision2DStatus getSatusColision(const Point2D<T>& point) const;
 	
 		///<summary>
 		///Chech the line has intersection with the rectangle
 		///</summary>
-		bool API_INTERFACE hasIntersection(Line2D<T> line);
+		API_INTERFACE bool hasIntersection(const Line2D<T>& line) const;
 
 		///<summary>
 		///Chech the triangle has intersection with the rectangle
 		///</summary>
-		bool API_INTERFACE hasIntersection(Triangle2D<T> triangle);
+		API_INTERFACE bool hasIntersection(const Triangle2D<T>& triangle) const;
 
 		///<summary>
 		///Chech the circle has intersection with the rectangle
 		///</summary>
-		bool API_INTERFACE hasIntersection(Circle2D<T> circle);
+		API_INTERFACE bool hasIntersection(const Circle2D<T>& circle) const;
 
 		///<summary>
 		///Get the bounding box, given a array of 2D points
 		///It groups all points in a box
 		///</summary>
-		static Rectangle2D<T> API_INTERFACE getBoundingBox(Point2D<T>* points, size_t pointsCount);
+		API_INTERFACE static Rectangle2D<T> getBoundingBox(Point2D<T>* points, size_t pointsCount);
 	};
 
 	typedef Rectangle2D<int> Rectangle2Di;

@@ -6,14 +6,14 @@ Circle2D<T>::Circle2D()
 }
 
 template<typename T>
-Circle2D<T>::Circle2D(Point2D<T> center, T ray)
+Circle2D<T>::Circle2D(const Point2D<T>& center, T ray)
 {
 	this->center = center;
 	this->ray = ray;
 }
 
 template<typename T>
-Circle2D<T>::Circle2D(Point2D<T> point1, Point2D<T> point2, Point2D<T> point3)
+Circle2D<T>::Circle2D(const Point2D<T>& point1, const Point2D<T>& point2, const Point2D<T>& point3)
 {
 	Mat4<T> matrix = {
 		T(1), T(1), T(1), T(1),
@@ -67,14 +67,14 @@ T* Circle2D<T>::calculatePoints(size_t& pointsCount)
 }
 
 template<typename T>
-T Circle2D<T>::getDistance(Point2D<T> point)
+T Circle2D<T>::getDistance(const Point2D<T>& point)
 {
 	T distance = center.getDistance(point);
 	return distance;
 }
 
 template<typename T>
-Colision2DStatus Circle2D<T>::getColisionStatus(Point2D<T> point)
+Colision2DStatus Circle2D<T>::getColisionStatus(const Point2D<T>& point)
 {
 	double distance = ceil(point.toVec2().distance(center.toVec2()));
 	double rayDistance = ceil(ray);
@@ -89,7 +89,7 @@ Colision2DStatus Circle2D<T>::getColisionStatus(Point2D<T> point)
 }
 
 template<typename T>
-bool Circle2D<T>::hasIntersection(Circle2D<T> circle2)
+bool Circle2D<T>::hasIntersection(const Circle2D<T>& circle2)
 {
 	T distance = center.toVec2().distance(circle2.center.toVec2());
 
@@ -99,7 +99,7 @@ bool Circle2D<T>::hasIntersection(Circle2D<T> circle2)
 }
 
 template<typename T>
-Point2D<T>* Circle2D<T>::findIntersection(Circle2D<T> circle2)
+Point2D<T>* Circle2D<T>::findIntersection(const Circle2D<T>& circle2)
 {
 	Vec2<T> point1AsVector = center.toVec2();
 	Vec2<T> point2AsVector = circle2.center.toVec2();

@@ -17,68 +17,57 @@ namespace OpenML
 		/// <summary>
 		/// Default constructor
 		/// </summary>
-		API_INTERFACE
-		Point2D();
+		API_INTERFACE inline Point2D();
 
 		/// <summary>
 		/// Constructor with args
 		/// </summary>
-		API_INTERFACE
-		Point2D(T x, T y);
+		API_INTERFACE inline Point2D(T x, T y);
 
 		/// <summary>
 		/// Constructor from a vector, that means a point
 		/// </summary>
-		API_INTERFACE
-		Point2D(Vec2<T> vector);
+		API_INTERFACE inline Point2D(const Vec2<T>& vector);
 
 		/// <summary>
 		/// Get the distance from 2 points
 		/// </summary>
-		API_INTERFACE
-		T getDistance(Point2D<T> otherPoint);
+		API_INTERFACE T getDistance(const Point2D<T>& otherPoint) const;
 
 		/// <summary>
 		/// Convert to a vector
 		/// </summary>
-		API_INTERFACE
-		Vec2<T> toVec2();
+		API_INTERFACE Vec2<T> toVec2() const;
 
 		/// <summary>
 		/// Check the points are equals
 		/// </summary>		
-		bool API_INTERFACE operator==(const Point2D<T> &otherPoint) const;
+		API_INTERFACE bool operator==(const Point2D<T>& otherPoint) const;
 
 		/// <summary>
 		/// Check the points are different
 		/// </summary>
-		bool API_INTERFACE operator!=(const Point2D<T> &otherPoint) const;
-
-		/// <summary>
-		/// Convert to a vector
-		/// </summary>
-		API_INTERFACE
-		operator Vec2<T>() const;
-
+		API_INTERFACE bool operator!=(const Point2D<T>& otherPoint) const;
+		
 		/// <summary>
 		/// Find the point that contain the minimum X value
 		/// </summary>		
-		static Point2D<T> API_INTERFACE findMinX(Point2D<T>* points, size_t pointsCount);
+		API_INTERFACE static Point2D<T> findMinX(Point2D<T>* points, size_t pointsCount);
 
 		/// <summary>
 		/// Find the point that contain the minimum Y value
 		/// </summary>		
-		static Point2D<T> API_INTERFACE findMinY(Point2D<T>* points, size_t pointsCount);
+		API_INTERFACE static Point2D<T> findMinY(Point2D<T>* points, size_t pointsCount);
 
 		/// <summary>
 		/// Find the point that contain the maximum X value
 		/// </summary>		
-		static Point2D<T> API_INTERFACE findMaxX(Point2D<T>* points, size_t pointsCount);
+		API_INTERFACE static Point2D<T> findMaxX(Point2D<T>* points, size_t pointsCount);
 
 		/// <summary>
 		/// Find the point that contain the maximum Y value
 		/// </summary>		
-		static Point2D<T> API_INTERFACE findMaxY(Point2D<T>* points, size_t pointsCount);
+		API_INTERFACE static Point2D<T> findMaxY(Point2D<T>* points, size_t pointsCount);
 
 	};
 

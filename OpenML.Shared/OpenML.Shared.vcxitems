@@ -40,9 +40,11 @@
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Circle2D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Line2D.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Line3D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mat2.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mat3.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mat4.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Plane3D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Point2D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Point3D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Quat.cpp" />

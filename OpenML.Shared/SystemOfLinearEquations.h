@@ -111,7 +111,7 @@ public:
 	/// The result is a vector with 3 components (a, b, c)
 	/// Line equation: "ax + bx + c = 0"
 	/// </summary>
-	API_INTERFACE static Vec3<T> getLineEquation(Vec2<T> point1, Vec2<T> point2)
+	API_INTERFACE static Vec3<T> getLineEquation(const Vec2<T>& point1, const Vec2<T>& point2)
 	{
 		Vec3<T> result;
 		
@@ -133,7 +133,7 @@ public:
 	/// The result is a vector with 1 components (a, b, c, d)
 	/// Line equation: "a(x^2 + y) + bx + cy + d = 0"
 	/// </summary>
-	API_INTERFACE static Vec4<T> getCircleEquation(Vec2<T> point1, Vec2<T> point2, Vec2<T> point3)
+	API_INTERFACE static Vec4<T> getCircleEquation(const Vec2<T>& point1, const Vec2<T>& point2, const Vec2<T>& point3)
 	{
 		Vec4<T> result;
 

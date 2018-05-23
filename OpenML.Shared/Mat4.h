@@ -30,7 +30,7 @@ namespace OpenML
 		/// Default constructor
 		/// Load a empty matrix = 0
 		/// </summary>
-		API_INTERFACE Mat4();
+		API_INTERFACE Mat4(T defaultValue = T(0));
 
 		/// <summary>
 		/// Constructor with initialized values
@@ -40,7 +40,8 @@ namespace OpenML
 		/// <summary>
 		/// Constructor with initialized values - COL ORDER
 		/// </summary>
-		API_INTERFACE Mat4(T value11, T value21, T value31, T value41,
+		API_INTERFACE Mat4(
+			T value11, T value21, T value31, T value41,
 			T value12, T value22, T value32, T value42,
 			T value13, T value23, T value33, T value43,
 			T value14, T value24, T value34, T value44);
@@ -61,35 +62,35 @@ namespace OpenML
 		/// Get the X axis
 		/// COLUMN MAJOR ORDER
 		/// </summary>
-		API_INTERFACE Vec4<T> xAxis();
+		API_INTERFACE Vec4<T> xAxis() const;
 
 		/// <summary>
 		/// Get the Y axis
 		/// COLUMN MAJOR ORDER
 		/// <summary>
-		API_INTERFACE Vec4<T> yAxis();
+		API_INTERFACE Vec4<T> yAxis() const;
 
 		/// <summary>
 		/// Get the Z axis
 		/// COLUMN MAJOR ORDER
 		/// </summary>
-		API_INTERFACE Vec4<T> zAxis();
+		API_INTERFACE Vec4<T> zAxis() const;
 
 		/// <summary>
 		/// Get the Z axis
 		/// COLUMN MAJOR ORDER
 		/// </summary>
-		API_INTERFACE Vec4<T> wAxis();
+		API_INTERFACE Vec4<T> wAxis() const;
 
 		/// <summary>
 		/// Get the main / principal / major / primary diagonal from matrix
 		/// </summary>
-		API_INTERFACE Vec4<T> primaryDiagonal();
+		API_INTERFACE Vec4<T> primaryDiagonal() const;
 
 		/// <summary>
 		/// Get the antidiagonal / counter / minor / secondary diagonal from matrix
 		/// </summary>
-		API_INTERFACE Vec4<T> secondaryDiagonal();
+		API_INTERFACE Vec4<T> secondaryDiagonal() const;
 
 		/// <summary>
 		/// Load a identity matrix
@@ -112,39 +113,39 @@ namespace OpenML
 		/// <summary>
 		/// Transpose matrix - swap rows by columns
 		/// </summary>
-		API_INTERFACE Mat4<T> transpose();
+		API_INTERFACE Mat4<T> transpose() const;
 
 		/// <summary>
 		/// Get the determinant from index i,j
 		/// Zero-Index based
 		/// </summary>
-		API_INTERFACE T determinantIJ(int i, int j);
+		API_INTERFACE T determinantIJ(int i, int j) const;
 
 		/// <summary>
 		/// Get the cofactor of the index i,j
 		/// Zero-Index based
 		/// </summary>
-		API_INTERFACE T cofactorIJ(int i, int j);
+		API_INTERFACE T cofactorIJ(int i, int j) const;
 
 		/// <summary>
 		/// Get the determinant from matrix
 		/// </summary>
-		API_INTERFACE T determinant();
+		API_INTERFACE T determinant() const;
 
 		/// <summary>
 		/// Multiply this matrix with the parametrized matrix => AxB
 		/// <summary>
-		API_INTERFACE Mat4<T> multiply(const Mat4<T> &matrixB);
+		API_INTERFACE Mat4<T> multiply(const Mat4<T> &matrixB) const;
 
 		/// <summary>
 		/// Multiply this matrix with the parametrized vector => AxB
 		/// </summary>
-		API_INTERFACE Vec4<T> multiply(const Vec4<T> &vector);
+		API_INTERFACE Vec4<T> multiply(const Vec4<T> &vector) const;
 
 		/// <summary>
 		/// Get the inverse matrix from current matrix => A^-1
 		/// <summary>
-		API_INTERFACE Mat4<T> invert();
+		API_INTERFACE Mat4<T> invert() const;
 
 		/// <summary>
 		/// Create a scaled matrix
@@ -264,21 +265,17 @@ namespace OpenML
 		/// <summary>
 		/// Get the size in Bytes of Mat4
 		/// </summary>
-		API_INTERFACE size_t sizeInBytes();
+		API_INTERFACE size_t sizeInBytes() const;
 
 		/// <summary>
 		/// Clone this matrix
 		/// </summary>
-		API_INTERFACE Mat4<T> clone();
+		API_INTERFACE Mat4<T> clone() const;
 
 		/// <summary>
 		/// Multiply the vector to a scalar
 		/// </summary>
 		API_INTERFACE Mat4<T> operator*(T value) const;
-		/// <summary>
-		/// Multiply the vector to a scalar
-		/// </summary>
-		API_INTERFACE Mat4<T> operator*(T value);
 
 		/// <summary>
 		/// Multiply the matrix to another one
@@ -288,47 +285,47 @@ namespace OpenML
 		/// <summary>
 		/// Multiply the matrix to another one
 		/// </summary>
-		API_INTERFACE Mat4<T> operator*(const Mat4<T>& matrix);
+		API_INTERFACE Mat4<T> operator*(const Mat4<T>& matrix) const;
 
 		/// <summary>
 		/// Multiply the matrix to a vector
 		/// </summary>
-		API_INTERFACE Vec4<T> operator*(const Vec4<T> &vector);
+		API_INTERFACE Vec4<T> operator*(const Vec4<T> &vector) const;
 		
 		/// <summary>
 		/// Sum this matrix to another one
 		/// </summary>
-		API_INTERFACE Mat4<T> operator+(const Mat4<T> &matrix);
+		API_INTERFACE Mat4<T> operator+(const Mat4<T> &matrix) const;
 
 		/// <summary>
 		/// Sum a scalar to this matrix
 		/// </summary>
-		API_INTERFACE Mat4<T> operator+(T value);
+		API_INTERFACE Mat4<T> operator+(T value) const;
 
 		/// <summary>
 		/// Subtract this matrix to another one
 		/// </summary>
-		API_INTERFACE Mat4<T> operator-(Mat4<T> matrix);
+		API_INTERFACE Mat4<T> operator-(const Mat4<T>& matrix) const;
 
 		/// <summary>
 		/// Subtract a scalar from this matrix
 		/// </summary>
-		API_INTERFACE Mat4<T> operator-(T value);
+		API_INTERFACE Mat4<T> operator-(T value) const;
 
 		/// <summary>
 		/// Compare this vector to another one. Compare each component.
 		/// </summary>
-		API_INTERFACE bool operator==(Mat4<T> matrix);
+		API_INTERFACE bool operator==(const Mat4<T>& matrix) const;
 
 		/// <summary>
 		/// Compare this matrix to another one. Compare each component.
 		/// </summary>
-		API_INTERFACE bool operator==(T value);
+		API_INTERFACE bool operator==(T value) const;
 
 		/// <summary>
 		/// Compare this vector to another one. Compare each component.
 		/// </summary>
-		API_INTERFACE bool operator!=(Mat4<T> matrix);
+		API_INTERFACE bool operator!=(const Mat4<T>& matrix) const;
 
 		/// <summary>
 		/// Get a index from the vector
@@ -355,7 +352,7 @@ namespace OpenML
 		/// Convert the matrix to Matrix 3x3
 		/// Returns the first 3 components of x-Axis, y-Axis, z-Axis
 		/// </summary>
-		API_INTERFACE Mat3<T> toMat3();
+		API_INTERFACE Mat3<T> toMat3() const;
 
 		/// <summary>
 		/// Get the matrix content as string
@@ -365,17 +362,17 @@ namespace OpenML
 		/// <summary>
 		/// Decompose the matrix to Lower and Upper matrix
 		/// </summary>
-		API_INTERFACE Mat4<T>* decomposeLU();
+		API_INTERFACE Mat4<T>* decomposeLU() const;
 
 		/// <summary>
 		/// Decompose the matrix to Lower, Diagonal Matrix and Upper matrix
 		/// </summary>
-		API_INTERFACE Mat4<T>* decomposeLDU();
+		API_INTERFACE Mat4<T>* decomposeLDU() const;
 
 		/// <summary>
 		/// Get the autovalue of the matrix
 		/// </summary>
-		API_INTERFACE AutovalueAutovector4<T> getAutovalueAndAutovector(const unsigned short maxIteration = 5);
+		API_INTERFACE AutovalueAutovector4<T> getAutovalueAndAutovector(const unsigned short maxIteration = 5) const;
 
 		/*
 		/// <summary>

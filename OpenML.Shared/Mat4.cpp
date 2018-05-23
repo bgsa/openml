@@ -3,13 +3,13 @@
 using namespace OpenML;
 
 template <typename T>
-Mat4<T>::Mat4()
+Mat4<T>::Mat4(T defaultValue)
 {
 	static T emptyMatrix[MAT4_SIZE] = {
-		T(0), T(0), T(0), T(0),
-		T(0), T(0), T(0), T(0),
-		T(0), T(0), T(0), T(0),
-		T(0), T(0), T(0), T(0)
+		defaultValue, defaultValue, defaultValue, defaultValue,
+		defaultValue, defaultValue, defaultValue, defaultValue,
+		defaultValue, defaultValue, defaultValue, defaultValue,
+		defaultValue, defaultValue, defaultValue, defaultValue
 	};
 
 	memcpy(&values, emptyMatrix, sizeof(values));
@@ -64,7 +64,7 @@ T Mat4<T>::getValue(int x, int y)
 }
 
 template <typename T>
-Vec4<T> Mat4<T>::xAxis()
+Vec4<T> Mat4<T>::xAxis() const
 {
 #if MAJOR_COLUMN_ORDER
 	return Vec4<T> {
@@ -84,7 +84,7 @@ Vec4<T> Mat4<T>::xAxis()
 }
 
 template <typename T>
-Vec4<T> Mat4<T>::yAxis()
+Vec4<T> Mat4<T>::yAxis() const
 {
 #if MAJOR_COLUMN_ORDER
 	return Vec4<T> {
@@ -104,7 +104,7 @@ Vec4<T> Mat4<T>::yAxis()
 }
 
 template <typename T>
-Vec4<T> Mat4<T>::zAxis()
+Vec4<T> Mat4<T>::zAxis() const
 {
 #if MAJOR_COLUMN_ORDER
 	return Vec4<T> {
@@ -124,7 +124,7 @@ Vec4<T> Mat4<T>::zAxis()
 }
 
 template <typename T>
-Vec4<T> Mat4<T>::wAxis()
+Vec4<T> Mat4<T>::wAxis() const
 {
 #if MAJOR_COLUMN_ORDER
 	return Vec4<T> {
@@ -144,7 +144,7 @@ Vec4<T> Mat4<T>::wAxis()
 }
 
 template <typename T>
-Vec4<T> Mat4<T>::primaryDiagonal()
+Vec4<T> Mat4<T>::primaryDiagonal() const
 {
 	return Vec4<T> {
 		values[0],
@@ -155,7 +155,7 @@ Vec4<T> Mat4<T>::primaryDiagonal()
 }
 
 template <typename T>
-Vec4<T> Mat4<T>::secondaryDiagonal()
+Vec4<T> Mat4<T>::secondaryDiagonal() const
 {
 	return Vec4<T> {
 		values[3],
@@ -166,7 +166,7 @@ Vec4<T> Mat4<T>::secondaryDiagonal()
 }
 
 template <typename T>
-Mat4<T> Mat4<T>::transpose()
+Mat4<T> Mat4<T>::transpose() const
 {
 	Mat4<T> result;
 
@@ -205,7 +205,7 @@ Mat4<T> Mat4<T>::transpose()
 }
 
 template <typename T>
-T Mat4<T>::determinantIJ(int i, int j)
+T Mat4<T>::determinantIJ(int i, int j) const
 {
 	int x, y, ii, jj;
 	T ret, mat[3][3];
@@ -238,7 +238,7 @@ T Mat4<T>::determinantIJ(int i, int j)
 }
 
 template <typename T>
-T Mat4<T>::cofactorIJ(int i, int j)
+T Mat4<T>::cofactorIJ(int i, int j) const
 {
 	T determinantIJValue = determinantIJ(i, j);
 
@@ -249,7 +249,7 @@ T Mat4<T>::cofactorIJ(int i, int j)
 }
 
 template <typename T>
-T Mat4<T>::determinant()
+T Mat4<T>::determinant() const
 {
 	T det = T(0);
 
@@ -262,7 +262,7 @@ T Mat4<T>::determinant()
 }
 
 template <typename T>
-Mat4<T> Mat4<T>::multiply(const Mat4<T> &matrixB)
+Mat4<T> Mat4<T>::multiply(const Mat4<T> &matrixB) const
 {
 	Mat4<T> result;
 
@@ -300,7 +300,7 @@ Mat4<T> Mat4<T>::multiply(const Mat4<T> &matrixB)
 }
 
 template <typename T>
-Vec4<T> Mat4<T>::multiply(const Vec4<T> &vector)
+Vec4<T> Mat4<T>::multiply(const Vec4<T> &vector) const
 {
 	Vec4<T> result;
 
@@ -360,7 +360,7 @@ Vec4<T> Mat4<T>::multiply(const Vec4<T> &vector)
 }
 
 template <typename T>
-Mat4<T> Mat4<T>::invert()
+Mat4<T> Mat4<T>::invert() const
 {
 	Mat4<T> mInverse;
 
@@ -397,13 +397,13 @@ void Mat4<T>::scale(T xScale, T yScale, T zScale)
 }
 
 template <typename T>
-size_t Mat4<T>::sizeInBytes()
+size_t Mat4<T>::sizeInBytes() const
 {
 	return MAT4_SIZE * sizeof(T);
 }
 
 template <typename T>
-Mat4<T> Mat4<T>::clone()
+Mat4<T> Mat4<T>::clone() const
 {
 	Mat4<T> result;
 
@@ -424,36 +424,25 @@ Mat4<T> Mat4<T>::operator*(T value)  const
 }
 
 template <typename T>
-Mat4<T> Mat4<T>::operator*(T value)
-{
-	Mat4<T> result;
-
-	for (int i = 0; i < MAT4_SIZE; i++)
-		result[i] = values[i] * value;
-
-	return result;
-}
-
-template <typename T>
 void Mat4<T>::operator*=(const Mat4<T> &matrix)
 {
 	memcpy(&this->values, multiply(matrix).values, sizeof(this->values));
 }
 
 template <typename T>
-Mat4<T> Mat4<T>::operator*(const Mat4<T> &matrix)
+Mat4<T> Mat4<T>::operator*(const Mat4<T> &matrix) const
 {
 	return multiply(matrix);
 }
 
 template <typename T>
-Vec4<T> Mat4<T>::operator*(const Vec4<T> &vector)
+Vec4<T> Mat4<T>::operator*(const Vec4<T> &vector) const
 {
 	return multiply(vector);
 }
 
 template <typename T>
-Mat4<T> Mat4<T>::operator+(const Mat4<T>& matrix)
+Mat4<T> Mat4<T>::operator+(const Mat4<T>& matrix) const
 {
 	Mat4<T> result;
 
@@ -464,7 +453,7 @@ Mat4<T> Mat4<T>::operator+(const Mat4<T>& matrix)
 }
 
 template <typename T>
-Mat4<T> Mat4<T>::operator+(T value)
+Mat4<T> Mat4<T>::operator+(T value) const
 {
 	Mat4<T> result;
 
@@ -475,7 +464,7 @@ Mat4<T> Mat4<T>::operator+(T value)
 }
 
 template <typename T>
-Mat4<T> Mat4<T>::operator-(Mat4<T> matrix)
+Mat4<T> Mat4<T>::operator-(const Mat4<T>& matrix) const
 {
 	Mat4<T> result;
 
@@ -486,7 +475,7 @@ Mat4<T> Mat4<T>::operator-(Mat4<T> matrix)
 }
 
 template <typename T>
-Mat4<T> Mat4<T>::operator-(T value)
+Mat4<T> Mat4<T>::operator-(T value) const
 {
 	Mat4<T> result;
 
@@ -497,7 +486,7 @@ Mat4<T> Mat4<T>::operator-(T value)
 }
 
 template <typename T>
-bool Mat4<T>::operator==(Mat4<T> matrix)
+bool Mat4<T>::operator==(const Mat4<T>& matrix) const
 {
 	for (int i = 0; i < MAT4_SIZE; i++)
 		if (values[i] != matrix[i])
@@ -507,7 +496,7 @@ bool Mat4<T>::operator==(Mat4<T> matrix)
 }
 
 template <typename T>
-bool Mat4<T>::operator==(T value)
+bool Mat4<T>::operator==(T value) const
 {
 	for (int i = 0; i < MAT4_SIZE; i++)
 		if (values[i] != value)
@@ -517,7 +506,7 @@ bool Mat4<T>::operator==(T value)
 }
 
 template <typename T>
-bool Mat4<T>::operator!=(Mat4<T> matrix)
+bool Mat4<T>::operator!=(const Mat4<T>& matrix) const
 {
 	for (int i = 0; i < MAT4_SIZE; i++)
 		if (values[i] != matrix[i])
@@ -555,7 +544,7 @@ Mat4<T>::operator T*()
 }
 
 template <typename T>
-Mat3<T> Mat4<T>::toMat3()
+Mat3<T> Mat4<T>::toMat3() const
 {
 	return Mat3<T> {
 		values[0], values[1], values[2],
@@ -571,10 +560,10 @@ string Mat4<T>::toString()
 }
 
 template <typename T>
-Mat4<T>* Mat4<T>::decomposeLU()
+Mat4<T>* Mat4<T>::decomposeLU() const
 {
 	Mat4<T> lowerMatrix = Mat4<T>::identity();
-	Mat4<T> upperMatrix = Mat4<T>(values);
+	Mat4<T> upperMatrix = this->clone();
 	Mat4<T>* result = new Mat4<T>[2];
 
 	vector<Mat4<T>> elementarInverseMatrixes;
@@ -658,7 +647,7 @@ Mat4<T>* Mat4<T>::decomposeLU()
 }
 
 template <typename T>
-Mat4<T>* Mat4<T>::decomposeLDU()
+Mat4<T>* Mat4<T>::decomposeLDU() const
 {
 	Mat4<T> diagonalMatrix = Mat4<T>::identity();
 	Mat4<T>* result = new Mat4<T>[3];
@@ -704,7 +693,7 @@ Mat4<T>* Mat4<T>::decomposeLDU()
 }
 
 template <typename T>
-AutovalueAutovector4<T> Mat4<T>::getAutovalueAndAutovector(const unsigned short maxIteration)
+AutovalueAutovector4<T> Mat4<T>::getAutovalueAndAutovector(const unsigned short maxIteration) const
 {
 	Mat4<T> matrix = *this;
 	Vec4<T> autovector = { T(1), T(1), T(1), T(1) };

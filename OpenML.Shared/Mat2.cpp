@@ -3,11 +3,11 @@
 using namespace OpenML;
 
 template <typename T>
-Mat2<T>::Mat2()
+Mat2<T>::Mat2(T defaultValue)
 {
 	static T emptyMatrix[MAT2_SIZE] = {
-		T(0), T(0),
-		T(0), T(0)
+		defaultValue, defaultValue,
+		defaultValue, defaultValue
 	};
 
 	memcpy(&values, emptyMatrix, sizeof(values));
@@ -44,7 +44,7 @@ T Mat2<T>::getValue(int x, int y)
 }
 
 template <typename T>
-Vec2<T> Mat2<T>::xAxis()
+Vec2<T> Mat2<T>::xAxis() const
 {
 	Vec2<T> result;
 
@@ -64,7 +64,7 @@ Vec2<T> Mat2<T>::xAxis()
 }
 
 template <typename T>
-Vec2<T> Mat2<T>::yAxis()
+Vec2<T> Mat2<T>::yAxis() const
 {
 	Vec2<T> result;
 
@@ -84,7 +84,7 @@ Vec2<T> Mat2<T>::yAxis()
 }
 
 template <typename T>
-Vec2<T> Mat2<T>::primaryDiagonal()
+Vec2<T> Mat2<T>::primaryDiagonal() const
 {
 	return Vec2<T> {
 		values[0],
@@ -93,7 +93,7 @@ Vec2<T> Mat2<T>::primaryDiagonal()
 }
 
 template <typename T>
-Vec2<T> Mat2<T>::secondaryDiagonal()
+Vec2<T> Mat2<T>::secondaryDiagonal() const
 {
 	return Vec2<T> {
 		values[1],
@@ -102,7 +102,7 @@ Vec2<T> Mat2<T>::secondaryDiagonal()
 }
 
 template <typename T>
-Mat2<T> Mat2<T>::transpose()
+Mat2<T> Mat2<T>::transpose() const
 {
 	Mat2<T> result;
 
@@ -119,7 +119,7 @@ Mat2<T> Mat2<T>::transpose()
 }
 
 template <typename T>
-Mat2<T> Mat2<T>::multiply(Mat2<T> matrixB)
+Mat2<T> Mat2<T>::multiply(const Mat2<T>& matrixB) const
 {
 	Mat2<T> result;
 
@@ -147,7 +147,7 @@ Mat2<T> Mat2<T>::multiply(Mat2<T> matrixB)
 }
 
 template <typename T>
-Vec2<T> Mat2<T>::multiply(Vec2<T> vector)
+Vec2<T> Mat2<T>::multiply(const Vec2<T>& vector) const
 {
 	Vec2<T> result;
 
@@ -165,13 +165,13 @@ void Mat2<T>::scale(T xScale, T yScale)
 }
 
 template <typename T>
-T Mat2<T>::determinant()
+T Mat2<T>::determinant() const
 {
 	return values[0] * values[3] - values[1] * values[2];
 }
 
 template <typename T>
-AutovalueAutovector2<T> Mat2<T>::getAutovalueAndAutovector(const unsigned short maxIteration)
+AutovalueAutovector2<T> Mat2<T>::getAutovalueAndAutovector(const unsigned short maxIteration) const
 {
 	Mat2<T> matrix = *this;
 	Vec2<T> autovector = { T(1), T(1) };
@@ -188,13 +188,13 @@ AutovalueAutovector2<T> Mat2<T>::getAutovalueAndAutovector(const unsigned short 
 }
 
 template <typename T>
-size_t Mat2<T>::sizeInBytes()
+size_t Mat2<T>::sizeInBytes() const
 {
 	return MAT2_SIZE * sizeof(T);
 }
 
 template <typename T>
-Mat2<T> Mat2<T>::clone()
+Mat2<T> Mat2<T>::clone() const
 {
 	Mat2<T> result;
 
@@ -205,6 +205,14 @@ Mat2<T> Mat2<T>::clone()
 
 template <typename T>
 T& Mat2<T>::operator[](int index)
+{
+	assert(index >= 0 && index < MAT2_SIZE);
+
+	return values[index];
+}
+
+template <typename T>
+T Mat2<T>::operator[](int index) const
 {
 	assert(index >= 0 && index < MAT2_SIZE);
 
@@ -224,19 +232,19 @@ Mat2<T>::operator T*()
 }
 
 template <typename T>
-Mat2<T> Mat2<T>::operator*(Mat2<T> matrix)
+Mat2<T> Mat2<T>::operator*(const Mat2<T>& matrix) const
 {
 	return multiply(matrix);
 }
 
 template <typename T>
-Vec2<T> Mat2<T>::operator*(Vec2<T> vector)
+Vec2<T> Mat2<T>::operator*(const Vec2<T>& vector) const
 {
 	return multiply(vector);
 }
 
 template <typename T>
-void Mat2<T>::operator*=(Mat2<T> matrix)
+void Mat2<T>::operator*=(const Mat2<T>& matrix)
 {
 	memcpy(&this->values, multiply(matrix).values, sizeof(this->values));
 }

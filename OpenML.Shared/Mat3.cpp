@@ -3,12 +3,12 @@
 using namespace OpenML;
 
 template <typename T>
-Mat3<T>::Mat3()
+Mat3<T>::Mat3(T defaultValue)
 {
 	static T emptyMatrix[MAT3_SIZE] = {
-		T(0), T(0), T(0),
-		T(0), T(0), T(0),
-		T(0), T(0), T(0)
+		defaultValue, defaultValue, defaultValue,
+		defaultValue, defaultValue, defaultValue,
+		defaultValue, defaultValue, defaultValue
 	};
 
 	memcpy(&values, emptyMatrix, sizeof(values));
@@ -52,7 +52,7 @@ T Mat3<T>::getValue(int x, int y)
 }
 
 template <typename T>
-Vec3<T> Mat3<T>::xAxis()
+Vec3<T> Mat3<T>::xAxis() const
 {
 	Vec3<T> result;
 
@@ -74,7 +74,7 @@ Vec3<T> Mat3<T>::xAxis()
 }
 
 template <typename T>
-Vec3<T> Mat3<T>::yAxis()
+Vec3<T> Mat3<T>::yAxis() const
 {
 	Vec3<T> result;
 
@@ -96,7 +96,7 @@ Vec3<T> Mat3<T>::yAxis()
 }
 
 template <typename T>
-Vec3<T> Mat3<T>::zAxis()
+Vec3<T> Mat3<T>::zAxis() const
 {
 	Vec3<T> result;
 
@@ -118,17 +118,17 @@ Vec3<T> Mat3<T>::zAxis()
 }
 
 template <typename T>
-Vec3<T> Mat3<T>::primaryDiagonal()
+Vec3<T> Mat3<T>::primaryDiagonal() const
 {
 	return Vec3<T> {
 		values[0],
-			values[4],
-			values[8]
+		values[4],
+		values[8]
 	};
 }
 
 template <typename T>
-Vec3<T> Mat3<T>::secondaryDiagonal()
+Vec3<T> Mat3<T>::secondaryDiagonal() const
 {
 	return Vec3<T> {
 		values[2],
@@ -138,7 +138,7 @@ Vec3<T> Mat3<T>::secondaryDiagonal()
 }
 
 template <typename T>
-Mat3<T> Mat3<T>::transpose()
+Mat3<T> Mat3<T>::transpose() const
 {
 	Mat3<T> result;
 
@@ -164,7 +164,7 @@ Mat3<T> Mat3<T>::transpose()
 }
 
 template <typename T>
-Mat3<T> Mat3<T>::multiply(Mat3<T> matrixB)
+Mat3<T> Mat3<T>::multiply(const Mat3<T>& matrixB) const
 {
 	Mat3<T> result;
 
@@ -196,7 +196,7 @@ Mat3<T> Mat3<T>::multiply(Mat3<T> matrixB)
 }
 
 template <typename T>
-Vec3<T> Mat3<T>::multiply(Vec3<T> vector)
+Vec3<T> Mat3<T>::multiply(const Vec3<T>& vector) const
 {
 	Vec3<T> result;
 
@@ -208,7 +208,7 @@ Vec3<T> Mat3<T>::multiply(Vec3<T> vector)
 }
 
 template <typename T>
-T Mat3<T>::determinantIJ(size_t i, size_t j)
+T Mat3<T>::determinantIJ(size_t i, size_t j) const
 {
 	T* matrixValues = new T[4];
 	size_t index = 0;
@@ -235,7 +235,7 @@ T Mat3<T>::determinantIJ(size_t i, size_t j)
 }
 
 template <typename T>
-T Mat3<T>::cofactorIJ(size_t i, size_t j)
+T Mat3<T>::cofactorIJ(size_t i, size_t j) const
 {
 	T determinantIJValue = determinantIJ(i, j);
 
@@ -254,7 +254,7 @@ void Mat3<T>::scale(T xScale, T yScale, T zScale)
 }
 
 template <typename T>
-T Mat3<T>::determinant()
+T Mat3<T>::determinant() const
 {
 	return
 		(values[0] * values[4] * values[8]
@@ -269,13 +269,13 @@ T Mat3<T>::determinant()
 }
 
 template <typename T>
-size_t Mat3<T>::sizeInBytes()
+size_t Mat3<T>::sizeInBytes() const
 {
 	return MAT3_SIZE * sizeof(T);
 }
 
 template <typename T>
-Mat3<T> Mat3<T>::clone()
+Mat3<T> Mat3<T>::clone() const
 {
 	Mat3<T> result;
 
@@ -286,6 +286,14 @@ Mat3<T> Mat3<T>::clone()
 
 template <typename T>
 T& Mat3<T>::operator[](int index)
+{
+	assert(index >= 0 && index < MAT3_SIZE);
+
+	return values[index];
+}
+
+template <typename T>
+T Mat3<T>::operator[](int index) const
 {
 	assert(index >= 0 && index < MAT3_SIZE);
 
@@ -305,19 +313,19 @@ Mat3<T>::operator T*()
 }
 
 template <typename T>
-Mat3<T> Mat3<T>::operator*(Mat3<T> matrix)
+Mat3<T> Mat3<T>::operator*(const Mat3<T>& matrix) const
 {
 	return multiply(matrix);
 }
 
 template <typename T>
-Vec3<T> Mat3<T>::operator*(Vec3<T> matrix)
+Vec3<T> Mat3<T>::operator*(const Vec3<T>& matrix) const
 {
 	return multiply(matrix);
 }
 
 template <typename T>
-void Mat3<T>::operator*=(Mat3<T> matrix)
+void Mat3<T>::operator*=(const Mat3<T>& matrix)
 {
 	memcpy(&this->values, multiply(matrix).values, sizeof(this->values));
 }
@@ -329,10 +337,10 @@ string Mat3<T>::toString()
 }
 
 template <typename T>
-Mat3<T>* Mat3<T>::decomposeLU()
+Mat3<T>* Mat3<T>::decomposeLU() const
 {
 	Mat3<T> lowerMatrix = Mat3<T>::identity();
-	Mat3<T> upperMatrix = Mat3<T>(values);
+	Mat3<T> upperMatrix = this->clone();
 	Mat3<T>* result = new Mat3<T>[2];
 
 	vector<Mat3<T>> elementarInverseMatrixes;
@@ -416,7 +424,7 @@ Mat3<T>* Mat3<T>::decomposeLU()
 }
 
 template <typename T>
-Mat3<T>* Mat3<T>::decomposeLDU()
+Mat3<T>* Mat3<T>::decomposeLDU() const
 {
 	Mat3<T> diagonalMatrix = Mat3<T>::identity();
 	Mat3<T>* result = new Mat3<T>[3];
@@ -462,7 +470,7 @@ Mat3<T>* Mat3<T>::decomposeLDU()
 }
 
 template <typename T>
-AutovalueAutovector3<T> Mat3<T>::getAutovalueAndAutovector(const unsigned short maxIteration)
+AutovalueAutovector3<T> Mat3<T>::getAutovalueAndAutovector(const unsigned short maxIteration) const
 {
 	Mat3<T> matrix = *this;
 	Vec3<T> autovector = { T(1), T(1), T(1) };

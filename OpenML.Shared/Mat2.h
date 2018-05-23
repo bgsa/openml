@@ -25,57 +25,56 @@ namespace OpenML
 		/// Default constructor
 		/// Load a empty matrix = 0
 		/// </summary>
-		API_INTERFACE Mat2();
+		API_INTERFACE inline Mat2(T defaultValue = T(0));
 
 		/// <summary>
 		/// Constructor with initialized values
 		/// </summary>
-		API_INTERFACE Mat2(T* values);
+		API_INTERFACE inline Mat2(T* values);
 
 		/// <summary>
 		/// Constructor with initialized values - COL ORDER
 		/// </summary>
-		API_INTERFACE Mat2(T value11, T value12,
-			T value21, T value22);
+		API_INTERFACE inline Mat2(T value11, T value12, T value21, T value22);
 
 		/// <summary>
 		/// Get the values from current matrix
 		/// </summary>
-		API_INTERFACE T* getValues();
+		API_INTERFACE inline T* getValues();
 
 		/// <summary>
 		/// Get the value from current matrix
 		/// COLUMN MAJOR ORDER
 		/// X and Y: 1 index base
 		/// </summary>
-		API_INTERFACE T getValue(int x, int y);
+		API_INTERFACE inline T getValue(int x, int y);
 
 		/// <summary>
 		/// Get the X axis
 		/// COLUMN MAJOR ORDER
 		/// </summary>
-		API_INTERFACE Vec2<T> xAxis();
+		API_INTERFACE inline Vec2<T> xAxis() const;
 
 		/// <summary>
 		/// Get the Y axis
 		/// COLUMN MAJOR ORDER
 		/// </summary>
-		API_INTERFACE Vec2<T> yAxis();
+		API_INTERFACE inline Vec2<T> yAxis() const;
 
 		/// <summary>
 		/// Get the main / principal / major / primary diagonal from matrix
 		/// </summary>
-		API_INTERFACE Vec2<T> primaryDiagonal();
+		API_INTERFACE inline Vec2<T> primaryDiagonal() const;
 
 		/// <summary>
 		/// Get the antidiagonal / counter / minor / secondary diagonal from matrix
 		/// </summary>
-		API_INTERFACE Vec2<T> secondaryDiagonal();
+		API_INTERFACE inline Vec2<T> secondaryDiagonal() const;
 
 		/// <summary>
 		/// Load a identity matrix
 		/// </summary>
-		API_INTERFACE static Mat2<T> identity()
+		API_INTERFACE inline static Mat2<T> identity()
 		{
 			static T identityMatrix[MAT2_SIZE] = {
 				T(1), T(0),
@@ -91,22 +90,22 @@ namespace OpenML
 		/// <summary>
 		/// Transpose matrix - swap rows by columns
 		/// </summary>
-		API_INTERFACE Mat2<T> transpose();
+		API_INTERFACE inline Mat2<T> transpose() const;
 
 		/// <summary>
 		/// Multiply this matrix with the parametrized matrix => AxB
 		/// </summary>
-		API_INTERFACE Mat2<T> multiply(Mat2<T> matrixB);
+		API_INTERFACE inline Mat2<T> multiply(const Mat2<T>& matrixB) const;
 
 		/// <summary>
 		/// Multiply this matrix with the parametrized vector => AxB
 		/// </summary>
-		API_INTERFACE Vec2<T> multiply(Vec2<T> vector);
+		API_INTERFACE inline Vec2<T> multiply(const Vec2<T>& vector) const;
 
 		/// <summary>
 		/// Create a scaled matrix
 		/// </summary>
-		API_INTERFACE static Mat2<T> createScale(T xScale, T yScale)
+		API_INTERFACE inline static Mat2<T> createScale(T xScale, T yScale)
 		{
 			Mat2<T> result = Mat2<T>::identity();
 
@@ -118,12 +117,12 @@ namespace OpenML
 		/// <summary>
 		/// Scale the current matrix
 		/// </summary>
-		API_INTERFACE void scale(T xScale, T yScale);
+		API_INTERFACE inline void scale(T xScale, T yScale);
 
 		/// <summary>
 		/// Craete a translation matrix
 		/// </summary>
-		API_INTERFACE static Mat2<T> createTranslate(T x, T y)
+		API_INTERFACE inline static Mat2<T> createTranslate(T x, T y)
 		{
 			Mat2<T> result = Mat2<T>::identity();
 
@@ -141,58 +140,63 @@ namespace OpenML
 		/// <summary>
 		/// Get the deeterminant of the Matrix
 		/// </summary>
-		API_INTERFACE T determinant();
+		API_INTERFACE inline T determinant() const;
 
 		/// <summary>
 		/// Get the autovalue of the matrix
 		/// </summary>
-		API_INTERFACE AutovalueAutovector2<T> getAutovalueAndAutovector(const unsigned short maxIteration = 5);
+		API_INTERFACE inline AutovalueAutovector2<T> getAutovalueAndAutovector(const unsigned short maxIteration = 5) const;
 
 		/// <summary>
 		/// Get the size in Bytes of Mat3
 		/// </summary>
-		API_INTERFACE size_t sizeInBytes();
+		API_INTERFACE inline size_t sizeInBytes() const;
 
 		/// <summary>
 		/// Clone this matrix
 		/// </summary>
-		API_INTERFACE Mat2<T> clone();
+		API_INTERFACE inline Mat2<T> clone() const;
 
 		/// <summary>
 		/// Get a index from the vector
 		/// </summary>
-		API_INTERFACE T& operator[](int index);
+		API_INTERFACE inline T& operator[](int index);
+
+		/// <summary>
+		/// Get a index from the vector
+		/// </summary>
+		API_INTERFACE inline T operator[](int index) const;
 
 		/// <summary>
 		/// Auto convertion to void *
 		/// </summary>
-		API_INTERFACE operator void*() const;
+		API_INTERFACE inline operator void*() const;
 
 		/// <summary>
 		/// Auto convertion to T *
 		/// It is the same of convertion to float* or int* or double*, whatever T is.
 		/// </summary>
-		API_INTERFACE operator T*();
+		API_INTERFACE inline operator T*();
 
 		/// <summary>
 		/// Multiply the matrix to another one
 		/// </summary>
-		API_INTERFACE Mat2<T> operator*(Mat2<T> matrix);
+		API_INTERFACE inline Mat2<T> operator*(const Mat2<T>& matrix) const;
 
 		/// <summary>
 		/// Multiply the matrix to 2D vector
 		/// </summary>
-		API_INTERFACE Vec2<T> operator*(Vec2<T> matrix);
+		API_INTERFACE inline Vec2<T> operator*(const Vec2<T>& matrix) const;
 
 		/// <summary>
 		/// Multiply the matrix to another one
 		/// </summary>
-		API_INTERFACE void operator*=(Mat2<T> matrix);
+		API_INTERFACE inline void operator*=(const Mat2<T>& matrix);
 
 		/// <summary>
 		/// Get the matrix content as string
 		/// </summary>
-		API_INTERFACE string toString();
+		API_INTERFACE inline string toString();
 
 	};
 

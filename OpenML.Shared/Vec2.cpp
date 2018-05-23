@@ -86,13 +86,13 @@ void Vec2<T>::scale(T scale)
 }
 
 template <typename T>
-T Vec2<T>::dot(const Vec2<T>& vector)
+T Vec2<T>::dot(const Vec2<T>& vector) const
 {
 	return values[0] * vector[0] + values[1] * vector[1];
 }
 
 template <typename T>
-T Vec2<T>::angleRandians(const Vec2<T>& vectorB)
+T Vec2<T>::angleRandians(const Vec2<T>& vectorB) const
 {
 	T vec1Len = length();
 	T vec2Len = vectorB.length();
@@ -107,7 +107,7 @@ T Vec2<T>::angleRandians(const Vec2<T>& vectorB)
 }
 
 template <typename T>
-T Vec2<T>::angleDegree(const Vec2<T>& vectorB)
+T Vec2<T>::angleDegree(const Vec2<T>& vectorB) const
 {
 	T angleRadians = dot(vectorB) / (length() * vectorB.length());
 
@@ -115,7 +115,7 @@ T Vec2<T>::angleDegree(const Vec2<T>& vectorB)
 }
 
 template <typename T>
-Vec2<T> Vec2<T>::normalize()
+Vec2<T> Vec2<T>::normalize() const
 {
 	T vectorLength = length();
 
@@ -132,7 +132,7 @@ void Vec2<T>::transformToUnit()
 }
 
 template <typename T>
-T Vec2<T>::distance(const Vec2<T>& vector)
+T Vec2<T>::distance(const Vec2<T>& vector) const
 {
 	T x = values[0] - vector[0];
 	x = x*x;
@@ -144,7 +144,7 @@ T Vec2<T>::distance(const Vec2<T>& vector)
 }
 
 template <typename T>
-Vec2<T>* Vec2<T>::orthogonalProjection(const Vec2<T>& vector)
+Vec2<T>* Vec2<T>::orthogonalProjection(const Vec2<T>& vector) const
 {
 	T value = dot(vector) / vector.squared();
 
@@ -162,20 +162,9 @@ Vec2<T>* Vec2<T>::orthogonalProjection(const Vec2<T>& vector)
 }
 
 template <typename T>
-Vec2<T> Vec2<T>::clone()
+Vec2<T> Vec2<T>::clone() const
 {
 	return Vec2<T>(values[0], values[1]);
-}
-
-template <typename T>
-Vec2<T> Vec2<T>::operator*(T value)
-{
-	Vec2<T> result;
-
-	result[0] = values[0] * value;
-	result[1] = values[1] * value;
-
-	return result;
 }
 
 template <typename T>
@@ -185,17 +174,6 @@ Vec2<T> Vec2<T>::operator*(T value) const
 
 	result[0] = values[0] * value;
 	result[1] = values[1] * value;
-
-	return result;
-}
-
-template <typename T>
-Vec2<T> Vec2<T>::operator/(T value)
-{
-	Vec2<T> result;
-
-	result[0] = values[0] / value;
-	result[1] = values[1] / value;
 
 	return result;
 }
@@ -212,34 +190,12 @@ Vec2<T> Vec2<T>::operator/(T value) const
 }
 
 template <typename T>
-Vec2<T> Vec2<T>::operator+(const Vec2<T>& vector)
-{
-	Vec2<T> result;
-
-	result[0] = values[0] + vector[0];
-	result[1] = values[1] + vector[1];
-
-	return result;
-}
-
-template <typename T>
 Vec2<T> Vec2<T>::operator+(const Vec2<T>& vector) const
 {
 	Vec2<T> result;
 
 	result[0] = values[0] + vector[0];
 	result[1] = values[1] + vector[1];
-
-	return result;
-}
-
-template <typename T>
-Vec2<T> Vec2<T>::operator+(T value)
-{
-	Vec2<T> result;
-
-	result[0] = values[0] + value;
-	result[1] = values[1] + value;
 
 	return result;
 }
@@ -256,34 +212,12 @@ Vec2<T> Vec2<T>::operator+(T value) const
 }
 
 template <typename T>
-Vec2<T> Vec2<T>::operator-(const Vec2<T>& vector)
-{
-	Vec2<T> result;
-
-	result[0] = values[0] - vector[0];
-	result[1] = values[1] - vector[1];
-
-	return result;
-}
-
-template <typename T>
 Vec2<T> Vec2<T>::operator-(const Vec2<T>& vector) const
 {
 	Vec2<T> result;
 
 	result[0] = values[0] - vector[0];
 	result[1] = values[1] - vector[1];
-
-	return result;
-}
-
-template <typename T>
-Vec2<T> Vec2<T>::operator-(T value)
-{
-	Vec2<T> result;
-
-	result[0] = values[0] - value;
-	result[1] = values[1] - value;
 
 	return result;
 }
@@ -300,13 +234,6 @@ Vec2<T> Vec2<T>::operator-(T value) const
 }
 
 template <typename T>
-bool Vec2<T>::operator==(const Vec2<T>& vector)
-{
-	return values[0] == vector[0]
-		&& values[1] == vector[1];
-}
-
-template <typename T>
 bool Vec2<T>::operator==(const Vec2<T>& vector) const
 {
 	return values[0] == vector[0]
@@ -314,24 +241,10 @@ bool Vec2<T>::operator==(const Vec2<T>& vector) const
 }
 
 template <typename T>
-bool Vec2<T>::operator==(T value)
-{
-	return values[0] == value
-		&& values[1] == value;
-}
-
-template <typename T>
 bool Vec2<T>::operator==(T value) const
 {
 	return values[0] == value
 		&& values[1] == value;
-}
-
-template <typename T>
-bool Vec2<T>::operator!=(const Vec2<T>& vector)
-{
-	return values[0] != vector[0]
-		|| values[1] != vector[1];
 }
 
 template <typename T>
@@ -361,12 +274,6 @@ template <typename T>
 Vec2<T>::operator T*() const
 {
 	return (T*)values;
-}
-
-template <typename T>
-Vec2<T>::operator T*()
-{
-	return values;
 }
 
 namespace OpenML

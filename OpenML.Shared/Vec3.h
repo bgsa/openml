@@ -81,30 +81,30 @@ namespace OpenML
 		/// <summary>
 		/// Cross Product - return a perpendicular vector, regards two vectors => u x v
 		/// </summary>
-		API_INTERFACE inline Vec3<T> cross(const Vec3<T>& vector);
+		API_INTERFACE inline Vec3<T> cross(const Vec3<T>& vector) const;
 
 		/// <summary>
 		/// Dot Product / Scalar Product - between two vectors: A . B
 		/// return u dot v
 		/// </summary>
-		API_INTERFACE inline T dot(const Vec3<T>& vector);
+		API_INTERFACE inline T dot(const Vec3<T>& vector) const;
 
 		/// <summary>
 		/// Get the andle in radians between the vectors
 		/// Obs.: if the vectors are normalized, can use: acosf(dot(vectorB));
 		/// </summary>
-		API_INTERFACE inline T angleRandians(const Vec3<T>& vectorB);
+		API_INTERFACE inline T angleRandians(const Vec3<T>& vectorB) const;
 
 		/// <summary>
 		/// Get the andle in radians between the vectors
 		/// Obs.: if the vectors are normalized, can use: acosf(dot(vectorB));
 		/// </summary>
-		API_INTERFACE inline T angleDegree(const Vec3<T>& vectorB);
+		API_INTERFACE inline T angleDegree(const Vec3<T>& vectorB) const;
 
 		/// <summary>
 		/// Get a normalized vector
 		/// </summary>
-		API_INTERFACE inline Vec3<T> normalize();
+		API_INTERFACE inline Vec3<T> normalize() const;
 
 		/// <summary>
 		/// Normalize the current vector - change to unit vector
@@ -114,12 +114,12 @@ namespace OpenML
 		/// <summary>
 		/// Calculate the distance (Euclidean) from this vector to another one
 		/// </summary>
-		API_INTERFACE inline T distance(const Vec3<T>& vector);
+		API_INTERFACE inline T distance(const Vec3<T>& vector) const;
 
 		/// <summary>
 		/// Clone the vector to a new instance
 		/// </summary>
-		API_INTERFACE inline Vec3<T> clone();
+		API_INTERFACE inline Vec3<T> clone() const;
 
 		/// <summary>
 		/// Set new value to the vector
@@ -129,22 +129,22 @@ namespace OpenML
 		/// <summary>
 		/// Multiply the vector to a scalar
 		/// </summary>
-		API_INTERFACE inline Vec3<T> operator/(T value);
+		API_INTERFACE inline Vec3<T> operator/(T value) const;
 
 		/// <summary>
 		/// Multiply the vector to a scalar
 		/// </summary>
-		API_INTERFACE inline Vec3<T> operator*(T value);
+		API_INTERFACE inline Vec3<T> operator*(T value) const;
 
 		/// <summary>
 		/// Multiply the vector to another one using Cross Product
 		/// </summary>
-		API_INTERFACE inline Vec3<T> operator*(const Vec3<T>& vector);
+		API_INTERFACE inline Vec3<T> operator*(const Vec3<T>& vector) const;
 
 		/// <summary>
 		/// Sum this vector to another one
 		/// </summary>
-		API_INTERFACE inline Vec3<T> operator+(const Vec3<T>& vector);
+		API_INTERFACE inline Vec3<T> operator+(const Vec3<T>& vector) const;
 
 		/// <summary>
 		/// Sum this vector to another one
@@ -154,12 +154,12 @@ namespace OpenML
 		/// <summary>
 		/// Sum a scalar to this vector
 		/// </summary>
-		API_INTERFACE inline Vec3<T> operator+(T value);
+		API_INTERFACE inline Vec3<T> operator+(T value) const;
 
 		/// <summary>
 		/// Subtract this vector to another one
 		/// </summary>
-		API_INTERFACE inline Vec3<T> operator-(const Vec3<T>& vector);
+		API_INTERFACE inline Vec3<T> operator-(const Vec3<T>& vector) const;
 
 		/// <summary>
 		/// Subtract this vector to another one
@@ -169,22 +169,22 @@ namespace OpenML
 		/// <summary>
 		/// Subtract a scalar from this vector
 		/// </summary>
-		API_INTERFACE inline Vec3<T> operator-(T value);
+		API_INTERFACE inline Vec3<T> operator-(T value) const;
 
 		/// <summary>
 		/// Compare this vector to another one. Compare each component.
 		/// </summary>
-		API_INTERFACE inline bool operator==(const Vec3<T>& vector);
+		API_INTERFACE inline bool operator==(const Vec3<T>& vector) const;
 
 		/// <summary>
 		/// Compare this vector to another one. Compare each component.
 		/// </summary>
-		API_INTERFACE inline bool operator==(T value);
+		API_INTERFACE inline bool operator==(T value) const;
 
 		/// <summary>
 		/// Compare this vector to another one. Compare each component.
 		/// </summary>
-		API_INTERFACE inline bool operator!=(const Vec3<T>& vector);
+		API_INTERFACE inline bool operator!=(const Vec3<T>& vector) const;
 
 		/// <summary>
 		/// Get a index from the vector

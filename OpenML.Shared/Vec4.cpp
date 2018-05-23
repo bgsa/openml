@@ -96,7 +96,7 @@ T Vec4<T>::minimum() const
 }
 
 template <typename T>
-void Vec4<T>::add(Vec4<T> vector)
+void Vec4<T>::add(const Vec4<T>& vector)
 {
 	values[0] += vector[0];
 	values[1] += vector[1];
@@ -105,7 +105,7 @@ void Vec4<T>::add(Vec4<T> vector)
 }
 
 template <typename T>
-void Vec4<T>::subtract(Vec4<T> vector)
+void Vec4<T>::subtract(const Vec4<T>& vector)
 {
 	values[0] -= vector[0];
 	values[1] -= vector[1];
@@ -123,19 +123,19 @@ void Vec4<T>::scale(T scale)
 }
 
 template <typename T>
-T Vec4<T>::dot(Vec4<T> vector)
+T Vec4<T>::dot(const Vec4<T>& vector) const
 {
 	return values[0] * vector[0] + values[1] * vector[1] + values[2] * vector[2] + values[3] * vector[3];
 }
 
 template <typename T>
-T Vec4<T>::angleRandians(Vec4<T> vectorB)
+T Vec4<T>::angleRandians(const Vec4<T>& vectorB) const
 {
 	return dot(vectorB) / (length() * vectorB.length());
 }
 
 template <typename T>
-T Vec4<T>::angleDegree(Vec4<T> vectorB)
+T Vec4<T>::angleDegree(const Vec4<T>& vectorB) const
 {
 	T angleRadians = dot(vectorB) / (length() * vectorB.length());
 
@@ -143,7 +143,7 @@ T Vec4<T>::angleDegree(Vec4<T> vectorB)
 }
 
 template <typename T>
-Vec4<T> Vec4<T>::normalize()
+Vec4<T> Vec4<T>::normalize() const
 {
 	T vectorLength = length();
 
@@ -156,7 +156,7 @@ Vec4<T> Vec4<T>::normalize()
 }
 
 template <typename T>
-T Vec4<T>::distance(Vec4<T> vector)
+T Vec4<T>::distance(const Vec4<T>& vector) const
 {
 	T x = values[0] - vector[0];
 	x = x*x;
@@ -174,7 +174,7 @@ T Vec4<T>::distance(Vec4<T> vector)
 }
 
 template <typename T>
-Vec4<T> Vec4<T>::clone()
+Vec4<T> Vec4<T>::clone() const
 {
 	return Vec4<T>(values[0], values[1], values[2], values[3]);
 }
@@ -206,7 +206,7 @@ Vec4<T> Vec4<T>::operator*(T value) const
 }
 
 template <typename T>
-Vec4<T> Vec4<T>::operator/(T value)
+Vec4<T> Vec4<T>::operator/(T value) const
 {
 	Vec4<T> result;
 
@@ -228,7 +228,7 @@ void Vec4<T>::operator/=(T value)
 }
 
 template <typename T>
-Vec4<T> Vec4<T>::operator+(Vec4<T> vector)
+Vec4<T> Vec4<T>::operator+(const Vec4<T>& vector) const
 {
 	Vec4<T> result;
 
@@ -241,7 +241,7 @@ Vec4<T> Vec4<T>::operator+(Vec4<T> vector)
 }
 
 template <typename T>
-Vec4<T> Vec4<T>::operator+(T value)
+Vec4<T> Vec4<T>::operator+(T value) const
 {
 	Vec4<T> result;
 
@@ -254,7 +254,7 @@ Vec4<T> Vec4<T>::operator+(T value)
 }
 
 template <typename T>
-Vec4<T> Vec4<T>::operator-(Vec4<T> vector)
+Vec4<T> Vec4<T>::operator-(const Vec4<T>& vector) const
 {
 	Vec4<T> result;
 
@@ -267,7 +267,7 @@ Vec4<T> Vec4<T>::operator-(Vec4<T> vector)
 }
 
 template <typename T>
-Vec4<T> Vec4<T>::operator-(T value)
+Vec4<T> Vec4<T>::operator-(T value) const
 {
 	Vec4<T> result;
 
@@ -341,7 +341,7 @@ Vec4<T> Vec4<T>::operator*(const Mat4<T>& matrix4x4) const
 }
 
 template <typename T>
-bool Vec4<T>::operator==(Vec4<T> vector)
+bool Vec4<T>::operator==(const Vec4<T>& vector) const
 {
 	return values[0] == vector[0]
 		&& values[1] == vector[1]
@@ -350,7 +350,7 @@ bool Vec4<T>::operator==(Vec4<T> vector)
 }
 
 template <typename T>
-bool Vec4<T>::operator==(T value)
+bool Vec4<T>::operator==(T value) const
 {
 	return values[0] == value
 		&& values[1] == value
@@ -359,7 +359,7 @@ bool Vec4<T>::operator==(T value)
 }
 
 template <typename T>
-bool Vec4<T>::operator!=(Vec4<T> vector)
+bool Vec4<T>::operator!=(const Vec4<T>& vector) const
 {
 	return values[0] != vector[0]
 		|| values[1] != vector[1]
@@ -402,7 +402,7 @@ Vec4<T>::operator T*()
 }
 
 template <typename T>
-Vec3<T> Vec4<T>::toVec3() {
+Vec3<T> Vec4<T>::toVec3() const {
 	return Vec3<T> { values[0], values[1], values[2] };
 }
 

@@ -78,22 +78,22 @@ namespace OpenML
 		/// Dot Product / Scalar Product between two vectors
 		/// return u dot v
 		/// <summary>
-		API_INTERFACE inline T dot(const Vec2<T>& vector);
+		API_INTERFACE inline T dot(const Vec2<T>& vector) const;
 
 		/// <summary>
 		/// Get the angle in radians between two vectors: A . B
 		/// <summary>
-		API_INTERFACE inline T angleRandians(const Vec2<T>& vectorB);
+		API_INTERFACE inline T angleRandians(const Vec2<T>& vectorB) const;
 
 		/// <summary>
 		/// Get the andle in radians between the vectors
 		/// <summary>
-		API_INTERFACE inline T angleDegree(const Vec2<T>& vectorB);
+		API_INTERFACE inline T angleDegree(const Vec2<T>& vectorB) const;
 
 		/// <summary>
 		/// Get a normalized vector
 		/// <summary>
-		API_INTERFACE inline Vec2<T> normalize();
+		API_INTERFACE inline Vec2<T> normalize() const;
 
 		/// <summary>
 		/// Normalize the current vector - change to unit vector
@@ -103,23 +103,19 @@ namespace OpenML
 		/// <summary>
 		/// Calculate the distance (Euclidean) from this vector to another one
 		/// <summary>
-		API_INTERFACE inline T distance(const Vec2<T>& vector);
+		API_INTERFACE inline T distance(const Vec2<T>& vector) const;
 
 		/// <summary>
 		/// Find a orthogonal projection between two vectors
 		/// Return Two vectors
 		/// <summary>
-		API_INTERFACE inline Vec2<T>* orthogonalProjection(const Vec2<T>& vector);
+		API_INTERFACE inline Vec2<T>* orthogonalProjection(const Vec2<T>& vector) const;
 
 		/// <summary>
 		/// Clone the vector to a new instance
 		/// <summary>
-		API_INTERFACE inline Vec2<T> clone();
+		API_INTERFACE inline Vec2<T> clone() const;
 
-		/// <summary>
-		/// Multiply the vector to a scalar
-		/// <summary>
-		API_INTERFACE inline Vec2<T> operator*(T value);
 		/// <summary>
 		/// Multiply the vector to a scalar
 		/// <summary>
@@ -128,16 +124,8 @@ namespace OpenML
 		/// <summary>
 		/// Multiply the vector to a scalar
 		/// </summary>
-		API_INTERFACE inline Vec2<T> operator/(T value);
-		/// <summary>
-		/// Multiply the vector to a scalar
-		/// </summary>
 		API_INTERFACE inline Vec2<T> operator/(T value) const;
 
-		/// <summary>
-		/// Sum this vector to another one
-		/// <summary>
-		API_INTERFACE inline Vec2<T> operator+(const Vec2<T>& vector);
 		/// <summary>
 		/// Sum this vector to another one
 		/// <summary>
@@ -146,16 +134,8 @@ namespace OpenML
 		/// <summary>
 		/// Sum a scalar to this vector
 		/// <summary>
-		API_INTERFACE inline Vec2<T> operator+(T value);
-		/// <summary>
-		/// Sum a scalar to this vector
-		/// <summary>
 		API_INTERFACE inline Vec2<T> operator+(T value) const;
 
-		/// <summary>
-		/// Subtract this vector to another one
-		/// <summary>
-		API_INTERFACE inline Vec2<T> operator-(const Vec2<T>& vector);
 		/// <summary>
 		/// Subtract this vector to another one
 		/// <summary>
@@ -164,16 +144,8 @@ namespace OpenML
 		/// <summary>
 		/// Subtract a scalar from this vector
 		/// <summary>
-		API_INTERFACE inline Vec2<T> operator-(T value);
-		/// <summary>
-		/// Subtract a scalar from this vector
-		/// <summary>
 		API_INTERFACE inline Vec2<T> operator-(T value) const;
 
-		/// <summary>
-		/// Compare this vector to another one. Compare each component.
-		/// <summary>
-		API_INTERFACE inline bool operator==(const Vec2<T>& vector);
 		/// <summary>
 		/// Compare this vector to another one. Compare each component.
 		/// <summary>
@@ -182,16 +154,8 @@ namespace OpenML
 		/// <summary>
 		/// Compare this vector to another one. Compare each component.
 		/// <summary>
-		API_INTERFACE inline bool operator==(T value);
-		/// <summary>
-		/// Compare this vector to another one. Compare each component.
-		/// <summary>
 		API_INTERFACE inline bool operator==(T value) const;
 
-		/// <summary>
-		/// Compare this vector to another one. Compare each component.
-		/// <summary>
-		API_INTERFACE inline bool operator!=(const Vec2<T>& vector);
 		/// <summary>
 		/// Compare this vector to another one. Compare each component.
 		/// <summary>
@@ -210,11 +174,6 @@ namespace OpenML
 		/// Auto convertion to void *
 		/// </summary>
 		API_INTERFACE inline operator T*() const;
-		/// <summary>
-		/// Auto convertion to T *
-		/// It is the same of convertion to float* or int* or double*, whatever T is.
-		/// </summary>
-		API_INTERFACE inline operator T*();
 
 	};
 

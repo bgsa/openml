@@ -190,6 +190,25 @@ Quat<T> Quat<T>::inverse() const
 }
 
 template <typename T>
+Quat<T> Quat<T>::createRotate(double angleInRadians, Vec3<T> position)
+{
+	double halfAngle = angleInRadians / 2;
+	double sinHalfAngle = sin(halfAngle);
+	double cosineHalfAngle = cos(halfAngle);
+
+	Vec3<T> positionNomralized = position.normalize();
+
+	Quat<T> result(
+		T(sinHalfAngle * positionNomralized[0]),
+		T(sinHalfAngle * positionNomralized[1]),
+		T(sinHalfAngle * positionNomralized[2]),
+		T(cosineHalfAngle)
+	);
+
+	return result;
+}
+
+template <typename T>
 Quat<T> Quat<T>::rotate(const Quat<T>& r) const
 {
 	return r * (*this * r.conjugate());

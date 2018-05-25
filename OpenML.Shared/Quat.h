@@ -115,23 +115,7 @@ namespace OpenML
 		/// <summary>
 		/// Craete a rotation unit quaternion bases on angle (in radians) and directional vector provided
 		/// </summary>
-		API_INTERFACE inline static Quat<T> createRotate(double angleInRadians, Vec3<T> position)
-		{
-			double halfAngle = angleInRadians / 2;
-			double sinHalfAngle = sin(halfAngle);
-			double cosineHalfAngle = cos(halfAngle);
-
-			Vec3<T> positionNomralized = position.normalize();
-
-			Quat<T> result(
-				T(sinHalfAngle * positionNomralized[0]),
-				T(sinHalfAngle * positionNomralized[1]),
-				T(sinHalfAngle * positionNomralized[2]),
-				T(cosineHalfAngle)
-			);
-
-			return result;
-		}
+		API_INTERFACE static Quat<T> createRotate(double angleInRadians, Vec3<T> position);
 
 		/// <summary>
 		/// Return a quaternion rotated bases on rotation quaternion provided in parameter

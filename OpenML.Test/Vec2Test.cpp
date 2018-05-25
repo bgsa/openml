@@ -309,5 +309,30 @@ namespace OpenMLTest
 			Assert::IsTrue(areEqual, L"Vectors are not equal.", LINE_INFO());
 		}
 
+		TEST_METHOD(Vec2_operator_Serialize)
+		{
+			Vec2f vector = { 4.0f, 3.0f };
+			string expected("4,3");
+
+			stringstream sstream;
+			vector.serialize(sstream);
+			string result = sstream.str();
+
+			Assert::AreEqual(expected, result, L"Wrong Serialization.", LINE_INFO());
+		}
+
+		TEST_METHOD(Vec2_operator_Deserialize)
+		{
+			Vec2f vector = { 4.0f, 3.0f };
+
+			stringstream sstream;
+			vector.serialize(sstream);
+
+			Vec2f result;
+			result.deserialize(sstream);
+
+			Assert::IsTrue(vector == result, L"Wrong Serialization.", LINE_INFO());
+		}
+
 	};
 }

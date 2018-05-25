@@ -11,7 +11,7 @@ namespace OpenML
 	{
 	private:
 		T values[VEC2_SIZE];
-
+		
 	public:
 
 		/// <summary>
@@ -175,8 +175,17 @@ namespace OpenML
 		/// </summary>
 		API_INTERFACE inline operator T*() const;
 
-	};
+		/// <summary>
+		/// Serialize current object
+		/// </summary>
+		API_INTERFACE inline ostream& serialize(ostream& outputStream) const;
 
+		/// <summary>
+		/// Deserialize current object
+		/// </summary>
+		API_INTERFACE inline istream& deserialize(istream& inputStream);
+	};
+	
 	typedef Vec2<int> Vec2i;
 	typedef Vec2<float> Vec2f;
 	typedef Vec2<double> Vec2d;

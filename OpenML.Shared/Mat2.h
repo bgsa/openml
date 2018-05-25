@@ -74,18 +74,7 @@ namespace OpenML
 		/// <summary>
 		/// Load a identity matrix
 		/// </summary>
-		API_INTERFACE inline static Mat2<T> identity()
-		{
-			static T identityMatrix[MAT2_SIZE] = {
-				T(1), T(0),
-				T(0), T(1)
-			};
-
-			Mat2 result;
-			memcpy(&result, identityMatrix, sizeof(values));
-
-			return result;
-		}
+		API_INTERFACE static Mat2<T> identity();
 
 		/// <summary>
 		/// Transpose matrix - swap rows by columns
@@ -105,14 +94,7 @@ namespace OpenML
 		/// <summary>
 		/// Create a scaled matrix
 		/// </summary>
-		API_INTERFACE inline static Mat2<T> createScale(T xScale, T yScale)
-		{
-			Mat2<T> result = Mat2<T>::identity();
-
-			result.scale(xScale, yScale);
-
-			return result;
-		}
+		API_INTERFACE static Mat2<T> createScale(T xScale, T yScale);
 
 		/// <summary>
 		/// Scale the current matrix
@@ -122,20 +104,7 @@ namespace OpenML
 		/// <summary>
 		/// Craete a translation matrix
 		/// </summary>
-		API_INTERFACE inline static Mat2<T> createTranslate(T x, T y)
-		{
-			Mat2<T> result = Mat2<T>::identity();
-
-#ifdef MAJOR_COLUMN_ORDER
-			result[2] = x;
-			result[3] = y;
-#else
-			result[1] = x;
-			result[3] = y;
-#endif
-
-			return result;
-		}
+		API_INTERFACE static Mat2<T> createTranslate(T x, T y);
 
 		/// <summary>
 		/// Get the deeterminant of the Matrix

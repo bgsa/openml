@@ -166,6 +166,22 @@ Vec4<T> Mat4<T>::secondaryDiagonal() const
 }
 
 template <typename T>
+Mat4<T> Mat4<T>::identity()
+{
+	static T identityMatrix[MAT4_SIZE] = {
+		T(1), T(0), T(0), T(0),
+		T(0), T(1), T(0), T(0),
+		T(0), T(0), T(1), T(0),
+		T(0), T(0), T(0), T(1)
+	};
+
+	Mat4<T> result;
+	memcpy(&result, identityMatrix, sizeof(values));
+
+	return result;
+}
+
+template <typename T>
 Mat4<T> Mat4<T>::transpose() const
 {
 	Mat4<T> result;
@@ -389,11 +405,112 @@ Mat4<T> Mat4<T>::invert() const
 }
 
 template <typename T>
+Mat4<T> Mat4<T>::createScale(T xScale, T yScale, T zScale)
+{
+	Mat4<T> result = Mat4<T>::identity();
+
+	result.scale(xScale, yScale, zScale);
+
+	return result;
+}
+
+template <typename T>
 void Mat4<T>::scale(T xScale, T yScale, T zScale)
 {
 	values[0] *= xScale;
 	values[5] *= yScale;
 	values[10] *= zScale;
+}
+
+template <typename T>
+Mat4<T> Mat4<T>::createRotate(T angleRadians, T x, T y, T z)
+{
+	T mag, sineAngle, cosineAngle;
+	T xx, yy, zz, xy, yz, zx, xs, ys, zs, one_c;
+
+	sineAngle = T(sin(angleRadians));
+	cosineAngle = T(cos(angleRadians));
+
+	mag = T(sqrt(x*x + y * y + z * z));
+
+	if (mag == 0.0f)
+		return Mat4::identity();
+
+	// Rotation matrix is normalized
+	x /= mag;
+	y /= mag;
+	z /= mag;
+
+	xx = x * x;
+	yy = y * y;
+	zz = z * z;
+	xy = x * y;
+	yz = y * z;
+	zx = z * x;
+	xs = x * sineAngle;
+	ys = y * sineAngle;
+	zs = z * sineAngle;
+	one_c = T(1) - cosineAngle;
+
+	Mat4<T> result;
+
+#define M(row,col)  result[col * MAT4_ROWSIZE + row]
+	M(0, 0) = (one_c * xx) + cosineAngle;
+	M(0, 1) = (one_c * xy) - zs;
+	M(0, 2) = (one_c * zx) + ys;
+	M(0, 3) = T(0);
+
+	M(1, 0) = (one_c * xy) + zs;
+	M(1, 1) = (one_c * yy) + cosineAngle;
+	M(1, 2) = (one_c * yz) - xs;
+	M(1, 3) = T(0);
+
+	M(2, 0) = (one_c * zx) - ys;
+	M(2, 1) = (one_c * yz) + xs;
+	M(2, 2) = (one_c * zz) + cosineAngle;
+	M(2, 3) = T(0);
+
+	M(3, 0) = T(0);
+	M(3, 1) = T(0);
+	M(3, 2) = T(0);
+	M(3, 3) = T(1);
+#undef M
+
+	return result;
+}
+
+template <typename T>
+Mat4<T> Mat4<T>::createTranslate(T x, T y, T z)
+{
+	Mat4<T> result = Mat4<T>::identity();
+
+#if MAJOR_COLUMN_ORDER
+	result[12] = x;
+	result[13] = y;
+	result[14] = z;
+#else
+	result[3] = x;
+	result[7] = y;
+	result[11] = z;
+#endif
+
+	return result;
+}
+
+template <typename T>
+Mat4<T> Mat4<T>::createOrthographicMatrix(T xMin, T xMax, T yMin, T yMax, T zMin, T zMax)
+{
+	Mat4<T> projectionMatrix = Mat4<T>::identity();
+
+	projectionMatrix[0] = T(2) / (xMax - xMin);
+	projectionMatrix[5] = T(2) / (yMax - yMin);
+	projectionMatrix[10] = T(-2) / (zMax - zMin);
+	projectionMatrix[12] = -((xMax + xMin) / (xMax - xMin));
+	projectionMatrix[13] = -((yMax + yMin) / (yMax - yMin));
+	projectionMatrix[14] = -((zMax + zMin) / (zMax - zMin));
+	projectionMatrix[15] = T(1);
+
+	return projectionMatrix;
 }
 
 template <typename T>

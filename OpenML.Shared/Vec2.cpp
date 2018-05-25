@@ -276,6 +276,32 @@ Vec2<T>::operator T*() const
 	return (T*)values;
 }
 
+template <typename T>
+ostream& operator<<(ostream& outputStream, const Vec2<T>& vector)
+{
+	return outputStream << vector[0] << "," << vector[1];
+}
+
+template <typename T>
+istream& operator>>(istream& inputStream, Vec2<T>& vector)
+{
+	char separator;
+	return inputStream >> vector[0] >> separator >> vector[1];
+}
+
+template <typename T>
+ostream& Vec2<T>::serialize(ostream& outputStream) const
+{
+	return outputStream << *this;
+}
+
+template <typename T>
+istream& Vec2<T>::deserialize(istream& inputStream)
+{
+	inputStream >> *this;
+	return inputStream;
+}
+
 namespace OpenML
 {
 	template class Vec2<int>;

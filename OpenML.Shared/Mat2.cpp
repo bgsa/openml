@@ -29,6 +29,20 @@ Mat2<T>::Mat2(T value11, T value12,	T value21, T value22)
 }
 
 template <typename T>
+Mat2<T> Mat2<T>::identity()
+{
+	static T identityMatrix[MAT2_SIZE] = {
+		T(1), T(0),
+		T(0), T(1)
+	};
+
+	Mat2 result;
+	memcpy(&result, identityMatrix, sizeof(values));
+
+	return result;
+}
+
+template <typename T>
 T* Mat2<T>::getValues()
 {
 	return values;
@@ -158,10 +172,36 @@ Vec2<T> Mat2<T>::multiply(const Vec2<T>& vector) const
 }
 
 template <typename T>
+Mat2<T> Mat2<T>::createScale(T xScale, T yScale)
+{
+	Mat2<T> result = Mat2<T>::identity();
+
+	result.scale(xScale, yScale);
+
+	return result;
+}
+
+template <typename T>
 void Mat2<T>::scale(T xScale, T yScale)
 {
 	values[0] *= xScale;
 	values[3] *= yScale;
+}
+
+template <typename T>
+Mat2<T> Mat2<T>::createTranslate(T x, T y)
+{
+	Mat2<T> result = Mat2<T>::identity();
+
+#ifdef MAJOR_COLUMN_ORDER
+	result[2] = x;
+	result[3] = y;
+#else
+	result[1] = x;
+	result[3] = y;
+#endif
+
+	return result;
 }
 
 template <typename T>

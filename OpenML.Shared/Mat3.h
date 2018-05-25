@@ -85,19 +85,7 @@ namespace OpenML
 		/// <summary>
 		/// Load a identity matrix
 		/// </summary>
-		API_INTERFACE inline static Mat3<T> identity() 
-		{
-			static T identityMatrix[MAT3_SIZE] = {
-				T(1), T(0), T(0),
-				T(0), T(1), T(0),
-				T(0), T(0), T(1)
-			};
-
-			Mat3<T> result;
-			memcpy(&result, identityMatrix, sizeof(values));
-
-			return result;
-		}
+		API_INTERFACE static Mat3<T> identity();
 
 		/// <summary>
 		/// Transpose matrix - swap rows by columns
@@ -129,14 +117,7 @@ namespace OpenML
 		/// <summary>
 		/// Create a scaled matrix
 		/// </summary>
-		API_INTERFACE inline static Mat3<T> createScale(T xScale, T yScale, T zScale)
-		{
-			Mat3<T> result = Mat3<T>::identity();
-
-			result.scale(xScale, yScale, zScale);
-
-			return result;
-		}
+		API_INTERFACE static Mat3<T> createScale(T xScale, T yScale, T zScale);
 
 		/// <summary>
 		/// Scale the current matrix
@@ -147,71 +128,12 @@ namespace OpenML
 		/// Create a rotation matrix
 		/// Example: x = 1.0 to rotate over X axis; x = 0.0 to not rotate over X axis
 		/// </summary>
-		API_INTERFACE inline static Mat3<T> createRotate(T angleRadians, T x, T y, T z)
-		{
-			T mag, sine, cosine;
-			T xx, yy, zz, xy, yz, zx, xs, ys, zs, one_c;
-
-			sine = T(sin(angleRadians));
-			cosine = T(cos(angleRadians));
-
-			mag = T(sqrt(x*x + y * y + z * z));
-
-			if (mag == 0.0f)
-				return Mat3::identity();
-
-			// Rotation matrix is normalized
-			x /= mag;
-			y /= mag;
-			z /= mag;
-
-			xx = x * x;
-			yy = y * y;
-			zz = z * z;
-			xy = x * y;
-			yz = y * z;
-			zx = z * x;
-			xs = x * sine;
-			ys = y * sine;
-			zs = z * sine;
-			one_c = T(1) - cosine;
-
-			Mat3<T> result;
-
-			result[0 * MAT3_ROWSIZE + 0] = (one_c * xx) + cosine;
-			result[1 * MAT3_ROWSIZE + 0] = (one_c * xy) - zs;
-			result[2 * MAT3_ROWSIZE + 0] = (one_c * zx) + ys;
-
-			result[0 * MAT3_ROWSIZE + 1] = (one_c * xy) + zs;
-			result[1 * MAT3_ROWSIZE + 1] = (one_c * yy) + cosine;
-			result[2 * MAT3_ROWSIZE + 1] = (one_c * yz) - xs;
-
-			result[0 * MAT3_ROWSIZE + 2] = (one_c * zx) - ys;
-			result[1 * MAT3_ROWSIZE + 2] = (one_c * yz) + xs;
-			result[2 * MAT3_ROWSIZE + 2] = (one_c * zz) + cosine;
-
-			return result;
-		}
+		API_INTERFACE static Mat3<T> createRotate(T angleRadians, T x, T y, T z);
 
 		/// <summary>
 		/// Craete a translation matrix
 		/// </summary>
-		API_INTERFACE inline static Mat3<T> createTranslate(T x, T y, T z)
-		{
-			Mat3<T> result = Mat3<T>::identity();
-
-#if MAJOR_COLUMN_ORDER
-			result[6] = x;
-			result[7] = y;
-			result[8] = z;
-#else
-			result[2] = x;
-			result[5] = y;
-			result[8] = z;
-#endif
-
-			return result;
-		}
+		API_INTERFACE static Mat3<T> createTranslate(T x, T y, T z);
 
 		/// <summary>
 		/// Get the determinant of the matrix

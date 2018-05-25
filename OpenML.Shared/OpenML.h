@@ -102,7 +102,7 @@ namespace OpenML
 	template<typename T>
 	inline bool API_INTERFACE isCloseEnough(const T value, const T compare, const T epsilon)
 	{
-		return T(abs(value - compare) < epsilon);
+		return abs(value - compare) < epsilon;
 	}
 
 	///<summary>

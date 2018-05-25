@@ -39,7 +39,7 @@ T Rectangle2D<T>::width() const
 	if (width == 0)
 		width = point1.x - point3.x;
 
-	return T(abs(width));
+	return abs(width);
 }
 
 template<typename T>
@@ -50,7 +50,7 @@ T Rectangle2D<T>::height() const
 	if (height == 0)
 		height = point1.y - point3.y;
 
-	return T(abs(height));
+	return abs(height);
 }
 
 template<typename T>

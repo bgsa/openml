@@ -172,13 +172,13 @@ Colision2DStatus Line2D<T>::hasIntersections(const Circle2D<T>& circle) const
 template <typename T>
 T Line2D<T>::deltaX() const
 {
-	return T(fabs(point1.x - point2.x));
+	return abs(point1.x - point2.x);
 }
 
 template <typename T>
 T Line2D<T>::deltaY() const
 {
-	return T(fabs(point1.y - point2.y));
+	return abs(point1.y - point2.y);
 }
 
 

@@ -1,9 +1,6 @@
 # OpenML
 > Open Math Library is a cross-plataform math library for the new generation of computer graphic APIs, such as Vulkan, OpenGL-ES.
 
-[![NPM Version][npm-image]][npm-url]
-[![Build Status][travis-image]][travis-url]
-[![Downloads Stats][npm-downloads]][npm-url]
 
 Main Features:
 

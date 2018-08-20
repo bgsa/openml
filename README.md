@@ -1,2 +1,2 @@
-# openml
-Open Math Library
+# OpenML
+Open Math Library is

@@ -45,13 +45,13 @@ bool intersect = line.isOnTheLine(point);
 
 Bruno Gallego – [@Bruno_Gallego] – brunogsa@live.com
 
+[https://github.com/bgsa/](https://github.com/bgsa/)
 
 
 ## License
 
 Distributed under the GNU license. See ``LICENSE`` for more information.
 
-[https://github.com/bgsa/github-link](https://github.com/dbader/)
 
 
 

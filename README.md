@@ -2,6 +2,7 @@
 > Open Math Library is a cross-plataform math library for the new generation of computer graphic APIs, such as Vulkan, OpenGL-ES.
 
 
+
 Main Features:
 
 * Made with high legibility - clean code;
@@ -10,6 +11,7 @@ Main Features:
 * Take advantage with C++11 features;
 
 ![](header.png)
+
 
 ## Installation
 
@@ -26,11 +28,12 @@ Windows:
 
 * Copy the header files and static/dynamic library to your IDE.
 
+
 ## Usage example
 
 auto transformationMatrix = worldMatrix * viewMatrix * projectionMatrix;
----
 bool intersect = line.isOnTheLine(point);
+
 
 
 ## Meta
@@ -40,6 +43,7 @@ Bruno Gallego – [@Bruno_Gallego] – brunogsa@live.com
 Distributed under the GNU license. See ``LICENSE`` for more information.
 
 [https://github.com/bgsa/github-link](https://github.com/dbader/)
+
 
 
 ## Contributing

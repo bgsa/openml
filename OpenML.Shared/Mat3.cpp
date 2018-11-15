@@ -359,6 +359,28 @@ T Mat3<T>::determinant() const
 }
 
 template <typename T>
+Mat3<T> Mat3<T>::invert()
+{
+	Mat3<T> matrixInverse;
+	T detij;
+
+	T det = determinant();
+
+	for (int i = 0; i < MAT3_ROWSIZE; i++)
+		for (int j = 0; j < MAT3_ROWSIZE; j++)
+		{
+			detij = determinantIJ(j, i);
+
+			if ((i + j) & 0x1)
+				matrixInverse[i * MAT3_ROWSIZE + j] = -detij * det;
+			else
+				matrixInverse[i * MAT3_ROWSIZE + j] = detij * det;
+		}
+
+	return matrixInverse;
+}
+
+template <typename T>
 size_t Mat3<T>::sizeInBytes() const
 {
 	return MAT3_SIZE * sizeof(T);

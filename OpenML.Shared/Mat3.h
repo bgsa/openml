@@ -139,6 +139,11 @@ namespace OpenML
 		/// Get the determinant of the matrix
 		/// </summary>
 		API_INTERFACE inline T determinant() const;
+		
+		/// <summary>
+		/// Get the inverse matrix from current matrix => A^-1
+		/// <summary>
+		API_INTERFACE Mat3<T> invert();
 
 		/// <summary>
 		/// Get the size in Bytes of Mat3

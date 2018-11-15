@@ -104,6 +104,11 @@ namespace OpenML
 		/// Calculate the distance (Euclidean) from this vector to another one
 		/// <summary>
 		API_INTERFACE inline T distance(const Vec2<T>& vector) const;
+		
+		/// <summary>
+		/// Get the fractionals values from the vector (component-wise)
+		/// <summary>
+		API_INTERFACE Vec2<T> fractional();
 
 		/// <summary>
 		/// Find a orthogonal projection between two vectors

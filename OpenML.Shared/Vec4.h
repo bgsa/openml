@@ -19,6 +19,17 @@ namespace OpenML
 		/// Optional default value 0.0
 		/// </summary>
 		API_INTERFACE inline Vec4(T defaultValue = T(0));
+		
+		/// <summary>
+		/// Set all components with this value
+		/// </summary>
+		API_INTERFACE Vec4(T value);
+
+		/// <summary>
+		/// Set all components X and Y with the primer vector and Z and W components with latter vector
+		/// </summary>
+		API_INTERFACE Vec4(Vec2<T> xyComponents, Vec2<T> zwComponents);
+		
 		/// <summary>
 		/// Constructor with a vector and a W homogeneous coordinate
 		/// </summary>
@@ -113,11 +124,21 @@ namespace OpenML
 		/// Calculate the distance (Euclidean) from this vector to another one
 		/// <summary>
 		API_INTERFACE inline T distance(const Vec4<T>& vector) const;
+		
+		/// <summary>
+		/// Get the fractionals values from the vector (component-wise)
+		/// <summary>
+		API_INTERFACE Vec4<T> fractional();
 
 		/// <summary>
 		/// Clone the vector to a new instance
 		/// <summary>
 		API_INTERFACE inline Vec4<T> clone() const;
+		
+		/// <summary>
+		/// Clip w component
+		/// <summary>
+		API_INTERFACE Vec3<T> toVec3();
 
 		/// <summary>
 		/// Multiply the vector to a scalar

@@ -144,6 +144,15 @@ T Vec2<T>::distance(const Vec2<T>& vector) const
 }
 
 template <typename T>
+Vec2<T> Vec2<T>::fractional()
+{
+	return Vec2<T> {
+		T(values[0] - floor(values[0])),
+		T(values[1] - floor(values[1]))
+	};
+}
+
+template <typename T>
 Vec2<T>* Vec2<T>::orthogonalProjection(const Vec2<T>& vector) const
 {
 	T value = dot(vector) / vector.squared();

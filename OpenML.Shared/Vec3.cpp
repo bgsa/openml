@@ -17,6 +17,13 @@ Vec3<T>::Vec3(T x, T y, T z) {
 }
 
 template <typename T>
+Vec3<T>::Vec3(Vec2<T> vector2D, T z) {
+	values[0] = vector2D[0];
+	values[1] = vector2D[1];
+	values[2] = z;
+}
+
+template <typename T>
 T Vec3<T>::x() const
 {
 	return values[0];
@@ -166,6 +173,16 @@ T Vec3<T>::distance(const Vec3<T>& vector) const
 }
 
 template <typename T>
+Vec3<T> Vec3<T>::fractional()
+{
+	return Vec3<T> {
+		T(values[0] - floor(values[0])),
+		T(values[1] - floor(values[1])),
+		T(values[2] - floor(values[2]))
+	};
+}
+
+template <typename T>
 Vec3<T> Vec3<T>::clone() const
 {
 	return Vec3<T>(values[0], values[1], values[2]);
@@ -192,6 +209,16 @@ Vec3<T> Vec3<T>::operator/(T value) const
 }
 
 template <typename T>
+Vec3<T> Vec3<T>::operator/(Vec3<T> vector)
+{
+	return Vec3<T>(
+		values[0] / vector[0],
+		values[1] / vector[1],
+		values[2] / vector[2]
+		);
+}
+
+template <typename T>
 Vec3<T> Vec3<T>::operator*(T value) const
 {
 	Vec3<T> result;
@@ -201,6 +228,14 @@ Vec3<T> Vec3<T>::operator*(T value) const
 	result[2] = values[2] * value;
 
 	return result;
+}
+
+template <typename T>
+void Vec3<T>::operator*=(T value)
+{
+	values[0] = values[0] * value;
+	values[1] = values[1] * value;
+	values[2] = values[2] * value;
 }
 
 template <typename T>

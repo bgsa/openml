@@ -45,6 +45,11 @@ namespace OpenML
 		/// Line equation: "ax + bx + c = 0"
 		/// </summary>
 		API_INTERFACE Vec3<T> getEquation() const;
+		
+		/// <summary>
+		/// Convert line to directional ray
+		/// <summary>
+		API_INTERFACE Vec2<T> toRay();
 
 		/// <summary>
 		/// Indicate whether the point is ON the vector

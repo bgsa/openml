@@ -61,6 +61,16 @@ Vec3<T> Line2D<T>::getEquation() const
 }
 
 template <typename T>
+Vec2<T> Line2D<T>::toRay()
+{
+	Vec2<T> result = (point2.toVec2() - point1.toVec2());
+
+	result = result.normalize();
+
+	return result;
+}
+
+template <typename T>
 bool Line2D<T>::isOnTheLine(const Point2D<T>& point) const
 {
 	VerticalOrientation orientation = getOrientation(point);

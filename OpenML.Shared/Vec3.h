@@ -22,6 +22,11 @@ namespace OpenML
 		/// Construct with args
 		/// </summary>
 		API_INTERFACE inline Vec3(T x, T y, T z);
+		
+		/// <summary>
+		/// Construct with args
+		/// </summary>
+		API_INTERFACE Vec3(Vec2<T> vector2D, T z);
 
 		/// <summary>
 		/// First value in the vector
@@ -115,6 +120,11 @@ namespace OpenML
 		/// Calculate the distance (Euclidean) from this vector to another one
 		/// </summary>
 		API_INTERFACE inline T distance(const Vec3<T>& vector) const;
+		
+		/// <summary>
+		/// Get the fractionals values from the vector (component-wise)
+		/// <summary>
+		API_INTERFACE Vec3<T> fractional();
 
 		/// <summary>
 		/// Clone the vector to a new instance
@@ -130,12 +140,22 @@ namespace OpenML
 		/// Multiply the vector to a scalar
 		/// </summary>
 		API_INTERFACE inline Vec3<T> operator/(T value) const;
+		
+		/// <summary>
+		/// Divide the each component by other component's vector
+		/// </summary>
+		API_INTERFACE Vec3<T> operator/(Vec3<T> vector);
 
 		/// <summary>
 		/// Multiply the vector to a scalar
 		/// </summary>
 		API_INTERFACE inline Vec3<T> operator*(T value) const;
 
+		/// <summary>
+		/// Multiply the vector to a scalar
+		/// <summary>
+		API_INTERFACE void operator*=(T value);
+		
 		/// <summary>
 		/// Multiply the vector to another one using Cross Product
 		/// </summary>

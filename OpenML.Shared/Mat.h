@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GlobalHeader.h"
+#include "Mat3.h"
 #include <iomanip>
 
 namespace OpenML
@@ -34,6 +35,14 @@ namespace OpenML
 
 			return content;
 		}
+			
+	public:
+		static void gaussianElimination(T *matrix, int rowSize);
+		/// <summary>
+		/// Get the Homography Matrix (the transformation perspective matrix from a plane to another one)
+		/// <summary>
+		static Mat3<T> getPerspectiveTransform2D(Vec2<T> sourcePoints[4], Vec2<T> targetPoints[4]);
+	
 
 	};
 

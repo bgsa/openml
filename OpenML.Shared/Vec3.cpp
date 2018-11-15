@@ -209,13 +209,13 @@ Vec3<T> Vec3<T>::operator/(T value) const
 }
 
 template <typename T>
-Vec3<T> Vec3<T>::operator/(Vec3<T> vector)
+Vec3<T> Vec3<T>::operator/(Vec3<T> vector) const
 {
 	return Vec3<T>(
 		values[0] / vector[0],
 		values[1] / vector[1],
 		values[2] / vector[2]
-		);
+	);
 }
 
 template <typename T>

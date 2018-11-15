@@ -12,7 +12,7 @@ Vec2List<T>::Vec2List(const std::vector<Vec2<T>> &list)
 }
 
 template <typename T>
-void Vec2List<T>::add(const Vec2<T> &value) 
+void Vec2List<T>::add(Vec2<T> &value) 
 {
 
 }

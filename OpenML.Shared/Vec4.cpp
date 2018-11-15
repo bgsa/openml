@@ -12,15 +12,6 @@ Vec4<T>::Vec4(T defaultValue)
 }
 
 template <typename T>
-Vec4<T>::Vec4(T value)
-{
-	values[0] = value;
-	values[1] = value;
-	values[2] = value;
-	values[3] = value;
-}
-
-template <typename T>
 Vec4<T>::Vec4(Vec2<T> xyComponents, Vec2<T> zwComponents)
 {
 	values[0] = xyComponents[0];

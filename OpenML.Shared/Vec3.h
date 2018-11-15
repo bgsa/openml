@@ -144,7 +144,7 @@ namespace OpenML
 		/// <summary>
 		/// Divide the each component by other component's vector
 		/// </summary>
-		API_INTERFACE Vec3<T> operator/(Vec3<T> vector);
+		API_INTERFACE inline Vec3<T> operator/(Vec3<T> vector) const;
 
 		/// <summary>
 		/// Multiply the vector to a scalar

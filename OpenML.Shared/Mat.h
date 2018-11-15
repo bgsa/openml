@@ -37,17 +37,14 @@ namespace OpenML
 		}
 			
 	public:
+
 		static void gaussianElimination(T *matrix, int rowSize);
+
 		/// <summary>
 		/// Get the Homography Matrix (the transformation perspective matrix from a plane to another one)
 		/// <summary>
-		static Mat3<T> getPerspectiveTransform2D(Vec2<T> sourcePoints[4], Vec2<T> targetPoints[4]);
-	
+		static Mat3<T> getPerspectiveTransform2D(Vec2<T> sourcePoints[4], Vec2<T> targetPoints[4]);	
 
 	};
-
-	template class Mat<int>;
-	template class Mat<float>;
-	template class Mat<double>;
-
+	
 }

@@ -75,6 +75,9 @@ Mat3<T> Mat<T>::getPerspectiveTransform2D(Vec2<T> sourcePoints[4], Vec2<T> targe
 	return result;
 }
 
-template class Mat<int>;
-template class Mat<float>;
-template class Mat<double>;
+namespace OpenML 
+{
+	template class Mat<int>;
+	template class Mat<float>;
+	template class Mat<double>;
+}

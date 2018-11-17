@@ -1,41 +1,91 @@
 #pragma once
 
 #include "Vec2.h"
+#include <stack>
 
-template <typename T>
-class Vec2List
+namespace OpenML 
 {
-private:
-	std::vector<Vec2<T>> list;
 
-public:
+	template <typename T>
+	class Vec2List
+	{
+	private:
+		std::vector<Vec2<T>> list;
 
-	Vec2List();
-	Vec2List(const std::vector<Vec2<T>> &list);
+		std::stack<Vec2<T>> convexUpperHull();
+		std::stack<Vec2<T>> convexLowerHull();
 
-	void add(Vec2<T> &value);
+	public:
 
-	API_INTERFACE size_t size();
+		/// <summary>
+		/// Default constructor
+		/// </summary>	
+		API_INTERFACE inline Vec2List();
 
-	/// <summary>
-	/// Find the point that contain the minimum X value
-	/// </summary>		
-	API_INTERFACE static Vec2<T>* findMinX();
+		/// <summary>
+		/// Constructor with a initialized list
+		/// </summary>	
+		API_INTERFACE inline Vec2List(const std::vector<Vec2<T>> &list);
 
-	/// <summary>
-	/// Find the point that contain the minimum Y value
-	/// </summary>		
-	static Vec2<T> API_INTERFACE findMinY();
+		/// <summary>
+		/// Add the vetor to list
+		/// </summary>	
+		void add(Vec2<T> &value);
 
-	/// <summary>
-	/// Find the point that contain the maximum X value
-	/// </summary>		
-	static Vec2<T> API_INTERFACE findMaxX();
+		/// <summary>
+		/// Get the size of the list
+		/// </summary>	
+		API_INTERFACE inline size_t size();
 
-	/// <summary>
-	/// Find the point that contain the maximum Y value
-	/// </summary>		
-	static Vec2<T> API_INTERFACE findMaxY();
+		/// <summary>
+		/// Find the vector that contains the minimum X value
+		/// </summary>		
+		API_INTERFACE Vec2<T>* findMinX();
 
-};
+		/// <summary>
+		/// Find the vector that contains the minimum Y value
+		/// </summary>		
+		API_INTERFACE Vec2<T>* findMinY();
 
+		/// <summary>
+		/// Find the vector that contains the maximum X value
+		/// </summary>		
+		API_INTERFACE Vec2<T>* findMaxX();
+
+		/// <summary>
+		/// Find the vector that contains the maximum Y value
+		/// </summary>		
+		API_INTERFACE Vec2<T>* findMaxY();
+
+		/// <summary>
+		/// Sort the list by X axis using Quicksort algoritm
+		/// </summary>		
+		API_INTERFACE void sortByX();
+
+		/// <summary>
+		/// Sort the list by X axis using Quicksort algoritm
+		/// </summary>		
+		API_INTERFACE void sortByY();
+
+		/// <summary>
+		/// Sort the list by a axis using Quicksort algoritm. Axis Index is the index of the exis. e.g: Index "0" is axis X. Index "1" is axis Y.
+		/// </summary>		
+		API_INTERFACE static void sortByAxis(Vec2<T>* arr, size_t left, size_t right, int axisIndex);
+
+		/// <summary>
+		/// Sort the list by a axis X and Y.
+		/// </summary>		
+		API_INTERFACE void Vec2List<T>::sortByAxisXY();
+
+		/// <summary>
+		/// Get te convex Upper hull from point list
+		/// </summary>		
+		API_INTERFACE Vec2List<T> convexHull();
+
+	};
+
+	typedef Vec2List<int> Vec2iList;
+	typedef Vec2List<float> Vec2fList;
+	typedef Vec2List<double> Vec2dList;
+
+}

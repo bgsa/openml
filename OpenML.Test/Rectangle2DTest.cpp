@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TestHeader.h"
+#include "Vec2List.h"
 
 namespace OpenMLTest
 {
@@ -80,7 +81,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Rectangle2D_getColisionStatus_Inside1_Test)
 		{
-			Point2Df point = Point2Df(10.0f, 10.0f);
+			Vec2f point = Vec2f(10.0f, 10.0f);
 			Rectangle2Df square = Rectangle2Df(
 				{ 0.0f, 0.0f }, 
 				{ 0.0f, 100.0f },
@@ -96,7 +97,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Rectangle2D_getColisionStatus_Inside2_Test)
 		{
-			Point2Df point = Point2Df(100.0f, 60.0f);
+			Vec2f point = Vec2f(100.0f, 60.0f);
 			Rectangle2Df square = Rectangle2Df(
 				{ 10.0f, 10.0f },
 				{ 210.0f, 10.0f },
@@ -112,7 +113,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Rectangle2D_getColisionStatus_Outside_Test)
 		{
-			Point2Df point = Point2Df(200.0f, 200.0f);
+			Vec2f point = Vec2f(200.0f, 200.0f);
 			Rectangle2Df rect = Rectangle2Df(
 				{ 0.0f, 0.0f },
 				{ 0.0f, 100.0f },
@@ -128,7 +129,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Rectangle2D_hasIntersection_Line_True_Test)
 		{
-			Line2Df line = Line2Df(Point2Df(50.0f, 0.0f), Point2Df(50.0f, 200.0f));
+			Line2Df line = Line2Df(Vec2f(50.0f, 0.0f), Vec2f(50.0f, 200.0f));
 			Rectangle2Df square = Rectangle2Df(
 				{ 0.0f, 0.0f },
 				{ 100.0f, 0.0f },
@@ -143,7 +144,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Rectangle2D_hasIntersection_Line_False_Test)
 		{
-			Line2Df line = Line2Df(Point2Df(110.0f, 0.0f), Point2Df(110.0f, 200.0f));
+			Line2Df line = Line2Df(Vec2f(110.0f, 0.0f), Vec2f(110.0f, 200.0f));
 			Rectangle2Df square = Rectangle2Df(
 				{ 0.0f, 0.0f },
 				{ 100.0f, 0.0f },
@@ -158,7 +159,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Rectangle2D_hasIntersection_Triangle_True_Test)
 		{
-			Triangle2Df triangle = Triangle2Df(Point2Df(50.0f, 10.0f), Point2Df(150.0f, 200.0f), Point2Df(200.0f, 200.0f));
+			Triangle2Df triangle = Triangle2Df(Vec2f(50.0f, 10.0f), Vec2f(150.0f, 200.0f), Vec2f(200.0f, 200.0f));
 			Rectangle2Df square = Rectangle2Df(
 				{ 0.0f, 0.0f },
 				{ 100.0f, 0.0f },
@@ -173,7 +174,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Rectangle2D_hasIntersection_Triangle_False_Test)
 		{
-			Triangle2Df triangle = Triangle2Df(Point2Df(120.0f, 110.0f), Point2Df(150.0f, 200.0f), Point2Df(200.0f, 200.0f));
+			Triangle2Df triangle = Triangle2Df(Vec2f(120.0f, 110.0f), Vec2f(150.0f, 200.0f), Vec2f(200.0f, 200.0f));
 			Rectangle2Df square = Rectangle2Df(
 				{ 0.0f, 0.0f },
 				{ 100.0f, 0.0f },
@@ -188,7 +189,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Rectangle2D_hasIntersection_Circle_True_Test)
 		{
-			Circle2Df circle = Circle2Df(Point2Df(105.0f, 50.0f), 10.0f);
+			Circle2Df circle = Circle2Df(Vec2f(105.0f, 50.0f), 10.0f);
 			Rectangle2Df square = Rectangle2Df(
 				{ 0.0f, 0.0f },
 				{ 100.0f, 0.0f },
@@ -203,7 +204,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Rectangle2D_hasIntersection_Circle_False_Test)
 		{
-			Circle2Df circle = Circle2Df(Point2Df(111.0f, 50.0f), 10.0f);
+			Circle2Df circle = Circle2Df(Vec2f(111.0f, 50.0f), 10.0f);
 			Rectangle2Df square = Rectangle2Df(
 				{ 0.0f, 0.0f },
 				{ 100.0f, 0.0f },
@@ -218,18 +219,18 @@ namespace OpenMLTest
 
 		TEST_METHOD(Rectangle2D_getBoundingBox_Test)
 		{
-			Point2Df point1 = { 0.3f, 0.0f };
-			Point2Df point2 = { 1.0f, 0.3f };
-			Point2Df point3 = { 0.7f, 1.0f };
-			Point2Df point4 = { 0.0f, 0.7f };
-			Point2Df points[] = { point1, point2, point3, point4 };
+			Vec2fList points;
+			points.add(Vec2f(0.3f, 0.0f));
+			points.add(Vec2f(1.0f, 0.3f));
+			points.add(Vec2f(0.7f, 1.0f));
+			points.add(Vec2f(0.0f, 0.7f));
 
-			Rectangle2Df result = Rectangle2Df::getBoundingBox(points, 4);
+			Rectangle2Df result = Rectangle2Df::getBoundingBox(points);
 
-			Point2Df point1Expected = { 0.0f, 0.0f };
-			Point2Df point2Expected = { 1.0f, 0.0f };
-			Point2Df point3Expected = { 1.0f, 1.0f };
-			Point2Df point4Expected = { 0.0f, 1.0f };
+			Vec2f point1Expected = { 0.0f, 0.0f };
+			Vec2f point2Expected = { 1.0f, 0.0f };
+			Vec2f point3Expected = { 1.0f, 1.0f };
+			Vec2f point4Expected = { 0.0f, 1.0f };
 
 			Assert::AreEqual(point1Expected, result.point1, L"Wring value.", LINE_INFO());
 			Assert::AreEqual(point2Expected, result.point2, L"Wring value.", LINE_INFO());

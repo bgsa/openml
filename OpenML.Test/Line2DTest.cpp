@@ -17,7 +17,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line2D_isOnTheLine_Test)
 		{
-			Point2Df point = Point2Df(3.0f, 3.0f);
+			Vec2f point = Vec2f(3.0f, 3.0f);
 			Line2Df line = Line2Df({ 0.0f, 0.0f }, { 10.0f, 10.0f });
 
 			bool result = line.isOnTheLine(point);
@@ -27,7 +27,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line2D_isOnTheLeft_Test)
 		{
-			Point2Df point = Point2Df(3.0f, 5.0f);
+			Vec2f point = Vec2f(3.0f, 5.0f);
 			Line2Df line = Line2Df({ 0.0f, 0.0f }, { 10.0f, 10.0f });
 
 			bool result = line.isOnTheLeft(point);
@@ -37,7 +37,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line2D_isOnTheRight_Test)
 		{
-			Point2Df point = Point2Df(3.0f, 1.0f);
+			Vec2f point = Vec2f(3.0f, 1.0f);
 			Line2Df line = Line2Df({ 0.0f, 0.0f }, { 10.0f, 10.0f });
 
 			bool result = line.isOnTheRight(point);
@@ -141,19 +141,19 @@ namespace OpenMLTest
 		{
 			Line2Df line1 = Line2Df({ 0.0f, 10.0f }, { 10.0f, 10.0f });
 			Line2Df line2 = Line2Df({ 5.0f, 0.0f }, { 5.0f, 10.0f });
-			Point2Df expected = Point2Df(5.0f, 10.0f);
+			Vec2f expected = Vec2f(5.0f, 10.0f);
 
-			Point2Df* result = line1.findIntersection(line2);
+			Vec2f* result = line1.findIntersection(line2);
 
 			Assert::IsNotNull(result, L"Result shoud not be null.", LINE_INFO());
-			Assert::AreEqual(expected.x, result->x, L"Wrong value.", LINE_INFO());
-			Assert::AreEqual(expected.y, result->y, L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(expected.x(), result->x(), L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(expected.y(), result->y(), L"Wrong value.", LINE_INFO());
 		}
 
 		TEST_METHOD(Line2D_hasIntersection_Inside_Test)
 		{
 			Line2Df line1 = Line2Df({ 0.0f, 10.0f }, { 10.0f, 10.0f });
-			Circle2Df circle = Circle2Df(Point2Df(10.0f, 10.0f), 10.0f);
+			Circle2Df circle = Circle2Df(Vec2f(10.0f, 10.0f), 10.0f);
 
 			Colision2DStatus colision = line1.hasIntersections(circle);
 
@@ -164,7 +164,7 @@ namespace OpenMLTest
 		TEST_METHOD(Line2D_hasIntersection_Inline_Test)
 		{
 			Line2Df line1 = Line2Df({ 90.0f, 0.0f }, { 90.0f, 200.0f });
-			Circle2Df circle = Circle2Df(Point2Df(100.0f, 100.0f), 10.0f);
+			Circle2Df circle = Circle2Df(Vec2f(100.0f, 100.0f), 10.0f);
 
 			Colision2DStatus colision = line1.hasIntersections(circle);
 
@@ -175,7 +175,7 @@ namespace OpenMLTest
 		TEST_METHOD(Line2D_hasIntersection_Outside_Test)
 		{
 			Line2Df line1 = Line2Df({ 80.0f, 0.0f }, { 80.0f, 50.0f });
-			Circle2Df circle = Circle2Df(Point2Df(100.0f, 100.0f), 10.0f);
+			Circle2Df circle = Circle2Df(Vec2f(100.0f, 100.0f), 10.0f);
 
 			Colision2DStatus colision = line1.hasIntersections(circle);
 

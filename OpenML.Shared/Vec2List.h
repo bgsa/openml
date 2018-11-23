@@ -30,7 +30,7 @@ namespace OpenML
 		/// <summary>
 		/// Add the vetor to list
 		/// </summary>	
-		void add(Vec2<T> &value);
+		API_INTERFACE inline void add(Vec2<T> &value);
 
 		/// <summary>
 		/// Get the size of the list

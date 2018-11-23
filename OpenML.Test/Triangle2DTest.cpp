@@ -53,7 +53,7 @@ namespace OpenMLTest
 		
 		TEST_METHOD(Rectangle2D_getColisionStatus_Point_Inline_Test)
 		{
-			Point2Df point = Point2Df(10.0f, 10.0f);
+			Vec2f point = Vec2f(10.0f, 10.0f);
 			Triangle2Df triangle = Triangle2Df(
 				{ 0.0f, 0.0f },
 				{ 100.0f, 100.0f },
@@ -68,7 +68,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Rectangle2D_getColisionStatus_Point_Inside_Test)
 		{
-			Point2Df point = Point2Df(10.0f, 20.0f);
+			Vec2f point = Vec2f(10.0f, 20.0f);
 			Triangle2Df triangle = Triangle2Df(
 				{ 0.0f, 0.0f },
 				{ 100.0f, 100.0f },
@@ -83,7 +83,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Rectangle2D_getColisionStatus_Point_Outside_Test)
 		{
-			Point2Df point = Point2Df(10.0f, 5.0f);
+			Vec2f point = Vec2f(10.0f, 5.0f);
 			Triangle2Df triangle = Triangle2Df(
 				{ 0.0f, 0.0f },
 				{ 100.0f, 100.0f },
@@ -98,7 +98,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Rectangle2D_hasIntersection_Line_True_Test)
 		{
-			Line2Df line = Line2Df(Point2Df(10.0f, 0.0f), Point2Df(10.0f, 200.0f));
+			Line2Df line = Line2Df(Vec2f(10.0f, 0.0f), Vec2f(10.0f, 200.0f));
 			Triangle2Df triangle = Triangle2Df(
 				{ 0.0f, 0.0f },
 				{ 100.0f, 100.0f },
@@ -112,7 +112,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Rectangle2D_hasIntersection_Line_False_Test)
 		{
-			Line2Df line = Line2Df(Point2Df(110.0f, 0.0f), Point2Df(110.0f, 200.0f));
+			Line2Df line = Line2Df(Vec2f(110.0f, 0.0f), Vec2f(110.0f, 200.0f));
 			Triangle2Df triangle = Triangle2Df(
 				{ 0.0f, 0.0f },
 				{ 100.0f, 100.0f },
@@ -126,7 +126,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Rectangle2D_hasIntersection_Circle_True_Test)
 		{
-			Circle2Df circle = Circle2Df(Point2Df(50.0f, 105.0f), 10.0f);
+			Circle2Df circle = Circle2Df(Vec2f(50.0f, 105.0f), 10.0f);
 			Triangle2Df triangle = Triangle2Df(
 				{ 0.0f, 0.0f },
 				{ 100.0f, 100.0f },
@@ -140,7 +140,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Rectangle2D_hasIntersection_Circle_False_Test)
 		{
-			Circle2Df circle = Circle2Df(Point2Df(50.0f, 111.0f), 10.0f);
+			Circle2Df circle = Circle2Df(Vec2f(50.0f, 111.0f), 10.0f);
 			Triangle2Df triangle = Triangle2Df(
 				{ 0.0f, 0.0f },
 				{ 100.0f, 100.0f },

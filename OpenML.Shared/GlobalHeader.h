@@ -37,6 +37,9 @@ namespace OpenML
 	class Vec4;
 
 	template <typename T>
+	class Vec2List;
+	
+	template <typename T>
 	class Mat;
 	template <typename T>
 	class Mat2;

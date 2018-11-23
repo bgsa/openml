@@ -4,7 +4,7 @@ template<typename T>
 Triangle2D<T>::Triangle2D() { };
 
 template<typename T>
-Triangle2D<T>::Triangle2D(const Point2D<T>& point1, const Point2D<T>& point2, const Point2D<T>& point3)
+Triangle2D<T>::Triangle2D(const Vec2<T>& point1, const Vec2<T>& point2, const Vec2<T>& point3)
 {
 	this->point1 = point1;
 	this->point2 = point2;
@@ -14,15 +14,15 @@ Triangle2D<T>::Triangle2D(const Point2D<T>& point1, const Point2D<T>& point2, co
 template<typename T>
 Triangle2D<T>::Triangle2D(T* point1, T* point2, T* point3)
 {
-	this->point1 = Point2D<T>(point1[0], point1[1]);
-	this->point2 = Point2D<T>(point2[0], point2[1]);
-	this->point3 = Point2D<T>(point3[0], point3[1]);
+	this->point1 = Vec2<T>(point1[0], point1[1]);
+	this->point2 = Vec2<T>(point2[0], point2[1]);
+	this->point3 = Vec2<T>(point3[0], point3[1]);
 }
 
 template<typename T>
 T Triangle2D<T>::area() const
 {
-	double numerator = abs(point1.x * point2.y + point2.x * point3.y + point3.x * point1.y - point1.y * point2.x - point2.y * point3.x - point3.y * point1.x);
+	double numerator = abs(point1.x() * point2.y() + point2.x() * point3.y() + point3.x() * point1.y() - point1.y() * point2.x() - point2.y() * point3.x() - point3.y() * point1.x());
 	T area = T(numerator / 2);
 
 	return area;
@@ -31,9 +31,9 @@ T Triangle2D<T>::area() const
 template<typename T>
 T Triangle2D<T>::perimeter() const
 {
-	double term1 = sqrt((point1.x - point2.x) * (point1.x - point2.x) + (point1.y - point2.y) * (point1.y - point2.y));
-	double term2 = sqrt((point2.x - point3.x) * (point2.x - point3.x) + (point2.y - point3.y) * (point2.y - point3.y));
-	double term3 = sqrt((point3.x - point1.x) * (point3.x - point1.x) + (point3.y - point1.y) * (point3.y - point1.y));
+	double term1 = sqrt((point1.x() - point2.x()) * (point1.x() - point2.x()) + (point1.y() - point2.y()) * (point1.y() - point2.y()));
+	double term2 = sqrt((point2.x() - point3.x()) * (point2.x() - point3.x()) + (point2.y() - point3.y()) * (point2.y() - point3.y()));
+	double term3 = sqrt((point3.x() - point1.x()) * (point3.x() - point1.x()) + (point3.y() - point1.y()) * (point3.y() - point1.y()));
 
 	T perimeter = T(term1) + T(term2) + T(term3);
 
@@ -44,9 +44,9 @@ template<typename T>
 T Triangle2D<T>::height() const
 {
 	//T lengthVec1 = point1.getDistance(point2);
-	T lengthVec2 = point2.getDistance(point3);
+	T lengthVec2 = point2.distance(point3);
 
-	T angle = point1.toVec2().angleRandians(point2.toVec2());
+	T angle = point1.angleRandians(point2);
 
 	T heigh = T(lengthVec2 * sin(angle));
 
@@ -65,7 +65,7 @@ Line2D<T>* Triangle2D<T>::getLines() const
 }
 
 template<typename T>
-Colision2DStatus Triangle2D<T>::getColisionStatus(const Point2D<T>& point) const
+Colision2DStatus Triangle2D<T>::getColisionStatus(const Vec2<T>& point) const
 {
 	Line2D<T> line1 = Line2D<T>(point1, point2);
 	Line2D<T> line2 = Line2D<T>(point2, point3);
@@ -105,7 +105,7 @@ bool Triangle2D<T>::hasIntersection(const Line2D<T>& line) const
 	Line2D<T> line2 = Line2D<T>(point2, point3);
 	Line2D<T> line3 = Line2D<T>(point3, point1);
 
-	Point2D<T>* point = line1.findIntersection(line);
+	Vec2<T>* point = line1.findIntersection(line);
 
 	if (point != nullptr)
 		return true;

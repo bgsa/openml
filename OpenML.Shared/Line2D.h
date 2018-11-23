@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Point2D.h"
 #include "Vec2.h"
 #include "Vec3.h"
 #include "Mat3.h"
@@ -15,11 +14,11 @@ namespace OpenML
 	class Line2D
 	{
 	public:
-		Point2D<T> point1;
-		Point2D<T> point2;
+		Vec2<T> point1;
+		Vec2<T> point2;
 
 		API_INTERFACE inline Line2D();
-		API_INTERFACE inline Line2D(const Point2D<T>& point1, const Point2D<T>& point2);
+		API_INTERFACE inline Line2D(const Vec2<T>& point1, const Vec2<T>& point2);
 		API_INTERFACE inline Line2D(T* point1, T* point2);
 
 		/// <summary>
@@ -55,33 +54,33 @@ namespace OpenML
 		/// Indicate whether the point is ON the vector
 		/// It means the point is a point on this line
 		/// </summary>
-		API_INTERFACE bool isOnTheLine(const Point2D<T>& point) const;
+		API_INTERFACE bool isOnTheLine(const Vec2<T>& point) const;
 
 		/// <summary>
 		/// Indicate whether the point is on the left of the vector/line
 		/// </summary>
-		API_INTERFACE bool isOnTheLeft(const Point2D<T>& point) const;
+		API_INTERFACE bool isOnTheLeft(const Vec2<T>& point) const;
 
 		/// <summary>
 		/// Indicate whether the point is on the right of the vector/line
 		/// </summary>
-		API_INTERFACE bool isOnTheRight(const Point2D<T>& point) const;
+		API_INTERFACE bool isOnTheRight(const Vec2<T>& point) const;
 
 		/// <summary>
 		/// Indicate whether the point is on the left, right or is a point of the line line/vector
 		/// </summary>
-		API_INTERFACE VerticalOrientation getOrientation(const Point2D<T>& point) const;
+		API_INTERFACE VerticalOrientation getOrientation(const Vec2<T>& point) const;
 
 		/// <summary>
 		/// Get te distance from this line to the point
 		/// </summary>
-		API_INTERFACE inline T getDistance(Point2D<T> point) const;
+		API_INTERFACE inline T getDistance(Vec2<T> point) const;
 
 		/// <summary>
 		/// Find the point of intersection of the line and the othr line
 		/// It can return NULL if there is no intersection
 		/// </summary>
-		API_INTERFACE Point2D<T>* findIntersection(const Line2D<T>& otherLine) const;
+		API_INTERFACE Vec2<T>* findIntersection(const Line2D<T>& otherLine) const;
 
 		/// <summary>
 		/// Check the line has intersection with the circle

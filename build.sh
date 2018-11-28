@@ -4,4 +4,3 @@ cd build
 cmake .. -DMAJOR_COLUMN_ORDER:BOOL=ON
 cmake --build .
 cd ..
-cp -R ./resources ./build/

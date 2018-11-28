@@ -2,6 +2,7 @@
 
 #include "Vec2.h"
 #include <stack>
+#include <limits>
 
 namespace OpenML 
 {
@@ -75,7 +76,7 @@ namespace OpenML
 		/// <summary>
 		/// Sort the list by a axis X and Y.
 		/// </summary>		
-		API_INTERFACE void Vec2List<T>::sortByAxisXY();
+		API_INTERFACE void sortByAxisXY();
 
 		/// <summary>
 		/// Get te convex Upper hull from point list

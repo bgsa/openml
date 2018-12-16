@@ -46,13 +46,13 @@ bool Point2D<T>::operator!=(const Point2D<T>& otherPoint) const
 }
 
 template<typename T>
-Point2D<T> Point2D<T>::findMinX(Point2D<T>* points, size_t pointsCount)
+Vec2<T> Point2D<T>::findMinX(Vec2<T>* points, size_t pointsCount)
 {
-	Point2D<T> minXValue = points[0];
+	Vec2<T> minXValue = points[0];
 
 	for (size_t i = 1; i < pointsCount; i++)
 	{
-		if (points[i].x < minXValue.x)
+		if (points[i].x() < minXValue.x())
 			minXValue = points[i];
 	}
 
@@ -60,13 +60,13 @@ Point2D<T> Point2D<T>::findMinX(Point2D<T>* points, size_t pointsCount)
 }
 
 template<typename T>
-Point2D<T> Point2D<T>::findMinY(Point2D<T>* points, size_t pointsCount)
+Vec2<T> Point2D<T>::findMinY(Vec2<T>* points, size_t pointsCount)
 {
-	Point2D<T> minYValue = points[0];
+	Vec2<T> minYValue = points[0];
 
 	for (size_t i = 1; i < pointsCount; i++)
 	{
-		if (points[i].y < minYValue.y)
+		if (points[i].y() < minYValue.y())
 			minYValue = points[i];
 	}
 
@@ -74,13 +74,13 @@ Point2D<T> Point2D<T>::findMinY(Point2D<T>* points, size_t pointsCount)
 }
 	
 template<typename T>
-Point2D<T> Point2D<T>::findMaxX(Point2D<T>* points, size_t pointsCount)
+Vec2<T> Point2D<T>::findMaxX(Vec2<T>* points, size_t pointsCount)
 {
-	Point2D<T> maxXValue = points[0];
+	Vec2<T> maxXValue = points[0];
 
 	for (size_t i = 1; i < pointsCount; i++)
 	{
-		if (points[i].x > maxXValue.x)
+		if (points[i].x() > maxXValue.x())
 			maxXValue = points[i];
 	}
 
@@ -88,13 +88,13 @@ Point2D<T> Point2D<T>::findMaxX(Point2D<T>* points, size_t pointsCount)
 }
 	
 template<typename T>
-Point2D<T> Point2D<T>::findMaxY(Point2D<T>* points, size_t pointsCount)
+Vec2<T> Point2D<T>::findMaxY(Vec2<T>* points, size_t pointsCount)
 {
-	Point2D<T> maxYValue = points[0];
+	Vec2<T> maxYValue = points[0];
 
 	for (size_t i = 1; i < pointsCount; i++)
 	{
-		if (points[i].y > maxYValue.y)
+		if (points[i].y() > maxYValue.y())
 			maxYValue = points[i];
 	}
 

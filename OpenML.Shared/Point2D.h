@@ -52,22 +52,22 @@ namespace OpenML
 		/// <summary>
 		/// Find the point that contain the minimum X value
 		/// </summary>		
-		API_INTERFACE static Point2D<T> findMinX(Point2D<T>* points, size_t pointsCount);
+		API_INTERFACE static Vec2<T> findMinX(Vec2<T>* points, size_t pointsCount);
 
 		/// <summary>
 		/// Find the point that contain the minimum Y value
 		/// </summary>		
-		API_INTERFACE static Point2D<T> findMinY(Point2D<T>* points, size_t pointsCount);
+		API_INTERFACE static Vec2<T> findMinY(Vec2<T>* points, size_t pointsCount);
 
 		/// <summary>
 		/// Find the point that contain the maximum X value
 		/// </summary>		
-		API_INTERFACE static Point2D<T> findMaxX(Point2D<T>* points, size_t pointsCount);
+		API_INTERFACE static Vec2<T> findMaxX(Vec2<T>* points, size_t pointsCount);
 
 		/// <summary>
 		/// Find the point that contain the maximum Y value
 		/// </summary>		
-		API_INTERFACE static Point2D<T> findMaxY(Point2D<T>* points, size_t pointsCount);
+		API_INTERFACE static Vec2<T> findMaxY(Vec2<T>* points, size_t pointsCount);
 
 	};
 

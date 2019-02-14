@@ -92,11 +92,13 @@ void Vec3<T>::add(const Vec3<T>& vector)
 }
 
 template <typename T>
-void Vec3<T>::subtract(const Vec3<T>& vector)
+Vec3<T> Vec3<T>::subtract(const Vec3<T>& vector)
 {
-	values[0] -= vector[0];
-	values[1] -= vector[1];
-	values[2] -= vector[2];
+	return Vec3<T>(
+			values[0] -= vector[0],
+			values[1] -= vector[1],
+			values[2] -= vector[2]
+		);
 }
 
 template <typename T>
@@ -108,13 +110,81 @@ void Vec3<T>::scale(T scale)
 }
 
 template <typename T>
+Vec3<T> Vec3<T>::rotateX(float angle)
+{
+	return Vec3<T>(
+			values[0],
+			T(values[1] * cosf(angle) - values[2] * sinf(angle)),
+			T(values[1] * sinf(angle) + values[2] * cosf(angle))
+		);
+}
+
+template <typename T>
+Vec3<T> Vec3<T>::rotateX(float angle, Vec3<T> referencePoint)
+{
+	Vec3<T> direction = this->subtract(referencePoint);
+	angle *= -1.0f;
+
+	return Vec3<T>(
+		values[0],
+		T(referencePoint[1] + direction[1] * cosf(angle) + (referencePoint[2] - values[2]) * sinf(angle)),
+		T(referencePoint[2] + direction[1] * sinf(angle) + direction[2] * cosf(angle))
+	);
+}
+
+template <typename T>
+Vec3<T> Vec3<T>::rotateY(float angle)
+{
+	return Vec3<T>(
+		T(values[0] * cosf(angle) + values[2] * sinf(angle)),
+		values[1],
+		T(values[2] * cosf(angle) - values[0] * sinf(angle))
+	);
+}
+
+template <typename T>
+Vec3<T> Vec3<T>::rotateY(float angle, Vec3<T> referencePoint)
+{
+	Vec3<T> direction = this->subtract(referencePoint);
+	angle *= -1.0f;
+
+	return Vec3<T>(
+		values[0],
+			T(referencePoint[1] + direction[1] * cosf(angle) + (referencePoint[2] - values[2]) * sinf(angle)),
+			T(referencePoint[2] + direction[1] * sinf(angle) + direction[2] * cosf(angle))
+		);
+}
+
+template <typename T>
+Vec3<T> Vec3<T>::rotateZ(float angle)
+{
+	return Vec3<T>(
+			T(values[0] * cosf(angle) - values[1] * sinf(angle)),
+			T(values[0] * sinf(angle) + values[1] * cosf(angle)),
+			values[2]
+		);
+}
+
+template <typename T>
+Vec3<T> Vec3<T>::rotateZ(float angle, Vec3<T> referencePoint)
+{
+	Vec3<T> direction = this->subtract(referencePoint);
+
+	return Vec3<T>(
+			T(referencePoint[0] + direction[0] * cosf(angle) + (referencePoint[1] - values[1]) * sinf(angle)),
+			T(referencePoint[1] + direction[0] * sinf(angle) + direction[1] * cosf(angle)),
+			values[2]
+		);
+}
+
+template <typename T>
 Vec3<T> Vec3<T>::cross(const Vec3<T>& vector) const
 {
-	Vec3<T> result = { 0,0,0 };
-
-	result[0] = values[1] * vector[2] - vector[1] * values[2];
-	result[1] = -values[0] * vector[2] + vector[0] * values[2];
-	result[2] = values[0] * vector[1] - vector[0] * values[1];
+	Vec3<T> result = Vec3<T>(
+		result[0] = values[1] * vector[2] - vector[1] * values[2],
+		result[1] = -values[0] * vector[2] + vector[0] * values[2],
+		result[2] = values[0] * vector[1] - vector[0] * values[1]
+	);
 
 	return result;
 }

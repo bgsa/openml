@@ -76,12 +76,42 @@ namespace OpenML
 		/// <summary>
 		/// Subtract a vector from current vector
 		/// </summary>
-		API_INTERFACE inline void subtract(const Vec3<T>& vector);
+		API_INTERFACE inline Vec3<T> subtract(const Vec3<T>& vector);
 
 		/// <summary>
 		/// Scale the vector from a scalar => v * scalar
 		/// </summary>
 		API_INTERFACE inline void scale(T scale);
+
+		/// <summary>
+		/// Rotate the vector on X axis, given an angle
+		/// </summary>
+		API_INTERFACE inline Vec3<T> rotateX(float angle);
+
+		/// <summary>
+		/// Rotate the vector on X axis, given an angle and the reference point (rotate around this point)
+		/// </summary>
+		API_INTERFACE inline Vec3<T> rotateX(float angle, Vec3<T> referencePoint);
+
+		/// <summary>
+		/// Rotate the vector on Y axis, given an angle
+		/// </summary>
+		API_INTERFACE inline Vec3<T> rotateY(float angle);
+
+		/// <summary>
+		/// Rotate the vector on Y axis, given an angle and the reference point (rotate around this point)
+		/// </summary>
+		API_INTERFACE inline Vec3<T> rotateY(float angle, Vec3<T> referencePoint);
+
+		/// <summary>
+		/// Rotate the vector on Z axis, given an angle
+		/// </summary>
+		API_INTERFACE inline Vec3<T> rotateZ(float angle);
+
+		/// <summary>
+		/// Rotate the vector on Z axis, given an angle and the reference point (rotate around this point)
+		/// </summary>
+		API_INTERFACE inline Vec3<T> rotateZ(float angle, Vec3<T> referencePoint);
 
 		/// <summary>
 		/// Cross Product - return a perpendicular vector, regards two vectors => u x v

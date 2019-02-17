@@ -6,18 +6,17 @@ template <typename T>
 Plane3D<T>::Plane3D() {	};
 
 template <typename T>
-Plane3D<T>::Plane3D(const Point3D<T>& point, const Vec3<T>& vector)
+Plane3D<T>::Plane3D(const Vec3<T>& point, const Vec3<T>& vector)
 {
 	this->point = point;
 	this->normalVector = vector;
 }
 
 template <typename T>
-Plane3D<T>::Plane3D(const Point3D<T>& point1, const Point3D<T>& point2, const Point3D<T>& point3)
+Plane3D<T>::Plane3D(const Vec3<T>& point1, const Vec3<T>& point2, const Vec3<T>& point3)
 {
-	Vec3<T> point1AsVec3 = point1.toVec3();
-	Vec3<T> ab = point1AsVec3 - point2.toVec3();
-	Vec3<T> ac = point1AsVec3 - point3.toVec3();
+	Vec3<T> ab = point1 - point2;
+	Vec3<T> ac = point1 - point3;
 
 	point = point2;
 
@@ -31,7 +30,7 @@ Plane3D<T>::Plane3D(const Point3D<T>& point1, const Point3D<T>& point2, const Po
 template <typename T>
 Vec4<T> Plane3D<T>::getEquation() const
 {
-	T value = (normalVector * T(-1)).dot(point.toVec3());
+	T value = (normalVector * T(-1)).dot(point);
 
 	return Vec4<T>(
 		normalVector[0],
@@ -42,10 +41,9 @@ Vec4<T> Plane3D<T>::getEquation() const
 }
 
 template <typename T>
-Point3D<T>* Plane3D<T>::findIntersection(const Line3D<T>& line) const
+Vec3<T>* Plane3D<T>::findIntersection(const Line3D<T>& line) const
 {
-	Vec3<T> point1AsVec3 = line.point1.toVec3();
-	Vec3<T> lineAsVector = line.point2.toVec3() - point1AsVec3;
+	Vec3<T> lineAsVector = line.point2 - line.point1;
 
 	T angle = normalVector.dot(lineAsVector);
 
@@ -54,15 +52,15 @@ Point3D<T>* Plane3D<T>::findIntersection(const Line3D<T>& line) const
 
 	Vec4<T> planeEquation = getEquation();
 
-	T numerator = -(planeEquation[0] * point1AsVec3[0] + planeEquation[1] * point1AsVec3[1] + planeEquation[2] * point1AsVec3[2] + planeEquation[3]);
+	T numerator = -(planeEquation[0] * line.point1[0] + planeEquation[1] * line.point1[1] + planeEquation[2] * line.point1[2] + planeEquation[3]);
 	T denominator = planeEquation[0] * lineAsVector[0] + planeEquation[1] * lineAsVector[1] + planeEquation[2] * lineAsVector[2];
 
 	T t = numerator / denominator;
 
-	Point3D<T>* intersection = new Point3D<T>(
-		point1AsVec3[0] + lineAsVector[0] * t,
-		point1AsVec3[1] + lineAsVector[1] * t,
-		point1AsVec3[2] + lineAsVector[2] * t
+	Vec3<T>* intersection = new Vec3<T>(
+		line.point1[0] + lineAsVector[0] * t,
+		line.point1[1] + lineAsVector[1] * t,
+		line.point1[2] + lineAsVector[2] * t
 		);
 
 	return intersection;

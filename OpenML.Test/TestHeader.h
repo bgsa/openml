@@ -51,18 +51,6 @@ namespace Microsoft
 			}
 
 			template<>
-			static wstring ToString<Point2Df>(const Point2Df& point)
-			{
-				return L"Some string representing Point2D.";
-			}
-
-			template<>
-			static wstring ToString<Point3Df>(const Point3Df& point)
-			{
-				return L"Some string representing Point3D.";
-			}
-
-			template<>
 			static wstring ToString<Rectangle2Df>(const Rectangle2Df& rectangle)
 			{
 				return L"Some string representing Rectangle2D.";

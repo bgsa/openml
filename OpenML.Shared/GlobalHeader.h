@@ -52,11 +52,6 @@ namespace OpenML
 	class Quat;
 
 	template <typename T>
-	class Point2D;
-	template <typename T>
-	class Point3D;
-
-	template <typename T>
 	class Line2D;
 	template <typename T>
 	class Triangle2D;

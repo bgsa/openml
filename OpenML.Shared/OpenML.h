@@ -129,9 +129,6 @@ namespace OpenML
 
 #include "Quat.h"
 
-#include "Point2D.h"
-#include "Point3D.h"
-
 #include "Line2D.h"
 #include "Circle2D.h"
 

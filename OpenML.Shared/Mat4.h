@@ -189,6 +189,16 @@ namespace OpenML
 		/// Multiply the matrix to a vector
 		/// </summary>
 		API_INTERFACE Vec4<T> operator*(const Vec4<T> &vector) const;
+
+		/// <summary>
+		/// Divide the matrix by a scalar value
+		/// </summary>
+		API_INTERFACE inline Mat4<T> operator/(T value);
+
+		/// <summary>
+		/// Divide the matrix by a scalar value
+		/// </summary>
+		API_INTERFACE inline void operator/=(T value);
 		
 		/// <summary>
 		/// Sum this matrix to another one

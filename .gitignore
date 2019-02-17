@@ -35,3 +35,8 @@
 /OpenML.Win32/x64
 /bin/arm/Debug-COLUMN_ORDER
 /OpenML.Win32/Win32/Release-ROW_ORDER
+/x64/Debug-COLUMN_ORDER/OpenML.Test.pdb
+/x64/Debug-COLUMN_ORDER/OpenML.Test.lib
+/x64/Debug-COLUMN_ORDER/OpenML.Test.ilk
+/x64/Debug-COLUMN_ORDER/OpenML.Test.exp
+/x64/Debug-COLUMN_ORDER/OpenML.Test.dll

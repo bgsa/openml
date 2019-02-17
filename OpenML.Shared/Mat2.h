@@ -163,6 +163,16 @@ namespace OpenML
 		API_INTERFACE inline void operator*=(const Mat2<T>& matrix);
 
 		/// <summary>
+		/// Divide the matrix by a scalar value
+		/// </summary>
+		API_INTERFACE inline Mat2<T> operator/(T value);
+
+		/// <summary>
+		/// Divide the matrix by a scalar value
+		/// </summary>
+		API_INTERFACE inline void operator/=(T value);
+
+		/// <summary>
 		/// Get the matrix content as string
 		/// </summary>
 		API_INTERFACE inline string toString();

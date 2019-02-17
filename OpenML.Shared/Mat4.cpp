@@ -559,6 +559,24 @@ Vec4<T> Mat4<T>::operator*(const Vec4<T> &vector) const
 }
 
 template <typename T>
+Mat4<T> Mat4<T>::operator/(T value)
+{
+	return Mat4<T> {
+		values[0] / value, values[1] / value, values[2] / value, values[3] / value,
+		values[4] / value, values[5] / value, values[6] / value, values[7] / value,
+		values[8] / value, values[9] / value, values[10] / value, values[11] / value,
+		values[12] / value, values[13] / value, values[14] / value, values[15] / value
+	};
+}
+
+template <typename T>
+void Mat4<T>::operator/=(T value)
+{
+	for (size_t i = 0; i < MAT4_SIZE; i++)
+		values[i] /= value;
+}
+
+template <typename T>
 Mat4<T> Mat4<T>::operator+(const Mat4<T>& matrix) const
 {
 	Mat4<T> result;

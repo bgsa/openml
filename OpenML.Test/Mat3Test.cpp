@@ -582,5 +582,44 @@ namespace OpenMLTest
 			for (size_t i = 0; i < MAT3_ROWSIZE; i++)
 				Assert::AreEqual(ceil(expectedVector[i]), ceil(result.autovector[i]), L"Wrong number", LINE_INFO());
 		}
+
+		TEST_METHOD(Mat3_divide_operator_Test)
+		{
+			Mat3f matrixA = {
+				2.0f, 1.0f, 3.0f,
+				0.0f, 4.0f, -2.0f,
+				7.0f, 1.0f, 0.0f
+			};
+			Mat3f expected = {
+				1.0f, 0.5f, 1.5f,
+				0.0f, 2.0f, -1.0f,
+				3.5f, 0.5f, 0.0f
+			};
+
+			Mat3f result = matrixA / 2.0f;
+
+			for (size_t i = 0; i < MAT3_SIZE; i++)
+				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
+		}
+
+		TEST_METHOD(Mat3_divide_equal_operator_Test)
+		{
+			Mat3f matrixA = {
+				2.0f, 1.0f, 3.0f,
+				0.0f, 4.0f, -2.0f,
+				7.0f, 1.0f, 0.0f
+			};
+			Mat3f expected = {
+				1.0f, 0.5f, 1.5f,
+				0.0f, 2.0f, -1.0f,
+				3.5f, 0.5f, 0.0f
+			};
+
+			matrixA /= 2.0f;
+
+			for (size_t i = 0; i < MAT3_SIZE; i++)
+				Assert::AreEqual(expected[i], matrixA[i], L"Wrong number", LINE_INFO());
+		}
+
 	};
 }

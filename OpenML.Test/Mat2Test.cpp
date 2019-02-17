@@ -330,5 +330,39 @@ namespace OpenMLTest
 				Assert::AreEqual(ceil(expectedVector[i]), ceil(result.autovector[i]), L"Wrong number", LINE_INFO());
 		}
 
+		TEST_METHOD(Mat2_divide_operator_Test)
+		{
+			Mat2f matrixA = {
+				2.0f, 1.0f,
+				0.0f, 4.0f
+			};
+			Mat2f expected = {
+				1.0f, 0.5f,
+				0.0f, 2.0f,
+			};
+
+			Mat2f result = matrixA / 2.0f;
+
+			for (size_t i = 0; i < MAT2_SIZE; i++)
+				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
+		}
+
+		TEST_METHOD(Mat2_divide_equal_operator_Test)
+		{
+			Mat2f matrixA = {
+				2.0f, 1.0f,
+				0.0f, 4.0f
+			};
+			Mat2f expected = {
+				1.0f, 0.5f,
+				0.0f, 2.0f,
+			};
+
+			matrixA /= 2.0f;
+
+			for (size_t i = 0; i < MAT2_SIZE; i++)
+				Assert::AreEqual(expected[i], matrixA[i], L"Wrong number", LINE_INFO());
+		}
+
 	};
 }

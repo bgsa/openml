@@ -290,6 +290,26 @@ void Mat2<T>::operator*=(const Mat2<T>& matrix)
 }
 
 template <typename T>
+Mat2<T> Mat2<T>::operator/(T value) 
+{
+	return Mat2<T> {
+		values[0] / value,
+		values[1] / value,
+		values[2] / value,
+		values[3] / value
+	};
+}
+
+template <typename T>
+void Mat2<T>::operator/=(T value)
+{
+	values[0] /= value;
+	values[1] /= value;
+	values[2] /= value;
+	values[3] /= value;
+}
+
+template <typename T>
 string Mat2<T>::toString()
 {
 	return Mat<T>::toString(values, MAT2_SIZE);

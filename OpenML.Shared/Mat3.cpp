@@ -443,6 +443,23 @@ void Mat3<T>::operator*=(const Mat3<T>& matrix)
 }
 
 template <typename T>
+Mat3<T> Mat3<T>::operator/(T value)
+{
+	return Mat3<T> {
+		values[0] / value, values[1] / value, values[2] / value,
+		values[3] / value, values[4] / value, values[5] / value,
+		values[6] / value, values[7] / value, values[8] / value
+	};
+}
+
+template <typename T>
+void Mat3<T>::operator/=(T value)
+{
+	for (size_t i = 0; i < MAT3_SIZE; i++)
+		values[i] /= value;
+}
+
+template <typename T>
 string Mat3<T>::toString()
 {
 	return Mat<T>::toString(values, MAT3_SIZE);

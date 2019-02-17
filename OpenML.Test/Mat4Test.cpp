@@ -902,5 +902,47 @@ namespace OpenMLTest
 		}
 #endif
 
+		TEST_METHOD(Mat4_divide_operator_Test)
+		{
+			Mat4f matrixA = {
+				2.0f, 1.0f, 3.0f, -6.0f,
+				0.0f, 4.0f, -2.0f, 4.0f,
+				7.0f, 1.0f, 0.0f, 4.0f,
+				7.0f, 1.0f, 0.0f, 4.0f
+			};
+			Mat4f expected = {
+				1.0f, 0.5f, 1.5f, -3.0f,
+				0.0f, 2.0f, -1.0f, 2.0f,
+				3.5f, 0.5f, 0.0f, 2.0f,
+				3.5f, 0.5f, 0.0f, 2.0f
+			};
+
+			Mat4f result = matrixA / 2.0f;
+
+			for (size_t i = 0; i < MAT4_SIZE; i++)
+				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
+		}
+
+		TEST_METHOD(Mat4_divide_equal_operator_Test)
+		{
+			Mat4f matrixA = {
+				2.0f, 1.0f, 3.0f, -6.0f,
+				0.0f, 4.0f, -2.0f, 4.0f,
+				7.0f, 1.0f, 0.0f, 4.0f,
+				7.0f, 1.0f, 0.0f, 4.0f
+			};
+			Mat4f expected = {
+				1.0f, 0.5f, 1.5f, -3.0f,
+				0.0f, 2.0f, -1.0f, 2.0f,
+				3.5f, 0.5f, 0.0f, 2.0f,
+				3.5f, 0.5f, 0.0f, 2.0f
+			};
+
+			matrixA /= 2.0f;
+
+			for (size_t i = 0; i < MAT4_SIZE; i++)
+				Assert::AreEqual(expected[i], matrixA[i], L"Wrong number", LINE_INFO());
+		}
+
 	};
 }

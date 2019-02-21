@@ -38,6 +38,47 @@ namespace OpenMLTest
 				Assert::AreEqual(aabb.maxPoint[i], maxPointExpected[i], L"Wrong value.", LINE_INFO());
 			}
 		}
+
+		TEST_METHOD(AABB_colisionStatus_AABB_Test)
+		{
+			//Check on X axis
+			AABBf aabb1 = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			AABBf aabb2 = AABBf(Vec3f(10.0f, 10.0f, 10.0f), Vec3f(20.0f, 20.0f, 20.0f));
+			ColisionStatus result = aabb1.colisionStatus(aabb2);
+			Assert::IsTrue(result == ColisionStatus::INSIDE, L"Mistake!.", LINE_INFO());
+
+			aabb1 = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			aabb2 = AABBf(Vec3f(9.0f, 10.0f, 10.0f), Vec3f(20.0f, 20.0f, 20.0f));
+			result = aabb1.colisionStatus(aabb2);
+			Assert::IsTrue(result == ColisionStatus::INSIDE, L"Mistake!.", LINE_INFO());
+
+			aabb1 = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			aabb2 = AABBf(Vec3f(11.0f, 10.0f, 10.0f), Vec3f(20.0f, 20.0f, 20.0f));
+			result = aabb1.colisionStatus(aabb2);
+			Assert::IsTrue(result == ColisionStatus::OUTSIDE, L"Mistake!.", LINE_INFO());
+
+			//Check on Y axis
+			aabb1 = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			aabb2 = AABBf(Vec3f(0.0f, 10.0f, 10.0f), Vec3f(20.0f, 20.0f, 20.0f));
+			result = aabb1.colisionStatus(aabb2);
+			Assert::IsTrue(result == ColisionStatus::INSIDE, L"Mistake!.", LINE_INFO());
+
+			aabb1 = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			aabb2 = AABBf(Vec3f(0.0f, 11.0f, 10.0f), Vec3f(20.0f, 20.0f, 20.0f));
+			result = aabb1.colisionStatus(aabb2);
+			Assert::IsTrue(result == ColisionStatus::OUTSIDE, L"Mistake!.", LINE_INFO());
+
+			//Check on z axis
+			aabb1 = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			aabb2 = AABBf(Vec3f(0.0f, 0.0f, 10.0f), Vec3f(20.0f, 20.0f, 20.0f));
+			result = aabb1.colisionStatus(aabb2);
+			Assert::IsTrue(result == ColisionStatus::INSIDE, L"Mistake!.", LINE_INFO());
+
+			aabb1 = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			aabb2 = AABBf(Vec3f(0.0f, 0.0f, 11.0f), Vec3f(20.0f, 20.0f, 20.0f));
+			result = aabb1.colisionStatus(aabb2);
+			Assert::IsTrue(result == ColisionStatus::OUTSIDE, L"Mistake!.", LINE_INFO());
+		}
 		
 	};
 }

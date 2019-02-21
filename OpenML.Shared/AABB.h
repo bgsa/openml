@@ -15,12 +15,18 @@ namespace OpenML
 		///<summary>
 		///Default constructur using min and max points
 		///</summary>
-		AABB(Vec3<T> minPoint, Vec3<T> maxPoint);
+		API_INTERFACE inline AABB(Vec3<T> minPoint, Vec3<T> maxPoint);
 
 		///<summary>
 		///Constructur using min points and distances from this point in the axis
 		///</summary>
-		AABB(Vec3<T> minPoint, T width, T height, T depth);
+		API_INTERFACE inline AABB(Vec3<T> minPoint, T width, T height, T depth);
+
+		///<summary>
+		///Check whether the AABBs are in contact each other
+		///</summary>
+		API_INTERFACE inline ColisionStatus colisionStatus(const AABB<T>& aabb);
+
 	};
 
 	typedef AABB<int> AABBi;

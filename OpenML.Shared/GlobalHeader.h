@@ -54,11 +54,16 @@ namespace OpenML
 	template <typename T>
 	class Line2D;
 	template <typename T>
+	class Line3D;
+	template <typename T>
 	class Triangle2D;
 	template <typename T>
 	class Circle2D;
 	template <typename T>
+	class Sphere;
+	template <typename T>
 	class Rectangle2D;
+
 }
 
 using namespace std;

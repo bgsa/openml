@@ -126,7 +126,7 @@ T Plane3D<T>::angle(const Plane3D<T>& plane) const
 }
 
 template <typename T>
-Orientation Plane3D<T>::orientation(const Vec3<T>& point)
+Orientation Plane3D<T>::orientation(const Vec3<T>& point) const
 {
 	T distanceToPoint =  distance(point);
 

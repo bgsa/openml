@@ -62,7 +62,7 @@ namespace OpenML
 		/// <summary>
 		/// Indicate whether the point is on the left, right fo the plane OR the point lies on the plane
 		/// </summary>
-		API_INTERFACE Orientation orientation(const Vec3<T>& point);
+		API_INTERFACE Orientation orientation(const Vec3<T>& point) const;
 
 		/// <summary>
 		/// Check if the planes are parallel each other

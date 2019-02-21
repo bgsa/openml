@@ -8,7 +8,7 @@ Sphere<T>::Sphere(const Vec3<T> &center, T ray)
 }
 
 template <typename T>
-ColisionStatus Sphere<T>::colisionStatus(const Vec3<T> &point) 
+ColisionStatus Sphere<T>::colisionStatus(const Vec3<T> &point)  const
 {
 	T distanceToPoint = center.distance(point);
 	
@@ -22,7 +22,7 @@ ColisionStatus Sphere<T>::colisionStatus(const Vec3<T> &point)
 }
 
 template <typename T>
-ColisionStatus Sphere<T>::colisionStatus(const Plane3D<T> &plane) 
+ColisionStatus Sphere<T>::colisionStatus(const Plane3D<T> &plane)  const
 {
 	T distanceToPlane = plane.distance(center);
 

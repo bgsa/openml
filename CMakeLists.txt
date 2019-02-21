@@ -37,7 +37,6 @@ if(NOT ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} STRLESS 3.1 AND ";${CMAKE_C
 endif()
 
 if (WIN32)
-	#target_compile_definitions(${PROJECT_NAME} PRIVATE WINDOWS=1 API_EXPORT=1)
 	target_compile_definitions(${PROJECT_NAME} PRIVATE WINDOWS=1)
 endif()
 

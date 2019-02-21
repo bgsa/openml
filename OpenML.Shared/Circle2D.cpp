@@ -3,6 +3,8 @@
 template<typename T>
 Circle2D<T>::Circle2D() 
 {
+	ray = T(0);
+	center = Vec2<T>(T(0));
 }
 
 template<typename T>
@@ -37,17 +39,19 @@ Circle2D<T>::Circle2D(const Vec2<T>& point1, const Vec2<T>& point2, const Vec2<T
 }
 
 template<typename T>
-T Circle2D<T>::area() {
+T Circle2D<T>::area() const 
+{
 	return T(PI * ray * ray);
 }
 
 template<typename T>
-T Circle2D<T>::circumference() {
+T Circle2D<T>::circumference() const
+{
 	return T(2 * PI * ray);
 }
 
 template<typename T>
-T* Circle2D<T>::calculatePoints(size_t& pointsCount)
+T* Circle2D<T>::calculatePoints(size_t& pointsCount) const
 {
 	const size_t vertexCount = 126;
 	pointsCount = vertexCount / 2;
@@ -67,14 +71,14 @@ T* Circle2D<T>::calculatePoints(size_t& pointsCount)
 }
 
 template<typename T>
-T Circle2D<T>::getDistance(const Vec2<T>& point)
+T Circle2D<T>::distance(const Vec2<T>& point) const
 {
 	T distance = center.distance(point);
 	return distance;
 }
 
 template<typename T>
-ColisionStatus Circle2D<T>::getColisionStatus(const Vec2<T>& point)
+ColisionStatus Circle2D<T>::colisionStatus(const Vec2<T>& point) const
 {
 	double distance = ceil(point.distance(center));
 	double rayDistance = ceil(ray);
@@ -89,7 +93,7 @@ ColisionStatus Circle2D<T>::getColisionStatus(const Vec2<T>& point)
 }
 
 template<typename T>
-bool Circle2D<T>::hasIntersection(const Circle2D<T>& circle2)
+bool Circle2D<T>::hasIntersection(const Circle2D<T>& circle2) const
 {
 	T distance = center.distance(circle2.center);
 
@@ -99,7 +103,7 @@ bool Circle2D<T>::hasIntersection(const Circle2D<T>& circle2)
 }
 
 template<typename T>
-Vec2<T>* Circle2D<T>::findIntersection(const Circle2D<T>& circle2)
+Vec2<T>* Circle2D<T>::findIntersection(const Circle2D<T>& circle2) const
 {
 	Vec2<T> point1AsVector = center;
 	Vec2<T> point2AsVector = circle2.center;
@@ -112,7 +116,7 @@ Vec2<T>* Circle2D<T>::findIntersection(const Circle2D<T>& circle2)
 		return nullptr;
 
 	double a = (ray*ray - circle2.ray*circle2.ray + distance * distance) / (2 * distance);
-	double h = sqrt(ray*ray - a * a);
+	double h = sqrt((ray * ray) - (a * a));
 
 	Vec2<T> p3 = ((point2AsVector - point1AsVector) * T(a / distance)) + center;
 

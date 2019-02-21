@@ -22,12 +22,12 @@ namespace OpenML
 		/// <summary>
 		/// Check the status of colision against the point
 		/// </summary>
-		API_INTERFACE inline ColisionStatus colisionStatus(const Vec3<T> &point);
+		API_INTERFACE inline ColisionStatus colisionStatus(const Vec3<T> &point) const;
 
 		/// <summary>
 		/// Check the status of colision against the plane
 		/// </summary>
-		API_INTERFACE inline ColisionStatus colisionStatus(const Plane3D<T> &plane);
+		API_INTERFACE inline ColisionStatus colisionStatus(const Plane3D<T> &plane) const;
 
 	};
 

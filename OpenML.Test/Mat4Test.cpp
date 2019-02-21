@@ -706,7 +706,28 @@ namespace OpenMLTest
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 
-		TEST_METHOD(Mat4_operatorMinusValue_Test)
+		TEST_METHOD(Mat3_operatorMinus_Test)
+		{
+			Mat4f matrixA = {
+				-2.0f, 1.0f, 3.0f, 10.0f,
+				0.0f, 4.0f, -2.0f, 5.0f,
+				7.0f, 1.0f, 0.0f, 3.0f,
+				-7.0f, -1.0f, -0.0f, -3.0f
+			};
+			Mat4f expected = {
+				2.0f, -1.0f, -3.0f, -10.0f,
+				0.0f, -4.0f, +2.0f, -5.0f,
+				-7.0f, -1.0f, 0.0f, -3.0f,
+				7.0f, 1.0f, 0.0f, 3.0f
+			};
+
+			Mat4f result = -matrixA;
+
+			for (size_t i = 0; i < MAT4_SIZE; i++)
+				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
+		}
+
+		TEST_METHOD(Mat4_operatorMinus_scalar_Test)
 		{
 			Mat4<float> matrixA = {
 				4.0f,  3.0f,  2.0f, 9.0f,

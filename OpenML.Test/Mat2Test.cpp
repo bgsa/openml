@@ -330,7 +330,66 @@ namespace OpenMLTest
 				Assert::AreEqual(ceil(expectedVector[i]), ceil(result.autovector[i]), L"Wrong number", LINE_INFO());
 		}
 
-		TEST_METHOD(Mat2_divide_operator_Test)
+		TEST_METHOD(Mat2_operatorMinus_Test)
+		{
+			Mat2f matrixA = {
+				2.0f, -1.0f,
+				0.0f, 4.0f
+			};
+			Mat2f expected = {
+				-2.0f, 1.0f,
+				0.0f, -4.0f,
+			};
+
+			Mat2f result = -matrixA;
+
+			for (size_t i = 0; i < MAT2_SIZE; i++)
+				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
+		}
+
+		TEST_METHOD(Mat2_operatorMinus_matrix2_Test)
+		{
+			Mat2f matrixA = {
+				2.0f, -1.0f,
+				0.0f, 4.0f
+			};
+			Mat2f matrixB = {
+				4.0f, -10.0f,
+				2.0f, -5.0f
+			};
+			Mat2f expected = {
+				-2.0f, 9.0f,
+				-2.0f, 9.0f,
+			};
+			
+			Mat2f result = matrixA - matrixB;
+
+			for (size_t i = 0; i < MAT2_SIZE; i++)
+				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
+		}
+
+		TEST_METHOD(Mat2_operatorSum_matrix2_Test)
+		{
+			Mat2f matrixA = {
+				2.0f, -1.0f,
+				0.0f, 4.0f
+			};
+			Mat2f matrixB = {
+				4.0f, -10.0f,
+				2.0f, -5.0f
+			};
+			Mat2f expected = {
+				6.0f, -11.0f,
+				2.0f, -1.0f,
+			};
+
+			Mat2f result = matrixA + matrixB;
+
+			for (size_t i = 0; i < MAT2_SIZE; i++)
+				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
+		}
+
+		TEST_METHOD(Mat2_operatorDivide_scalar_Test)
 		{
 			Mat2f matrixA = {
 				2.0f, 1.0f,

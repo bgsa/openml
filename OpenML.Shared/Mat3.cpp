@@ -425,6 +425,39 @@ Mat3<T>::operator T*()
 }
 
 template <typename T>
+Mat3<T> Mat3<T>::operator-() const
+{
+	Mat3<T> result;
+
+	for (size_t i = 0; i < MAT3_SIZE; i++)
+		result[i] = -values[i];
+
+	return result;
+}
+
+template <typename T>
+Mat3<T> Mat3<T>::operator-(const Mat3<T>& matrix) const
+{
+	Mat3<T> result;
+
+	for (size_t i = 0; i < MAT3_SIZE; i++)
+		result[i] = values[i] - matrix[i];
+
+	return result;
+}
+
+template <typename T>
+Mat3<T> Mat3<T>::operator+(const Mat3<T>& matrix) const
+{
+	Mat3<T> result;
+
+	for (size_t i = 0; i < MAT3_SIZE; i++)
+		result[i] = values[i] + matrix[i];
+
+	return result;
+}
+
+template <typename T>
 Mat3<T> Mat3<T>::operator*(const Mat3<T>& matrix) const
 {
 	return multiply(matrix);

@@ -272,6 +272,39 @@ Mat2<T>::operator T*()
 }
 
 template <typename T>
+Mat2<T> Mat2<T>::operator-() const
+{
+	return Mat2<T> {
+		-values[0],
+		-values[1],
+		-values[2],
+		-values[3]
+	};
+}
+
+template <typename T>
+Mat2<T> Mat2<T>::operator-(const Mat2<T>& matrix) const
+{
+	return Mat2<T> {
+		values[0] - matrix[0],
+		values[1] - matrix[1],
+		values[2] - matrix[2],
+		values[3] - matrix[3]
+	};
+}
+
+template <typename T>
+Mat2<T> Mat2<T>::operator+(const Mat2<T>& matrix) const
+{
+	return Mat2<T> {
+		values[0] + matrix[0],
+		values[1] + matrix[1],
+		values[2] + matrix[2],
+		values[3] + matrix[3]
+	};
+}
+
+template <typename T>
 Mat2<T> Mat2<T>::operator*(const Mat2<T>& matrix) const
 {
 	return multiply(matrix);

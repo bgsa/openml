@@ -583,7 +583,74 @@ namespace OpenMLTest
 				Assert::AreEqual(ceil(expectedVector[i]), ceil(result.autovector[i]), L"Wrong number", LINE_INFO());
 		}
 
-		TEST_METHOD(Mat3_divide_operator_Test)
+		TEST_METHOD(Mat3_operatorMinus_Test)
+		{
+			Mat3f matrixA = {
+				-2.0f, 1.0f, 3.0f,
+				0.0f, 4.0f, -2.0f,
+				7.0f, 1.0f, 0.0f
+			};
+			Mat3f expected = {
+				2.0f, -1.0f, -3.0f,
+				0.0f, -4.0f, +2.0f,
+				-7.0f, -1.0f, 0.0f
+			};
+
+			Mat3f result = -matrixA;
+
+			for (size_t i = 0; i < MAT3_SIZE; i++)
+				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
+		}
+
+		TEST_METHOD(Mat3_operatorMinus_matrix3_Test)
+		{
+			Mat3f matrixA = {
+				-2.0f, 1.0f, -3.0f,
+				0.0f, 4.0f, -2.0f,
+				7.0f, 1.0f, 0.0f
+			};
+			Mat3f matrixB = {
+				-2.0f, 10.0f, 5.0f,
+				0.0f, 4.0f, -2.0f,
+				-7.0f, 1.0f, 0.0f
+			};
+			Mat3f expected = {
+				0.0f, -9.0f, -8.0f,
+				0.0f, 0.0f, 0.0f,
+				14.0f, 0.0f, 0.0f
+			};
+
+			Mat3f result = matrixA - matrixB;
+
+			for (size_t i = 0; i < MAT3_SIZE; i++)
+				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
+		}
+
+		TEST_METHOD(Mat3_operatorSum_matrix3_Test)
+		{
+			Mat3f matrixA = {
+				-2.0f, 1.0f, -3.0f,
+				0.0f, 4.0f, -2.0f,
+				7.0f, 1.0f, 0.0f
+			};
+			Mat3f matrixB = {
+				-2.0f, 10.0f, 5.0f,
+				0.0f, 4.0f, -2.0f,
+				-7.0f, 1.0f, 0.0f
+			};
+			Mat3f expected = {
+				-4.0f, 11.0f, 2.0f,
+				0.0f, 8.0f, -4.0f,
+				0.0f, 2.0f, 0.0f
+			};
+
+			Mat3f result = matrixA + matrixB;
+
+			for (size_t i = 0; i < MAT3_SIZE; i++)
+				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
+		}
+
+		TEST_METHOD(Mat3_operatorDivide_Test)
 		{
 			Mat3f matrixA = {
 				2.0f, 1.0f, 3.0f,
@@ -602,7 +669,7 @@ namespace OpenMLTest
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 
-		TEST_METHOD(Mat3_divide_equal_operator_Test)
+		TEST_METHOD(Mat3_operatorDivideEqual_Test)
 		{
 			Mat3f matrixA = {
 				2.0f, 1.0f, 3.0f,

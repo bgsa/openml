@@ -577,6 +577,17 @@ void Mat4<T>::operator/=(T value)
 }
 
 template <typename T>
+Mat4<T> Mat4<T>::operator-() const
+{
+	Mat4<T> result;
+
+	for (int i = 0; i < MAT4_SIZE; i++)
+		result[i] = -values[i];
+
+	return result;
+}
+
+template <typename T>
 Mat4<T> Mat4<T>::operator+(const Mat4<T>& matrix) const
 {
 	Mat4<T> result;

@@ -171,6 +171,31 @@ namespace OpenML
 		API_INTERFACE Mat4<T> clone() const;
 
 		/// <summary>
+		/// Get the negative matrix
+		/// </summary>
+		API_INTERFACE inline Mat4<T> operator-() const;
+
+		/// <summary>
+		/// Subtract a scalar from this matrix
+		/// </summary>
+		API_INTERFACE inline Mat4<T> operator-(T value) const;
+
+		/// <summary>
+		/// Subtract this matrix to another one
+		/// </summary>
+		API_INTERFACE inline Mat4<T> operator-(const Mat4<T>& matrix) const;
+
+		/// <summary>
+		/// Sum a scalar to this matrix
+		/// </summary>
+		API_INTERFACE inline Mat4<T> operator+(T value) const;
+		
+		/// <summary>
+		/// Sum the matrix to another one
+		/// </summary>
+		API_INTERFACE inline Mat4<T> operator+(const Mat4<T>& matrix) const;
+		
+		/// <summary>
 		/// Multiply the vector to a scalar
 		/// </summary>
 		API_INTERFACE Mat4<T> operator*(T value) const;
@@ -199,26 +224,6 @@ namespace OpenML
 		/// Divide the matrix by a scalar value
 		/// </summary>
 		API_INTERFACE inline void operator/=(T value);
-		
-		/// <summary>
-		/// Sum this matrix to another one
-		/// </summary>
-		API_INTERFACE Mat4<T> operator+(const Mat4<T> &matrix) const;
-
-		/// <summary>
-		/// Sum a scalar to this matrix
-		/// </summary>
-		API_INTERFACE Mat4<T> operator+(T value) const;
-
-		/// <summary>
-		/// Subtract this matrix to another one
-		/// </summary>
-		API_INTERFACE Mat4<T> operator-(const Mat4<T>& matrix) const;
-
-		/// <summary>
-		/// Subtract a scalar from this matrix
-		/// </summary>
-		API_INTERFACE Mat4<T> operator-(T value) const;
 
 		/// <summary>
 		/// Compare this vector to another one. Compare each component.

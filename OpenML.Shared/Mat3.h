@@ -177,6 +177,21 @@ namespace OpenML
 		API_INTERFACE inline operator T*();
 
 		/// <summary>
+		/// Get the negative matrix
+		/// </summary>
+		API_INTERFACE inline Mat3<T> operator-() const;
+
+		/// <summary>
+		/// Subtract the matrix to another one
+		/// </summary>
+		API_INTERFACE inline Mat3<T> operator-(const Mat3<T>& matrix) const;
+
+		/// <summary>
+		/// Sum the matrix to another one
+		/// </summary>
+		API_INTERFACE inline Mat3<T> operator+(const Mat3<T>& matrix) const;
+
+		/// <summary>
 		/// Multiply the matrix to another one
 		/// </summary>
 		API_INTERFACE inline Mat3<T> operator*(const Mat3<T>& matrix) const;

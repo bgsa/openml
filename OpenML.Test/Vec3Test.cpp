@@ -142,6 +142,18 @@ namespace OpenMLTest
 			Assert::AreEqual(expected, result, L"Length value wrong.", LINE_INFO());
 		}
 
+		TEST_METHOD(Vec3_tripleProduct_Test)
+		{
+			Vec3f vector1 = { 10.0f, 0.0f, 0.0f };
+			Vec3f vector2 = { 0.0f, 0.0f, 10.0f };
+			Vec3f vector3 = { 0.0f, 10.0f, 0.0f };
+			float expected = -1000.0f;
+
+			float result = vector1.tripleProduct(vector2, vector3);
+
+			Assert::AreEqual(expected, result, L"Length value wrong.", LINE_INFO());
+		}
+
 		TEST_METHOD(Vec3_angleRadians_Test)
 		{
 			Vec3f vector = { 3.0f, 4.0f, 0.0f };

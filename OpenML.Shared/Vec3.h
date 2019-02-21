@@ -69,6 +69,12 @@ namespace OpenML
 		API_INTERFACE inline T minimum() const;
 
 		/// <summary>
+		/// Get the scalar triple product: (u x v) . w
+		/// It also give the volume of parallelepiped
+		/// </summary>
+		API_INTERFACE inline T tripleProduct(const Vec3<T> &v, const Vec3<T> &u) const;
+
+		/// <summary>
 		/// Add a vector from current vector
 		/// </summary>
 		API_INTERFACE inline void add(const Vec3<T>& vector);

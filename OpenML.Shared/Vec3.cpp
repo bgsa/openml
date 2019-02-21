@@ -84,6 +84,12 @@ T Vec3<T>::minimum() const
 }
 
 template <typename T>
+T Vec3<T>::tripleProduct(const Vec3<T> &v, const Vec3<T> &u) const
+{
+	return this->cross(v).dot(u);
+}
+
+template <typename T>
 void Vec3<T>::add(const Vec3<T>& vector)
 {
 	values[0] += vector[0];

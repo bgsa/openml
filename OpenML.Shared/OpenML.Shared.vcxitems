@@ -15,6 +15,7 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AABB.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Circle2D.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ColisionStatus.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Line2D.h" />
@@ -39,6 +40,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Vec3.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)AABB.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Circle2D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Line2D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Line3D.cpp" />

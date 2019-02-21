@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vec3.h"
+#include "Plane3D.h"
 #include "ColisionStatus.h"
 
 namespace OpenML
@@ -22,6 +23,11 @@ namespace OpenML
 		/// Check the status of colision against the point
 		/// </summary>
 		API_INTERFACE inline ColisionStatus colisionStatus(const Vec3<T> &point);
+
+		/// <summary>
+		/// Check the status of colision against the plane
+		/// </summary>
+		API_INTERFACE inline ColisionStatus colisionStatus(const Plane3D<T> &plane);
 
 	};
 

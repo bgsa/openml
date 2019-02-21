@@ -52,12 +52,12 @@ namespace OpenML
 		/// <summary>
 		/// Get the angle of two planes
 		/// </summary>
-		API_INTERFACE T angle(const Plane3D<T>& plane);
+		API_INTERFACE T angle(const Plane3D<T>& plane) const;
 
 		/// <summary>
 		/// Get the distance from the plane to the point
 		/// </summary>
-		API_INTERFACE T distance(const Vec3<T>& point);
+		API_INTERFACE T distance(const Vec3<T>& point) const;
 
 		/// <summary>
 		/// Indicate whether the point is on the left, right fo the plane OR the point lies on the plane

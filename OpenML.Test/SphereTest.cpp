@@ -41,5 +41,24 @@ namespace OpenMLTest
 			Assert::IsTrue(result == expected, L"The point should be outside the sphere", LINE_INFO());
 		}
 
+		TEST_METHOD(Sphere_colisionStatus_plane_Test)
+		{
+			Spheref sphere = Spheref({ 10.0f, 0.0f, 0.0f }, 10.0f);
+			Plane3Df plane = Plane3Df(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(1.0f, 0.0f, 0.0f));
+			ColisionStatus expected = ColisionStatus::INLINE;
+			ColisionStatus result = sphere.colisionStatus(plane);
+			Assert::IsTrue(result == expected, L"The plane should lie/support on sphere boundary", LINE_INFO());
+
+			plane = Plane3Df(Vec3f(3.0f, 0.0f, 0.0f), Vec3f(1.0f, 0.0f, 0.0f));
+			expected = ColisionStatus::INSIDE;
+			result = sphere.colisionStatus(plane);
+			Assert::IsTrue(result == expected, L"The point should lie inside the sphere", LINE_INFO());
+
+			plane = Plane3Df(Vec3f(-3.0f, 0.0f, 0.0f), Vec3f(1.0f, 0.0f, 0.0f));
+			expected = ColisionStatus::OUTSIDE;
+			result = sphere.colisionStatus(plane);
+			Assert::IsTrue(result == expected, L"The point should be outside the sphere", LINE_INFO());
+		}
+
 	};
 }

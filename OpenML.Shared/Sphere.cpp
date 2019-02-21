@@ -21,6 +21,19 @@ ColisionStatus Sphere<T>::colisionStatus(const Vec3<T> &point)
 	return ColisionStatus::INSIDE;
 }
 
+template <typename T>
+ColisionStatus Sphere<T>::colisionStatus(const Plane3D<T> &plane) 
+{
+	T distanceToPlane = plane.distance(center);
+
+	if (isCloseEnough(distanceToPlane, ray))
+		return ColisionStatus::INLINE;
+
+	if (distanceToPlane > ray)
+		return ColisionStatus::OUTSIDE;
+
+	return ColisionStatus::INSIDE;
+}
 
 namespace OpenML
 {

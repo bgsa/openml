@@ -106,7 +106,7 @@ Line3D<T>* Plane3D<T>::findIntersection(const Plane3D<T>& plane) const
 }
 
 template <typename T>
-T Plane3D<T>::distance(const Vec3<T>& target)
+T Plane3D<T>::distance(const Vec3<T>& target) const
 {
 	Vec3<T> rayToTarget = target - point;
 
@@ -117,7 +117,7 @@ T Plane3D<T>::distance(const Vec3<T>& target)
 }
 
 template <typename T>
-T Plane3D<T>::angle(const Plane3D<T>& plane)
+T Plane3D<T>::angle(const Plane3D<T>& plane) const
 {
 	T angle = normalVector.dot(plane.normalVector);
 	T length = normalVector.length() * plane.normalVector.length();

@@ -94,7 +94,7 @@ Line2D<T>* Rectangle2D<T>::getLines() const
 }
 
 template<typename T>
-Colision2DStatus Rectangle2D<T>::getSatusColision(const Vec2<T>& point) const
+ColisionStatus Rectangle2D<T>::getSatusColision(const Vec2<T>& point) const
 {
 	T area1 = Triangle2D<T>(point1, point2, point).area();
 	T area2 = Triangle2D<T>(point2, point3, point).area();
@@ -105,9 +105,9 @@ Colision2DStatus Rectangle2D<T>::getSatusColision(const Vec2<T>& point) const
 	T rectArea = area();
 
 	if (int(areaTotal) > int(rectArea))
-		return Colision2DStatus::OUTSIDE;
+		return ColisionStatus::OUTSIDE;
 
-	return Colision2DStatus::INSIDE;
+	return ColisionStatus::INSIDE;
 }
 
 template<typename T>
@@ -171,9 +171,9 @@ bool Rectangle2D<T>::hasIntersection(const Circle2D<T>& circle) const
 	{
 		Line2D<T> line = linesOfRectangle[i];
 
-		Colision2DStatus status = line.hasIntersections(circle);
+		ColisionStatus status = line.hasIntersections(circle);
 
-		if (status == Colision2DStatus::INLINE || status == Colision2DStatus::INSIDE)
+		if (status == ColisionStatus::INLINE || status == ColisionStatus::INSIDE)
 			return true;
 	}
 

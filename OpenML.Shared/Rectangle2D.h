@@ -53,7 +53,7 @@ namespace OpenML
 		///<summary>
 		///Get the status of colision of the point into the rectangle
 		///</summary>
-		inline Colision2DStatus getSatusColision(const Vec2<T>& point) const;
+		inline ColisionStatus getSatusColision(const Vec2<T>& point) const;
 	
 		///<summary>
 		///Chech the line has intersection with the rectangle

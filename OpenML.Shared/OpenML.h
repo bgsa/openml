@@ -100,7 +100,7 @@ namespace OpenML
 	///Epsilon is the tolerated value
 	///</summary>
 	template<typename T>
-	inline bool API_INTERFACE isCloseEnough(const T value, const T compare, const T epsilon)
+	inline bool API_INTERFACE isCloseEnough(T value, T compare, T epsilon)
 	{
 		return abs(value - compare) < epsilon;
 	}
@@ -109,14 +109,14 @@ namespace OpenML
 	///Check the number is close enough given a other number. It is used to check aproximation value and calculate the error measure.
 	///</summary>
 	template<typename T>
-	inline bool API_INTERFACE isCloseEnough(const T value, const T compare)
+	inline bool API_INTERFACE isCloseEnough(T value, T compare)
 	{
-		return isCloseEnough(value, compare, DefaultErrorMargin);
+		return isCloseEnough(value, compare, T(DefaultErrorMargin));
 	}
 	
 }
 
-#include "Colision2DStatus.h"
+#include "ColisionStatus.h"
 
 #include "Vec2.h"
 #include "Vec3.h"

@@ -89,9 +89,9 @@ namespace OpenMLTest
 				{ 100.0f, 0.0f }
 			);
 
-			Colision2DStatus result = square.getSatusColision(point);
+			ColisionStatus result = square.getSatusColision(point);
 
-			if (result != Colision2DStatus::INSIDE)
+			if (result != ColisionStatus::INSIDE)
 				Assert::Fail(L"Point should be inside the square.", LINE_INFO());
 		}
 
@@ -105,9 +105,9 @@ namespace OpenMLTest
 				{ 10.0f, 110.0f }
 			);
 
-			Colision2DStatus result = square.getSatusColision(point);
+			ColisionStatus result = square.getSatusColision(point);
 
-			if (result != Colision2DStatus::INSIDE)
+			if (result != ColisionStatus::INSIDE)
 				Assert::Fail(L"Point should be inside the square.", LINE_INFO());
 		}
 
@@ -121,9 +121,9 @@ namespace OpenMLTest
 				{ 100.0f, 0.0f }
 			);
 
-			Colision2DStatus result = rect.getSatusColision(point);
+			ColisionStatus result = rect.getSatusColision(point);
 
-			if (result != Colision2DStatus::OUTSIDE)
+			if (result != ColisionStatus::OUTSIDE)
 				Assert::Fail(L"Point should be inside the square.", LINE_INFO());
 		}
 

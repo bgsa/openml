@@ -60,9 +60,9 @@ namespace OpenMLTest
 				{ 0.0f, 100.0f }
 			);
 
-			Colision2DStatus result = triangle.getColisionStatus(point);
+			ColisionStatus result = triangle.getColisionStatus(point);
 
-			if (result != Colision2DStatus::INLINE)
+			if (result != ColisionStatus::INLINE)
 				Assert::Fail(L"Point should be inline the triangle.", LINE_INFO());
 		}
 
@@ -75,9 +75,9 @@ namespace OpenMLTest
 				{ 0.0f, 100.0f }
 			);
 
-			Colision2DStatus result = triangle.getColisionStatus(point);
+			ColisionStatus result = triangle.getColisionStatus(point);
 
-			if (result != Colision2DStatus::INSIDE)
+			if (result != ColisionStatus::INSIDE)
 				Assert::Fail(L"Point should be inside the triangle.", LINE_INFO());
 		}
 
@@ -90,9 +90,9 @@ namespace OpenMLTest
 				{ 0.0f, 100.0f }
 			);
 
-			Colision2DStatus result = triangle.getColisionStatus(point);
+			ColisionStatus result = triangle.getColisionStatus(point);
 
-			if (result != Colision2DStatus::OUTSIDE)
+			if (result != ColisionStatus::OUTSIDE)
 				Assert::Fail(L"Point should be outside the triangle.", LINE_INFO());
 		}
 

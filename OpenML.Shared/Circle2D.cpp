@@ -74,18 +74,18 @@ T Circle2D<T>::getDistance(const Vec2<T>& point)
 }
 
 template<typename T>
-Colision2DStatus Circle2D<T>::getColisionStatus(const Vec2<T>& point)
+ColisionStatus Circle2D<T>::getColisionStatus(const Vec2<T>& point)
 {
 	double distance = ceil(point.distance(center));
 	double rayDistance = ceil(ray);
 
 	if (distance > rayDistance)
-		return OpenML::Colision2DStatus::OUTSIDE;
+		return OpenML::ColisionStatus::OUTSIDE;
 
 	if (distance < rayDistance)
-		return OpenML::Colision2DStatus::INSIDE;
+		return OpenML::ColisionStatus::INSIDE;
 
-	return OpenML::Colision2DStatus::INLINE;
+	return OpenML::ColisionStatus::INLINE;
 }
 
 template<typename T>

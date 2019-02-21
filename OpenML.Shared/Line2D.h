@@ -4,7 +4,7 @@
 #include "Vec3.h"
 #include "Mat3.h"
 #include "Orientation.h"
-#include "Colision2DStatus.h"
+#include "ColisionStatus.h"
 #include "Circle2D.h"
 #include "SystemOfLinearEquations.h"
 
@@ -85,7 +85,7 @@ namespace OpenML
 		/// <summary>
 		/// Check the line has intersection with the circle
 		/// </summary>
-		API_INTERFACE inline Colision2DStatus hasIntersections(const Circle2D<T>& circle) const;
+		API_INTERFACE inline ColisionStatus hasIntersections(const Circle2D<T>& circle) const;
 
 		/// <summary>
 		/// Get the delta X - diference max X - min X

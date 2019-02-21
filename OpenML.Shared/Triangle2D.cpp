@@ -65,7 +65,7 @@ Line2D<T>* Triangle2D<T>::getLines() const
 }
 
 template<typename T>
-Colision2DStatus Triangle2D<T>::getColisionStatus(const Vec2<T>& point) const
+ColisionStatus Triangle2D<T>::getColisionStatus(const Vec2<T>& point) const
 {
 	Line2D<T> line1 = Line2D<T>(point1, point2);
 	Line2D<T> line2 = Line2D<T>(point2, point3);
@@ -74,28 +74,28 @@ Colision2DStatus Triangle2D<T>::getColisionStatus(const Vec2<T>& point) const
 	Orientation orientation = line1.getOrientation(point);
 
 	if (orientation == Orientation::RIGHT)
-		return Colision2DStatus::OUTSIDE;
+		return ColisionStatus::OUTSIDE;
 
 	if (orientation == Orientation::NONE)
-		return Colision2DStatus::INLINE;
+		return ColisionStatus::INLINE;
 
 	orientation = line2.getOrientation(point);
 
 	if (orientation == Orientation::RIGHT)
-		return Colision2DStatus::OUTSIDE;
+		return ColisionStatus::OUTSIDE;
 
 	if (orientation == Orientation::NONE)
-		return Colision2DStatus::INLINE;
+		return ColisionStatus::INLINE;
 
 	orientation = line3.getOrientation(point);
 
 	if (orientation == Orientation::RIGHT)
-		return Colision2DStatus::OUTSIDE;
+		return ColisionStatus::OUTSIDE;
 
 	if (orientation == Orientation::NONE)
-		return Colision2DStatus::INLINE;
+		return ColisionStatus::INLINE;
 
-	return Colision2DStatus::INSIDE;
+	return ColisionStatus::INSIDE;
 }
 
 template<typename T>
@@ -132,9 +132,9 @@ bool Triangle2D<T>::hasIntersection(const Circle2D<T>& circle) const
 	{
 		Line2D<T> line = linesOfTriangle[i];
 
-		Colision2DStatus status = line.hasIntersections(circle);
+		ColisionStatus status = line.hasIntersections(circle);
 
-		if (status == Colision2DStatus::INLINE || status == Colision2DStatus::INSIDE)
+		if (status == ColisionStatus::INLINE || status == ColisionStatus::INSIDE)
 			return true;
 	}
 

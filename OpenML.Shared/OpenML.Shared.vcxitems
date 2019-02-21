@@ -16,7 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Circle2D.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Colision2DStatus.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ColisionStatus.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Line2D.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Line3D.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Mat.h" />
@@ -28,6 +28,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Quat.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Randomizer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Rectangle2D.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Sphere.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SystemOfLinearEquations.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Triangle2D.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Vec2.h" />
@@ -48,6 +49,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Plane3D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Quat.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Rectangle2D.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Sphere.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Triangle2D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Vec2.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Vec2List.cpp" />

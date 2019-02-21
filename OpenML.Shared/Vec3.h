@@ -139,13 +139,7 @@ namespace OpenML
 		/// Get the andle in radians between the vectors
 		/// Obs.: if the vectors are normalized, can use: acosf(dot(vectorB));
 		/// </summary>
-		API_INTERFACE inline T angleRandians(const Vec3<T>& vectorB) const;
-
-		/// <summary>
-		/// Get the andle in radians between the vectors
-		/// Obs.: if the vectors are normalized, can use: acosf(dot(vectorB));
-		/// </summary>
-		API_INTERFACE inline T angleDegree(const Vec3<T>& vectorB) const;
+		API_INTERFACE inline T angle(const Vec3<T>& vectorB) const;
 
 		/// <summary>
 		/// Get a normalized vector

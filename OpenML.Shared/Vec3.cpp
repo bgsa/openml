@@ -212,28 +212,20 @@ T Vec3<T>::dot(const Vec3<T>& vector) const
 }
 
 template <typename T>
-T Vec3<T>::angleRandians(const Vec3<T>& vectorB) const
+T Vec3<T>::angle(const Vec3<T>& vectorB) const
 {
 	return dot(vectorB) / (length() * vectorB.length());
 }
 
 template <typename T>
-T Vec3<T>::angleDegree(const Vec3<T>& vectorB) const
-{
-	T angleRadians = dot(vectorB) / (length() * vectorB.length());
-
-	return (T)radiansToDegrees(angleRadians);
-}
-
-template <typename T>
 Vec3<T> Vec3<T>::normalize() const
 {
-	T vectorLength = length();
+	T vectorLengthInverted = T(1) / length();
 
 	return Vec3<T> {
-		values[0] / vectorLength,
-			values[1] / vectorLength,
-			values[2] / vectorLength,
+		values[0] * vectorLengthInverted,
+		values[1] * vectorLengthInverted,
+		values[2] * vectorLengthInverted
 	};
 }
 

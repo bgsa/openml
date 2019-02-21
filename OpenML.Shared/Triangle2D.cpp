@@ -43,10 +43,9 @@ T Triangle2D<T>::perimeter() const
 template<typename T>
 T Triangle2D<T>::height() const
 {
-	//T lengthVec1 = point1.getDistance(point2);
 	T lengthVec2 = point2.distance(point3);
 
-	T angle = point1.angleRandians(point2);
+	T angle = point1.angle(point2);
 
 	T heigh = T(lengthVec2 * sin(angle));
 

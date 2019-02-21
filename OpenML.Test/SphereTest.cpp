@@ -41,6 +41,25 @@ namespace OpenMLTest
 			Assert::IsTrue(result == expected, L"The point should be outside the sphere", LINE_INFO());
 		}
 
+		TEST_METHOD(Sphere_colisionStatus_sphere_Test)
+		{
+			Spheref sphere1 = Spheref({ 10.0f, 0.0f, 0.0f }, 10.0f);
+			Spheref sphere2 = Spheref({ -10.0f, 0.0f, 0.0f }, 10.0f);
+			ColisionStatus expected = ColisionStatus::INLINE;
+			ColisionStatus result = sphere1.colisionStatus(sphere2);
+			Assert::IsTrue(result == expected, L"The point should lie on sphere boundary", LINE_INFO());
+
+			sphere2 = Spheref({ -9.0f, 0.0f, 0.0f }, 10.0f);
+			expected = ColisionStatus::INSIDE;
+			result = sphere1.colisionStatus(sphere2);
+			Assert::IsTrue(result == expected, L"The point should lie inside the sphere", LINE_INFO());
+
+			sphere2 = Spheref({ -11.0f, 0.0f, 0.0f }, 10.0f);
+			expected = ColisionStatus::OUTSIDE;
+			result = sphere1.colisionStatus(sphere2);
+			Assert::IsTrue(result == expected, L"The point should be outside the sphere", LINE_INFO());
+		}
+
 		TEST_METHOD(Sphere_colisionStatus_plane_Test)
 		{
 			Spheref sphere = Spheref({ 10.0f, 0.0f, 0.0f }, 10.0f);

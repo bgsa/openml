@@ -92,26 +92,18 @@ T Vec2<T>::dot(const Vec2<T>& vector) const
 }
 
 template <typename T>
-T Vec2<T>::angleRandians(const Vec2<T>& vectorB) const
+T Vec2<T>::angle(const Vec2<T>& vectorB) const
 {
 	T vec1Len = length();
 	T vec2Len = vectorB.length();
 
 	if (vec1Len == T(0)) // vec-Len == 0 means division by zero and return "nan" (not a number)
-		vec1Len = T(0.01);
+		vec1Len = T(0.000001);
 
 	if (vec2Len == T(0)) // vec-Len == 0 means division by zero and return "nan" (not a number)
-		vec2Len = T(0.01);
+		vec2Len = T(0.000001);
 
 	return dot(vectorB) / (vec1Len * vec2Len);
-}
-
-template <typename T>
-T Vec2<T>::angleDegree(const Vec2<T>& vectorB) const
-{
-	T angleRadians = dot(vectorB) / (length() * vectorB.length());
-
-	return (T)radiansToDegrees(angleRadians);
 }
 
 template <typename T>

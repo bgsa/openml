@@ -272,7 +272,7 @@ namespace OpenMLTest
 			Quatf expected(0.162221417f, 0.405553550f, 0.243332133f, 0.866025388f);
 
 			for (size_t i = 0; i < 4; i++)
-				Assert::AreEqual(expected[i], result[i], L"Wrong value", LINE_INFO());
+				Assert::IsTrue(isCloseEnough(expected[i], result[i], 0.000001f), L"Wrong value", LINE_INFO());
 		}
 
 		TEST_METHOD(Quat_rotate_Test)

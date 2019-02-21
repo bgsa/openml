@@ -127,26 +127,14 @@ namespace OpenMLTest
 			Assert::AreEqual(expected, result, L"Length Wrong value", LINE_INFO());
 		}
 
-		TEST_METHOD(Vec4_angleRadians_Test)
+		TEST_METHOD(Vec4_angle_Test)
 		{
 			Vec4f vector = { 3.0f, 4.0f, 0.0f, 10.f };
 			Vec4f vector2 = { 4.0f, 4.0f, 2.0f, 10.f };
 
 			float expected = 0.981715202f;
 
-			float result = vector.angleRandians(vector2);
-
-			Assert::AreEqual(expected, result, L"Wrong value", LINE_INFO());
-		}
-
-		TEST_METHOD(Vec4_angleDegree_Test)
-		{
-			Vec4f vector = { 3.0f, 4.0f, 0.0f, 10.f };
-			Vec4f vector2 = { 4.0f, 4.0f, 2.0f, 10.f };
-
-			float expected = 56.2481384f;
-
-			float result = vector.angleDegree(vector2);
+			float result = vector.angle(vector2);
 
 			Assert::AreEqual(expected, result, L"Wrong value", LINE_INFO());
 		}
@@ -159,7 +147,7 @@ namespace OpenMLTest
 			Vec4f result = vector.normalize();
 
 			for (size_t i = 0; i < VEC4_SIZE; i++)
-				Assert::AreEqual(expected[i], result[i], L"Wrong value", LINE_INFO());
+				Assert::IsTrue(isCloseEnough(expected[i], result[i], 0.000001f), L"Wrong value", LINE_INFO());
 		}
 
 		TEST_METHOD(Vec4_distance_Test)

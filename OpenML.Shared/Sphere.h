@@ -29,6 +29,11 @@ namespace OpenML
 		/// </summary>
 		API_INTERFACE inline ColisionStatus colisionStatus(const Plane3D<T> &plane) const;
 
+		/// <summary>
+		/// Check the status of colision against the plane
+		/// </summary>
+		API_INTERFACE inline ColisionStatus colisionStatus(const Sphere<T> &sphere) const;
+
 	};
 
 	typedef Sphere<int> Spherei;

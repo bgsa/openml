@@ -83,13 +83,8 @@ namespace OpenML
 		/// <summary>
 		/// Get the angle in radians between two vectors: A . B
 		/// <summary>
-		API_INTERFACE inline T angleRandians(const Vec2<T>& vectorB) const;
-
-		/// <summary>
-		/// Get the andle in radians between the vectors
-		/// <summary>
-		API_INTERFACE inline T angleDegree(const Vec2<T>& vectorB) const;
-
+		API_INTERFACE inline T angle(const Vec2<T>& vectorB) const;
+		
 		/// <summary>
 		/// Get a normalized vector
 		/// <summary>

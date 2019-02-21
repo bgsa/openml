@@ -395,6 +395,16 @@ Vec3<T> Vec3<T>::operator-(T value) const
 }
 
 template <typename T>
+Vec3<T> Vec3<T>::operator-() const
+{
+	return Vec3<T>(
+		-values[0],
+		-values[1],
+		-values[2]
+		);
+}
+
+template <typename T>
 bool Vec3<T>::operator==(const Vec3<T>& vector) const
 {
 	return values[0] == vector[0]

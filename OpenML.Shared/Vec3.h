@@ -223,6 +223,11 @@ namespace OpenML
 		API_INTERFACE inline Vec3<T> operator-(const Vec3<T>& vector) const;
 
 		/// <summary>
+		/// Get the negative vector
+		/// </summary>
+		API_INTERFACE inline Vec3<T> operator-() const;
+
+		/// <summary>
 		/// Subtract this vector to another one
 		/// </summary>
 		API_INTERFACE inline void operator-=(const Vec3<T>& vector);

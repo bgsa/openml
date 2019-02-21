@@ -223,6 +223,17 @@ namespace OpenMLTest
 				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
 		}
 
+		TEST_METHOD(Vec3_operatorMinus_prefix_Test)
+		{
+			Vec2f vector = { -2.0f, 3.0f };
+			Vec2f expected = { 2.0f, -3.0f };
+
+			Vec2f result = -vector;
+
+			for (size_t i = 0; i < VEC2_SIZE; i++)
+				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
+		}
+
 		TEST_METHOD(Vec2_operatorMinusScalar_Test)
 		{
 			Vec2<float> vector = { 2.0f, 4.0f };

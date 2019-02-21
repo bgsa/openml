@@ -306,6 +306,17 @@ Vec4<T> Vec4<T>::operator-(T value) const
 }
 
 template <typename T>
+Vec4<T> Vec4<T>::operator-() const
+{
+	return Vec4<T>(
+		-values[0],
+		-values[1],
+		-values[2],
+		-values[3]
+		);
+}
+
+template <typename T>
 Vec4<T> Vec4<T>::operator*(const Mat4<T>& matrix4x4) const
 {
 	Vec4<T> result;

@@ -180,6 +180,11 @@ namespace OpenML
 		API_INTERFACE inline Vec4<T> operator-(T value) const;
 
 		/// <summary>
+		/// Get negative vector
+		/// </summary>
+		API_INTERFACE inline Vec4<T> operator-() const;
+
+		/// <summary>
 		/// Compare this vector to another one. Compare each component.
 		/// <summary>
 		API_INTERFACE inline bool operator==(const Vec4<T>& vector) const;

@@ -79,6 +79,11 @@ namespace OpenML
 		API_INTERFACE inline Vec3<T> subtract(const Vec3<T>& vector);
 
 		/// <summary>
+		/// Multiply each components from current vector to another one
+		/// </summary>
+		API_INTERFACE inline Vec3<T> multiply(const Vec3<T>& vector) const;
+
+		/// <summary>
 		/// Scale the vector from a scalar => v * scalar
 		/// </summary>
 		API_INTERFACE inline void scale(T scale);

@@ -94,5 +94,264 @@ namespace OpenMLTest
 			Asserts::isCloseEnough(expected.z(), intersection->z(), 0.0009f, "Wrong value", LINE_INFO());
 		}
 
+		TEST_METHOD(Plane3D_angle_Test1)
+		{
+			Plane3Df plane1 = Plane3Df(Vec3f(1.0f, 1.0f, 1.0f), Vec3f(1.0f, 1.0f, 1.0f).normalize());
+			Plane3Df plane2 = Plane3Df(Vec3f(1.0f, 1.0f, 1.0f), Vec3f(1.0f, -2.0f, 3.0f).normalize());
+
+			Vec4f a = plane1.getEquation();
+			Vec4f b = plane2.getEquation();
+
+			float expected = 0.308606714f;
+			float result = plane1.angle(plane2);
+
+			Assert::AreEqual(expected, result, L"Wrong value", LINE_INFO());
+		}
+
+		TEST_METHOD(Plane3D_angle_Test2)
+		{
+			Plane3Df plane1 = Plane3Df(2.0f, 4.0f, 1.0f, 3.0f);
+			Plane3Df plane2 = Plane3Df(-1.0f, 3.0f, 2.0f, 1.0f);
+
+			float expected = 0.6998542122f;
+			float result = plane1.angle(plane2);
+
+			Assert::AreEqual(expected, result, L"Wrong value", LINE_INFO());
+		}
+
+		TEST_METHOD(Plane3D_distance_point_Test1)
+		{
+			Plane3Df plane = Plane3Df(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(0.0f, 0.0f, 1.0f));
+			Vec3f point = Vec3f(0.0f, 0.0f, 10.0f);
+
+			float expected = 10.0f;
+			float result = plane.distance(point);
+
+			Assert::AreEqual(expected, result, L"Wrong value", LINE_INFO());
+		}
+
+		TEST_METHOD(Plane3D_distance_point_Test2)
+		{
+			Plane3Df plane = Plane3Df(Vec3f(0.0f, 0.0f, 8.0f), Vec3f(0.0f, 0.0f, 1.0f));
+			Vec3f point = Vec3f(0.0f, 0.0f, 10.0f);
+
+			float expected = 2.0f;
+			float result = plane.distance(point);
+
+			Assert::AreEqual(expected, result, L"Wrong value", LINE_INFO());
+		}
+
+		TEST_METHOD(Plane3D_distance_point_Test3)
+		{
+			Plane3Df plane = Plane3Df(Vec3f(0.0f, 0.0f, -4.0f), Vec3f(0.0f, 0.0f, 1.0f));
+			Vec3f point = Vec3f(0.0f, 0.0f, 10.0f);
+
+			float expected = 14.0f;
+			float result = plane.distance(point);
+
+			Assert::AreEqual(expected, result, L"Wrong value", LINE_INFO());
+		}
+
+		TEST_METHOD(Plane3D_distance_point_Test4)
+		{
+			Plane3Df plane = Plane3Df(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(0.0f, 1.0f, 1.0f));
+			Vec3f point = Vec3f(0.0f, 0.0f, 10.0f);
+
+			float expected = 7.07106781f;
+			float result = plane.distance(point);
+
+			Assert::AreEqual(expected, result, L"Wrong value", LINE_INFO());
+		}
+
+		TEST_METHOD(Plane3D_constructor_equation_Test)
+		{
+			Plane3Df plane = Plane3Df(1.0f, 5.0f, 3.0f, 13.0f);
+			Vec3f point = Vec3f(2.0f, 4.0f, 1.0f);
+
+			float expected = 6.42317247f;
+			float result = plane.distance(point);
+			Assert::AreEqual(expected, result, L"Wrong value", LINE_INFO());
+
+			plane = Plane3Df(2.0f, -2.0f, 5.0f, 8.0f);
+			point = Vec3f(4.0f, -4.0f, 3.0f);
+			expected = 6.78902864f;
+			result = plane.distance(point);
+			Assert::AreEqual(expected, result, L"Wrong value", LINE_INFO());
+			
+			plane = Plane3Df(2.0f, -2.0f, -1.0f, 3.0f);
+			point = Vec3f(2.0f, -1.0f, 2.0f);			
+			expected = 2.33333325f;
+			result = plane.distance(point);
+			Assert::AreEqual(expected, result, L"Wrong value", LINE_INFO());
+
+			plane = Plane3Df(1.0f, 1.0f, 1.0f, 0.0f);
+			point = Vec3f(3.0f, -1.0f, 4.0f);
+			expected = 3.46410179f;
+			result = plane.distance(point);
+			Assert::AreEqual(expected, result, L"Wrong value", LINE_INFO());
+
+			plane = Plane3Df(4.0f, -1.0f, 1.0f, 5.0f);
+			point = Vec3f(1.0f, 3.0f, -6.0f);
+			expected = 0.0f;
+			result = plane.distance(point);
+			Assert::AreEqual(expected, result, L"Wrong value", LINE_INFO());
+		}
+
+		TEST_METHOD(Plane3D_orientation_Test1)
+		{
+			Vec3f point1 = Vec3f(0.0f, 0.0f, 0.0f);
+			Vec3f point2 = Vec3f(1.0f, 0.0f, 0.0f);
+			Vec3f point3 = Vec3f(1.0f, 1.0f, 0.0f);
+
+			Plane3Df plane = Plane3Df(point1, point2, point3);
+			Vec3f targetPoint = Vec3f(0.0f, 0.0f, 10.0f);
+
+			Orientation result = plane.orientation(targetPoint);
+
+			Assert::IsTrue(result == Orientation::LEFT, L"Wrong value", LINE_INFO());
+		}
+
+		TEST_METHOD(Plane3D_orientation_Test2)
+		{
+			Vec3f point1 = Vec3f(0.0f, 0.0f, 0.0f);
+			Vec3f point2 = Vec3f(1.0f, 0.0f, 0.0f);
+			Vec3f point3 = Vec3f(1.0f, 1.0f, 0.0f);
+
+			Plane3Df plane = Plane3Df(point1, point2, point3);
+			Vec3f targetPoint = Vec3f(0.0f, 0.0f, -10.0f);
+
+			Orientation result = plane.orientation(targetPoint);
+
+			Assert::IsTrue(result == Orientation::RIGHT, L"Wrong value", LINE_INFO());
+		}
+
+		TEST_METHOD(Plane3D_orientation_Test3)
+		{
+			Vec3f point1 = Vec3f(0.0f, 0.0f, 0.0f);
+			Vec3f point2 = Vec3f(1.0f, 0.0f, 0.0f);
+			Vec3f point3 = Vec3f(1.0f, 1.0f, 0.0f);
+
+			Plane3Df plane = Plane3Df(point1, point2, point3);
+			Vec3f targetPoint = Vec3f(-10.0f, 10.0f, 0.0f);
+
+			Orientation result = plane.orientation(targetPoint);
+
+			Assert::IsTrue(result == Orientation::NONE, L"Wrong value", LINE_INFO());
+		}
+
+		TEST_METHOD(Plane3D_isParallel_Test1)
+		{
+			Vec3f point1 = Vec3f(0.0f, 0.0f, 0.0f);
+			Vec3f point2 = Vec3f(1.0f, 0.0f, 0.0f);
+			Vec3f point3 = Vec3f(1.0f, 1.0f, 0.0f);
+
+			Plane3Df plane1 = Plane3Df(point1, point2, point3);
+
+			point1 = Vec3f(0.0f, 0.0f, 10.0f);
+			point2 = Vec3f(1.0f, 0.0f, 10.0f);
+			point3 = Vec3f(1.0f, 1.0f, 10.0f);
+
+			Plane3Df plane2 = Plane3Df(point1, point2, point3);
+
+			bool result = plane1.isParallel(plane2);
+
+			Assert::IsTrue(result, L"Wrong value", LINE_INFO());
+		}
+
+		TEST_METHOD(Plane3D_isParallel_Test2)
+		{
+			Vec3f point1 = Vec3f(0.0f, 0.0f, 0.0f);
+			Vec3f point2 = Vec3f(1.0f, 0.0f, 0.0f);
+			Vec3f point3 = Vec3f(1.0f, 1.0f, 0.0f);
+
+			Plane3Df plane1 = Plane3Df(point1, point2, point3);
+
+			point1 = Vec3f(0.0f, 0.0f, -10.0f);
+			point2 = Vec3f(3.0f, 10.0f, -10.0f);
+			point3 = Vec3f(-4.0f, -1.0f, -10.0f);
+
+			Plane3Df plane2 = Plane3Df(point1, point2, point3);
+
+			bool result = plane1.isParallel(plane2);
+
+			Assert::IsTrue(result, L"Wrong value", LINE_INFO());
+		}
+
+		TEST_METHOD(Plane3D_isParallel_Test3)
+		{
+			Vec3f point1 = Vec3f(0.0f, 0.0f, 0.0f);
+			Vec3f point2 = Vec3f(1.0f, 0.0f, 0.0f);
+			Vec3f point3 = Vec3f(1.0f, 1.0f, 0.0f);
+
+			Plane3Df plane1 = Plane3Df(point1, point2, point3);
+
+			point1 = Vec3f(0.0f, 0.0f, -10.0f);
+			point2 = Vec3f(3.0f, 10.0f, 5.0f);
+			point3 = Vec3f(-4.0f, -1.0f, 10.0f);
+
+			Plane3Df plane2 = Plane3Df(point1, point2, point3);
+
+			bool result = plane1.isParallel(plane2);
+
+			Assert::IsFalse(result, L"Wrong value", LINE_INFO());
+		}
+
+		TEST_METHOD(Plane3D_isPerpendicular_Test1)
+		{
+			Vec3f point1 = Vec3f(0.0f, 0.0f, 0.0f);
+			Vec3f point2 = Vec3f(1.0f, 0.0f, 0.0f);
+			Vec3f point3 = Vec3f(1.0f, 1.0f, 0.0f);
+
+			Plane3Df plane1 = Plane3Df(point1, point2, point3);
+
+			point1 = Vec3f(0.0f, 0.0f, 0.0f);
+			point2 = Vec3f(1.0f, 0.0f, 0.0f);
+			point3 = Vec3f(1.0f, 0.0f, 1.0f);
+
+			Plane3Df plane2 = Plane3Df(point1, point2, point3);
+
+			bool result = plane1.isPerpendicular(plane2);
+
+			Assert::IsTrue(result, L"Wrong value", LINE_INFO());
+		}
+
+		TEST_METHOD(Plane3D_isPerpendicular_Test2)
+		{
+			Vec3f point1 = Vec3f(0.0f, 0.0f, 0.0f);
+			Vec3f point2 = Vec3f(1.0f, 0.0f, 0.0f);
+			Vec3f point3 = Vec3f(1.0f, 1.0f, 0.0f);
+
+			Plane3Df plane1 = Plane3Df(point1, point2, point3);
+
+			point1 = Vec3f(0.0f, 0.0f, 0.0f);
+			point2 = Vec3f(1.0f, 1.0f, 0.0f);
+			point3 = Vec3f(1.0f, 0.0f, 1.0f);
+
+			Plane3Df plane2 = Plane3Df(point1, point2, point3);
+
+			bool result = plane1.isPerpendicular(plane2);
+
+			Assert::IsFalse(result, L"Wrong value", LINE_INFO());
+		}
+
+		TEST_METHOD(Plane3D_findIntersection_plane_Test1)
+		{
+			Plane3Df plane1 = Plane3Df(2.0f, 3.0f, 1.0f, 3.0f);
+			Plane3Df plane2 = Plane3Df(-1.0f, 1.0f, 1.0f, 2.0f);
+
+			Line3Df* result = plane1.findIntersection(plane2);
+
+			Assert::IsNotNull(result, L"Line should not be null!", LINE_INFO());
+
+			Vec3f expectedPoint1 = Vec3f(0.315789491f, -0.973684311f, -0.710526347f);
+			Vec3f expectedPoint2 = Vec3f(0.624396205f, -1.43659437f, 0.0609903336f);
+			
+			for (size_t i = 0; i < 3; i++) 
+			{
+				Assert::AreEqual(result->point1[i], expectedPoint1[i], L"Wrong value", LINE_INFO());
+				Assert::AreEqual(result->point2[i], expectedPoint2[i], L"Wrong value", LINE_INFO());
+			}
+
+		}
 	};
 }

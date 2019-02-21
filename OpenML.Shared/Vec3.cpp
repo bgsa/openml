@@ -102,6 +102,16 @@ Vec3<T> Vec3<T>::subtract(const Vec3<T>& vector)
 }
 
 template <typename T>
+Vec3<T> Vec3<T>::multiply(const Vec3<T>& vector) const
+{
+	return Vec3<T>(
+		values[0] * vector[0],
+		values[1] * vector[1],
+		values[2] * vector[2]
+		);
+}
+
+template <typename T>
 void Vec3<T>::scale(T scale)
 {
 	values[0] *= scale;
@@ -311,7 +321,7 @@ void Vec3<T>::operator*=(T value)
 template <typename T>
 Vec3<T> Vec3<T>::operator*(const Vec3<T>& vector) const
 {
-	return cross(vector);
+	return multiply(vector);
 }
 
 template <typename T>

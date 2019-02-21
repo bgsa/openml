@@ -28,15 +28,31 @@ Plane3D<T>::Plane3D(const Vec3<T>& point1, const Vec3<T>& point2, const Vec3<T>&
 }
 
 template <typename T>
+Plane3D<T>::Plane3D(T a, T b, T c, T d)
+{
+	point = Vec3<T>(
+		T(0),
+		T(0),
+		-d / c
+		);
+
+	normalVector = Vec3<T>(a, b, c).normalize();
+}
+
+template <typename T>
+T Plane3D<T>::getDcomponent() const
+{
+	return (normalVector * T(-1)).dot(point);
+}
+
+template <typename T>
 Vec4<T> Plane3D<T>::getEquation() const
 {
-	T value = (normalVector * T(-1)).dot(point);
-
 	return Vec4<T>(
 		normalVector[0],
 		normalVector[1],
 		normalVector[2],
-		value
+		getDcomponent()
 		);
 }
 
@@ -66,6 +82,73 @@ Vec3<T>* Plane3D<T>::findIntersection(const Line3D<T>& line) const
 	return intersection;
 }
 
+template <typename T>
+Line3D<T>* Plane3D<T>::findIntersection(const Plane3D<T>& plane) const
+{
+	if (isParallel(plane))
+		return nullptr;
+
+	Vec3<T> lineDirection = normalVector.cross(plane.normalVector);
+	
+	T d1 = getDcomponent();
+	T d2 = plane.getDcomponent();
+
+	// find a point on the line, which is also on both planes
+	T dot = lineDirection.dot(lineDirection);					// V dot V
+	Vec3<T> u1 = normalVector * d2;								// d2 * normalVector
+	Vec3<T> u2 = plane.normalVector * -d1;					    //-d1 * plane.normalVector
+	Vec3<T> point1 = (u1 + u2).cross(lineDirection) / dot;      // (d2*N1-d1*N2) X V / V dot V
+
+	// find another point on the line
+	Vec3<T> point2 = point1 + lineDirection;
+
+	return new Line3D<T>(point1, point2);
+}
+
+template <typename T>
+T Plane3D<T>::distance(const Vec3<T>& target)
+{
+	Vec3<T> rayToTarget = target - point;
+
+	T numerator = normalVector.dot(rayToTarget);
+	T length = normalVector.length();
+
+	return numerator / length;
+}
+
+template <typename T>
+T Plane3D<T>::angle(const Plane3D<T>& plane)
+{
+	T angle = normalVector.dot(plane.normalVector);
+	T length = normalVector.length() * plane.normalVector.length();
+
+	return angle / length;
+}
+
+template <typename T>
+Orientation Plane3D<T>::orientation(const Vec3<T>& point)
+{
+	T distanceToPoint =  distance(point);
+
+	if (distanceToPoint == T(0))
+		return Orientation::NONE;
+	else if (distanceToPoint > T(0))
+		return Orientation::LEFT;
+	
+	return Orientation::RIGHT;
+}
+
+template <typename T>
+bool Plane3D<T>::isParallel(const Plane3D<T>& plane) const
+{
+	return normalVector.cross(plane.normalVector) == T(0);
+}
+
+template <typename T>
+bool Plane3D<T>::isPerpendicular(const Plane3D<T>& plane) const
+{
+	return normalVector.dot(plane.normalVector) == T(0);
+}
 
 namespace OpenML
 {

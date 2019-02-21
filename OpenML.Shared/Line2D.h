@@ -69,7 +69,7 @@ namespace OpenML
 		/// <summary>
 		/// Indicate whether the point is on the left, right or is a point of the line line/vector
 		/// </summary>
-		API_INTERFACE VerticalOrientation getOrientation(const Vec2<T>& point) const;
+		API_INTERFACE Orientation getOrientation(const Vec2<T>& point) const;
 
 		/// <summary>
 		/// Get te distance from this line to the point

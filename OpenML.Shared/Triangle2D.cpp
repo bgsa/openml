@@ -71,28 +71,28 @@ Colision2DStatus Triangle2D<T>::getColisionStatus(const Vec2<T>& point) const
 	Line2D<T> line2 = Line2D<T>(point2, point3);
 	Line2D<T> line3 = Line2D<T>(point3, point1);
 
-	VerticalOrientation orientation = line1.getOrientation(point);
+	Orientation orientation = line1.getOrientation(point);
 
-	if (orientation == VerticalOrientation::RIGHT)
+	if (orientation == Orientation::RIGHT)
 		return Colision2DStatus::OUTSIDE;
 
-	if (orientation == VerticalOrientation::NONE)
+	if (orientation == Orientation::NONE)
 		return Colision2DStatus::INLINE;
 
 	orientation = line2.getOrientation(point);
 
-	if (orientation == VerticalOrientation::RIGHT)
+	if (orientation == Orientation::RIGHT)
 		return Colision2DStatus::OUTSIDE;
 
-	if (orientation == VerticalOrientation::NONE)
+	if (orientation == Orientation::NONE)
 		return Colision2DStatus::INLINE;
 
 	orientation = line3.getOrientation(point);
 
-	if (orientation == VerticalOrientation::RIGHT)
+	if (orientation == Orientation::RIGHT)
 		return Colision2DStatus::OUTSIDE;
 
-	if (orientation == VerticalOrientation::NONE)
+	if (orientation == Orientation::NONE)
 		return Colision2DStatus::INLINE;
 
 	return Colision2DStatus::INSIDE;

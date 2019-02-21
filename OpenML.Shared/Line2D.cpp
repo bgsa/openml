@@ -73,9 +73,9 @@ Vec2<T> Line2D<T>::toRay()
 template <typename T>
 bool Line2D<T>::isOnTheLine(const Vec2<T>& point) const
 {
-	VerticalOrientation orientation = getOrientation(point);
+	Orientation orientation = getOrientation(point);
 
-	if (orientation != VerticalOrientation::NONE)
+	if (orientation != Orientation::NONE)
 		return false;
 
 	// check the range of the line x point
@@ -94,18 +94,18 @@ bool Line2D<T>::isOnTheLine(const Vec2<T>& point) const
 
 template <typename T>
 bool Line2D<T>::isOnTheLeft(const Vec2<T>& point) const {
-	VerticalOrientation orientation = getOrientation(point);
-	return orientation == VerticalOrientation::LEFT;
+	Orientation orientation = getOrientation(point);
+	return orientation == Orientation::LEFT;
 }
 
 template <typename T>
 bool Line2D<T>::isOnTheRight(const Vec2<T>& point) const {
-	VerticalOrientation orientation = getOrientation(point);
-	return orientation == VerticalOrientation::RIGHT;
+	Orientation orientation = getOrientation(point);
+	return orientation == Orientation::RIGHT;
 }
 
 template <typename T>
-VerticalOrientation Line2D<T>::getOrientation(const Vec2<T>& point) const
+Orientation Line2D<T>::getOrientation(const Vec2<T>& point) const
 {
 	Mat3<T> lineMatrix = {
 		T(1), T(1), T(1),
@@ -116,11 +116,11 @@ VerticalOrientation Line2D<T>::getOrientation(const Vec2<T>& point) const
 	int determinant = (int)lineMatrix.determinant();
 
 	if (determinant == 0)
-		return VerticalOrientation::NONE;
+		return Orientation::NONE;
 	if (determinant > 0)
-		return VerticalOrientation::LEFT;
+		return Orientation::LEFT;
 	else
-		return VerticalOrientation::RIGHT;
+		return Orientation::RIGHT;
 }
 
 template <typename T>

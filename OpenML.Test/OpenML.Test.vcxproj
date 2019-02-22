@@ -296,6 +296,7 @@
     <ClCompile Include="Mat2Test.cpp" />
     <ClCompile Include="Mat3Test.cpp" />
     <ClCompile Include="Mat4Test.cpp" />
+    <ClCompile Include="OpenMLTest.cpp" />
     <ClCompile Include="Plane3DTest.cpp" />
     <ClCompile Include="QuatTest.cpp" />
     <ClCompile Include="Rectangle2DTest.cpp" />

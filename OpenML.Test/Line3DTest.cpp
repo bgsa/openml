@@ -29,5 +29,47 @@ namespace OpenMLTest
 			Assert::AreEqual(expected.z(), result->z(), L"Wrong value.", LINE_INFO());
 		}
 
+		TEST_METHOD(Line3D_closestPointOnTheLine_point_Test1)
+		{
+			Line3Df line = Line3Df(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 10.0f, 0.0f, 0.0f });
+			Vec3f point = Vec3f(7.0f, 10.0f, 0.0f);
+
+			Vec3f expected = { 7.0f, 0.0f, 0.0f };
+
+			Vec3f result = line.closestPointOnTheLine(point);
+			
+			Assert::AreEqual(expected.x(), result.x(), L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(expected.y(), result.y(), L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(expected.z(), result.z(), L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(Line3D_closestPointOnTheLine_point_Test2)
+		{
+			Line3Df line = Line3Df(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 10.0f, 0.0f, 0.0f });
+			Vec3f point = Vec3f(-3.0f, 10.0f, 0.0f);
+
+			Vec3f expected = { 0.0f, 0.0f, 0.0f };
+
+			Vec3f result = line.closestPointOnTheLine(point);
+
+			Assert::AreEqual(expected.x(), result.x(), L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(expected.y(), result.y(), L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(expected.z(), result.z(), L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(Line3D_closestPointOnTheLine_point_Test3)
+		{
+			Line3Df line = Line3Df(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 10.0f, 0.0f, 0.0f });
+			Vec3f point = Vec3f(11.0f, 10.0f, 0.0f);
+
+			Vec3f expected = { 10.0f, 0.0f, 0.0f };
+
+			Vec3f result = line.closestPointOnTheLine(point);
+
+			Assert::AreEqual(expected.x(), result.x(), L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(expected.y(), result.y(), L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(expected.z(), result.z(), L"Wrong value.", LINE_INFO());
+		}
+
 	};
 }

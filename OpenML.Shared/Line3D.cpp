@@ -57,6 +57,24 @@ Vec3<T>* Line3D<T>::findIntersection(const Line3D<T>& line2) const
 	return nullptr;
 }
 
+template <typename T>
+Vec3<T> Line3D<T>::closestPointOnTheLine(const Vec3<T>& target) const
+{
+	Vec3<T> lineDirection = point2 - point1;
+	
+	// Project target onto lineDirection, computing parameterized position closestPoint(t) = point1 + t*(point2 – point1) 
+	T t = (target - point1).dot(lineDirection) / lineDirection.dot(lineDirection);
+
+	// If outside segment, clamp t (and therefore d) to the closest endpoint 
+	t = clamp(t, T(0), T(1)); // clamp t from 0.0 to 1.0
+	
+	//closestPoint(t) = point1 + t * (point2 – point1)
+	Vec3<T> closestPoint = point1 + t*lineDirection;
+
+	return closestPoint;
+
+}
+
 namespace OpenML
 {
 	template class Line3D<int>;

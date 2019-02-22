@@ -96,6 +96,21 @@ namespace OpenML
 	}
 
 	///<summary>
+	///Check the number is even or not
+	///</summary>
+	template <typename T>
+	inline T API_INTERFACE clamp(T value, T minValue, T maxValue)
+	{
+		if (value < minValue)
+			value = minValue;
+		else
+			if (value > maxValue)
+				value = maxValue;
+
+		return value;
+	}
+
+	///<summary>
 	///Check the number is close enough given a other number. It is used to check aproximation value and calculate the error measure.
 	///Epsilon is the tolerated value
 	///</summary>

@@ -35,6 +35,11 @@ namespace OpenML
 		/// Find intersections by 3D lines
 		///</summary>
 		API_INTERFACE Vec3<T>* findIntersection(const Line3D<T>& line2) const;
+
+		///<summary>
+		/// Get the closest point in the SEGMENT of line, given an arbitrary point
+		///</summary>
+		API_INTERFACE Vec3<T> closestPointOnTheLine(const Vec3<T>& target) const;
 	};
 
 	typedef Line3D<int> Line3Di;

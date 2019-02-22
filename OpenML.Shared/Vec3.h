@@ -188,6 +188,14 @@ namespace OpenML
 
 		/// <summary>
 		/// Multiply the vector to a scalar
+		/// </summary>
+		API_INTERFACE friend Vec3<T> operator*(T value, const Vec3<T>& vector) 
+		{
+			return vector * value;
+		}
+
+		/// <summary>
+		/// Multiply the vector to a scalar
 		/// <summary>
 		API_INTERFACE void operator*=(T value);
 		

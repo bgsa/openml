@@ -140,6 +140,14 @@ namespace OpenML
 		API_INTERFACE inline Vec4<T> operator*(T value) const;
 
 		/// <summary>
+		/// Multiply the vector to a scalar
+		/// </summary>
+		API_INTERFACE friend Vec4<T> operator*(T value, const Vec4<T>& vector)
+		{
+			return vector * value;
+		}
+
+		/// <summary>
 		/// Multiply this vector to a matrix
 		/// <summary>
 		API_INTERFACE inline Vec4<T> operator*(const Mat4<T>& matrix4x4) const;

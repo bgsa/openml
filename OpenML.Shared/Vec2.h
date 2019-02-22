@@ -124,6 +124,14 @@ namespace OpenML
 		/// <summary>
 		/// Multiply the vector to a scalar
 		/// </summary>
+		API_INTERFACE friend Vec2<T> operator*(T value, const Vec2<T>& vector)
+		{
+			return vector * value;
+		}
+
+		/// <summary>
+		/// Multiply the vector to a scalar
+		/// </summary>
 		API_INTERFACE inline Vec2<T> operator/(T value) const;
 
 		/// <summary>

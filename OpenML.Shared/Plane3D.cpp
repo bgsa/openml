@@ -117,6 +117,16 @@ T Plane3D<T>::distance(const Vec3<T>& target) const
 }
 
 template <typename T>
+Vec3<T> Plane3D<T>::closestPointOnThePlane(const Vec3<T> &target) const
+{
+	T d = getDcomponent();
+
+	T t = (normalVector.dot(target) - d) / normalVector.dot(normalVector); //t = ((n . p) - d) / (n.n)
+
+	return target - (normalVector * t); //result = point - tn
+}
+
+template <typename T>
 T Plane3D<T>::angle(const Plane3D<T>& plane) const
 {
 	T angle = normalVector.dot(plane.normalVector);

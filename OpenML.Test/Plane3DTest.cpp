@@ -163,6 +163,19 @@ namespace OpenMLTest
 			Assert::AreEqual(expected, result, L"Wrong value", LINE_INFO());
 		}
 
+		TEST_METHOD(Plane3D_closestPointOnThePlane_point_Test1)
+		{
+			Plane3Df plane = Plane3Df(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(0.0f, 0.0f, 1.0f));
+			Vec3f point = Vec3f(10.0f, 5.0f, -10.0f);
+
+			Vec3f expected = Vec3f(10.0f, 5.0f, 0.0f);;
+
+			Vec3f result = plane.closestPointOnThePlane(point);
+
+			for (size_t i = 0; i < 3; i++)
+				Assert::AreEqual(expected[i], result[i], L"Wrong value", LINE_INFO());
+		}
+
 		TEST_METHOD(Plane3D_constructor_equation_Test)
 		{
 			Plane3Df plane = Plane3Df(1.0f, 5.0f, 3.0f, 13.0f);

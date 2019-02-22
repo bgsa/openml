@@ -11,6 +11,10 @@ namespace OpenML
 	class Plane3D
 	{
 	private:
+
+		/// <summary>
+		/// Get "D" components from plane equation: ax + by + cz + D = 0
+		/// </summary>
 		inline T getDcomponent() const;
 
 	public:
@@ -73,6 +77,11 @@ namespace OpenML
 		/// Check if the planes are perpendicular each other
 		/// </summary>
 		API_INTERFACE inline bool isPerpendicular(const Plane3D<T>& plane) const;
+
+		/// <summary>
+		/// Given an arbitrary point, find the closest point on the plane
+		/// </summary>
+		API_INTERFACE inline Vec3<T> closestPointOnThePlane(const Vec3<T> &target) const;
 
 	};
 

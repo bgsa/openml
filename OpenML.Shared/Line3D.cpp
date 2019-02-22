@@ -72,7 +72,34 @@ Vec3<T> Line3D<T>::closestPointOnTheLine(const Vec3<T>& target) const
 	Vec3<T> closestPoint = point1 + t*lineDirection;
 
 	return closestPoint;
+}
 
+template <typename T>
+T Line3D<T>::squaredDistance(const Vec3<T>& target) const
+{
+	//Returns the squared distance between point and segment point1-point2
+
+	Vec3<T> ab = point2 - point1;
+	Vec3<T> ac = target - point1;
+	Vec3<T> bc = target - point2;
+	
+	T e = ac.dot(ab); // Handle cases where point projects outside the line segment
+	
+	if (e <= T(0)) 
+		return ac.dot(ac); 
+	
+	T f = ab.dot(ab); 
+
+	if (e >= f) 		
+		return bc.dot(bc); // Handle cases where point projects onto line segment
+	
+	return ac.dot(ac) - e * e / f;
+}
+
+template <typename T>
+T Line3D<T>::distance(const Vec3<T>& target) const
+{
+	return T(sqrt(squaredDistance(target)));
 }
 
 namespace OpenML

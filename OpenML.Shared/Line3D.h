@@ -40,6 +40,17 @@ namespace OpenML
 		/// Get the closest point in the SEGMENT of line, given an arbitrary point
 		///</summary>
 		API_INTERFACE Vec3<T> closestPointOnTheLine(const Vec3<T>& target) const;
+
+		///<summary>
+		/// Get the SQUARED distance from SEGMENT of line and an arbitrary point
+		///</summary>
+		API_INTERFACE T squaredDistance(const Vec3<T>& target) const;
+
+		///<summary>
+		/// Get the SQUARED distance from SEGMENT of line and an arbitrary point
+		///</summary>
+		API_INTERFACE T distance(const Vec3<T>& target) const;
+
 	};
 
 	typedef Line3D<int> Line3Di;

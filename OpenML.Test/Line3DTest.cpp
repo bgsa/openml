@@ -71,5 +71,29 @@ namespace OpenMLTest
 			Assert::AreEqual(expected.z(), result.z(), L"Wrong value.", LINE_INFO());
 		}
 
+		TEST_METHOD(Line3D_squaredDistance_point_Test1)
+		{
+			Line3Df line = Line3Df(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 10.0f, 0.0f, 0.0f });
+			Vec3f point = Vec3f(5.0f, 10.0f, 0.0f);
+
+			float expected = 100.0f;
+
+			float result = line.squaredDistance(point);
+
+			Assert::AreEqual(expected, result, L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(Line3D_distance_point_Test1)
+		{
+			Line3Df line = Line3Df(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 10.0f, 0.0f, 0.0f });
+			Vec3f point = Vec3f(5.0f, 10.0f, 0.0f);
+
+			float expected = 10.0f;
+
+			float result = line.distance(point);
+
+			Assert::AreEqual(expected, result, L"Wrong value.", LINE_INFO());
+		}
+
 	};
 }

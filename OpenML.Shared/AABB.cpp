@@ -33,6 +33,24 @@ ColisionStatus AABB<T>::colisionStatus(const AABB<T>& aabb)
 	return ColisionStatus::INSIDE;
 }
 
+template <typename T>
+Vec3<T> AABB<T>::closestPointInAABB(const Vec3<T>& target)
+{
+	Vec3<T> result;
+
+	for (int axis = 0; axis < 3; axis++)
+	{
+		T v = target[axis];
+				
+		v = std::max(v, minPoint[axis]);
+		v = std::min(v, maxPoint[axis]);
+		
+		result[axis] = v;
+	}
+
+	return result;
+}
+
 namespace OpenML
 {
 	template class AABB<int>;

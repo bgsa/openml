@@ -79,6 +79,51 @@ namespace OpenMLTest
 			result = aabb1.colisionStatus(aabb2);
 			Assert::IsTrue(result == ColisionStatus::OUTSIDE, L"Mistake!.", LINE_INFO());
 		}
+
+		TEST_METHOD(AABB_closestPointInAABB_Test1)
+		{
+			Vec3f minPoint = Vec3f(0.0f, 0.0f, 0.0f);
+			Vec3f maxPoint = Vec3f(10.0f, 10.0f, 10.0f);
+			AABBf aabb = AABBf(minPoint, maxPoint);
+			Vec3f point = Vec3f(-1.0f, 4.0f, 5.0f);
+
+			Vec3f result = aabb.closestPointInAABB(point);
+
+			Vec3f expected = Vec3f(0.0f, 4.0f, 5.0f);
+
+			for (size_t i = 0; i < 3; i++)
+				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(AABB_closestPointInAABB_Test2)
+		{
+			Vec3f minPoint = Vec3f(0.0f, 0.0f, 0.0f);
+			Vec3f maxPoint = Vec3f(10.0f, 10.0f, 10.0f);
+			AABBf aabb = AABBf(minPoint, maxPoint);
+			Vec3f point = Vec3f(100.0f, 100.0f, 100.0f);
+
+			Vec3f result = aabb.closestPointInAABB(point);
+
+			Vec3f expected = Vec3f(10.0f, 10.0f, 10.0f);
+
+			for (size_t i = 0; i < 3; i++)
+				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(AABB_closestPointInAABB_Test3)
+		{
+			Vec3f minPoint = Vec3f(0.0f, 0.0f, 0.0f);
+			Vec3f maxPoint = Vec3f(10.0f, 10.0f, 10.0f);
+			AABBf aabb = AABBf(minPoint, maxPoint);
+			Vec3f point = Vec3f(5.0f, 7.0f, 8.0f);
+
+			Vec3f result = aabb.closestPointInAABB(point);
+
+			Vec3f expected = Vec3f(5.0f, 7.0f, 8.0f);
+
+			for (size_t i = 0; i < 3; i++)
+				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
+		}
 		
 	};
 }

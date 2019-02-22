@@ -10,16 +10,16 @@ class SystemOfLinearEquations
 {
 private:
 
-	string printMatrix(T* matrix, size_t rowSize, size_t colSize, int precision = 4)
+	std::string printMatrix(T* matrix, size_t rowSize, size_t colSize, int precision = 4)
 	{
 		size_t total = rowSize * colSize;
-		string content;
+		std::string content;
 
 		for (size_t i = 0; i < total; i++)
 		{
-			stringstream stream;
-			stream << fixed << setprecision(precision) << matrix[i];
-			string numberAsString = stream.str();
+			std::stringstream stream;
+			stream << std::fixed << std::setprecision(precision) << matrix[i];
+			std::string numberAsString = stream.str();
 
 			bool isPositive = matrix[i] >= 0;
 

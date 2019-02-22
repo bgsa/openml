@@ -287,26 +287,26 @@ Vec2<T>::operator T*() const
 }
 
 template <typename T>
-ostream& operator<<(ostream& outputStream, const Vec2<T>& vector)
+std::ostream& operator<<(std::ostream& outputStream, const Vec2<T>& vector)
 {
 	return outputStream << vector[0] << "," << vector[1];
 }
 
 template <typename T>
-istream& operator>>(istream& inputStream, Vec2<T>& vector)
+std::istream& operator>>(std::istream& inputStream, Vec2<T>& vector)
 {
 	char separator;
 	return inputStream >> vector[0] >> separator >> vector[1];
 }
 
 template <typename T>
-ostream& Vec2<T>::serialize(ostream& outputStream) const
+std::ostream& Vec2<T>::serialize(std::ostream& outputStream) const
 {
 	return outputStream << *this;
 }
 
 template <typename T>
-istream& Vec2<T>::deserialize(istream& inputStream)
+std::istream& Vec2<T>::deserialize(std::istream& inputStream)
 {
 	inputStream >> *this;
 	return inputStream;

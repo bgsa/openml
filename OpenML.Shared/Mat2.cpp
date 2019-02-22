@@ -343,7 +343,7 @@ void Mat2<T>::operator/=(T value)
 }
 
 template <typename T>
-string Mat2<T>::toString()
+std::string Mat2<T>::toString()
 {
 	return Mat<T>::toString(values, MAT2_SIZE);
 }

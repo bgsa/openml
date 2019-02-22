@@ -270,7 +270,7 @@ namespace OpenML
 		/// <summary>
 		/// Get the matrix content as string
 		/// </summary>
-		API_INTERFACE string toString();
+		API_INTERFACE std::string toString();
 
 		/// <summary>
 		/// Decompose the matrix to Lower and Upper matrix

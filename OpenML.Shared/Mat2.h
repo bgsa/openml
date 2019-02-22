@@ -190,7 +190,7 @@ namespace OpenML
 		/// <summary>
 		/// Get the matrix content as string
 		/// </summary>
-		API_INTERFACE inline string toString();
+		API_INTERFACE inline std::string toString();
 
 	};
 

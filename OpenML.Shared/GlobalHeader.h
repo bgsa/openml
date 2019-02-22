@@ -65,5 +65,3 @@ namespace OpenML
 	class Rectangle2D;
 
 }
-
-using namespace std;

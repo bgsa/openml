@@ -6,13 +6,14 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace OpenML;
 
-class Asserts {
+class Asserts 
+{
 public:
 
 	template<typename T>
-	static void isCloseEnough(T value, T compare, T epsilon, string message, const __LineInfo* lineInfo = nullptr)
+	static void isCloseEnough(T value, T compare, T epsilon, std::string message, const __LineInfo* lineInfo = nullptr)
 	{
-		const wchar_t* messageAswchar = wstring(message.begin(), message.end()).c_str();
+		const wchar_t* messageAswchar = std::wstring(message.begin(), message.end()).c_str();
 
 		bool result = OpenML::isCloseEnough(value, compare, epsilon);
 

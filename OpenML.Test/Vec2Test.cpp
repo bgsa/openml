@@ -311,11 +311,11 @@ namespace OpenMLTest
 		TEST_METHOD(Vec2_operator_Serialize)
 		{
 			Vec2f vector = { 4.0f, 3.0f };
-			string expected("4,3");
+			std::string expected("4,3");
 
-			stringstream sstream;
+			std::stringstream sstream;
 			vector.serialize(sstream);
-			string result = sstream.str();
+			std::string result = sstream.str();
 
 			Assert::AreEqual(expected, result, L"Wrong Serialization.", LINE_INFO());
 		}
@@ -324,7 +324,7 @@ namespace OpenMLTest
 		{
 			Vec2f vector = { 4.0f, 3.0f };
 
-			stringstream sstream;
+			std::stringstream sstream;
 			vector.serialize(sstream);
 
 			Vec2f result;

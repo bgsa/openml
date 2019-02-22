@@ -191,12 +191,12 @@ namespace OpenML
 		/// <summary>
 		/// Serialize current object
 		/// </summary>
-		API_INTERFACE inline ostream& serialize(ostream& outputStream) const;
+		API_INTERFACE inline std::ostream& serialize(std::ostream& outputStream) const;
 
 		/// <summary>
 		/// Deserialize current object
 		/// </summary>
-		API_INTERFACE inline istream& deserialize(istream& inputStream);
+		API_INTERFACE inline std::istream& deserialize(std::istream& inputStream);
 	};
 	
 	typedef Vec2<int> Vec2i;

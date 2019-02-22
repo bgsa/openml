@@ -493,7 +493,7 @@ void Mat3<T>::operator/=(T value)
 }
 
 template <typename T>
-string Mat3<T>::toString()
+std::string Mat3<T>::toString()
 {
 	return Mat<T>::toString(values, MAT3_SIZE);
 }
@@ -505,7 +505,7 @@ Mat3<T>* Mat3<T>::decomposeLU() const
 	Mat3<T> upperMatrix = this->clone();
 	Mat3<T>* result = new Mat3<T>[2];
 
-	vector<Mat3<T>> elementarInverseMatrixes;
+	std::vector<Mat3<T>> elementarInverseMatrixes;
 	Mat3<T> elementarInverseMatrix;
 
 	int rowSize = MAT3_ROWSIZE;

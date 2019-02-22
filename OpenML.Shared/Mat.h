@@ -11,16 +11,16 @@ namespace OpenML
 	{
 	protected:
 
-		string toString(T* values, int size, int precision = 4)
+		std::string toString(T* values, int size, int precision = 4)
 		{
-			string content;
+			std::string content;
 			size_t total = (int)(size * size);
 
 			for (size_t i = 0; i < total; i++)
 			{
-				stringstream stream;
-				stream << fixed << setprecision(precision) << values[i];
-				string numberAsString = stream.str();
+				std::stringstream stream;
+				stream << std::fixed << std::setprecision(precision) << values[i];
+				std::string numberAsString = stream.str();
 
 				bool isPositive = values[i] >= 0;
 

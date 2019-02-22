@@ -124,6 +124,46 @@ namespace OpenMLTest
 			for (size_t i = 0; i < 3; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
 		}
+
+		TEST_METHOD(AABB_squaredDistance_Test1)
+		{
+			Vec3f minPoint = Vec3f(0.0f, 0.0f, 0.0f);
+			Vec3f maxPoint = Vec3f(10.0f, 10.0f, 10.0f);
+			AABBf aabb = AABBf(minPoint, maxPoint);
+			Vec3f point = Vec3f(5.0f, 7.0f, 8.0f);
+
+			float result = aabb.squaredDistance(point);
+			float expected = 0.0f;
+
+			Assert::AreEqual(expected, result, L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(AABB_squaredDistance_Test2)
+		{
+			Vec3f minPoint = Vec3f(0.0f, 0.0f, 0.0f);
+			Vec3f maxPoint = Vec3f(10.0f, 10.0f, 10.0f);
+			AABBf aabb = AABBf(minPoint, maxPoint);
+			Vec3f point = Vec3f(-2.0f, 0.0f, 0.0f);
+
+			float result = aabb.squaredDistance(point);
+			float expected = 4.0f;
+
+			Assert::AreEqual(expected, result, L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(AABB_distance_Test)
+		{
+			Vec3f minPoint = Vec3f(0.0f, 0.0f, 0.0f);
+			Vec3f maxPoint = Vec3f(10.0f, 10.0f, 10.0f);
+			AABBf aabb = AABBf(minPoint, maxPoint);
+			Vec3f point = Vec3f(-2.0f, 0.0f, 0.0f);
+
+			float result = aabb.distance(point);
+			float expected = 2.0f;
+
+			Assert::AreEqual(expected, result, L"Wrong value.", LINE_INFO());
+		}
+
 		
 	};
 }

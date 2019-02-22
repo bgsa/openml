@@ -33,6 +33,16 @@ namespace OpenML
 		///</summary>
 		API_INTERFACE inline Vec3<T> closestPointInAABB(const Vec3<T>& target);
 
+		///<summary>
+		///Get the SQUARED distance from a point and AABB
+		///</summary>
+		API_INTERFACE inline T squaredDistance(const Vec3<T>& target);
+
+		///<summary>
+		///Get the distance from a point and AABB
+		///</summary>
+		API_INTERFACE inline T distance(const Vec3<T>& target);
+
 	};
 
 	typedef AABB<int> AABBi;

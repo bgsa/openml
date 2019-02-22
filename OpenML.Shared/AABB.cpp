@@ -51,6 +51,32 @@ Vec3<T> AABB<T>::closestPointInAABB(const Vec3<T>& target)
 	return result;
 }
 
+template <typename T>
+T AABB<T>::squaredDistance(const Vec3<T>& target)
+{
+	T result = T(0);
+
+	// For each axis count any excess distance outside box extents 
+	for (int axis = 0; axis < 3; axis++)
+	{ 		
+		T v = target[axis];
+		
+		if (v < minPoint[axis])
+			result += (minPoint[axis] - v) * (minPoint[axis] - v);
+		
+		if (v > maxPoint[axis])
+			result += (v - maxPoint[axis]) * (v - maxPoint[axis]);
+	}
+
+	return result;
+}
+
+template <typename T>
+T AABB<T>::distance(const Vec3<T>& target)
+{	
+	return T(sqrt(squaredDistance(target)));
+}
+
 namespace OpenML
 {
 	template class AABB<int>;

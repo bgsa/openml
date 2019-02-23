@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include "Vec3.h"
+#include "Plane3D.h"
 
 namespace OpenML
 {
@@ -24,9 +25,19 @@ namespace OpenML
 		API_INTERFACE inline AABB(Vec3<T> minPoint, T width, T height, T depth);
 
 		///<summary>
+		///Get the center of AABB
+		///</summary>
+		API_INTERFACE inline Vec3<T> center();
+
+		///<summary>
 		///Check whether the AABBs are in contact each other
 		///</summary>
 		API_INTERFACE inline ColisionStatus colisionStatus(const AABB<T>& aabb);
+
+		///<summary>
+		///Check whether the AABB intersect the plane
+		///</summary>
+		API_INTERFACE inline ColisionStatus colisionStatus(const Plane3D<T>& plane);
 
 		///<summary>
 		///Given a point, find the closest point in AABB

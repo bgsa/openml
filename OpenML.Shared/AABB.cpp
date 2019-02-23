@@ -19,6 +19,12 @@ AABB<T>::AABB(Vec3<T> minPoint, T width, T height, T depth)
 }
 
 template <typename T>
+Vec3<T> AABB<T>::center()
+{
+	return (maxPoint + minPoint) * T(0.5);
+}
+
+template <typename T>
 ColisionStatus AABB<T>::colisionStatus(const AABB<T>& aabb) 
 {
 	if (maxPoint[0] < aabb.minPoint[0] || minPoint[0] > aabb.maxPoint[0])
@@ -31,6 +37,32 @@ ColisionStatus AABB<T>::colisionStatus(const AABB<T>& aabb)
 		return ColisionStatus::OUTSIDE;
 
 	return ColisionStatus::INSIDE;
+}
+
+template <typename T>
+ColisionStatus AABB<T>::colisionStatus(const Plane3D<T>& plane)
+{
+	Vec3<T> centerPoint = center(); 
+	T d = plane.getDcomponent();	
+	Vec3<T> halfDistanceFromCenter = maxPoint - centerPoint;
+
+	// Compute the projection interval radius of AABB onto L(t) = center + t * normalPlane
+	double r = 
+		  halfDistanceFromCenter[0] * std::abs(plane.normalVector[0])
+		+ halfDistanceFromCenter[1] * std::abs(plane.normalVector[1])
+		+ halfDistanceFromCenter[2] * std::abs(plane.normalVector[2]);
+	
+	double distanceFromAABB2Plane = std::abs(plane.normalVector.dot(centerPoint) + d);
+	
+	if (isCloseEnough(distanceFromAABB2Plane, r))
+		return ColisionStatus::INLINE;
+
+	// it has intersection when distance falls within [-r,+r] interval 	
+
+	if (distanceFromAABB2Plane <= r)  
+		return ColisionStatus::INSIDE;
+
+	return ColisionStatus::OUTSIDE;
 }
 
 template <typename T>

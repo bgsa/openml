@@ -39,6 +39,18 @@ namespace OpenMLTest
 			}
 		}
 
+		TEST_METHOD(AABB_center_Test)
+		{
+			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+
+			Vec3f result = aabb.center();
+
+			Vec3f expected = Vec3f(5.0f, 5.0f, 5.0f);
+
+			for (size_t i = 0; i < 3; i++)
+				Assert::AreEqual(expected[i], result[i], L"wrong value!.", LINE_INFO());
+		}
+
 		TEST_METHOD(AABB_colisionStatus_AABB_Test)
 		{
 			//Check on X axis
@@ -78,6 +90,25 @@ namespace OpenMLTest
 			aabb2 = AABBf(Vec3f(0.0f, 0.0f, 11.0f), Vec3f(20.0f, 20.0f, 20.0f));
 			result = aabb1.colisionStatus(aabb2);
 			Assert::IsTrue(result == ColisionStatus::OUTSIDE, L"Mistake!.", LINE_INFO());
+		}
+
+		TEST_METHOD(AABB_colisionStatus_Plane_Test)
+		{
+			Plane3Df plane = Plane3Df(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(0.0f, 1.0f, 0.0f));
+			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			ColisionStatus result = aabb.colisionStatus(plane);
+			ColisionStatus expected = ColisionStatus::INLINE;
+			Assert::IsTrue(result == expected, L"Mistake!.", LINE_INFO());
+
+			aabb = AABBf(Vec3f(0.0f, 1.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			result = aabb.colisionStatus(plane);
+			expected = ColisionStatus::OUTSIDE;
+			Assert::IsTrue(result == expected, L"Mistake!.", LINE_INFO());
+
+			aabb = AABBf(Vec3f(0.0f, -1.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			result = aabb.colisionStatus(plane);
+			expected = ColisionStatus::INSIDE;
+			Assert::IsTrue(result == expected, L"Mistake!.", LINE_INFO());
 		}
 
 		TEST_METHOD(AABB_closestPointInAABB_Test1)

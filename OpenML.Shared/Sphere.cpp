@@ -43,7 +43,23 @@ ColisionStatus Sphere<T>::colisionStatus(const Sphere<T>& sphere)  const
 template <typename T>
 ColisionStatus Sphere<T>::colisionStatus(const Plane3D<T> &plane)  const
 {
+	/*
+	Implementation "1"
 	T distanceToPlane = plane.distance(center);
+
+	if (isCloseEnough(distanceToPlane, ray))
+		return ColisionStatus::INLINE;
+
+	if (distanceToPlane > ray)
+		return ColisionStatus::OUTSIDE;
+
+	return ColisionStatus::INSIDE;
+	*/
+
+	// optimized implementation
+
+	T d = plane.getDcomponent();
+	T distanceToPlane = center.dot(plane.normalVector) + d;
 
 	if (isCloseEnough(distanceToPlane, ray))
 		return ColisionStatus::INLINE;

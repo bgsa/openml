@@ -42,7 +42,8 @@ Plane3D<T>::Plane3D(T a, T b, T c, T d)
 template <typename T>
 T Plane3D<T>::getDcomponent() const
 {
-	return (normalVector * T(-1)).dot(point);
+	return -normalVector.dot(point);
+	//return normalVector.dot(point);
 }
 
 template <typename T>

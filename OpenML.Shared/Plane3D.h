@@ -10,12 +10,6 @@ namespace OpenML
 	template <typename T>
 	class Plane3D
 	{
-	private:
-
-		/// <summary>
-		/// Get "D" components from plane equation: ax + by + cz + D = 0
-		/// </summary>
-		inline T getDcomponent() const;
 
 	public:
 		Vec3<T> point;
@@ -37,6 +31,11 @@ namespace OpenML
 		/// Build a plane from equation
 		/// </summary>
 		API_INTERFACE inline Plane3D(T a, T b, T c, T d);
+
+		/// <summary>
+		/// Get "D" components from plane equation: ax + by + cz + D = 0
+		/// </summary>
+		API_INTERFACE inline T getDcomponent() const;
 
 		/// <summary>
 		/// Get the equation of the plane

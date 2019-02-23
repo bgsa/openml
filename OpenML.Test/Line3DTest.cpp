@@ -13,6 +13,41 @@ namespace OpenMLTest
 	{
 	public:
 
+		TEST_METHOD(Line3D_findIntersectionOnSegment_plane_Test1)
+		{
+			Plane3Df plane = Plane3Df(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(-1.0f, 0.0f, 0.0f));
+			Line3Df line = Line3Df(Vec3f{ -2.0f, 2.0f, 0.0f }, Vec3f{ 2.0f, 2.0f, 0.0f });
+
+			Vec3f expected = { 0.0f, 2.0f, 0.0f };
+
+			Vec3f* result = line.findIntersectionOnSegment(plane);
+
+			Assert::IsNotNull(result, L"Point should not be null.", LINE_INFO());
+
+			for (size_t i = 0; i < 3; i++)
+				Assert::IsTrue(expected[i] == result[0][i], L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(Line3D_findIntersectionOnSegment_plane_Test2)
+		{
+			Plane3Df plane = Plane3Df(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(-1.0f, 0.0f, 0.0f));
+			Line3Df line = Line3Df(Vec3f{ -2.0f, 2.0f, 0.0f }, Vec3f{ -4.0f, 2.0f, 0.0f });
+			
+			Vec3f* result = line.findIntersectionOnSegment(plane);
+
+			Assert::IsNull(result, L"Point should not be null.", LINE_INFO());
+		}
+
+		TEST_METHOD(Line3D_findIntersectionOnSegment_plane_Test3)
+		{
+			Plane3Df plane = Plane3Df(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(-1.0f, 0.0f, 0.0f));
+			Line3Df line = Line3Df(Vec3f{ -2.0f, 2.0f, 0.0f }, Vec3f{ -1.0f, 2.0f, 0.0f });
+
+			Vec3f* result = line.findIntersectionOnSegment(plane);
+
+			Assert::IsNull(result, L"Point should not be null.", LINE_INFO());
+		}
+
 		TEST_METHOD(Line3D_findIntersection_Test)
 		{
 			Line3Df line1 = Line3Df( Vec3f{ 6.0f, 8.0f, 4.0f }, Vec3f{ 12.0f, 15.0f, 4.0f });

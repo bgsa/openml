@@ -33,6 +33,12 @@ Line3D<T>::Line3D(T* point1, T* point2)
 }
 
 template <typename T>
+Vec3<T> Line3D<T>::direction() const
+{
+	return point2 - point1;
+}
+
+template <typename T>
 Vec3<T>* Line3D<T>::findIntersection(const Line3D<T>& line2) const
 {
 	Vec3<T> da = point2 - point1;
@@ -72,6 +78,27 @@ Vec3<T> Line3D<T>::closestPointOnTheLine(const Vec3<T>& target) const
 	Vec3<T> closestPoint = point1 + t*lineDirection;
 
 	return closestPoint;
+}
+
+template <typename T>
+Vec3<T>* Line3D<T>::findIntersectionOnSegment(const Plane3D<T>& plane) const 
+{
+	Vec3<T> lineDirection = direction();
+	T d = plane.getDcomponent();
+
+	// Segment = Poin1 + t . (Point2 - Point1)
+	// Plane: (n . X) = d
+	// put the line on the plane, Compute the t value for the directed line ab intersecting the plane.
+	T t = (d - plane.normalVector.dot(point1)) / plane.normalVector.dot(lineDirection);
+	
+	// If t in [0..1] compute and return intersection point 
+	if (t >= T(0) && t <= T(1)) 
+	{
+		Vec3<T> intersectionPoint = point1 + t * lineDirection;
+		return new Vec3<T>(intersectionPoint);
+	}
+
+	return nullptr;
 }
 
 template <typename T>

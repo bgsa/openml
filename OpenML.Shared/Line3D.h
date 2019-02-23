@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vec3.h"
+#include "Plane3D.h"
 
 namespace OpenML 
 {
@@ -30,16 +31,11 @@ namespace OpenML
 		/// Build a line from 2 points (3 numbers for each point)
 		///</summary>
 		API_INTERFACE inline Line3D(T* point1, T* point2);
-		
-		///<summary>
-		/// Find intersections by 3D lines
-		///</summary>
-		API_INTERFACE Vec3<T>* findIntersection(const Line3D<T>& line2) const;
 
 		///<summary>
-		/// Get the closest point in the SEGMENT of line, given an arbitrary point
+		/// Get the direction of line
 		///</summary>
-		API_INTERFACE Vec3<T> closestPointOnTheLine(const Vec3<T>& target) const;
+		API_INTERFACE inline Vec3<T> direction() const;
 
 		///<summary>
 		/// Get the SQUARED distance from SEGMENT of line and an arbitrary point
@@ -50,6 +46,21 @@ namespace OpenML
 		/// Get the SQUARED distance from SEGMENT of line and an arbitrary point
 		///</summary>
 		API_INTERFACE T distance(const Vec3<T>& target) const;
+		
+		///<summary>
+		/// Find intersection of line against another one
+		///</summary>
+		API_INTERFACE Vec3<T>* findIntersection(const Line3D<T>& line2) const;
+
+		///<summary>
+		/// Find intersection SEGMENT of line against a plane
+		///</summary>
+		API_INTERFACE Vec3<T>* findIntersectionOnSegment(const Plane3D<T>& plane) const;
+
+		///<summary>
+		/// Get the closest point in the SEGMENT of line, given an arbitrary point
+		///</summary>
+		API_INTERFACE Vec3<T> closestPointOnTheLine(const Vec3<T>& target) const;
 
 	};
 

@@ -25,6 +25,32 @@ Vec3<T> AABB<T>::center()
 }
 
 template <typename T>
+T AABB<T>::squaredDistance(const Vec3<T>& target)
+{
+	T result = T(0);
+
+	// For each axis count any excess distance outside box extents 
+	for (int axis = 0; axis < 3; axis++)
+	{
+		T v = target[axis];
+
+		if (v < minPoint[axis])
+			result += (minPoint[axis] - v) * (minPoint[axis] - v);
+
+		if (v > maxPoint[axis])
+			result += (v - maxPoint[axis]) * (v - maxPoint[axis]);
+	}
+
+	return result;
+}
+
+template <typename T>
+T AABB<T>::distance(const Vec3<T>& target)
+{
+	return T(sqrt(squaredDistance(target)));
+}
+
+template <typename T>
 ColisionStatus AABB<T>::colisionStatus(const AABB<T>& aabb) 
 {
 	if (maxPoint[0] < aabb.minPoint[0] || minPoint[0] > aabb.maxPoint[0])
@@ -66,6 +92,21 @@ ColisionStatus AABB<T>::colisionStatus(const Plane3D<T>& plane)
 }
 
 template <typename T>
+ColisionStatus AABB<T>::colisionStatus(const Sphere<T>& sphere)
+{
+	T distanceToSphere = squaredDistance(sphere.center);
+	T squaredRay = sphere.ray * sphere.ray;
+	
+	if (isCloseEnough(distanceToSphere, squaredRay))
+		return ColisionStatus::INLINE;
+
+	if (distanceToSphere < squaredRay)
+		return ColisionStatus::INSIDE;
+
+	return ColisionStatus::OUTSIDE;
+}
+
+template <typename T>
 Vec3<T> AABB<T>::closestPointInAABB(const Vec3<T>& target)
 {
 	Vec3<T> result;
@@ -84,29 +125,9 @@ Vec3<T> AABB<T>::closestPointInAABB(const Vec3<T>& target)
 }
 
 template <typename T>
-T AABB<T>::squaredDistance(const Vec3<T>& target)
+Vec3<T> AABB<T>::closestPointInAABB(const Sphere<T>& sphere)
 {
-	T result = T(0);
-
-	// For each axis count any excess distance outside box extents 
-	for (int axis = 0; axis < 3; axis++)
-	{ 		
-		T v = target[axis];
-		
-		if (v < minPoint[axis])
-			result += (minPoint[axis] - v) * (minPoint[axis] - v);
-		
-		if (v > maxPoint[axis])
-			result += (v - maxPoint[axis]) * (v - maxPoint[axis]);
-	}
-
-	return result;
-}
-
-template <typename T>
-T AABB<T>::distance(const Vec3<T>& target)
-{	
-	return T(sqrt(squaredDistance(target)));
+	return closestPointInAABB(sphere.center);
 }
 
 namespace OpenML

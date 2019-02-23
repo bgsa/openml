@@ -111,6 +111,25 @@ namespace OpenMLTest
 			Assert::IsTrue(result == expected, L"Mistake!.", LINE_INFO());
 		}
 
+		TEST_METHOD(AABB_colisionStatus_Sphere_Test)
+		{
+			Spheref sphere = Spheref(Vec3f(0.0f, 20.0f, 0.0f), 10.0f);
+			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			ColisionStatus result = aabb.colisionStatus(sphere);
+			ColisionStatus expected = ColisionStatus::INLINE;
+			Assert::IsTrue(result == expected, L"Mistake!.", LINE_INFO());
+
+			sphere = Spheref(Vec3f(0.0f, 18.0f, 0.0f), 10.0f);
+			result = aabb.colisionStatus(sphere);
+			expected = ColisionStatus::INSIDE;
+			Assert::IsTrue(result == expected, L"Mistake!.", LINE_INFO());
+
+			sphere = Spheref(Vec3f(0.0f, 22.0f, 0.0f), 10.0f);
+			result = aabb.colisionStatus(sphere);
+			expected = ColisionStatus::OUTSIDE;
+			Assert::IsTrue(result == expected, L"Mistake!.", LINE_INFO());
+		}
+
 		TEST_METHOD(AABB_closestPointInAABB_Test1)
 		{
 			Vec3f minPoint = Vec3f(0.0f, 0.0f, 0.0f);

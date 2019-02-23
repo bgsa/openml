@@ -3,6 +3,7 @@
 #include <algorithm>
 #include "Vec3.h"
 #include "Plane3D.h"
+#include "Sphere.h"
 
 namespace OpenML
 {
@@ -30,6 +31,16 @@ namespace OpenML
 		API_INTERFACE inline Vec3<T> center();
 
 		///<summary>
+		///Get the SQUARED distance from a point and AABB
+		///</summary>
+		API_INTERFACE inline T squaredDistance(const Vec3<T>& target);
+
+		///<summary>
+		///Get the distance from a point and AABB
+		///</summary>
+		API_INTERFACE inline T distance(const Vec3<T>& target);
+
+		///<summary>
 		///Check whether the AABBs are in contact each other
 		///</summary>
 		API_INTERFACE inline ColisionStatus colisionStatus(const AABB<T>& aabb);
@@ -40,19 +51,19 @@ namespace OpenML
 		API_INTERFACE inline ColisionStatus colisionStatus(const Plane3D<T>& plane);
 
 		///<summary>
+		///Check whether the AABB intersect the sphere
+		///</summary>
+		API_INTERFACE inline ColisionStatus colisionStatus(const Sphere<T>& sphere);
+		
+		///<summary>
 		///Given a point, find the closest point in AABB
 		///</summary>
 		API_INTERFACE inline Vec3<T> closestPointInAABB(const Vec3<T>& target);
 
 		///<summary>
-		///Get the SQUARED distance from a point and AABB
+		///Given a point, find the closest point in AABB
 		///</summary>
-		API_INTERFACE inline T squaredDistance(const Vec3<T>& target);
-
-		///<summary>
-		///Get the distance from a point and AABB
-		///</summary>
-		API_INTERFACE inline T distance(const Vec3<T>& target);
+		API_INTERFACE inline Vec3<T> closestPointInAABB(const Sphere<T>& sphgere);
 
 	};
 

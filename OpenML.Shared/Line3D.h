@@ -2,6 +2,7 @@
 
 #include "Vec3.h"
 #include "Plane3D.h"
+#include "Sphere.h"
 
 namespace OpenML 
 {
@@ -46,11 +47,36 @@ namespace OpenML
 		/// Get the SQUARED distance from SEGMENT of line and an arbitrary point
 		///</summary>
 		API_INTERFACE T distance(const Vec3<T>& target) const;
+
+		///<summary>
+		/// Check the point is on the line
+		///</summary>
+		API_INTERFACE bool isOnLine(const Vec3<T>& point) const;
+
+		///<summary>
+		/// Check the point is on segment
+		///</summary>
+		API_INTERFACE bool isOnSegment(const Vec3<T>& point) const;
 		
+		///<summary>
+		/// Check the ray has intersection with the sphere
+		///</summary>
+		API_INTERFACE bool hasIntersectionOnRay(const Sphere<T>& sphere) const;
+
 		///<summary>
 		/// Find intersection of line against another one
 		///</summary>
 		API_INTERFACE Vec3<T>* findIntersection(const Line3D<T>& line2) const;
+
+		///<summary>
+		/// Find intersection of line against a phere
+		///</summary>
+		API_INTERFACE DetailedColisionStatus<T> findIntersectionOnRay(const Sphere<T>& sphere) const;
+
+		///<summary>
+		/// Find intersection of SEGMENT of line against a phere
+		///</summary>
+		API_INTERFACE DetailedColisionStatus<T> findIntersectionOnSegment(const Sphere<T>& sphere) const;
 
 		///<summary>
 		/// Find intersection SEGMENT of line against a plane

@@ -35,7 +35,36 @@ Line3D<T>::Line3D(T* point1, T* point2)
 template <typename T>
 Vec3<T> Line3D<T>::direction() const
 {
-	return point2 - point1;
+	return (point2 - point1).normalize();
+}
+
+template <typename T>
+bool Line3D<T>::isOnLine(const Vec3<T>& point) const
+{
+	Vec3<T> lineDirection = point2 - point1;
+
+	bool isOnTheLine = lineDirection.cross(point) == T(0);
+
+	return isOnTheLine;
+}
+
+template <typename T>
+bool Line3D<T>::isOnSegment(const Vec3<T>& point) const
+{
+	Vec3<T> lineDirection = point2 - point1;
+
+	bool isOnTheLine = lineDirection.cross(point) == T(0);
+
+	if (!isOnTheLine)
+		return false;
+	
+	T ab = lineDirection.dot(lineDirection);
+	T ac = lineDirection.dot(point - point1);
+	
+	if (ac < T(0) || ac > ab)
+		return false;
+
+	return (T(0) <= ac && ac <= ab);
 }
 
 template <typename T>
@@ -53,7 +82,7 @@ Vec3<T>* Line3D<T>::findIntersection(const Line3D<T>& line2) const
 		return nullptr;
 
 	T numerador = dc.cross(db).dot(dAcrossB);
-	T denominador = dAcrossB.squared();
+	T denominador = dAcrossB.squaredLength();
 
 	T s = numerador / denominador;
 
@@ -81,9 +110,36 @@ Vec3<T> Line3D<T>::closestPointOnTheLine(const Vec3<T>& target) const
 }
 
 template <typename T>
+bool Line3D<T>::hasIntersectionOnRay(const Sphere<T>& sphere) const
+{	
+	Vec3<T> m = point1 - sphere.center; 
+	T c = m.dot(m) - sphere.ray * sphere.ray;
+	
+	// If there is definitely at least one real root, there must be an intersection 
+	if (c <= T(0)) 
+		return true; 
+	
+	Vec3<T> d = point2 - point1;
+
+	T b = m.dot(d); 
+	
+	// Early exit if ray origin outside sphere and ray pointing away from sphere 
+	if (b > T(0)) 
+		return false; 
+	
+	T disc = b*b - c; 
+	
+	// A negative discriminant corresponds to ray missing sphere 
+	if (disc < T(0)) 
+		return false; // Now ray must hit sphere 
+	
+	return true;
+}
+
+template <typename T>
 Vec3<T>* Line3D<T>::findIntersectionOnSegment(const Plane3D<T>& plane) const 
 {
-	Vec3<T> lineDirection = direction();
+	Vec3<T> lineDirection = point2 - point1;
 	T d = plane.getDcomponent();
 
 	// Segment = Poin1 + t . (Point2 - Point1)
@@ -99,6 +155,66 @@ Vec3<T>* Line3D<T>::findIntersectionOnSegment(const Plane3D<T>& plane) const
 	}
 
 	return nullptr;
+}
+
+template <typename T>
+DetailedColisionStatus<T> Line3D<T>::findIntersectionOnRay(const Sphere<T>& sphere) const
+{
+	Vec3<T> lineDirection = direction();
+	Vec3<T> point1ToSphere = point1 - sphere.center;
+
+	T b = point1ToSphere.dot(lineDirection);
+	T c = point1ToSphere.dot(point1ToSphere) - (sphere.ray * sphere.ray);
+	
+	// Exit if r’s origin outside sphere (c > 0) and ray pointing away from sphere (b > 0) 
+	if (c > T(0) && b > T(0))
+		return DetailedColisionStatus<T>(ColisionStatus::OUTSIDE); 
+	
+	T discriminant = b * b - c;    // d = b^2 - c
+	
+	// A negative discriminant corresponds to ray missing sphere 
+	if (discriminant < T(0)) // the quadratic equation has not real root
+		return DetailedColisionStatus<T>(ColisionStatus::OUTSIDE);
+
+	T sqrtDisctiminant = T(std::sqrt(discriminant));
+
+	// Ray now found to intersect sphere, compute smallest t value of intersection 
+	T t1 = -b - sqrtDisctiminant;   // -b - sqrt(b^2 - c)
+
+	// If t is negative, ray started inside sphere so clamp t to zero 	
+	if (t1 < T(0))
+		t1 = T(0);
+
+	Vec3<T> intersectionPoint1 = point1 + t1 * lineDirection;
+	
+	if (isCloseEnough(discriminant, T(0))) 
+		return DetailedColisionStatus<T>(ColisionStatus::INLINE, intersectionPoint1);
+
+	// discriminant > T(0)  =>  the quadratic equation has 2 real root, then the ray intersect in 2 points
+
+	// Ray now found to intersect sphere in 2 points, compute bigger t value of intersection 
+	T t2 = -b + sqrtDisctiminant;   // -b + sqrt(b^2 - c)
+	
+	Vec3<T> intersectionPoint2 = point1 + t2 * lineDirection;
+
+	return DetailedColisionStatus<T>(ColisionStatus::INSIDE, intersectionPoint1, intersectionPoint2);
+}
+
+template <typename T>
+DetailedColisionStatus<T> Line3D<T>::findIntersectionOnSegment(const Sphere<T>& sphere) const
+{
+	DetailedColisionStatus<T> colision = findIntersectionOnRay(sphere);
+
+	if (colision.status == ColisionStatus::OUTSIDE)
+		return colision;
+
+	if (!isOnSegment(colision.points[0]))
+		return DetailedColisionStatus<T>(ColisionStatus::OUTSIDE);
+
+	if (!isOnSegment(colision.points[1]))
+		return DetailedColisionStatus<T>(ColisionStatus::INSIDE, colision.points[0]);
+
+	return colision;
 }
 
 template <typename T>

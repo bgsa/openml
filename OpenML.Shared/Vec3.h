@@ -49,14 +49,14 @@ namespace OpenML
 		API_INTERFACE inline T* getValues();
 
 		/// <summary>
+		/// Get the squared of the vector. It means the Vector Pow2 -> x^2 + y^2 + z^2
+		/// </summary>
+		API_INTERFACE inline T squaredLength() const;
+
+		/// <summary>
 		/// Get the length / norma from the vector -> ||v||
 		/// </summary>
 		API_INTERFACE inline T length() const;
-
-		/// <summary>
-		/// Get the squared of the vector. It means the Vector Pow2 -> x^2 + y^2 + z^2
-		/// </summary>
-		API_INTERFACE inline T squared() const;
 
 		/// <summary>
 		/// Get the maximun value in the vector
@@ -155,6 +155,11 @@ namespace OpenML
 		/// Calculate the distance (Euclidean) from this vector to another one
 		/// </summary>
 		API_INTERFACE inline T distance(const Vec3<T>& vector) const;
+
+		/// <summary>
+		/// Calculate the SIGNED distance (Euclidean) from this vector to another one
+		/// </summary>
+		API_INTERFACE inline T signedDistance(const Vec3<T>& vector) const;
 		
 		/// <summary>
 		/// Get the fractionals values from the vector (component-wise)
@@ -253,6 +258,11 @@ namespace OpenML
 		/// Compare this vector to another one. Compare each component.
 		/// </summary>
 		API_INTERFACE inline bool operator!=(const Vec3<T>& vector) const;
+
+		/// <summary>
+		/// Compare this vector to scalar (for each component)
+		/// </summary>
+		API_INTERFACE inline bool operator!=(T value) const;
 
 		/// <summary>
 		/// Get a index from the vector

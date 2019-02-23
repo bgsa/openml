@@ -48,15 +48,15 @@ T* Vec3<T>::getValues()
 }
 
 template <typename T>
-T Vec3<T>::length() const
+T Vec3<T>::squaredLength() const
 {
-	return T(sqrt(squared()));
+	return (values[0] * values[0]) + (values[1] * values[1]) + (values[2] * values[2]);
 }
 
 template <typename T>
-T Vec3<T>::squared() const
+T Vec3<T>::length() const
 {
-	return (values[0] * values[0]) + (values[1] * values[1]) + (values[2] * values[2]);
+	return T(sqrt(squaredLength()));
 }
 
 template <typename T>
@@ -251,6 +251,12 @@ T Vec3<T>::distance(const Vec3<T>& vector) const
 }
 
 template <typename T>
+T Vec3<T>::signedDistance(const Vec3<T>& point) const
+{
+	return (*this - point).dot(point);
+}
+
+template <typename T>
 Vec3<T> Vec3<T>::fractional()
 {
 	return Vec3<T> {
@@ -418,6 +424,14 @@ bool Vec3<T>::operator!=(const Vec3<T>& vector) const
 	return values[0] != vector[0]
 		|| values[1] != vector[1]
 		|| values[2] != vector[2];
+}
+
+template <typename T>
+bool Vec3<T>::operator!=(T value) const
+{
+	return values[0] != value
+		&& values[1] != value
+		&& values[2] != value;
 }
 
 template <typename T>

@@ -41,6 +41,14 @@ namespace OpenML
 	}
 
 	///<summary>
+	///Check the numbers have the same sign
+	///</summary>
+	inline bool API_INTERFACE sameSign(int value1, int value2)
+	{
+		return (value1 ^ value2) >= 0;
+	}
+
+	///<summary>
 	///Check the number is power of 2
 	///</summary>
 	template <typename T>

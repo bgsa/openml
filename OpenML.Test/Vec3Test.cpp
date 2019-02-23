@@ -67,7 +67,7 @@ namespace OpenMLTest
 			Vec3f vector = { 2.0f, 5.0f, -9.0f };
 			float expected = 4.0f + 25.0f + 81.0f;
 
-			float result = vector.squared();
+			float result = vector.squaredLength();
 
 			Assert::AreEqual(expected, result, L"Length value wrong.", LINE_INFO());
 		}

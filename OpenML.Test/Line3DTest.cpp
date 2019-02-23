@@ -13,6 +13,182 @@ namespace OpenMLTest
 	{
 	public:
 
+		TEST_METHOD(Line3D_hasIntersectionOnRay_sphere_Test1)
+		{
+			Spheref sphere = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
+			Line3Df line = Line3Df(Vec3f{ -20.0f, 0.0f, 0.0f }, Vec3f{ 20.0f, 0.0f, 0.0f });
+			
+			bool result = line.hasIntersectionOnRay(sphere);
+
+			Assert::IsTrue(result, L"Ther should have a intersection.", LINE_INFO());
+		}
+
+		TEST_METHOD(Line3D_hasIntersectionOnRay_sphere_Test2)
+		{
+			Spheref sphere = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
+			Line3Df line = Line3Df(Vec3f{ 15.0f, 0.0f, 0.0f }, Vec3f{ 20.0f, 0.0f, 0.0f });
+
+			bool result = line.hasIntersectionOnRay(sphere);
+
+			Assert::IsFalse(result, L"Ther should NOT have a intersection.", LINE_INFO());
+		}
+
+		TEST_METHOD(Line3D_hasIntersectionOnRay_sphere_Test3)
+		{
+			Spheref sphere = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
+			Line3Df line = Line3Df(Vec3f{ -15.0f, 0.0f, 0.0f }, Vec3f{ -11.0f, 0.0f, 0.0f });
+
+			bool result = line.hasIntersectionOnRay(sphere);
+
+			Assert::IsTrue(result, L"Ther SHOULD have a intersection because it is a RAY.", LINE_INFO());
+		}
+
+		TEST_METHOD(Line3D_isOnSegment_point_Test1)
+		{
+			Line3Df line = Line3Df(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 10.0f, 0.0f, 0.0f });
+			Vec3f point = Vec3f(5.0f, 0.0f, 0.0f);
+
+			bool result = line.isOnSegment(point);
+
+			Assert::IsTrue(result, L"Point should be on segment.", LINE_INFO());
+		}
+
+		TEST_METHOD(Line3D_isOnSegment_point_Test2)
+		{
+			Line3Df line = Line3Df(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 10.0f, 0.0f, 0.0f });
+			Vec3f point = Vec3f(-1.0f, 0.0f, 0.0f);
+
+			bool result = line.isOnSegment(point);
+
+			Assert::IsFalse(result, L"Point should NOT be on segment.", LINE_INFO());
+		}
+
+		TEST_METHOD(Line3D_isOnSegment_point_Test3)
+		{
+			Line3Df line = Line3Df(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 10.0f, 0.0f, 0.0f });
+			Vec3f point = Vec3f(11.0f, 0.0f, 0.0f);
+
+			bool result = line.isOnSegment(point);
+
+			Assert::IsFalse(result, L"Point should NOT be on segment.", LINE_INFO());
+		}
+
+		TEST_METHOD(Line3D_findIntersectionOnSegment_sphere_Test1)
+		{
+			Spheref sphere = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
+			Line3Df line = Line3Df(Vec3f{ -20.0f, 0.0f, 0.0f }, Vec3f{ 20.0f, 0.0f, 0.0f });
+
+			Vec3f expectedPoint1 = { -10.0f, 0.0f, 0.0f };
+			Vec3f expectedPoint2 = { 10.0f, 0.0f, 0.0f };
+
+			DetailedColisionStatus<float> result = line.findIntersectionOnSegment(sphere);
+
+			Assert::IsTrue(result.status == ColisionStatus::INSIDE, L"There should be 2 intersection points.", LINE_INFO());
+			Assert::AreEqual(result.pointsCount, 2, L"There should be 2 intersection points.", LINE_INFO());
+
+			for (size_t i = 0; i < 3; i++)
+			{
+				Assert::AreEqual(expectedPoint1[i], result.points[0][i], L"Wrong value.", LINE_INFO());
+				Assert::AreEqual(expectedPoint2[i], result.points[1][i], L"Wrong value.", LINE_INFO());
+			}
+		}
+
+		TEST_METHOD(Line3D_findIntersectionOnSegment_sphere_Test2)
+		{
+			Spheref sphere = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
+			Line3Df line = Line3Df(Vec3f{ -20.0f, 0.0f, 0.0f }, Vec3f{ 0.0f, 0.0f, 0.0f });
+
+			Vec3f expectedPoint1 = { -10.0f, 0.0f, 0.0f };
+
+			DetailedColisionStatus<float> result = line.findIntersectionOnSegment(sphere);
+
+			Assert::IsTrue(result.status == ColisionStatus::INSIDE, L"There should be 1 intersection points.", LINE_INFO());
+			Assert::AreEqual(result.pointsCount, 1, L"There should be 1 intersection points.", LINE_INFO());
+
+			for (size_t i = 0; i < 3; i++)
+				Assert::AreEqual(expectedPoint1[i], result.points[0][i], L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(Line3D_findIntersectionOnSegment_sphere_Test3)
+		{
+			Spheref sphere = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
+			Line3Df line = Line3Df(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 20.0f, 0.0f, 0.0f });
+
+			Vec3f expectedPoint1 = { 0.0f, 0.0f, 0.0f };
+			Vec3f expectedPoint2 = { 10.0f, 0.0f, 0.0f };
+
+			DetailedColisionStatus<float> result = line.findIntersectionOnSegment(sphere);
+
+			Assert::IsTrue(result.status == ColisionStatus::INSIDE, L"There should be 2 intersection points.", LINE_INFO());
+			Assert::AreEqual(result.pointsCount, 2, L"There should be 2 intersection points.", LINE_INFO());
+
+			for (size_t i = 0; i < 3; i++)
+			{
+				Assert::AreEqual(expectedPoint1[i], result.points[0][i], L"Wrong value.", LINE_INFO());
+				Assert::AreEqual(expectedPoint2[i], result.points[1][i], L"Wrong value.", LINE_INFO());
+			}
+		}
+
+		TEST_METHOD(Line3D_findIntersectionOnSegment_sphere_Test4)
+		{
+			Spheref sphere = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
+			Line3Df line = Line3Df(Vec3f{ -20.0f, 0.0f, 0.0f }, Vec3f{ -12.0f, 0.0f, 0.0f });
+
+			DetailedColisionStatus<float> result = line.findIntersectionOnSegment(sphere);
+
+			Assert::IsTrue(result.status == ColisionStatus::OUTSIDE, L"There should be 0 intersection points.", LINE_INFO());
+			Assert::AreEqual(result.pointsCount, 0, L"There should be 0 intersection points.", LINE_INFO());
+			Assert::IsNull(result.points, L"There should be 0 intersection points.", LINE_INFO());
+		}
+
+		TEST_METHOD(Line3D_findIntersectionOnRay_sphere_Test1)
+		{
+			Spheref sphere = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
+			Line3Df line = Line3Df(Vec3f{ -20.0f, 0.0f, 0.0f }, Vec3f{ -12.0f, 0.0f, 0.0f });
+
+			Vec3f expectedPoint1 = { -10.0f, 0.0f, 0.0f };
+			Vec3f expectedPoint2 = {  10.0f, 0.0f, 0.0f };
+
+			DetailedColisionStatus<float> result = line.findIntersectionOnRay(sphere);
+
+			Assert::IsTrue(result.status == ColisionStatus::INSIDE, L"There should be 2 intersection points.", LINE_INFO());
+			Assert::AreEqual(result.pointsCount, 2, L"There should be 2 intersection points.", LINE_INFO());
+
+			for (size_t i = 0; i < 3; i++) 
+			{
+				Assert::AreEqual(expectedPoint1[i], result.points[0][i], L"Wrong value.", LINE_INFO());
+				Assert::AreEqual(expectedPoint2[i], result.points[1][i], L"Wrong value.", LINE_INFO());
+			}
+		}
+
+		TEST_METHOD(Line3D_findIntersectionOnRay_sphere_Test2)
+		{
+			Spheref sphere = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
+			Line3Df line = Line3Df(Vec3f{ -20.0f, 10.0f, 0.0f }, Vec3f{ -12.0f, 10.0f, 0.0f });
+
+			Vec3f expectedPoint1 = { 0.0f, 10.0f, 0.0f };
+
+			DetailedColisionStatus<float> result = line.findIntersectionOnRay(sphere);
+
+			Assert::IsTrue(result.status == ColisionStatus::INLINE, L"There should be 1 intersection points (tangent).", LINE_INFO());
+			Assert::AreEqual(result.pointsCount, 1, L"There should be 2 intersection points.", LINE_INFO());
+
+			for (size_t i = 0; i < 3; i++)
+				Assert::AreEqual(expectedPoint1[i], result.points[0][i], L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(Line3D_findIntersectionOnRay_sphere_Test3)
+		{
+			Spheref sphere = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
+			Line3Df line = Line3Df(Vec3f{ -20.0f, 11.0f, 0.0f }, Vec3f{ -12.0f, 11.0f, 0.0f });
+			
+			DetailedColisionStatus<float> result = line.findIntersectionOnRay(sphere);
+
+			Assert::IsTrue(result.status == ColisionStatus::OUTSIDE, L"There should be 0 intersection.", LINE_INFO());
+			Assert::AreEqual(result.pointsCount, 0, L"There should be 0 intersection points.", LINE_INFO());
+			Assert::IsNull(result.points, L"There should be 0 intersection points.", LINE_INFO());
+		}
+
 		TEST_METHOD(Line3D_findIntersectionOnSegment_plane_Test1)
 		{
 			Plane3Df plane = Plane3Df(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(-1.0f, 0.0f, 0.0f));

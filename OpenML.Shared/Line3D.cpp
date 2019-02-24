@@ -218,6 +218,47 @@ DetailedColisionStatus<T> Line3D<T>::findIntersectionOnSegment(const Sphere<T>& 
 }
 
 template <typename T>
+DetailedColisionStatus<T> Line3D<T>::findIntersectionOnRay(const AABB<T>& aabb) const
+{
+	T tmin = T(0);
+	T tmax = T(std::numeric_limits<double>().max());
+	Vec3<T> lineDirection = direction();
+
+	// For all three slabs (planes on AABB)
+	for (int i = 0; i < 3; i++) 
+	{ 
+		if (std::abs(lineDirection[i]) < DBL_EPSILON)
+		{ 
+			// Ray is parallel to slab! No hit if origin not within slab 
+			if (point1[i] < aabb.minPoint[i] || point1[i] > aabb.maxPoint[i])
+				return DetailedColisionStatus<T>(ColisionStatus::OUTSIDE);
+		} 
+		else 
+		{ 
+			// Compute intersection t value of ray with near and far plane of slab 
+			T ood = T(1) / lineDirection[i];
+			T t1 = (aabb.minPoint[i] - point1[i]) * ood;
+			T t2 = (aabb.maxPoint[i] - point1[i]) * ood;
+			
+			// Make t1 be intersection with near plane, t2 with far plane 
+			if (t1 > t2) 
+				std::swap(t1, t2); 
+			
+			// Compute the intersection of slab intersection intervals 
+			tmin = std::max(tmin, t1); 
+			tmax = std::min(tmax, t2); 
+			
+			// Exit with no collision as soon as slab intersection becomes empty 
+			if (tmin > tmax) 
+				return DetailedColisionStatus<T>(ColisionStatus::OUTSIDE); 
+		} 	
+	} 
+	
+	// Ray intersects all 3 slabs. Return point (q) and intersection t value (tmin) 
+	return DetailedColisionStatus<T>(ColisionStatus::INSIDE, point1 + tmin * lineDirection, point1 + tmax * lineDirection);
+}
+
+template <typename T>
 T Line3D<T>::squaredDistance(const Vec3<T>& target) const
 {
 	//Returns the squared distance between point and segment point1-point2

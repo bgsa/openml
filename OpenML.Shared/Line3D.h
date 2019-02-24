@@ -3,6 +3,7 @@
 #include "Vec3.h"
 #include "Plane3D.h"
 #include "Sphere.h"
+#include "AABB.h"
 
 namespace OpenML 
 {
@@ -77,6 +78,11 @@ namespace OpenML
 		/// Find intersection of SEGMENT of line against a phere
 		///</summary>
 		API_INTERFACE DetailedColisionStatus<T> findIntersectionOnSegment(const Sphere<T>& sphere) const;
+
+		///<summary>
+		/// Find intersection of ray against a AABB
+		///</summary>
+		API_INTERFACE DetailedColisionStatus<T> findIntersectionOnRay(const AABB<T>& aabb) const;
 
 		///<summary>
 		/// Find intersection SEGMENT of line against a plane

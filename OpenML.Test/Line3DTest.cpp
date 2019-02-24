@@ -3,6 +3,7 @@
 #include "CppUnitTest.h"
 #include <Vec3.h>
 #include <Line3D.h>
+#include <AABB.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace OpenML;
@@ -12,6 +13,91 @@ namespace OpenMLTest
 	TEST_CLASS(Line3DTest)
 	{
 	public:
+
+		TEST_METHOD(Line3D_findIntersectionOnRay_AABB_Test1)
+		{
+			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			Line3Df line = Line3Df(Vec3f{ -5.0f, 5.0f, 6.0f }, Vec3f{ 20.0f, 5.0f, 6.0f });
+
+			DetailedColisionStatus<float> result = line.findIntersectionOnRay(aabb);
+
+			Vec3f expectedPoint1 = Vec3f(0.0f, 5.0f, 6.0f);
+			Vec3f expectedPoint2 = Vec3f(10.0f, 5.0f, 6.0f);
+
+			Assert::IsTrue(result.status == ColisionStatus::INSIDE, L"Ther should have a intersection.", LINE_INFO());
+			Assert::AreEqual(2, result.pointsCount, L"Ther should have a intersection.", LINE_INFO());
+			
+			for (size_t i = 0; i < 3; i++) 
+			{
+				Assert::AreEqual(expectedPoint1[i], result.points[0][i], L"Wrong value.", LINE_INFO());
+				Assert::AreEqual(expectedPoint2[i], result.points[1][i], L"Wrong value.", LINE_INFO());
+			}
+		}
+
+		TEST_METHOD(Line3D_findIntersectionOnRay_AABB_Test2)
+		{
+			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			Line3Df line = Line3Df(Vec3f{ -5.0f, 15.0f, 6.0f }, Vec3f{ 20.0f, 15.0f, 6.0f });
+
+			DetailedColisionStatus<float> result = line.findIntersectionOnRay(aabb);
+			
+			Assert::IsTrue(result.status == ColisionStatus::OUTSIDE, L"Ther should NOT have a intersection.", LINE_INFO());
+		}
+
+		TEST_METHOD(Line3D_findIntersectionOnRay_AABB_Test3)
+		{
+			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			Line3Df line = Line3Df(Vec3f{ -5.0f, 5.0f, 6.0f }, Vec3f{ 10.0f, 25.0f, 6.0f });
+
+			DetailedColisionStatus<float> result = line.findIntersectionOnRay(aabb);
+
+			Assert::IsTrue(result.status == ColisionStatus::OUTSIDE, L"Ther should NOT have a intersection.", LINE_INFO());
+		}
+
+		TEST_METHOD(Line3D_findIntersectionOnRay_AABB_Test4)
+		{
+			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			Line3Df line = Line3Df(Vec3f{ 20.0f, 5.0f, 6.0f }, Vec3f{ 30.0f, 5.0f, 6.0f });
+
+			DetailedColisionStatus<float> result = line.findIntersectionOnRay(aabb);
+
+			Assert::IsTrue(result.status == ColisionStatus::OUTSIDE, L"Ther should NOT have a intersection.", LINE_INFO());
+		}
+
+		TEST_METHOD(Line3D_findIntersectionOnRay_AABB_Test5)
+		{
+			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			Line3Df line = Line3Df(Vec3f{ 20.0f, 5.0f, 6.0f }, Vec3f{ -5.0f, 5.0f, 6.0f });
+
+			DetailedColisionStatus<float> result = line.findIntersectionOnRay(aabb);
+
+			Vec3f expectedPoint1 = Vec3f(10.0f, 5.0f, 6.0f);
+
+			Assert::IsTrue(result.status == ColisionStatus::INSIDE, L"Ther should have a intersection.", LINE_INFO());
+			Assert::AreEqual(2, result.pointsCount, L"Ther should have a intersection.", LINE_INFO());
+
+			for (size_t i = 0; i < 3; i++)
+				Assert::AreEqual(expectedPoint1[i], result.points[0][i], L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(Line3D_findIntersectionOnRay_AABB_Test6)
+		{
+			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			Line3Df line = Line3Df(Vec3f{ 3.0f, 3.0f, 6.0f }, Vec3f{ 15.0f, 3.0f, 6.0f });
+
+			DetailedColisionStatus<float> result = line.findIntersectionOnRay(aabb);
+
+			Vec3f expectedPoint1 = Vec3f(3.0f, 3.0f, 6.0f);
+			Vec3f expectedPoint2 = Vec3f(10.0f, 3.0f, 6.0f);
+
+			Assert::IsTrue(result.status == ColisionStatus::INSIDE, L"Ther should have a intersection.", LINE_INFO());
+			Assert::AreEqual(2, result.pointsCount, L"Ther should have a intersection.", LINE_INFO());
+
+			for (size_t i = 0; i < 3; i++) {
+				Assert::AreEqual(expectedPoint1[i], result.points[0][i], L"Wrong value.", LINE_INFO());
+				Assert::AreEqual(expectedPoint2[i], result.points[1][i], L"Wrong value.", LINE_INFO());
+			}
+		}
 
 		TEST_METHOD(Line3D_hasIntersectionOnRay_sphere_Test1)
 		{

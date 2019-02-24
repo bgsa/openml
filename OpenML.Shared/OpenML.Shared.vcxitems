@@ -34,6 +34,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Triangle2D.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Vec2.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Vec2List.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Vec3List.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Vec4.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GlobalHeader.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)OpenML.h" />
@@ -56,6 +57,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Vec2.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Vec2List.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Vec3.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Vec3List.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Vec4.cpp" />
   </ItemGroup>
 </Project>

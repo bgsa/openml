@@ -145,6 +145,9 @@ namespace OpenML
 #include "Vec3.h"
 #include "Vec4.h"
 
+#include "Vec2List.h"
+#include "Vec3List.h"
+
 #include "Mat.h"
 #include "Mat2.h"
 #include "Mat3.h"

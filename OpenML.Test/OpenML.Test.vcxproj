@@ -304,6 +304,7 @@
     <ClCompile Include="SystemOfLinearEquationsTest.cpp" />
     <ClCompile Include="Triangle2DTest.cpp" />
     <ClCompile Include="Vec2Test.cpp" />
+    <ClCompile Include="Vec3ListTest.cpp" />
     <ClCompile Include="Vec3Test.cpp" />
     <ClCompile Include="Vec4Test.cpp" />
   </ItemGroup>

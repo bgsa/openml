@@ -1,0 +1,56 @@
+#pragma once
+
+#include "Vec3.h"
+#include <limits>
+
+namespace OpenML
+{
+
+	template <typename T>
+	class Vec3List
+	{
+	public:
+		Vec3<T>* points;
+		int count = 0;
+
+		///<summary>
+		///Default Constructor
+		///</summary>
+		Vec3List(Vec3<T>* points, size_t count);
+		
+		///<summary>
+		///Find the extreme points along the direction
+		///Return the INDEXES of point list
+		///</summary>
+		API_INTERFACE int* findExtremePointsAlongDirection(const Vec3<T>& direction) const;
+
+		///<summary>
+		///Find the extreme points along the axis X
+		///Return the INDEXES of point list
+		///</summary>
+		API_INTERFACE int* findExtremePointsAlongAxisX() const;
+
+		///<summary>
+		///Find the extreme points along the axis X
+		///Return the INDEXES of point list
+		///</summary>
+		API_INTERFACE int* findExtremePointsAlongAxisY() const;
+
+		///<summary>
+		///Find the extreme points along the axis X
+		///Return the INDEXES of point list
+		///</summary>
+		API_INTERFACE int* findExtremePointsAlongAxisZ() const;
+
+		///<summary>
+		///Destructor
+		///</summary>
+		~Vec3List();
+
+	};
+
+	//typedef Vec3List<int> Vec3iList;
+	//typedef Vec3List<float> Vec3fList;
+	//typedef Vec3List<double> Vec3List;
+
+}

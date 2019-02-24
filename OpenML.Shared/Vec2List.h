@@ -3,6 +3,7 @@
 #include "Vec2.h"
 #include <stack>
 #include <limits>
+#include <vector>
 
 namespace OpenML 
 {

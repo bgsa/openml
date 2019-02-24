@@ -85,6 +85,11 @@ namespace OpenML
 		API_INTERFACE DetailedColisionStatus<T> findIntersectionOnRay(const AABB<T>& aabb) const;
 
 		///<summary>
+		/// Find intersection of SEGMENT of line against a AABB
+		///</summary>
+		API_INTERFACE ColisionStatus hasIntersectionOnSegment(const AABB<T>& aabb) const;
+
+		///<summary>
 		/// Find intersection SEGMENT of line against a plane
 		///</summary>
 		API_INTERFACE Vec3<T>* findIntersectionOnSegment(const Plane3D<T>& plane) const;

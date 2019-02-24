@@ -259,6 +259,58 @@ DetailedColisionStatus<T> Line3D<T>::findIntersectionOnRay(const AABB<T>& aabb) 
 }
 
 template <typename T>
+ColisionStatus Line3D<T>::hasIntersectionOnSegment(const AABB<T>& aabb) const
+{
+	T epsilon = T(std::numeric_limits<double>().epsilon());
+
+	/*
+	Vec3<T> c = (aabb.minPoint + aabb.maxPoint) * T(0.5);	// Box center-point
+	Vec3<T> e = aabb.maxPoint - c; 	// Box halflength extents 
+	Vec3<T> m = (point1 + point2) * T(0.5); 	// Segment midpoint 
+	Vec3<T> d = point2 - m;	// Segment halflength vector 
+	m = m - c; 
+	*/
+	
+	Vec3<T> halfLengthExtends = aabb.maxPoint - aabb.minPoint;
+	Vec3<T> halfLengthVector = point2 - point1;
+	Vec3<T> lineCenterPoint = point1 + point2 - aabb.minPoint - aabb.maxPoint;
+
+	
+	// Translate box and segment to origin 	
+	// Try world coordinate axes as separating axes 
+	T adx = std::abs(halfLengthVector[0]);
+	if (std::abs(lineCenterPoint[0]) > halfLengthExtends[0] + adx)
+		return ColisionStatus::OUTSIDE;
+	
+	T ady = std::abs(halfLengthVector[1]);
+	if (std::abs(lineCenterPoint[1]) > halfLengthExtends[1] + ady)
+		return ColisionStatus::OUTSIDE;
+	
+	T adz = std::abs(halfLengthVector[2]);
+	if (std::abs(lineCenterPoint[2]) > halfLengthExtends[2] + adz)
+		return ColisionStatus::OUTSIDE;
+	
+	// Add in an epsilon term to counteract arithmetic errors when segment is 
+	// (near) parallel to a coordinate axis (see text for detail) 
+	adx += epsilon;
+	ady += epsilon;
+	adz += epsilon;
+
+	// Try cross products of segment direction vector with coordinate axes 
+	if (std::abs(lineCenterPoint[1] * halfLengthVector[2] - lineCenterPoint[2] * halfLengthVector[1]) > halfLengthExtends[1] * adz + halfLengthExtends[2] * ady)
+		return ColisionStatus::OUTSIDE;
+	
+	if (std::abs(lineCenterPoint[2] * halfLengthVector[0] - lineCenterPoint[0] * halfLengthVector[2]) > halfLengthExtends[0] * adz + halfLengthExtends[2] * adx)
+		return ColisionStatus::OUTSIDE;
+	
+	if (std::abs(lineCenterPoint[0] * halfLengthVector[1] - lineCenterPoint[1] * halfLengthVector[0]) > halfLengthExtends[0] * ady + halfLengthExtends[1] * adx)
+		return ColisionStatus::OUTSIDE;
+	
+	// No separating axis found; segment must be overlapping AABB 
+	return ColisionStatus::INSIDE;
+}
+
+template <typename T>
 T Line3D<T>::squaredDistance(const Vec3<T>& target) const
 {
 	//Returns the squared distance between point and segment point1-point2

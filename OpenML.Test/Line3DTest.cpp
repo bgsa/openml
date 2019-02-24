@@ -14,6 +14,56 @@ namespace OpenMLTest
 	{
 	public:
 
+		TEST_METHOD(Line3D_hasIntersectionOnSegment_AABB_Test1)
+		{
+			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			Line3Df line = Line3Df(Vec3f{ -5.0f, 5.0f, 6.0f }, Vec3f{ 20.0f, 5.0f, 6.0f });
+
+			ColisionStatus result = line.hasIntersectionOnSegment(aabb);
+
+			Assert::IsTrue(result == ColisionStatus::INSIDE, L"Ther should have a intersection.", LINE_INFO());			
+		}
+
+		TEST_METHOD(Line3D_hasIntersectionOnSegment_AABB_Test2)
+		{
+			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			Line3Df line = Line3Df(Vec3f{ -5.0f, 5.0f, 6.0f }, Vec3f{ -1.0f, 5.0f, 6.0f });
+
+			ColisionStatus result = line.hasIntersectionOnSegment(aabb);
+
+			Assert::IsTrue(result == ColisionStatus::OUTSIDE, L"Ther should have a intersection.", LINE_INFO());
+		}
+
+		TEST_METHOD(Line3D_hasIntersectionOnSegment_AABB_Test3)
+		{
+			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			Line3Df line = Line3Df(Vec3f{ 5.0f, 5.0f, 6.0f }, Vec3f{ 2.0f, 5.0f, 6.0f });
+
+			ColisionStatus result = line.hasIntersectionOnSegment(aabb);
+
+			Assert::IsTrue(result == ColisionStatus::INSIDE, L"Ther should have a intersection.", LINE_INFO());
+		}
+
+		TEST_METHOD(Line3D_hasIntersectionOnSegment_AABB_Test4)
+		{
+			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			Line3Df line = Line3Df(Vec3f{ 11.0f, 5.0f, 6.0f }, Vec3f{ 20.0f, 5.0f, 6.0f });
+
+			ColisionStatus result = line.hasIntersectionOnSegment(aabb);
+
+			Assert::IsTrue(result == ColisionStatus::OUTSIDE, L"Ther should have a intersection.", LINE_INFO());
+		}
+
+		TEST_METHOD(Line3D_hasIntersectionOnSegment_AABB_Test5)
+		{
+			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			Line3Df line = Line3Df(Vec3f{ -1.0f, 0.0f, 0.0f }, Vec3f{ -1.0f, 30.0f, 0.0f });
+
+			ColisionStatus result = line.hasIntersectionOnSegment(aabb);
+
+			Assert::IsTrue(result == ColisionStatus::OUTSIDE, L"Ther should have a intersection.", LINE_INFO());
+		}
+
 		TEST_METHOD(Line3D_findIntersectionOnRay_AABB_Test1)
 		{
 			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));

@@ -265,6 +265,13 @@ bool Vec2<T>::operator!=(const Vec2<T>& vector) const
 }
 
 template <typename T>
+bool Vec2<T>::operator!=(T value) const
+{
+	return values[0] != value
+		|| values[1] != value;
+}
+
+template <typename T>
 T& Vec2<T>::operator[](int index)
 {
 	assert(index >= 0 && index < VEC2_SIZE);

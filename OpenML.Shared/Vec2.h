@@ -175,6 +175,11 @@ namespace OpenML
 		API_INTERFACE inline bool operator!=(const Vec2<T>& vector) const;
 
 		/// <summary>
+		/// Compare this vector to scalar (for each component)
+		/// </summary>
+		API_INTERFACE inline bool operator!=(T value) const;
+
+		/// <summary>
 		/// Get a index from the vector
 		/// <summary>
 		API_INTERFACE inline T& operator[](int index);

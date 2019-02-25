@@ -430,8 +430,8 @@ template <typename T>
 bool Vec3<T>::operator!=(T value) const
 {
 	return values[0] != value
-		&& values[1] != value
-		&& values[2] != value;
+		|| values[1] != value
+		|| values[2] != value;
 }
 
 template <typename T>

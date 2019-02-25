@@ -211,7 +211,7 @@ namespace OpenMLTest
 				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
 		}
 
-		TEST_METHOD(Vec3_operatorMinus_prefix_Test)
+		TEST_METHOD(Vec2_operatorMinus_prefix_Test)
 		{
 			Vec2f vector = { -2.0f, 3.0f };
 			Vec2f expected = { 2.0f, -3.0f };
@@ -289,6 +289,21 @@ namespace OpenMLTest
 
 			Assert::AreEqual(5.0f, vector[0], L"Wrong value.", LINE_INFO());
 			Assert::AreEqual(6.0f, vector[1], L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(Vec2_operatorDireferent_value_Test)
+		{
+			Vec2f vector = { 0.0f, 0.0f };
+			bool result = vector != 0.0f;
+			Assert::IsFalse(result, L"vector should not be diferente of Zero", LINE_INFO());
+
+			vector = { 0.0f, 1.0f };
+			result = vector != 0.0f;
+			Assert::IsTrue(result, L"vector should be diferente of Zero", LINE_INFO());
+
+			vector = { 1.0f, 0.0f };
+			result = vector != 0.0f;
+			Assert::IsTrue(result, L"vector should be diferente of Zero", LINE_INFO());
 		}
 
 		TEST_METHOD(Vec2_orthogonalProjection_Test)

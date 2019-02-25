@@ -229,7 +229,7 @@ namespace OpenMLTest
 				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
 		}
 
-		TEST_METHOD(Vec3_operatorMinus_Test)
+		TEST_METHOD(Vec4_operatorMinus_Test)
 		{
 			Vec4f vector = { -2.0f, 3.0f, 4.0f, -5.0f };
 			Vec4f expected = { 2.0f, -3.0f, -4.0f, 5.0f };
@@ -321,6 +321,29 @@ namespace OpenMLTest
 			Assert::AreEqual(6.0f, vector[1], L"Wrong value.", LINE_INFO());
 			Assert::AreEqual(7.0f, vector[2], L"Wrong value.", LINE_INFO());
 			Assert::AreEqual(8.0f, vector[3], L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(Vec4_operatorDireferent_value_Test)
+		{
+			Vec4f vector = { 0.0f, 0.0f, 0.0f, 0.0f };
+			bool result = vector != 0.0f;
+			Assert::IsFalse(result, L"vector should not be diferente of Zero", LINE_INFO());
+
+			vector = { 0.0f, 0.0f, 0.0f, 1.0f };
+			result = vector != 0.0f;
+			Assert::IsTrue(result, L"vector should be diferente of Zero", LINE_INFO());
+
+			vector = { 0.0f, 0.0f, 1.0f, 0.0f };
+			result = vector != 0.0f;
+			Assert::IsTrue(result, L"vector should be diferente of Zero", LINE_INFO());
+
+			vector = { 0.0f, 1.0f, 0.0f, 0.0f };
+			result = vector != 0.0f;
+			Assert::IsTrue(result, L"vector should be diferente of Zero", LINE_INFO());
+
+			vector = { 1.0f, 0.0f, 0.0f, 0.0f };
+			result = vector != 0.0f;
+			Assert::IsTrue(result, L"vector should be diferente of Zero", LINE_INFO());
 		}
 
 		TEST_METHOD(Vec4_toVec3_Test)

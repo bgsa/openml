@@ -19,7 +19,7 @@ AABB<T>::AABB(Vec3<T> minPoint, T width, T height, T depth)
 }
 
 template <typename T>
-Vec3<T> AABB<T>::center()
+Vec3<T> AABB<T>::center() const
 {
 	return (maxPoint + minPoint) * T(0.5);
 }

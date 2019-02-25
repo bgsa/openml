@@ -34,6 +34,11 @@ namespace OpenML
 		/// </summary>
 		API_INTERFACE inline ColisionStatus colisionStatus(const Sphere<T> &sphere) const;
 
+		/// <summary>
+		/// Build a enclosing sphere from an AABB
+		/// </summary>
+		API_INTERFACE static inline Sphere<T> buildFrom(const AABB<T> &aabb);
+
 	};
 
 	typedef Sphere<int> Spherei;

@@ -29,7 +29,7 @@ namespace OpenML
 		///<summary>
 		///Get the center of AABB
 		///</summary>
-		API_INTERFACE inline Vec3<T> center();
+		API_INTERFACE inline Vec3<T> center() const;
 
 		///<summary>
 		///Get the SQUARED distance from a point and AABB
@@ -74,7 +74,7 @@ namespace OpenML
 		///<summary>
 		///Given a sphere, build the AABB to enclose the sphere
 		///</summary>
-		API_INTERFACE static AABB<T> buildFrom(const Sphere<T>& sphere);
+		API_INTERFACE static inline AABB<T> buildFrom(const Sphere<T>& sphere);
 
 	};
 

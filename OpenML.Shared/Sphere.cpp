@@ -70,6 +70,21 @@ ColisionStatus Sphere<T>::colisionStatus(const Plane3D<T> &plane)  const
 	return ColisionStatus::INSIDE;
 }
 
+template <typename T>
+Sphere<T> Sphere<T>::buildFrom(const AABB<T> &aabb)
+{
+	T maxDistance = aabb.maxPoint[0] - aabb.minPoint[0];
+
+	maxDistance = std::max(maxDistance, aabb.maxPoint[1] - aabb.minPoint[1]);
+
+	maxDistance = std::max(maxDistance, aabb.maxPoint[2] - aabb.minPoint[2]);
+
+	return Sphere<T>(
+		aabb.center(),
+		maxDistance / T(2)
+		);
+}
+
 namespace OpenML
 {
 	template class Sphere<int>;

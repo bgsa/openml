@@ -79,5 +79,19 @@ namespace OpenMLTest
 			Assert::IsTrue(result == expected, L"The point should be outside the sphere", LINE_INFO());
 		}
 
+		TEST_METHOD(Sphere_buildFrom_AABB_Test)
+		{
+			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			
+			Spheref sphere = Spheref::buildFrom(aabb);
+
+			Vec3f expectedCenterPoint = Vec3f(5.0f, 5.0f, 5.0f);
+
+			Assert::AreEqual(5.0f, sphere.ray, L"wring value", LINE_INFO());
+
+			for (size_t i = 0; i < 3; i++)
+				Assert::AreEqual(expectedCenterPoint[i], sphere.center[i], L"wring value", LINE_INFO());
+		}
+
 	};
 }

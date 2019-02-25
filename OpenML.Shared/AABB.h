@@ -71,6 +71,11 @@ namespace OpenML
 		///</summary>
 		API_INTERFACE static AABB<T> buildFrom(const Vec3List<T>& pointList);
 
+		///<summary>
+		///Given a sphere, build the AABB to enclose the sphere
+		///</summary>
+		API_INTERFACE static AABB<T> buildFrom(const Sphere<T>& sphere);
+
 	};
 
 	typedef AABB<int> AABBi;

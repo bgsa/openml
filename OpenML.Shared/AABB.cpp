@@ -151,6 +151,23 @@ AABB<T> AABB<T>::buildFrom(const Vec3List<T>& pointList)
 	);
 }
 
+template <typename T>
+AABB<T> AABB<T>::buildFrom(const Sphere<T>& sphere)
+{	
+	return AABB<T>(
+		Vec3<T>(
+			sphere.center[0] - sphere.ray,
+			sphere.center[1] - sphere.ray,
+			sphere.center[2] - sphere.ray
+			),
+		Vec3<T>(
+			sphere.center[0] + sphere.ray,
+			sphere.center[1] + sphere.ray,
+			sphere.center[2] + sphere.ray
+			)
+		);
+}
+
 namespace OpenML
 {
 	template class AABB<int>;

@@ -237,6 +237,22 @@ namespace OpenMLTest
 				Assert::AreEqual(expectedMaxPoint[i], aabb.maxPoint[i], L"Wrong value.", LINE_INFO());
 			}
 		}
+
+		TEST_METHOD(AABB_buildFrom_sphere_Test)
+		{
+			Spheref sphere = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
+
+			AABBf aabb = AABBf::buildFrom(sphere);
+
+			Vec3f expectedMinPoint = Vec3f(-10.0f, -10.0f, -10.0f);
+			Vec3f expectedMaxPoint = Vec3f(10.0f, 10.0f, 10.0f);
+
+			for (size_t i = 0; i < 3; i++)
+			{
+				Assert::AreEqual(expectedMinPoint[i], aabb.minPoint[i], L"Wrong value.", LINE_INFO());
+				Assert::AreEqual(expectedMaxPoint[i], aabb.maxPoint[i], L"Wrong value.", LINE_INFO());
+			}
+		}
 		
 	};
 }

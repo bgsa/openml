@@ -214,6 +214,29 @@ namespace OpenMLTest
 			Assert::AreEqual(expected, result, L"Wrong value.", LINE_INFO());
 		}
 
+		TEST_METHOD(AABB_buildFrom_pointList_Test)
+		{
+			int pointsCont = 6;
+			Vec3f* points = new Vec3f[pointsCont];
+			points[0] = { 0.0f, 0.0f, 0.3f };
+			points[1] = { 10.0f, 10.0f, 10.0f };
+			points[2] = { 5.0f, 5.0f, 5.0f };
+			points[3] = { -1.0f, 1.0f, 1.0f }; //min point (index 3)
+			points[4] = { 12.0f, 10.0f, 10.0f }; // max point (index 4)
+			points[5] = { 8.0f, 1.0f, 1.0f };
+			Vec3List<float> list = Vec3List<float>(points, pointsCont);
+
+			AABBf aabb = AABBf::buildFrom(list);
+
+			Vec3f expectedMinPoint = Vec3f(-1.0f, 0.0f, 0.3f);
+			Vec3f expectedMaxPoint = Vec3f(12.0f, 10.0f, 10.0f);
+
+			for (size_t i = 0; i < 3; i++)
+			{
+				Assert::AreEqual(expectedMinPoint[i], aabb.minPoint[i], L"Wrong value.", LINE_INFO());
+				Assert::AreEqual(expectedMaxPoint[i], aabb.maxPoint[i], L"Wrong value.", LINE_INFO());
+			}
+		}
 		
 	};
 }

@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include "Vec3.h"
+#include "Vec3List.h"
 #include "Plane3D.h"
 #include "Sphere.h"
 
@@ -64,6 +65,11 @@ namespace OpenML
 		///Given a point, find the closest point in AABB
 		///</summary>
 		API_INTERFACE inline Vec3<T> closestPointInAABB(const Sphere<T>& sphgere);
+
+		///<summary>
+		///Given a list of point (mesh), build the AABB
+		///</summary>
+		API_INTERFACE static AABB<T> buildFrom(const Vec3List<T>& pointList);
 
 	};
 

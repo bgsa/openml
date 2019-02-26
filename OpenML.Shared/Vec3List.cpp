@@ -117,6 +117,57 @@ int* Vec3List<T>::findExtremePointsAlongAxisXYZ() const
 	return result;
 }
 
+template <typename T>
+T Vec3List<T>::covarianceOnAxis(int axisIndex) const
+{ 
+	T u = T(0);
+	
+	for (int i = 0; i < count; i++) 
+		u += points[i][axisIndex];
+	u /= count; 
+
+	T s2 = T(0); 
+	
+	for (int i = 0; i < count; i++) 
+		s2 += (points[i][axisIndex] - u) * (points[i][axisIndex] - u);
+
+	return s2 / count; 
+}
+
+template <typename T>
+Mat3<T> Vec3List<T>::covariance() const
+{
+	T oon = T(1) / count; 
+	Vec3<T> centerOfMass = Vec3<T>(T(0)); 
+	T e00 = T(0), e11 = T(0), e22 = T(0), e01 = T(0), e02 = T(0), e12 = T(0);
+	
+	// Compute the center of mass (centroid) of the points 
+	for (int i = 0; i < count; i++)
+		centerOfMass += points[i];
+	centerOfMass *= oon;
+	
+	// Compute covariance elements 
+	for (int i = 0; i < count; i++) 
+	{ 
+		// Translate points so center of mass is at origin 
+		Vec3<T> p = points[i] - centerOfMass;
+		
+		// Compute covariance of translated points 
+		e00 += p[0] * p[0];
+		e11 += p[1] * p[1];
+		e22 += p[2] * p[2];
+		e01 += p[0] * p[1];
+		e02 += p[0] * p[2];
+		e12 += p[1] * p[2];
+	} 
+	
+	// Fill in the covariance matrix elements 
+	return Mat3<T>(
+		e00 * oon, e01 * oon, e02 * oon,
+		e01 * oon, e11 * oon, e12 * oon,
+		e02 * oon, e12 * oon, e22 * oon
+		);
+}
 
 template <typename T>
 Vec3List<T>::~Vec3List()

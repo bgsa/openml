@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vec3.h"
+#include "Mat3.h"
 #include <limits>
 
 namespace OpenML
@@ -47,6 +48,16 @@ namespace OpenML
 		///Returns the 6 INDEXES of point list (minX, maxX, minY, maxY, minZ, maxZ)
 		///</summary>
 		API_INTERFACE int* findExtremePointsAlongAxisXYZ() const;
+
+		///<summary>
+		///Compute the variance, given an axis (axis X = 0, axis Y = 1, axis Z = 2)
+		///</summary>
+		API_INTERFACE T Vec3List<T>::covarianceOnAxis(int axisIndex) const;
+
+		///<summary>
+		///Compute the covariance matrix
+		///</summary>
+		API_INTERFACE Mat3<T> covariance() const;
 
 		///<summary>
 		///Destructor

@@ -108,6 +108,50 @@ namespace OpenMLTest
 			Assert::AreEqual(5, result[5], L"Wrong value.", LINE_INFO());
 		}
 
+		TEST_METHOD(Vec3List_covarianceOnAxis_Test)
+		{
+			int pointsCount = 3;
+			Vec3f* points = new Vec3f[pointsCount];
+			points[0] = { 1.0f, 3.0f, -7.0f };
+			points[1] = { 3.0f, 9.0f, 2.0f };
+			points[2] = { -5.0f, 4.0f, 6.0f };
+
+			Vec3List<float> list = Vec3List<float>(points, pointsCount);
+
+			float result = list.covarianceOnAxis(0);
+			float expectedOnAxisX = 11.5556f;
+			Assert::IsTrue(isCloseEnough(expectedOnAxisX, result), L"Wrong value.", LINE_INFO());
+
+			result = list.covarianceOnAxis(1);
+			float expectedOnAxisY = 6.8889f;
+			Assert::IsTrue(isCloseEnough(expectedOnAxisY, result), L"Wrong value.", LINE_INFO());
+
+			result = list.covarianceOnAxis(2);
+			float expectedOnAxisZ = 29.5556f;
+			Assert::IsTrue(isCloseEnough(expectedOnAxisZ, result), L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(Vec3List_covariance_Test)
+		{
+			int pointsCount = 3;
+			Vec3f* points = new Vec3f[pointsCount];
+			points[0] = { 1.0f, 3.0f, -7.0f };
+			points[1] = { 3.0f, 9.0f, 2.0f };
+			points[2] = { -5.0f, 4.0f, 6.0f };
+
+			Vec3List<float> list = Vec3List<float>(points, pointsCount);
+
+			Mat3f result = list.covariance();
+			Mat3f expected = Mat3f(
+				11.5556f, 5.1111f, -10.2222f,
+				5.1111f, 6.8889f, 5.2222f,
+				-10.2222f, 5.2222f, 29.5556f
+			);
+			
+			for (size_t i = 0; i < MAT3_SIZE; i++)
+				Assert::IsTrue(isCloseEnough(expected[i], result[i]), L"Wrong value.", LINE_INFO());
+		}
+
 
 	};
 }

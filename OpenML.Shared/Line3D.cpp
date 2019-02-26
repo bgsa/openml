@@ -39,6 +39,18 @@ Vec3<T> Line3D<T>::direction() const
 }
 
 template <typename T>
+Vec3<T> Line3D<T>::centerOfSegment() const
+{
+	return point1 + T(0.5) * (point2 - point1);
+}
+
+template <typename T>
+T Line3D<T>::lengthOfSegment() const
+{
+	return point1.distance(point2);
+}
+
+template <typename T>
 bool Line3D<T>::isOnLine(const Vec3<T>& point) const
 {
 	Vec3<T> lineDirection = point2 - point1;

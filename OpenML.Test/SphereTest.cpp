@@ -32,6 +32,16 @@ namespace OpenMLTest
 			Assert::AreEqual(sphere.ray, 4.0f, L"Wrong value.", LINE_INFO());
 		}
 
+		TEST_METHOD(Sphere_constructor_2points_Test)
+		{
+			Spheref sphere = Spheref(Vec3f(2.0f, 2.0f, 2.0f), Vec3f(6.0f, 6.0f, 6.0f));
+
+			Assert::AreEqual(sphere.center[0], 4.0f, L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(sphere.center[1], 4.0f, L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(sphere.center[2], 4.0f, L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(sphere.ray, 3.46410f), L"Wrong value.", LINE_INFO());
+		}
+
 		TEST_METHOD(Sphere_constructor_4points_Test)
 		{
 			Spheref sphere = Spheref(

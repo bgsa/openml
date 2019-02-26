@@ -14,6 +14,27 @@ namespace OpenMLTest
 	{
 	public:
 
+		TEST_METHOD(Line3D_centerOfSegment_Test1)
+		{
+			Line3Df line = Line3Df(Vec3f{ 2.0f, 2.0f, 2.0f }, Vec3f{ 4.0f, 4.0f, 2.0f });
+
+			Vec3f center = line.centerOfSegment();
+			Vec3f expected = Vec3f(3.0f, 3.0f, 2.0f);
+
+			for (size_t i = 0; i < 3; i++)
+				Assert::AreEqual(expected[i], center[i], L"wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(Line3D_lengthOfSegment_Test1)
+		{
+			Line3Df line = Line3Df(Vec3f{ 2.0f, 2.0f, 2.0f }, Vec3f{ 4.0f, 4.0f, 4.0f });
+
+			float result = line.lengthOfSegment();
+			float expected = 3.46410f;
+
+			Assert::IsTrue(isCloseEnough(expected, result), L"wrong value.", LINE_INFO());
+		}
+
 		TEST_METHOD(Line3D_hasIntersectionOnSegment_AABB_Test1)
 		{
 			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));

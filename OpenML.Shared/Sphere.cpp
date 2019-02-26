@@ -15,6 +15,14 @@ Sphere<T>::Sphere(const Vec3<T> &center, T ray)
 }
 
 template <typename T>
+Sphere<T>::Sphere(const Vec3<T> &point1, const Vec3<T> &point2)
+{
+	Line3D<T> line = Line3D<T>(point1, point2);
+	this->center = line.centerOfSegment();
+	this->ray = line.lengthOfSegment() / T(2);
+}
+
+template <typename T>
 Sphere<T>::Sphere(const Vec3<T> &point1, const Vec3<T> &point2, const Vec3<T> &point3, const Vec3<T> &point4)
 {
 	Mat4<T> m = Mat4<T>(

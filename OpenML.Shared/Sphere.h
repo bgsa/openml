@@ -26,6 +26,11 @@ namespace OpenML
 		API_INTERFACE inline Sphere(const Vec3<T> &center, T ray);
 
 		/// <summary>
+		/// Build the sphere from 2 (support) points
+		/// </summary>
+		API_INTERFACE Sphere(const Vec3<T> &point1, const Vec3<T> &point2);
+
+		/// <summary>
 		/// Build the sphere from 4 points
 		/// </summary>
 		API_INTERFACE Sphere(const Vec3<T> &point1, const Vec3<T> &point2, const Vec3<T> &point3, const Vec3<T> &point4);

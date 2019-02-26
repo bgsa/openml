@@ -50,6 +50,16 @@ namespace OpenML
 		API_INTERFACE T distance(const Vec3<T>& target) const;
 
 		///<summary>
+		///Returns the center of the segment of line
+		///</summary>
+		API_INTERFACE inline Vec3<T> centerOfSegment() const;
+
+		///<summary>
+		///Returns the center of the segment of line
+		///</summary>
+		API_INTERFACE inline T lengthOfSegment() const;
+
+		///<summary>
 		/// Check the point is on the line
 		///</summary>
 		API_INTERFACE bool isOnLine(const Vec3<T>& point) const;

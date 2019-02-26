@@ -23,6 +23,31 @@ Sphere<T>::Sphere(const Vec3<T> &point1, const Vec3<T> &point2)
 }
 
 template <typename T>
+Sphere<T>::Sphere(const Vec3<T> &point1, const Vec3<T> &point2, const Vec3<T> &point3)
+{
+	// triangle "edges"
+	const Vec3<T> edge1 = point2 - point1;
+	const Vec3<T> edge2 = point3 - point1;
+	const Vec3<T> edge3 = point3 - point2;
+
+	// triangle normal
+	const Vec3<T> normal = edge1.cross(edge2);
+	const T normalLength = normal.length();
+
+	if (normalLength < 10e-14)
+		return; // area of the triangle is too small (you may additionally check the points for colinearity if you are paranoid)
+
+	// helpers
+	const T iwsl2 = T(1) / ( T(2) * normalLength);
+	const T tt = edge1.dot(edge1);
+	const T uu = edge2.dot(edge2);
+
+	// result circle
+	this->center = point1 + (edge2 * tt * (edge2.dot(edge3)) - edge1 * uu * (edge1.dot(edge3))) * iwsl2;
+	this->ray = T(std::sqrt(tt * uu * edge3.dot(edge3) * iwsl2 * T(0.5)));
+	//this->ray = w / sqrt(wsl);
+}
+template <typename T>
 Sphere<T>::Sphere(const Vec3<T> &point1, const Vec3<T> &point2, const Vec3<T> &point3, const Vec3<T> &point4)
 {
 	Mat4<T> m = Mat4<T>(

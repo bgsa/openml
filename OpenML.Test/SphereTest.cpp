@@ -42,6 +42,22 @@ namespace OpenMLTest
 			Assert::IsTrue(isCloseEnough(sphere.ray, 3.46410f), L"Wrong value.", LINE_INFO());
 		}
 
+		TEST_METHOD(Sphere_constructor_3points_Test)
+		{
+			Spheref sphere = Spheref(
+				Vec3f(0.0f, 0.0f, 0.0f), 
+				Vec3f(2.0f, 0.0f, 0.0f),
+				Vec3f(1.0f, 2.0f, 0.0f)
+			);
+
+			Vec3f expectedCenter = Vec3f(1.0f, 1.0f, 0.0f);
+
+			Assert::AreEqual(expectedCenter[0], sphere.center[0], L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(expectedCenter[1], sphere.center[1], L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(expectedCenter[2], sphere.center[2], L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(1.0f, sphere.ray, L"Wrong value.", LINE_INFO());
+		}
+
 		TEST_METHOD(Sphere_constructor_4points_Test)
 		{
 			Spheref sphere = Spheref(

@@ -41,7 +41,7 @@ Vec3<T> Line3D<T>::direction() const
 template <typename T>
 Vec3<T> Line3D<T>::centerOfSegment() const
 {
-	return point1 + T(0.5) * (point2 - point1);
+	return (point1 + point2) / T(2);
 }
 
 template <typename T>

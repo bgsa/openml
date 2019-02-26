@@ -1,6 +1,13 @@
 #include "Sphere.h"
 
 template <typename T>
+Sphere<T>::Sphere()
+{
+	this->center = Vec3<T>(T(0));
+	this->ray = T(1);
+}
+
+template <typename T>
 Sphere<T>::Sphere(const Vec3<T> &center, T ray)
 {
 	this->center = center;

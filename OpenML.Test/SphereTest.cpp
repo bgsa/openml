@@ -12,6 +12,16 @@ namespace OpenMLTest
 	{
 	public:
 
+		TEST_METHOD(Sphere_constructor_Test)
+		{
+			Spheref sphere = Spheref();
+
+			Assert::AreEqual(sphere.center[0], 0.0f, L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(sphere.center[1], 0.0f, L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(sphere.center[2], 0.0f, L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(sphere.ray, 1.0f, L"Wrong value.", LINE_INFO());
+		}
+
 		TEST_METHOD(Sphere_constructor_center_ray_Test)
 		{
 			Spheref sphere = Spheref({ 1.0f, 2.0f ,3.0f }, 4.0f);

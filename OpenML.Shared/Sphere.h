@@ -16,7 +16,12 @@ namespace OpenML
 		T ray;
 
 		/// <summary>
-		/// Default construct
+		/// Default construct - unit sphere with the center in origin
+		/// </summary>
+		API_INTERFACE inline Sphere();
+
+		/// <summary>
+		/// Construct with the center point and a ray
 		/// </summary>
 		API_INTERFACE inline Sphere(const Vec3<T> &center, T ray);
 

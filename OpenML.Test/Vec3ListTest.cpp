@@ -85,6 +85,29 @@ namespace OpenMLTest
 			Assert::AreEqual(5, result[1], L"Wrong value.", LINE_INFO());
 		}
 
+		TEST_METHOD(Vec3List_findExtremePointsAlongAxisXYZ_Test)
+		{
+			int pointsCount = 6;
+			Vec3f* points = new Vec3f[pointsCount];
+			points[0] = { 0.0f, 0.0f, 0.3f };
+			points[1] = { 10.0f, 10.0f, 10.0f };
+			points[2] = { 5.0f, 5.0f, 5.0f };
+			points[3] = { -1.0f, 1.0f, 1.0f };
+			points[4] = { 12.0f, 10.0f, 10.0f };
+			points[5] = { 8.0f, 1.0f, 17.0f };
+
+			Vec3List<float> list = Vec3List<float>(points, pointsCount);
+
+			int* result = list.findExtremePointsAlongAxisXYZ();
+
+			Assert::AreEqual(3, result[0], L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(4, result[1], L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(0, result[2], L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(1, result[3], L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(0, result[4], L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(5, result[5], L"Wrong value.", LINE_INFO());
+		}
+
 
 	};
 }

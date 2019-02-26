@@ -43,6 +43,12 @@ namespace OpenML
 		API_INTERFACE int* findExtremePointsAlongAxisZ() const;
 
 		///<summary>
+		///Find the extreme points along the axis X, Y and Z
+		///Returns the 6 INDEXES of point list (minX, maxX, minY, maxY, minZ, maxZ)
+		///</summary>
+		API_INTERFACE int* findExtremePointsAlongAxisXYZ() const;
+
+		///<summary>
 		///Destructor
 		///</summary>
 		~Vec3List();

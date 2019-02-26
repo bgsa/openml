@@ -54,6 +54,69 @@ int* Vec3List<T>::findExtremePointsAlongAxisZ() const
 	return findExtremePointsAlongDirection(Vec3<T>(T(0), T(0), T(1)));
 }
 
+template <typename T>
+int* Vec3List<T>::findExtremePointsAlongAxisXYZ() const
+{
+	T maxValue = T(std::numeric_limits<double>().max());
+
+	T minProjectionX = maxValue;
+	T maxProjectionX = -maxValue;
+
+	T minProjectionY = maxValue;
+	T maxProjectionY = -maxValue;
+
+	T minProjectionZ = maxValue;
+	T maxProjectionZ = -maxValue;
+
+	Vec3<T> directionX = Vec3<T>(T(1), T(0), T(0));
+	Vec3<T> directionY = Vec3<T>(T(0), T(1), T(0));
+	Vec3<T> directionZ = Vec3<T>(T(0), T(0), T(1));
+
+	int* result = new int[6];
+
+	for (int i = 0; i < count; i++)
+	{
+		T projectionX = points[i].dot(directionX);
+		T projectionY = points[i].dot(directionY);
+		T projectionZ = points[i].dot(directionZ);
+
+		if (projectionX < minProjectionX)
+		{
+			minProjectionX = projectionX;
+			result[0] = i;
+		}
+		if (projectionX > maxProjectionX)
+		{
+			maxProjectionX = projectionX;
+			result[1] = i;
+		}
+
+		if (projectionY < minProjectionY)
+		{
+			minProjectionY = projectionY;
+			result[2] = i;
+		}
+		if (projectionY > maxProjectionY)
+		{
+			maxProjectionY = projectionY;
+			result[3] = i;
+		}
+
+		if (projectionZ < minProjectionZ)
+		{
+			minProjectionZ = projectionZ;
+			result[4] = i;
+		}
+		if (projectionZ > maxProjectionZ)
+		{
+			maxProjectionZ = projectionZ;
+			result[5] = i;
+		}
+	}
+
+	return result;
+}
+
 
 template <typename T>
 Vec3List<T>::~Vec3List()

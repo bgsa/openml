@@ -133,20 +133,18 @@ Vec3<T> AABB<T>::closestPointInAABB(const Sphere<T>& sphere)
 template <typename T>
 AABB<T> AABB<T>::buildFrom(const Vec3List<T>& pointList)
 {
-	int* indexesX = pointList.findExtremePointsAlongAxisX();
-	int* indexesY = pointList.findExtremePointsAlongAxisY();
-	int* indexesZ = pointList.findExtremePointsAlongAxisZ();
+	int* indexes = pointList.findExtremePointsAlongAxisXYZ();
 
 	return AABB<T>(
 		Vec3<T>(
-			pointList.points[indexesX[0]][0],
-			pointList.points[indexesY[0]][1],
-			pointList.points[indexesZ[0]][2]
+			pointList.points[indexes[0]][0],
+			pointList.points[indexes[2]][1],
+			pointList.points[indexes[4]][2]
 			), 
 		Vec3<T>(
-			pointList.points[indexesX[1]][0],
-			pointList.points[indexesY[1]][1],
-			pointList.points[indexesZ[1]][2]
+			pointList.points[indexes[1]][0],
+			pointList.points[indexes[3]][1],
+			pointList.points[indexes[5]][2]
 		)
 	);
 }

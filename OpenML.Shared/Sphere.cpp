@@ -8,6 +8,62 @@ Sphere<T>::Sphere(const Vec3<T> &center, T ray)
 }
 
 template <typename T>
+Sphere<T>::Sphere(const Vec3<T> &point1, const Vec3<T> &point2, const Vec3<T> &point3, const Vec3<T> &point4)
+{
+	Mat4<T> m = Mat4<T>(
+		Vec4<T>(point1, T(1)),
+		Vec4<T>(point2, T(1)),
+		Vec4<T>(point3, T(1)),
+		Vec4<T>(point4, T(1))
+		);
+
+	T invertedDeterminant = T(1) / m.determinant();
+
+	T t1 = -(point1.dot(point1));
+	T t2 = -(point2.dot(point2));
+	T t3 = -(point3.dot(point3));
+	T t4 = -(point4.dot(point4));
+
+	m = Mat4<T>(
+		Vec4<T>(t1, point1[1], point1[2], T(1)),
+		Vec4<T>(t2, point2[1], point2[2], T(1)),
+		Vec4<T>(t3, point3[1], point3[2], T(1)),
+		Vec4<T>(t4, point4[1], point4[2], T(1))
+		);
+	T a = m.determinant() * invertedDeterminant;
+	T x = a * T(-0.5);
+
+	m = Mat4<T>(
+		Vec4<T>(point1[0], t1, point1[2], T(1)),
+		Vec4<T>(point2[0], t2, point2[2], T(1)),
+		Vec4<T>(point3[0], t3, point3[2], T(1)),
+		Vec4<T>(point4[0], t4, point4[2], T(1))
+		);
+	T b = m.determinant() * invertedDeterminant;
+	T y = b * T(-0.5);
+
+	m = Mat4<T>(
+		Vec4<T>(point1[0], point1[1], t1, T(1)),
+		Vec4<T>(point2[0], point2[1], t2, T(1)),
+		Vec4<T>(point3[0], point3[1], t3, T(1)),
+		Vec4<T>(point4[0], point4[1], t4, T(1))
+		);
+	T c = m.determinant() * invertedDeterminant;
+	T z = c * T(-0.5);
+
+	m = Mat4<T>(
+		Vec4<T>(point1[0], point1[1], point1[2], t1),
+		Vec4<T>(point2[0], point2[1], point2[2], t2),
+		Vec4<T>(point3[0], point3[1], point3[2], t3),
+		Vec4<T>(point4[0], point4[1], point4[2], t4)
+		);
+	T d = m.determinant() * invertedDeterminant;
+
+	center = { x, y, z };
+	ray = T(std::sqrt(a * a + b * b + c * c - 4 * d)) / T(2);
+}
+
+template <typename T>
 ColisionStatus Sphere<T>::colisionStatus(const Vec3<T> &point)  const
 {
 	T distanceToPoint = center.distance(point);

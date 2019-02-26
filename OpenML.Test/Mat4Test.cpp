@@ -35,6 +35,40 @@ namespace OpenMLTest
 				Assert::AreEqual(emptyMatrix[i], result[i], L"Value shoud be 0", LINE_INFO());
 		}
 
+		TEST_METHOD(Mat4_constructor_4vec4_Test)
+		{
+			Vec4f vector1 = Vec4f(1.0f, 2.0f, 3.0f, 4.0f);
+			Vec4f vector2 = Vec4f(5.0f, 6.0f, 7.0f, 8.0f);
+			Vec4f vector3 = Vec4f(9.0f, 10.0f, 11.0f, 12.0f);
+			Vec4f vector4 = Vec4f(13.0f, 14.0f, 15.0f, 16.0f);
+
+			Mat4f matrix = Mat4f(vector1, vector2, vector3, vector4);
+
+#if MAJOR_COLUMN_ORDER
+			Mat4f expected = Mat4f(
+				1.0f, 5.0f, 9.0f, 13.0f,
+				2.0f, 6.0f, 10.0f, 14.0f,
+				3.0f, 7.0f, 11.0f, 15.0f,
+				4.0f, 8.0f, 12.0f, 16.0f
+			);
+
+			for (size_t i = 0; i < MAT4_SIZE; i++)
+				Assert::AreEqual(expected[i], matrix[i], L"Value shoud be 0", LINE_INFO());
+#else
+			for (size_t i = 0; i < 4; i++)
+				Assert::AreEqual(vector1[i], matrix[i], L"Value shoud be 0", LINE_INFO());
+
+			for (size_t i = 4; i < 8; i++)
+				Assert::AreEqual(vector2[i], matrix[i], L"Value shoud be 0", LINE_INFO());
+
+			for (size_t i = 8; i < 12; i++)
+				Assert::AreEqual(vector3[i], matrix[i], L"Value shoud be 0", LINE_INFO());
+
+			for (size_t i = 12; i < 16; i++)
+				Assert::AreEqual(vector4[i], matrix[i], L"Value shoud be 0", LINE_INFO());
+#endif
+		}
+
 		TEST_METHOD(Mat4_getValues_Test)
 		{
 			Mat4f matrix = {

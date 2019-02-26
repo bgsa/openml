@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vec3.h"
+#include "Mat4.h"
 #include "Plane3D.h"
 #include "ColisionStatus.h"
 
@@ -18,6 +19,11 @@ namespace OpenML
 		/// Default construct
 		/// </summary>
 		API_INTERFACE inline Sphere(const Vec3<T> &center, T ray);
+
+		/// <summary>
+		/// Build the sphere from 4 points
+		/// </summary>
+		API_INTERFACE Sphere(const Vec3<T> &point1, const Vec3<T> &point2, const Vec3<T> &point3, const Vec3<T> &point4);
 
 		/// <summary>
 		/// Check the status of colision against the point

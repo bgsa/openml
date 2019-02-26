@@ -5,14 +5,54 @@ using namespace OpenML;
 template <typename T>
 Mat4<T>::Mat4(T defaultValue)
 {
-	static T emptyMatrix[MAT4_SIZE] = {
-		defaultValue, defaultValue, defaultValue, defaultValue,
-		defaultValue, defaultValue, defaultValue, defaultValue,
-		defaultValue, defaultValue, defaultValue, defaultValue,
-		defaultValue, defaultValue, defaultValue, defaultValue
-	};
+	for (size_t i = 0; i < MAT4_SIZE; i++)
+		values[i] = defaultValue;
+}
 
-	memcpy(&values, emptyMatrix, sizeof(values));
+template <typename T>
+Mat4<T>::Mat4(const Vec4<T>& vector1, const Vec4<T>& vector2, const Vec4<T>& vector3, const Vec4<T>& vector4)
+{
+#if MAJOR_COLUMN_ORDER
+	values[0] = vector1[0];
+	values[4] = vector1[1];
+	values[8] = vector1[2];
+	values[12] = vector1[3];
+
+	values[1] = vector2[0];
+	values[5] = vector2[1];
+	values[9] = vector2[2];
+	values[13] = vector2[3];
+
+	values[2] = vector3[0];
+	values[6] = vector3[1];
+	values[10] = vector3[2];
+	values[14] = vector3[3];
+
+	values[3] = vector4[0];
+	values[7] = vector4[1];
+	values[11] = vector4[2];
+	values[15] = vector4[3];
+#else
+	values[0] = vector1[0];
+	values[1] = vector1[1];
+	values[2] = vector1[2];
+	values[3] = vector1[3];
+
+	values[4] = vector2[0];
+	values[5] = vector2[1];
+	values[6] = vector2[2];
+	values[7] = vector2[3];
+
+	values[8] = vector3[0];
+	values[9] = vector3[1];
+	values[10] = vector3[2];
+	values[11] = vector3[3];
+
+	values[12] = vector4[0];
+	values[13] = vector4[1];
+	values[14] = vector4[2];
+	values[15] = vector4[3];
+#endif
 }
 
 template <typename T>
@@ -271,7 +311,9 @@ T Mat4<T>::determinant() const
 
 	for (int i = 0; i < MAT4_ROWSIZE; i++)
 	{
-		det += (i & 0x1) ? (-values[i] * determinantIJ(0, i)) : (values[i] * determinantIJ(0, i));
+		det += (i & 0x1) ? 
+			  (-values[i] * determinantIJ(0, i)) 
+			: (values[i] * determinantIJ(0, i));
 	}
 
 	return det;

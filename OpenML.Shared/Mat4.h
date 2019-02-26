@@ -33,6 +33,11 @@ namespace OpenML
 		API_INTERFACE Mat4(T defaultValue = T(0));
 
 		/// <summary>
+		/// Construct the matrix from 4 vectors
+		/// </summary>
+		API_INTERFACE Mat4(const Vec4<T>& vector1, const Vec4<T>& vector2, const Vec4<T>& vector3, const Vec4<T>& vector4);
+
+		/// <summary>
 		/// Constructor with initialized values
 		/// </summary>
 		API_INTERFACE Mat4(T* values);

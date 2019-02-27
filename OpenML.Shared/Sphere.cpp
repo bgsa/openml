@@ -199,10 +199,9 @@ Sphere<T> WelzlSphere(Vec3<T>* p, int numPts, Vec3<T> sos[], unsigned int numSos
 	// Recursively compute the smallest bounding sphere of the remaining points 
 	Sphere<T> smallestSphere = WelzlSphere<T>(pt, numPts - 1, sos, numSos); // (*) 
 
-	//TODO !
-	// If the selected point lies inside this sphere, it is indeed the smallest 
-	//if (PointInsideSphere(pt[index], smallestSphere))
-//		return smallestSphere;
+	bool isPointInsideTheSphere = smallestSphere.colisionStatus(pt[index]) == ColisionStatus::INLINE;
+	if (isPointInsideTheSphere)
+		return smallestSphere;
 
 	// Otherwise, update set of support to additionally contain the new point 
 	sos[numSos] = pt[index];

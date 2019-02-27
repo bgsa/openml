@@ -15,6 +15,13 @@ Sphere<T>::Sphere(const Vec3<T> &center, T ray)
 }
 
 template <typename T>
+Sphere<T>::Sphere(const Vec3<T> &point1)
+{
+	this->center = point1;
+	this->ray = T(1);
+}
+
+template <typename T>
 Sphere<T>::Sphere(const Vec3<T> &point1, const Vec3<T> &point2)
 {
 	Line3D<T> line = Line3D<T>(point1, point2);
@@ -36,6 +43,7 @@ Sphere<T>::Sphere(const Vec3<T> &point1, const Vec3<T> &point2, const Vec3<T> &p
 	this->center = point1 + toCircumsphereCenter; // now this is the actual 3space location
 	this->ray = toCircumsphereCenter.length();
 }
+
 template <typename T>
 Sphere<T>::Sphere(const Vec3<T> &point1, const Vec3<T> &point2, const Vec3<T> &point3, const Vec3<T> &point4)
 {
@@ -171,25 +179,37 @@ Sphere<T> Sphere<T>::buildFrom(const AABB<T> &aabb)
 }
 
 template <typename T>
-Sphere<T> WelzlSphere(Vec3<T>* p, int numPts, Vec3<T> sos[], unsigned int numSos)
+Sphere<T> Sphere<T>::buildFrom(const Vec3List<T>& pointList)
+{
+	Vec3<T>* suportPoints = new Vec3<T>[pointList.count];
+
+	Sphere<T> result = WelzlSphere(pointList.points, pointList.count, suportPoints, 0);
+
+	delete[] suportPoints;
+
+	return result;
+}
+
+template <typename T>
+Sphere<T> WelzlSphere(Vec3<T>* points, int numPts, Vec3<T> suportPoints[], int suportPointsCount)
 {
 	// if no input points, the recursion has bottomed out. Now compute an 
 	// exact sphere based on points in set of support (zero through four points) 
 
 	if (numPts == 0)
 	{
-		switch (numSos)
+		switch (suportPointsCount)
 		{
 		case 0:
 			return Sphere<T>();
 		case 1:
-			return Sphere<T>(sos[0]);
+			return Sphere<T>(suportPoints[0]);
 		case 2:
-			return Sphere<T>(sos[0], sos[1]);
+			return Sphere<T>(suportPoints[0], suportPoints[1]);
 		case 3:
-			return Sphere<T>(sos[0], sos[1], sos[2]);
+			return Sphere<T>(suportPoints[0], suportPoints[1], suportPoints[2]);
 		case 4:
-			return Sphere<T>(sos[0], sos[1], sos[2], sos[3]);
+			return Sphere<T>(suportPoints[0], suportPoints[1], suportPoints[2], suportPoints[3]);
 		}
 	}
 
@@ -197,17 +217,17 @@ Sphere<T> WelzlSphere(Vec3<T>* p, int numPts, Vec3<T> sos[], unsigned int numSos
 	int index = numPts - 1;
 
 	// Recursively compute the smallest bounding sphere of the remaining points 
-	Sphere<T> smallestSphere = WelzlSphere<T>(pt, numPts - 1, sos, numSos); // (*) 
+	Sphere<T> smallestSphere = WelzlSphere<T>(points, numPts - 1, suportPoints, suportPointsCount); // (*) 
 
-	bool isPointInsideTheSphere = smallestSphere.colisionStatus(pt[index]) == ColisionStatus::INLINE;
+	bool isPointInsideTheSphere = smallestSphere.colisionStatus(points[index]) == ColisionStatus::INSIDE;
 	if (isPointInsideTheSphere)
 		return smallestSphere;
 
 	// Otherwise, update set of support to additionally contain the new point 
-	sos[numSos] = pt[index];
+	suportPoints[suportPointsCount] = points[index];
 
 	// Recursively compute the smallest sphere of remaining points with new s.o.s. 
-	return WelzlSphere(pt, numPts - 1, sos, numSos + 1);
+	return WelzlSphere(points, numPts - 1, suportPoints, suportPointsCount + 1);
 }
 
 

@@ -74,7 +74,7 @@ namespace OpenML
 		///<summary>
 		///Given a sphere, build the AABB to enclose the sphere
 		///</summary>
-		API_INTERFACE static inline AABB<T> buildFrom(const Sphere<T>& sphere);
+		API_INTERFACE static AABB<T> buildFrom(const Sphere<T>& sphere);
 
 	};
 

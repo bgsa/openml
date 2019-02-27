@@ -42,7 +42,7 @@ namespace OpenMLTest
 			Assert::IsTrue(isCloseEnough(sphere.ray, 3.46410f), L"Wrong value.", LINE_INFO());
 		}
 
-		TEST_METHOD(Sphere_constructor_3points_Test)
+		TEST_METHOD(Sphere_constructor_3points_Test1)
 		{
 			Spheref sphere = Spheref(
 				Vec3f(0.0f, 0.0f, 0.0f), 
@@ -50,12 +50,28 @@ namespace OpenMLTest
 				Vec3f(1.0f, 2.0f, 0.0f)
 			);
 
-			Vec3f expectedCenter = Vec3f(1.0f, 1.0f, 0.0f);
+			Vec3f expectedCenter = Vec3f(1.0f, 0.75f, 0.0f);
 
 			Assert::AreEqual(expectedCenter[0], sphere.center[0], L"Wrong value.", LINE_INFO());
 			Assert::AreEqual(expectedCenter[1], sphere.center[1], L"Wrong value.", LINE_INFO());
 			Assert::AreEqual(expectedCenter[2], sphere.center[2], L"Wrong value.", LINE_INFO());
-			Assert::AreEqual(1.0f, sphere.ray, L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(1.25f, sphere.ray, L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(Sphere_constructor_3points_Test2)
+		{
+			Spheref sphere = Spheref(
+				Vec3f(2.0f, 2.0f, 0.0f),
+				Vec3f(10.0f, 0.0f, 0.0f),
+				Vec3f(12.0f, 30.0f, 10.0f)
+			);
+
+			Vec3f expectedCenter = Vec3f(9.53111458f, 15.1244574f, 4.92040539f);
+
+			for (size_t i = 0; i < 3; i++)
+				Assert::IsTrue(isCloseEnough(expectedCenter[i], sphere.center[i]), L"Wrong value.", LINE_INFO());
+			
+			Assert::IsTrue(isCloseEnough(sphere.ray, 15.9116144f), L"Wrong value.", LINE_INFO());
 		}
 
 		TEST_METHOD(Sphere_constructor_4points_Test)

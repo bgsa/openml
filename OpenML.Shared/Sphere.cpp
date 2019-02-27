@@ -25,27 +25,16 @@ Sphere<T>::Sphere(const Vec3<T> &point1, const Vec3<T> &point2)
 template <typename T>
 Sphere<T>::Sphere(const Vec3<T> &point1, const Vec3<T> &point2, const Vec3<T> &point3)
 {
-	// triangle "edges"
-	const Vec3<T> edge1 = point2 - point1;
-	const Vec3<T> edge2 = point3 - point1;
-	const Vec3<T> edge3 = point3 - point2;
+	Vec3<T> ac = point3 - point1;
+	Vec3<T> ab = point2 - point1;
+	Vec3<T> abXac = ab.cross(ac);
 
-	// triangle normal
-	const Vec3<T> normal = edge1.cross(edge2);
-	const T normalLength = normal.length();
-
-	if (normalLength < 10e-14)
-		return; // area of the triangle is too small (you may additionally check the points for colinearity if you are paranoid)
-
-	// helpers
-	const T iwsl2 = T(1) / ( T(2) * normalLength);
-	const T tt = edge1.dot(edge1);
-	const T uu = edge2.dot(edge2);
-
-	// result circle
-	this->center = point1 + (edge2 * tt * (edge2.dot(edge3)) - edge1 * uu * (edge1.dot(edge3))) * iwsl2;
-	this->ray = T(std::sqrt(tt * uu * edge3.dot(edge3) * iwsl2 * T(0.5)));
-	//this->ray = w / sqrt(wsl);
+	// this is the vector from a TO the circumsphere center
+	Vec3<T> toCircumsphereCenter = (abXac.cross(ab) * ac.squaredLength() + ac.cross(abXac) * ab.squaredLength()) / (T(2)*abXac.squaredLength());
+	
+	// The 3 space coords of the circumsphere center then:
+	this->center = point1 + toCircumsphereCenter; // now this is the actual 3space location
+	this->ray = toCircumsphereCenter.length();
 }
 template <typename T>
 Sphere<T>::Sphere(const Vec3<T> &point1, const Vec3<T> &point2, const Vec3<T> &point3, const Vec3<T> &point4)
@@ -180,6 +169,48 @@ Sphere<T> Sphere<T>::buildFrom(const AABB<T> &aabb)
 		maxDistance / T(2)
 		);
 }
+
+template <typename T>
+Sphere<T> WelzlSphere(Vec3<T>* p, int numPts, Vec3<T> sos[], unsigned int numSos)
+{
+	// if no input points, the recursion has bottomed out. Now compute an 
+	// exact sphere based on points in set of support (zero through four points) 
+
+	if (numPts == 0)
+	{
+		switch (numSos)
+		{
+		case 0:
+			return Sphere<T>();
+		case 1:
+			return Sphere<T>(sos[0]);
+		case 2:
+			return Sphere<T>(sos[0], sos[1]);
+		case 3:
+			return Sphere<T>(sos[0], sos[1], sos[2]);
+		case 4:
+			return Sphere<T>(sos[0], sos[1], sos[2], sos[3]);
+		}
+	}
+
+	// Pick a point at "random" (here just the last point of the input set) 	
+	int index = numPts - 1;
+
+	// Recursively compute the smallest bounding sphere of the remaining points 
+	Sphere<T> smallestSphere = WelzlSphere<T>(pt, numPts - 1, sos, numSos); // (*) 
+
+	//TODO !
+	// If the selected point lies inside this sphere, it is indeed the smallest 
+	//if (PointInsideSphere(pt[index], smallestSphere))
+//		return smallestSphere;
+
+	// Otherwise, update set of support to additionally contain the new point 
+	sos[numSos] = pt[index];
+
+	// Recursively compute the smallest sphere of remaining points with new s.o.s. 
+	return WelzlSphere(pt, numPts - 1, sos, numSos + 1);
+}
+
 
 namespace OpenML
 {

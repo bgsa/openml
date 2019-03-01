@@ -349,9 +349,9 @@ namespace OpenMLTest
 		TEST_METHOD(Vec4_toVec3_Test)
 		{
 			Vec4f vector = { 2.0f, -3.0f, 4.0f, 10.0f };
-			Vec3<float> expected = { 2.0f, -3.0f, 4.0f };
+			Vec3f expected = { 2.0f, -3.0f, 4.0f };
 
-			Vec3<float> result = vector.toVec3();
+			Vec3f result = vector.toVec3();
 
 			for (size_t i = 0; i < VEC3_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Length Wrong value", LINE_INFO());

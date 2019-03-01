@@ -14,7 +14,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Mat4_constructorEmpty_Test)
 		{
-			Mat4<float> result;
+			Mat4f result;
 
 			for (size_t i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(0.0f, result[i], L"Value shoud be 0", LINE_INFO());
@@ -29,7 +29,7 @@ namespace OpenMLTest
 				13.0f, 14.0f, 15.0f, 16.0f
 			};
 
-			Mat4<float> result = Mat4<float>(emptyMatrix);
+			Mat4f result = Mat4f(emptyMatrix);
 
 			for (size_t i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(emptyMatrix[i], result[i], L"Value shoud be 0", LINE_INFO());
@@ -302,7 +302,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Mat4_identity_Test)
 		{
-			Mat4<float> result = Mat4<float>::identity();
+			Mat4f result = Mat4f::identity();
 
 			for (size_t i = 0; i < MAT4_SIZE; i++)
 				if (i % (MAT4_ROWSIZE+1) == 0)
@@ -313,7 +313,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Mat4_determinant_Test)
 		{
-			Mat4<float> matrix = {
+			Mat4f matrix = {
 				2.0f,  1.0f,  6.0f,  0.0f,
 				5.0f,  0.0f,  1.0f,  3.0f,
 			   -2.0f,  5.0f,  1.0f,  8.0f,
@@ -327,7 +327,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Mat4_determinantIJ_Test)
 		{
-			Mat4<float> matrix = {
+			Mat4f matrix = {
 				2.0f,  1.0f,  6.0f,  0.0f,
 				5.0f,  0.0f,  1.0f,  3.0f,
 				-2.0f,  5.0f,  1.0f,  8.0f,
@@ -341,7 +341,7 @@ namespace OpenMLTest
 			float expected2 = 462.0f;
 			Assert::AreEqual(expected2, result2, L"Wrong value", LINE_INFO());
 
-			Mat3<float> matrix3x3 = {
+			Mat3f matrix3x3 = {
 				0.0f,  1.0f,  3.0f,
 				5.0f,  1.0f,  8.0f,
 				4.0f, -2.0f, -7.0f
@@ -354,7 +354,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Mat4_cofactorIJ_Test)
 		{
-			Mat4<float> matrix = {
+			Mat4f matrix = {
 				2.0f,  1.0f,  6.0f,  0.0f,
 				5.0f,  0.0f,  1.0f,  3.0f,
 				-2.0f,  5.0f,  1.0f,  8.0f,
@@ -379,13 +379,13 @@ namespace OpenMLTest
 
 		TEST_METHOD(Mat4_transpose_Test)
 		{
-			Mat4<float> matrix = {
+			Mat4f matrix = {
 				1.0f,  2.0f,  3.0f,  4.0f,
 				5.0f,  6.0f,  7.0f,  8.0f,
 				9.0f, 10.0f, 11.0f, 12.0f,
 				13.0f, 14.0f, 15.0f, 16.0f
 			};
-			Mat4<float> result = matrix.transpose();
+			Mat4f result = matrix.transpose();
 
 			float expected[MAT4_SIZE] = {
 				1.0f,  5.0f,  9.0f,  13.0f,
@@ -401,26 +401,26 @@ namespace OpenMLTest
 #if MAJOR_COLUMN_ORDER
 		TEST_METHOD(Mat4_multiply_MajorColumnOrder1_Test)
 		{
-			Mat4<float> matrixA = {
+			Mat4f matrixA = {
 				4.0f,  3.0f,  2.0f, 9.0f,
 				-2.0f,  8.0f, 4.0f, -2.0f,
 				3.0f,  -5.0f,  1.0f, 3.0f,
 				1.0f, 4.0f,  0.0f, 0.0f
 			};
-			Mat4<float> matrixB = {
+			Mat4f matrixB = {
 				2.0f, 5.0f, -2.0f, 4.0f,
 				1.0f, -3.0f, 8.0f, 8.0f,
 				0.0f, 7.0f, -4.0f, 7.0f,
 				4.0f, 4.0f, 5.0f, 2.0f
 			};
-			Mat4<float> expected = {
+			Mat4f expected = {
 				-4.0f, 72.0f, 22.0f, 2.0f,
 				42.0f, -29.0f, -2.0f, 39.0f,
 				-19.0f, 104.0f, 24.0f, -26.0f,
 				25.0f, 27.0f, 29.0f, 43.0f
 			};
 
-			Mat4<float> result = matrixA * matrixB;
+			Mat4f result = matrixA * matrixB;
 
 			for (size_t i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
@@ -428,26 +428,26 @@ namespace OpenMLTest
 
 		TEST_METHOD(Mat4_multiply_MajorColumnOrder2_Test)
 		{
-			Mat4<float> matrixA = {
+			Mat4f matrixA = {
 				4.0f,  3.0f,  2.0f, 9.0f,
 				-2.0f,  8.0f, 4.0f, -2.0f,
 				3.0f,  -5.0f,  1.0f, 3.0f,
 				1.0f, 4.0f,  0.0f, 0.0f
 			};
-			Mat4<float> matrixB = {
+			Mat4f matrixB = {
 				2.0f, 5.0f, -2.0f, 4.0f,
 				1.0f, -3.0f, 8.0f, 8.0f,
 				0.0f, 7.0f, -4.0f, 7.0f,
 				4.0f, 4.0f, 5.0f, 2.0f
 			};
-			Mat4<float> expected = {
+			Mat4f expected = {
 				-4.0f, 72.0f, 22.0f, 2.0f,
 				42.0f, -29.0f, -2.0f, 39.0f,
 				-19.0f, 104.0f, 24.0f, -26.0f,
 				25.0f, 27.0f, 29.0f, 43.0f
 			};
 
-			Mat4<float> result = matrixA.multiply(matrixB);
+			Mat4f result = matrixA.multiply(matrixB);
 
 			for (size_t i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
@@ -457,26 +457,26 @@ namespace OpenMLTest
 #if MAJOR_ROW_ORDER
 		TEST_METHOD(Mat4_multiply_MajorRowOrder1_Test)
 		{
-			Mat4<float> matrixA = {
+			Mat4f matrixA = {
 				4.0f,  3.0f,  2.0f, 9.0f,
 				-2.0f,  8.0f, 4.0f, -2.0f,
 				3.0f,  -5.0f,  1.0f, 3.0f,
 				1.0f, 4.0f,  0.0f, 0.0f
 			};
-			Mat4<float> matrixB = {
+			Mat4f matrixB = {
 				2.0f, 5.0f, -2.0f, 4.0f,
 				1.0f, -3.0f, 8.0f, 8.0f,
 				0.0f, 7.0f, -4.0f, 7.0f,
 				4.0f, 4.0f, 5.0f, 2.0f
 			};
-			Mat4<float> expected = {
+			Mat4f expected = {
 				47.0f, 61.0f, 53.0f, 72.0f,
 				-4.0f, -14.0f, 42.0f, 80.0f,
 				13.0f, 49.0f, -35.0f, -15.0f,
 				6.0f, -7.0f, 30.0f, 36.0f
 			};
 
-			Mat4<float> result = matrixA.multiply(matrixB);
+			Mat4f result = matrixA.multiply(matrixB);
 
 			for (size_t i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
@@ -498,7 +498,7 @@ namespace OpenMLTest
 				0.0f,  0.0f,  0.0f,  1.0f
 			};
 
-			Mat4<float> expected = {
+			Mat4f expected = {
 				1.0f, -2.0f, -2.0f, -3.0f,
 				3.0f, -9.0f, -24.0f, -9.0f,
 				-1.0f, 2.0f, 4.0f, 11.0f,
@@ -645,20 +645,20 @@ namespace OpenMLTest
 #if MAJOR_COLUMN_ORDER
 		TEST_METHOD(Mat4_operatorMultiplyValue_Test)
 		{
-			Mat4<float> matrixA = {
+			Mat4f matrixA = {
 				4.0f,  3.0f,  2.0f, 9.0f,
 				-2.0f,  8.0f, 4.0f, -2.0f,
 				3.0f,  -5.0f,  1.0f, 3.0f,
 				1.0f, 4.0f,  0.0f, 0.0f
 			};
-			Mat4<float> expected = {
+			Mat4f expected = {
 				8.0f, 6.0f, 4.0f, 18.0f,
 				-4.0f, 16.0f, 8.0f, -4.0f,
 				6.0f, -10.0f, 2.0f, 6.0f,
 				2.0f, 8.0f, 0.0f, 0.0f
 			};
 
-			Mat4<float> result = matrixA * 2.0f;
+			Mat4f result = matrixA * 2.0f;
 
 			for (size_t i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
@@ -667,20 +667,20 @@ namespace OpenMLTest
 
 		TEST_METHOD(Mat4_operatorPlusValue_Test)
 		{
-			Mat4<float> matrixA = {
+			Mat4f matrixA = {
 				4.0f,  3.0f,  2.0f, 9.0f,
 				-2.0f,  8.0f, 4.0f, -2.0f,
 				3.0f,  -5.0f,  1.0f, 3.0f,
 				1.0f, 4.0f,  0.0f, 0.0f
 			};
-			Mat4<float> expected = {
+			Mat4f expected = {
 				6.0f, 5.0f, 4.0f, 11.0f,
 				0.0f, 10.0f, 6.0f, 0.0f,
 				5.0f, -3.0f, 3.0f, 5.0f,
 				3.0f, 6.0f, 2.0f, 2.0f
 			};
 
-			Mat4<float> result = matrixA + 2.0f;
+			Mat4f result = matrixA + 2.0f;
 
 			for (size_t i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
@@ -688,26 +688,26 @@ namespace OpenMLTest
 
 		TEST_METHOD(Mat4_operatorPlusMatrix_Test)
 		{
-			Mat4<float> matrixA = {
+			Mat4f matrixA = {
 				4.0f,  3.0f,  2.0f, 9.0f,
 				-2.0f,  8.0f, 4.0f, -2.0f,
 				3.0f,  -5.0f,  1.0f, 3.0f,
 				1.0f, 4.0f,  0.0f, 0.0f
 			};
-			Mat4<float> matrixB = {
+			Mat4f matrixB = {
 				2.0f, 5.0f, -2.0f, 4.0f,
 				1.0f, -3.0f, 8.0f, 8.0f,
 				0.0f, 7.0f, -4.0f, 7.0f,
 				4.0f, 4.0f, 5.0f, 2.0f
 			};
-			Mat4<float> expected = {
+			Mat4f expected = {
 				6.0f, 8.0f, 0.0f, 13.0f,
 				-1.0f, 5.0f, 12.0f, 6.0f,
 				3.0f, 2.0f, -3.0f, 10.0f,
 				5.0f, 8.0f, 5.0f, 2.0f
 			};
 
-			Mat4<float> result = matrixA + matrixB;
+			Mat4f result = matrixA + matrixB;
 
 			for (size_t i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
@@ -715,26 +715,26 @@ namespace OpenMLTest
 
 		TEST_METHOD(Mat4_operatorMinusMatrix_Test)
 		{
-			Mat4<float> matrixA = {
+			Mat4f matrixA = {
 				4.0f,  3.0f,  2.0f, 9.0f,
 				-2.0f,  8.0f, 4.0f, -2.0f,
 				3.0f,  -5.0f,  1.0f, 3.0f,
 				1.0f, 4.0f,  0.0f, 0.0f
 			};
-			Mat4<float> matrixB = {
+			Mat4f matrixB = {
 				2.0f, 5.0f, -2.0f, 4.0f,
 				1.0f, -3.0f, 8.0f, 8.0f,
 				0.0f, 7.0f, -4.0f, 7.0f,
 				4.0f, 4.0f, 5.0f, 2.0f
 			};
-			Mat4<float> expected = {
+			Mat4f expected = {
 				2.0f, -2.0f, 4.0f, 5.0f,
 				-3.0f, 11.0f, -4.0f, -10.0f,
 				3.0f, -12.0f, 5.0f, -4.0f,
 				-3.0f, 0.0f, -5.0f, -2.0f
 			};
 
-			Mat4<float> result = matrixA - matrixB;
+			Mat4f result = matrixA - matrixB;
 
 			for (size_t i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
@@ -763,20 +763,20 @@ namespace OpenMLTest
 
 		TEST_METHOD(Mat4_operatorMinus_scalar_Test)
 		{
-			Mat4<float> matrixA = {
+			Mat4f matrixA = {
 				4.0f,  3.0f,  2.0f, 9.0f,
 				-2.0f,  8.0f, 4.0f, -2.0f,
 				3.0f,  -5.0f,  1.0f, 3.0f,
 				1.0f, 4.0f,  0.0f, 0.0f
 			};
-			Mat4<float> expected = {
+			Mat4f expected = {
 				2.0f, 1.0f, 0.0f, 7.0f,
 				-4.0f, 6.0f, 2.0f, -4.0f,
 				1.0f, -7.0f, -1.0f, 1.0f,
 				-1.0f, 2.0f, -2.0f, -2.0f
 			};
 
-			Mat4<float> result = matrixA - 2.0f;
+			Mat4f result = matrixA - 2.0f;
 
 			for (size_t i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
@@ -784,7 +784,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Mat4_operatorEqualValue_Test)
 		{
-			Mat4<float> matrixA = {
+			Mat4f matrixA = {
 				1.0f,  1.0f,  1.0f, 1.0f,
 				1.0f,  1.0f,  1.0f, 1.0f,
 				1.0f,  1.0f,  1.0f, 1.0f,
@@ -803,13 +803,13 @@ namespace OpenMLTest
 
 		TEST_METHOD(Mat4_operatorEqualMatrix_Test)
 		{
-			Mat4<float> matrixA = {
+			Mat4f matrixA = {
 				4.0f,  3.0f,  2.0f, 9.0f,
 				-2.0f,  8.0f, 4.0f, -2.0f,
 				3.0f,  -5.0f,  1.0f, 3.0f,
 				1.0f, 4.0f,  0.0f, 0.0f
 			};
-			Mat4<float> matrixB = {
+			Mat4f matrixB = {
 				4.0f,  3.0f,  2.0f, 9.0f,
 				-2.0f,  8.0f, 4.0f, -2.0f,
 				3.0f,  -5.0f,  1.0f, 3.0f,
@@ -826,13 +826,13 @@ namespace OpenMLTest
 
 		TEST_METHOD(Mat4_operatorNotEqualMatrix_Test)
 		{
-			Mat4<float> matrixA = {
+			Mat4f matrixA = {
 				4.0f,  3.0f,  2.0f, 9.0f,
 				-2.0f,  8.0f, 4.0f, -2.0f,
 				3.0f,  -5.0f,  1.0f, 3.0f,
 				1.0f, 4.0f,  0.0f, 0.0f
 			};
-			Mat4<float> matrixB = {
+			Mat4f matrixB = {
 				4.0f,  3.0f,  2.0f, 9.0f,
 				-2.0f,  8.0f, 4.0f, -2.0f,
 				3.0f,  -5.0f,  1.0f, 3.0f,
@@ -849,7 +849,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Mat4_operatorIndex_Test)
 		{
-			Mat4<float> matrixA = {
+			Mat4f matrixA = {
 				4.0f,  3.0f,  2.0f, 9.0f,
 				-2.0f,  8.0f, 4.0f, -2.0f,
 				3.0f,  -5.0f,  1.0f, 3.0f,

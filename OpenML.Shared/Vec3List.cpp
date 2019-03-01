@@ -1,7 +1,7 @@
 #include "Vec3List.h"
 
 template <typename T>
-Vec3List<T>::Vec3List(Vec3<T>* points, size_t count)
+Vec3List<T>::Vec3List(Vec3<T>* points, int count)
 {
 	this->points = points;
 	this->count = count;

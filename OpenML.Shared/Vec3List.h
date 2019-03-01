@@ -17,7 +17,7 @@ namespace OpenML
 		///<summary>
 		///Default Constructor
 		///</summary>
-		Vec3List(Vec3<T>* points, size_t count);
+		Vec3List(Vec3<T>* points, int count);
 		
 		///<summary>
 		///Find the extreme points along the direction

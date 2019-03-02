@@ -39,6 +39,8 @@ namespace OpenML
 		API_INTERFACE int level();
 		API_INTERFACE int childrenCount();
 
+		API_INTERFACE std::vector<T> leafs();
+
 		API_INTERFACE std::vector<T> listPreOrder();
 		API_INTERFACE std::vector<T> listPostOrder();	
 		API_INTERFACE std::vector<T> listInOrder();

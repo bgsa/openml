@@ -187,5 +187,34 @@ namespace OpenMLTest
 			delete tree;
 		}
 
+		TEST_METHOD(BinaryTreeTest_leafs_Test)
+		{
+			BinaryTreeNode<std::string>* root = new BinaryTreeNode<std::string>("1");
+			root->setLeftNode(new BinaryTreeNode<std::string>("2"));
+			root->setRightNode(new BinaryTreeNode<std::string>("3"));
+
+			root->leftNode()->setLeftNode(new BinaryTreeNode<std::string>("4"));
+			root->leftNode()->setRightNode(new BinaryTreeNode<std::string>("5"));
+
+			root->leftNode()->leftNode()->setLeftNode(new BinaryTreeNode<std::string>("6"));
+			root->leftNode()->leftNode()->setRightNode(new BinaryTreeNode<std::string>("7"));
+
+			root->rightNode()->setRightNode(new BinaryTreeNode<std::string>("8"));
+
+			BinaryTree<std::string>* tree = new BinaryTree<std::string>(root);
+			std::vector<std::string> list = tree->leafs();
+
+			std::string expected[4] = {
+				"6", "7", "5", "8"
+			};
+
+			Assert::AreEqual(size_t(4), list.size(), L"wrong value", LINE_INFO());
+
+			for (size_t i = 0; i < 4; i++)
+				Assert::AreEqual(list[i], expected[i], L"wrong value", LINE_INFO());
+
+			delete tree;
+		}
+
 	};
 }

@@ -20,6 +20,10 @@ namespace OpenML
 		API_INTERFACE int height();
 		API_INTERFACE int levels();
 
+		API_INTERFACE std::vector<NodeType> listPreOrder();
+		API_INTERFACE std::vector<NodeType> listPostOrder();
+		API_INTERFACE std::vector<NodeType> listInOrder();
+
 		~BinaryTree();
 	};
 

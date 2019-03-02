@@ -132,7 +132,73 @@ int BinaryTreeNode<T>::childrenCount()
 
 	return count;
 }
-	
+
+template <typename T>
+std::vector<T> BinaryTreeNode<T>::listPreOrder()
+{
+	std::vector<T> list;
+
+	preOrder(this, list);
+
+	return list;
+}
+
+template <typename T>
+std::vector<T> BinaryTreeNode<T>::listPostOrder()
+{
+	std::vector<T> list;
+
+	postOrder(this, list);
+
+	return list;
+}
+
+template <typename T>
+std::vector<T> BinaryTreeNode<T>::listInOrder()
+{
+	std::vector<T> list;
+
+	inOrder(this, list);
+
+	return list;
+}
+
+template <typename T>
+void preOrder(BinaryTreeNode<T>* node, std::vector<T>& list)
+{
+	list.push_back(node->value);
+
+	if (node->leftNode() != nullptr)
+		preOrder(node->leftNode(), list);
+
+	if (node->rightNode() != nullptr)
+		preOrder(node->rightNode(), list);
+}
+
+template <typename T>
+void postOrder(BinaryTreeNode<T>* node, std::vector<T>& list)
+{
+	if (node->leftNode() != nullptr)
+		postOrder(node->leftNode(), list);
+
+	if (node->rightNode() != nullptr)
+		postOrder(node->rightNode(), list);
+
+	list.push_back(node->value);
+}
+
+template <typename T>
+void inOrder(BinaryTreeNode<T>* node, std::vector<T>& list)
+{
+	if (node->leftNode() != nullptr)
+		inOrder(node->leftNode(), list);
+
+	list.push_back(node->value);
+
+	if (node->rightNode() != nullptr)
+		inOrder(node->rightNode(), list);
+}
+
 template <typename T>
 BinaryTreeNode<T>::~BinaryTreeNode()
 {

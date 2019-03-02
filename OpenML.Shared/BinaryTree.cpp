@@ -46,6 +46,33 @@ int BinaryTree<NodeType>::levels()
 }
 
 template <typename NodeType>
+std::vector<NodeType> BinaryTree<NodeType>::listPreOrder()
+{
+	if (isEmpty())
+		return std::vector<NodeType>();
+
+	return root->listPreOrder();
+}
+
+template <typename NodeType>
+std::vector<NodeType> BinaryTree<NodeType>::listPostOrder()
+{
+	if (isEmpty())
+		return std::vector<NodeType>();
+
+	return root->listPostOrder();
+}
+
+template <typename NodeType>
+std::vector<NodeType> BinaryTree<NodeType>::listInOrder()
+{
+	if (isEmpty())
+		return std::vector<NodeType>();
+
+	return root->listInOrder();
+}
+
+template <typename NodeType>
 BinaryTree<NodeType>::~BinaryTree()
 {
 	if (root != nullptr)

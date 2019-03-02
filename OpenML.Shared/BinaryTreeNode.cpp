@@ -164,6 +164,18 @@ std::vector<T> BinaryTreeNode<T>::listInOrder()
 }
 
 template <typename T>
+std::vector<T> BinaryTreeNode<T>::listLevelOrder()
+{
+	std::vector<T> list;
+	int levels = this->height() + 2;
+
+	for (int i = 0; i < levels; i++)
+		levelOrder(this, list, i);
+	
+	return list;
+}
+
+template <typename T>
 void preOrder(BinaryTreeNode<T>* node, std::vector<T>& list)
 {
 	list.push_back(node->value);
@@ -197,6 +209,22 @@ void inOrder(BinaryTreeNode<T>* node, std::vector<T>& list)
 
 	if (node->rightNode() != nullptr)
 		inOrder(node->rightNode(), list);
+}
+
+template <typename T>
+void levelOrder(BinaryTreeNode<T>* node, std::vector<T>& list, int level)
+{
+	if (node == nullptr)
+		return;
+
+	if (level == 1)
+		list.push_back(node->value);
+	else 
+		if (level > 1)
+		{
+			levelOrder(node->leftNode(), list, level - 1);
+			levelOrder(node->rightNode(), list, level - 1);
+		}
 }
 
 template <typename T>

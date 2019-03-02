@@ -23,6 +23,7 @@ namespace OpenML
 		API_INTERFACE std::vector<NodeType> listPreOrder();
 		API_INTERFACE std::vector<NodeType> listPostOrder();
 		API_INTERFACE std::vector<NodeType> listInOrder();
+		API_INTERFACE std::vector<NodeType> listLevelOrder();
 
 		~BinaryTree();
 	};

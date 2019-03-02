@@ -73,6 +73,15 @@ std::vector<NodeType> BinaryTree<NodeType>::listInOrder()
 }
 
 template <typename NodeType>
+std::vector<NodeType> BinaryTree<NodeType>::listLevelOrder()
+{
+	if (isEmpty())
+		return std::vector<NodeType>();
+
+	return root->listLevelOrder();
+}
+
+template <typename NodeType>
 BinaryTree<NodeType>::~BinaryTree()
 {
 	if (root != nullptr)

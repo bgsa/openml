@@ -54,6 +54,11 @@ namespace OpenML
 	class Quat;
 
 	template <typename T>
+	class BinaryTree;
+	template <typename T>
+	class BinaryTreeNode;
+
+	template <typename T>
 	class Line2D;
 	template <typename T>
 	class Line3D;

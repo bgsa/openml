@@ -290,6 +290,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AABBTest.cpp" />
+    <ClCompile Include="BinaryTreeNodeTest.cpp" />
+    <ClCompile Include="BinaryTreeTest.cpp" />
     <ClCompile Include="Circle2DTest.cpp" />
     <ClCompile Include="Line2DTest.cpp" />
     <ClCompile Include="Line3DTest.cpp" />

@@ -191,6 +191,46 @@ Sphere<T> Sphere<T>::buildFrom(const Vec3List<T>& pointList)
 }
 
 template <typename T>
+Sphere<T> Sphere<T>::enclose(const Sphere<T>& sphere)
+{
+	Sphere<T> result;
+
+	Vec3<T> d = sphere.center - center;
+	T squaredDistance = d.dot(d);  	// Compute the squared distance between the sphere centers 
+
+	if (pow(double(sphere.ray - ray), 2) >= squaredDistance)
+	{
+		// The sphere with the larger radius encloses the other; 
+		// just set s to be the larger of the two spheres
+		if (sphere.ray >= this->ray)
+			result = sphere;
+		else
+			result = *this;
+	}
+	else
+	{
+		// Spheres partially overlapping or disjoint 
+		T distance = T(std::sqrt(squaredDistance));
+
+		result.ray = (distance + ray + sphere.ray) * T(0.5);
+		result.center = center;
+
+		if (distance > DefaultErrorMargin)
+			result.center += ((result.ray - ray) / distance) * d;
+	}
+
+	return result;
+}
+
+template <typename T>
+Sphere<T> Sphere<T>::enclose(const AABB<T>& aabb)
+{
+	Sphere<T> sphere = Sphere<T>::buildFrom(aabb);	
+
+	return enclose(sphere);
+}
+
+template <typename T>
 Sphere<T> WelzlSphere(Vec3<T>* points, int numPts, Vec3<T> suportPoints[], int suportPointsCount)
 {
 	// if no input points, the recursion has bottomed out. Now compute an 

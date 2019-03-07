@@ -185,5 +185,53 @@ namespace OpenMLTest
 				Assert::IsTrue(isCloseEnough(expectedCenterPoint[i], sphere.center[i]), L"wring value", LINE_INFO());
 		}
 
+		TEST_METHOD(Sphere_enclose_sphere_Test1)
+		{
+			Spheref sphere1 = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 2.0f);
+			Spheref sphere2 = Spheref(Vec3f(4.0f, 0.0f, 0.0f), 1.0f);
+
+			Spheref result = sphere1.enclose(sphere2);
+
+			Vec3f expectedCenter = Vec3f(1.5f, 0.0f, 0.0f);
+			float expectedRay = 3.5f;
+
+			for (size_t i = 0; i < 3; i++)
+				Assert::AreEqual(expectedCenter[i], result.center[i], L"Wrong value.", LINE_INFO());
+
+			Assert::AreEqual(expectedRay, result.ray, L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(Sphere_enclose_sphere_Test2)
+		{
+			Spheref sphere1 = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
+			Spheref sphere2 = Spheref(Vec3f(1.0f, 1.0f, 1.0f), 3.0f);
+
+			Spheref result = sphere1.enclose(sphere2);
+
+			Vec3f expectedCenter = Vec3f(0.0f, 0.0f, 0.0f);
+			float expectedRay = 10.0f;
+
+			for (size_t i = 0; i < 3; i++)
+				Assert::AreEqual(expectedCenter[i], result.center[i], L"Wrong value.", LINE_INFO());
+
+			Assert::AreEqual(expectedRay, result.ray, L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(Sphere_enclose_sphere_Test3)
+		{
+			Spheref sphere1 = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
+			Spheref sphere2 = Spheref(Vec3f(1.0f, 1.0f, 1.0f), 3.0f);
+
+			Spheref result = sphere2.enclose(sphere1); //swapped
+
+			Vec3f expectedCenter = Vec3f(0.0f, 0.0f, 0.0f);
+			float expectedRay = 10.0f;
+
+			for (size_t i = 0; i < 3; i++)
+				Assert::AreEqual(expectedCenter[i], result.center[i], L"Wrong value.", LINE_INFO());
+
+			Assert::AreEqual(expectedRay, result.ray, L"Wrong value.", LINE_INFO());
+		}
+
 	};
 }

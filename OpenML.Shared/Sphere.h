@@ -1,5 +1,6 @@
 #pragma once
 
+#include "OpenML.h"
 #include "Vec3.h"
 #include "Mat4.h"
 #include "Plane3D.h"
@@ -69,6 +70,17 @@ namespace OpenML
 		/// Build a enclosing sphere from an AABB
 		/// </summary>
 		API_INTERFACE static Sphere<T> buildFrom(const Vec3List<T>& pointList);
+
+		/// <summary>
+		/// Enclose/add the sphere in another one
+		/// </summary>
+		API_INTERFACE Sphere<T> enclose(const Sphere<T>& sphere);
+
+		/// <summary>
+		/// Enclose/add the sphere in AABB
+		/// </summary>
+		API_INTERFACE Sphere<T> enclose(const AABB<T>& aabb);
+
 
 	};
 

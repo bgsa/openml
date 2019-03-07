@@ -84,7 +84,12 @@ namespace OpenML
 		///<summary>
 		///Ecnlose/add a new bounding volume with AABB in parameter
 		///</summary>
-		API_INTERFACE AABB<T> enclose(const AABB<T>& aabb);
+		API_INTERFACE inline AABB<T> enclose(const AABB<T>& aabb);
+
+		///<summary>
+		///Ecnlose/add a new bounding volume with Sphere in parameter
+		///</summary>
+		API_INTERFACE AABB<T> enclose(const Sphere<T>& sphere);
 
 	};
 

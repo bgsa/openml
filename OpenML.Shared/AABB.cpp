@@ -176,15 +176,24 @@ AABB<T> AABB<T>::buildFrom(const Sphere<T>& sphere)
 template <typename T>
 AABB<T> AABB<T>::enclose(const AABB<T>& aabb)
 {
-	AABB<T> result;
+	return AABB<T>(
+		Vec3<T>(
+			std::min(this->minPoint[0], aabb.minPoint[0]),
+			std::min(this->minPoint[1], aabb.minPoint[1]),
+			std::min(this->minPoint[2], aabb.minPoint[2])
+		),
+		Vec3<T>(
+			std::max(this->maxPoint[0], aabb.maxPoint[0]),
+			std::max(this->maxPoint[1], aabb.maxPoint[1]),
+			std::max(this->maxPoint[2], aabb.maxPoint[2])
+		)
+	);
+}
 
-	for (int i = 0; i < 3; i++) 
-	{ 
-		result.minPoint[i] = std::min(this->minPoint[i], aabb.minPoint[i]);
-		result.maxPoint[i] = std::max(this->maxPoint[i], aabb.maxPoint[i]);
-	}
-
-	return result;
+template <typename T>
+AABB<T> AABB<T>::enclose(const Sphere<T>& sphere)
+{
+	return enclose(AABB<T>::buildFrom(sphere));
 }
 
 namespace OpenML

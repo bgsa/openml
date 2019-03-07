@@ -265,7 +265,7 @@ namespace OpenMLTest
 			}
 		}
 
-		TEST_METHOD(AABB_encloseAABB_Test)
+		TEST_METHOD(AABB_enclose_AABB_Test)
 		{
 			AABBf aabb1 = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
 			AABBf aabb2 = AABBf(Vec3f(20.0f, -1.0f, 2.0f), Vec3f(22.0f, 5.0f, 11.0f));
@@ -274,6 +274,23 @@ namespace OpenMLTest
 
 			Vec3f expectedMinPoint = Vec3f(0.0f, -1.0f, 0.0f);
 			Vec3f expectedMaxPoint = Vec3f(22.0f, 10.0f, 11.0f);
+
+			for (size_t i = 0; i < 3; i++)
+			{
+				Assert::AreEqual(expectedMinPoint[i], result.minPoint[i], L"Wrong value.", LINE_INFO());
+				Assert::AreEqual(expectedMaxPoint[i], result.maxPoint[i], L"Wrong value.", LINE_INFO());
+			}
+		}
+
+		TEST_METHOD(AABB_enclose_sphere_Test)
+		{
+			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			Spheref sphere = Spheref(Vec3f(-20.0f, 0.0f, 3.0f), 10.0f);
+
+			AABBf result = aabb.enclose(sphere);
+
+			Vec3f expectedMinPoint = Vec3f(-30.0f, -10.0f, -7.0f);
+			Vec3f expectedMaxPoint = Vec3f(10.0f, 10.0f, 13.0f);
 
 			for (size_t i = 0; i < 3; i++)
 			{

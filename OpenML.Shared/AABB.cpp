@@ -1,6 +1,13 @@
 #include "AABB.h"
 
 template <typename T>
+AABB<T>::AABB()
+{
+	this->minPoint = Vec3<T>(T(-0.5f));
+	this->maxPoint = -this->minPoint;
+}
+
+template <typename T>
 AABB<T>::AABB(Vec3<T> minPoint, Vec3<T> maxPoint)
 {
 	this->minPoint = minPoint;
@@ -164,6 +171,20 @@ AABB<T> AABB<T>::buildFrom(const Sphere<T>& sphere)
 			sphere.center[2] + sphere.ray
 			)
 		);
+}
+
+template <typename T>
+AABB<T> AABB<T>::enclose(const AABB<T>& aabb)
+{
+	AABB<T> result;
+
+	for (int i = 0; i < 3; i++) 
+	{ 
+		result.minPoint[i] = std::min(this->minPoint[i], aabb.minPoint[i]);
+		result.maxPoint[i] = std::max(this->maxPoint[i], aabb.maxPoint[i]);
+	}
+
+	return result;
 }
 
 namespace OpenML

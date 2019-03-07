@@ -17,7 +17,12 @@ namespace OpenML
 		Vec3<T> maxPoint;
 
 		///<summary>
-		///Default constructur using min and max points
+		///Default constructur - build a unit AABB with the center in the origin
+		///</summary>
+		API_INTERFACE inline AABB();
+
+		///<summary>
+		///Constructor using min and max points
 		///</summary>
 		API_INTERFACE inline AABB(Vec3<T> minPoint, Vec3<T> maxPoint);
 
@@ -75,6 +80,11 @@ namespace OpenML
 		///Given a sphere, build the AABB to enclose the sphere
 		///</summary>
 		API_INTERFACE static AABB<T> buildFrom(const Sphere<T>& sphere);
+
+		///<summary>
+		///Ecnlose/add a new bounding volume with AABB in parameter
+		///</summary>
+		API_INTERFACE AABB<T> enclose(const AABB<T>& aabb);
 
 	};
 

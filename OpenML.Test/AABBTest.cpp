@@ -12,6 +12,17 @@ namespace OpenMLTest
 	{
 	public:
 
+		TEST_METHOD(AABB_constructor_empty_Test)
+		{
+			AABBf aabb = AABBf();
+
+			for (size_t i = 0; i < 3; i++)
+			{
+				Assert::AreEqual(Vec3f(-0.5f, -0.5f, -0.5f)[i], aabb.minPoint[i], L"Wrong value.", LINE_INFO());
+				Assert::AreEqual(Vec3f(0.5f, 0.5f, 0.5f)[i], aabb.maxPoint[i], L"Wrong value.", LINE_INFO());
+			}
+		}
+
 		TEST_METHOD(AABB_constructor_twoPoints_Test)
 		{
 			Vec3f minPoint = Vec3f(0.0f, 0.0f, 0.0f);
@@ -251,6 +262,23 @@ namespace OpenMLTest
 			{
 				Assert::AreEqual(expectedMinPoint[i], aabb.minPoint[i], L"Wrong value.", LINE_INFO());
 				Assert::AreEqual(expectedMaxPoint[i], aabb.maxPoint[i], L"Wrong value.", LINE_INFO());
+			}
+		}
+
+		TEST_METHOD(AABB_encloseAABB_Test)
+		{
+			AABBf aabb1 = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			AABBf aabb2 = AABBf(Vec3f(20.0f, -1.0f, 2.0f), Vec3f(22.0f, 5.0f, 11.0f));
+
+			AABBf result = aabb1.enclose(aabb2);
+
+			Vec3f expectedMinPoint = Vec3f(0.0f, -1.0f, 0.0f);
+			Vec3f expectedMaxPoint = Vec3f(22.0f, 10.0f, 11.0f);
+
+			for (size_t i = 0; i < 3; i++)
+			{
+				Assert::AreEqual(expectedMinPoint[i], result.minPoint[i], L"Wrong value.", LINE_INFO());
+				Assert::AreEqual(expectedMaxPoint[i], result.maxPoint[i], L"Wrong value.", LINE_INFO());
 			}
 		}
 		

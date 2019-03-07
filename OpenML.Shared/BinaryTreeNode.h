@@ -3,6 +3,7 @@
 #include "OpenML.h"
 #include <algorithm>
 #include <vector>
+#include "BoundingVolume.h"
 
 namespace OpenML
 {

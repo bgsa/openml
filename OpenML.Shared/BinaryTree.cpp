@@ -1,24 +1,24 @@
 #include "BinaryTree.h"
 
-template <typename NodeType>
+template <class NodeType>
 BinaryTree<NodeType>::BinaryTree()
 {
 	root = nullptr;
 }
 
-template <typename NodeType>
+template <class NodeType>
 BinaryTree<NodeType>::BinaryTree(BinaryTreeNode<NodeType>* root) 
 {
 	this->root = root;
 }
 
-template <typename NodeType>
+template <class NodeType>
 bool BinaryTree<NodeType>::isEmpty()
 {
 	return root == nullptr;
 }
 
-template <typename NodeType>
+template <class NodeType>
 int BinaryTree<NodeType>::nodeCount()
 {
 	if (isEmpty())
@@ -27,7 +27,7 @@ int BinaryTree<NodeType>::nodeCount()
 	return root->childrenCount() + 1;
 }
 
-template <typename NodeType>
+template <class NodeType>
 int BinaryTree<NodeType>::height()
 {
 	if (isEmpty())
@@ -36,7 +36,7 @@ int BinaryTree<NodeType>::height()
 	return root->height();
 }
 
-template <typename NodeType>
+template <class NodeType>
 int BinaryTree<NodeType>::levels()
 {
 	if (isEmpty())
@@ -45,7 +45,7 @@ int BinaryTree<NodeType>::levels()
 	return root->height() + 1;
 }
 
-template <typename NodeType>
+template <class NodeType>
 std::vector<NodeType> BinaryTree<NodeType>::listPreOrder()
 {
 	if (isEmpty())
@@ -54,7 +54,7 @@ std::vector<NodeType> BinaryTree<NodeType>::listPreOrder()
 	return root->listPreOrder();
 }
 
-template <typename NodeType>
+template <class NodeType>
 std::vector<NodeType> BinaryTree<NodeType>::listPostOrder()
 {
 	if (isEmpty())
@@ -63,7 +63,7 @@ std::vector<NodeType> BinaryTree<NodeType>::listPostOrder()
 	return root->listPostOrder();
 }
 
-template <typename NodeType>
+template <class NodeType>
 std::vector<NodeType> BinaryTree<NodeType>::listInOrder()
 {
 	if (isEmpty())
@@ -72,7 +72,7 @@ std::vector<NodeType> BinaryTree<NodeType>::listInOrder()
 	return root->listInOrder();
 }
 
-template <typename NodeType>
+template <class NodeType>
 std::vector<NodeType> BinaryTree<NodeType>::leafs()
 {
 	if (isEmpty())
@@ -81,7 +81,7 @@ std::vector<NodeType> BinaryTree<NodeType>::leafs()
 	return root->leafs();
 }
 
-template <typename NodeType>
+template <class NodeType>
 std::vector<NodeType> BinaryTree<NodeType>::listLevelOrder()
 {
 	if (isEmpty())
@@ -90,7 +90,7 @@ std::vector<NodeType> BinaryTree<NodeType>::listLevelOrder()
 	return root->listLevelOrder();
 }
 
-template <typename NodeType>
+template <class NodeType>
 BinaryTree<NodeType>::~BinaryTree()
 {
 	if (root != nullptr)
@@ -106,4 +106,5 @@ namespace OpenML
 	template class BinaryTree<int>;
 	template class BinaryTree<float>;
 	template class BinaryTree<double>;
+	template class BinaryTree<BoundingVolume>;
 }

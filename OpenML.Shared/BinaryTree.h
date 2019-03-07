@@ -2,17 +2,19 @@
 
 #include "OpenML.h"
 #include "BinaryTreeNode.h"
+#include "BoundingVolume.h"
 
 namespace OpenML
 {
 
-	template <typename NodeType>
+	template <class NodeType>
 	class BinaryTree
 	{
 	public:
 		BinaryTreeNode<NodeType>* root;
 
 		API_INTERFACE BinaryTree();
+
 		API_INTERFACE BinaryTree(BinaryTreeNode<NodeType>* root);
 
 		API_INTERFACE bool isEmpty();
@@ -27,7 +29,7 @@ namespace OpenML
 		API_INTERFACE std::vector<NodeType> listInOrder();
 		API_INTERFACE std::vector<NodeType> listLevelOrder();
 		
-		~BinaryTree();
+		API_INTERFACE ~BinaryTree();
 	};
 
 }

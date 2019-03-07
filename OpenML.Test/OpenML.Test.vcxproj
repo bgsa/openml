@@ -302,6 +302,7 @@
     <ClCompile Include="Plane3DTest.cpp" />
     <ClCompile Include="QuatTest.cpp" />
     <ClCompile Include="Rectangle2DTest.cpp" />
+    <ClCompile Include="BoundingVolumeHierarchyTest.cpp" />
     <ClCompile Include="SphereTest.cpp" />
     <ClCompile Include="SystemOfLinearEquationsTest.cpp" />
     <ClCompile Include="Triangle2DTest.cpp" />

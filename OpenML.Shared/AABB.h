@@ -5,12 +5,14 @@
 #include "Vec3List.h"
 #include "Plane3D.h"
 #include "Sphere.h"
+#include "BoundingVolume.h"
 
 namespace OpenML
 {
 
 	template <typename T>
 	class AABB
+		: public BoundingVolume
 	{
 	public:
 		Vec3<T> minPoint;

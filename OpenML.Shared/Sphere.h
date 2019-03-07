@@ -5,12 +5,14 @@
 #include "Mat4.h"
 #include "Plane3D.h"
 #include "ColisionStatus.h"
+#include "BoundingVolume.h"
 
 namespace OpenML
 {
 
 	template <typename T>
 	class Sphere
+		: public BoundingVolume
 	{
 	public:
 		Vec3<T> center;

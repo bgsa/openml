@@ -236,6 +236,21 @@ void Vec3<T>::transformToUnit()
 }
 
 template <typename T>
+T Vec3<T>::squaredDistance(const Vec3<T>& vector) const
+{
+	T x = values[0] - vector[0];
+	x = x * x;
+
+	T y = values[1] - vector[1];
+	y = y * y;
+
+	T z = values[2] - vector[2];
+	z = z * z;
+
+	return x + y + z;
+}
+
+template <typename T>
 T Vec3<T>::distance(const Vec3<T>& vector) const
 {
 	T x = values[0] - vector[0];
@@ -247,7 +262,7 @@ T Vec3<T>::distance(const Vec3<T>& vector) const
 	T z = values[2] - vector[2];
 	z = z*z;
 
-	return T(sqrt(x + y + z));
+	return T(std::sqrt(x + y + z));
 }
 
 template <typename T>

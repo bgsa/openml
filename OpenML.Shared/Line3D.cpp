@@ -233,7 +233,7 @@ template <typename T>
 DetailedColisionStatus<T> Line3D<T>::findIntersectionOnRay(const AABB<T>& aabb) const
 {
 	T tmin = T(0);
-	T tmax = T(std::numeric_limits<double>().max());
+	T tmax = std::numeric_limits<T>().max();
 	Vec3<T> lineDirection = direction();
 
 	// For all three slabs (planes on AABB)
@@ -273,7 +273,7 @@ DetailedColisionStatus<T> Line3D<T>::findIntersectionOnRay(const AABB<T>& aabb) 
 template <typename T>
 ColisionStatus Line3D<T>::hasIntersectionOnSegment(const AABB<T>& aabb) const
 {
-	T epsilon = T(std::numeric_limits<double>().epsilon());
+	T epsilon = std::numeric_limits<T>().epsilon();
 
 	/*
 	Vec3<T> c = (aabb.minPoint + aabb.maxPoint) * T(0.5);	// Box center-point

@@ -10,7 +10,7 @@ Vec3List<T>::Vec3List(Vec3<T>* points, int count)
 template <typename T>
 int* Vec3List<T>::findExtremePointsAlongDirection(const Vec3<T>& direction) const
 {
-	T minProjection = T(std::numeric_limits<double>().max());
+	T minProjection = std::numeric_limits<T>().max();
 	T maxProjection = -minProjection;
 
 	int* result = new int[2];
@@ -57,7 +57,7 @@ int* Vec3List<T>::findExtremePointsAlongAxisZ() const
 template <typename T>
 int* Vec3List<T>::findExtremePointsAlongAxisXYZ() const
 {
-	T maxValue = T(std::numeric_limits<double>().max());
+	T maxValue = std::numeric_limits<T>().max();
 
 	T minProjectionX = maxValue;
 	T maxProjectionX = -maxValue;
@@ -167,6 +167,30 @@ Mat3<T> Vec3List<T>::covariance() const
 		e01 * oon, e11 * oon, e12 * oon,
 		e02 * oon, e12 * oon, e22 * oon
 		);
+}
+
+template <typename T>
+int* Vec3List<T>::closestPoint_UsingBruteForce() const
+{
+	T minimunDistance = std::numeric_limits<T>().max();
+
+	int* result = new int[2];
+
+	for (int i = 0; i < count; i++)
+		for (int j = i+1; j < count; j++)
+		{
+			T currentDistance = points[i].squaredDistance(points[j]);
+
+			if (currentDistance < minimunDistance) 
+			{
+				minimunDistance = currentDistance;
+				result[0] = i;
+				result[1] = j;
+			}
+		}
+
+	//T distance = std::sqrt(minimunDistance);
+	return result;
 }
 
 template <typename T>

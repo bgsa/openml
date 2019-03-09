@@ -152,6 +152,12 @@ namespace OpenML
 		API_INTERFACE inline void transformToUnit();
 
 		/// <summary>
+		/// Compute the SQUARED distance from this vector/point to another one
+		/// The difference is the squared root is not applied on the result
+		/// </summary>
+		API_INTERFACE inline T squaredDistance(const Vec3<T>& vector) const;
+
+		/// <summary>
 		/// Calculate the distance (Euclidean) from this vector to another one
 		/// </summary>
 		API_INTERFACE inline T distance(const Vec3<T>& vector) const;

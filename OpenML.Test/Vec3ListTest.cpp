@@ -152,6 +152,25 @@ namespace OpenMLTest
 				Assert::IsTrue(isCloseEnough(expected[i], result[i]), L"Wrong value.", LINE_INFO());
 		}
 
+		TEST_METHOD(Vec3List_closetPoint_UsingBruteForce_Test)
+		{
+			int pointsCount = 5;
+			Vec3f* points = new Vec3f[pointsCount];
+			points[0] = { 1.0f, 1.0f, 1.0f };
+			points[1] = { 10.0f, 0.0f, 0.0f };
+			points[2] = { 0.0f, 5.0f, 5.0f };
+			points[3] = { 3.0f, 4.0f, 10.0f };
+			points[4] = { 0.0f, 4.0f, 4.0f };
+
+			Vec3List<float> list = Vec3List<float>(points, pointsCount);
+
+			int* result = list.closestPoint_UsingBruteForce();
+			int expected[2] = { 2,4 };
+
+			Assert::AreEqual(expected[0], result[0], L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(expected[1], result[1], L"Wrong value.", LINE_INFO());
+		}
+
 
 	};
 }

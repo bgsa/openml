@@ -50,6 +50,14 @@ namespace OpenML
 		API_INTERFACE int* findExtremePointsAlongAxisXYZ() const;
 
 		///<summary>
+		///Find the closest points in the point list using brute force.
+		///Complexity: (N^2)
+		///Helpful for small quantity of points
+		///</summary>
+		///<returns>Indexes of Array</returns>
+		API_INTERFACE int* closestPoint_UsingBruteForce() const;
+
+		///<summary>
 		///Compute the variance, given an axis (axis X = 0, axis Y = 1, axis Z = 2)
 		///</summary>
 		API_INTERFACE T Vec3List<T>::covarianceOnAxis(int axisIndex) const;

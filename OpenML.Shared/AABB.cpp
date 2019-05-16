@@ -32,6 +32,12 @@ Vec3<T> AABB<T>::center() const
 }
 
 template <typename T>
+Vec3<T> AABB<T>::centerOfBoundingVolume() const
+{
+	return center();
+}
+
+template <typename T>
 T AABB<T>::squaredDistance(const Vec3<T>& target)
 {
 	T result = T(0);

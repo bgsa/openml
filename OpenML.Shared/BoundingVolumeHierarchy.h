@@ -7,11 +7,12 @@ namespace OpenML
 {
 
 	class BoundingVolumeHierarchy
-		: public BinaryTree<BoundingVolume>
+		: public BinaryTree<BoundingVolume<float>>
 	{
 	public:
 
-		void xxx();
+		void insert(const BoundingVolume<float>& boundingVolume);
+		BinaryTreeNode<BoundingVolume<float>> closestBoundingVolume(const BoundingVolume<float>& boundingVolume);
 
 	};
 

@@ -12,7 +12,7 @@ namespace OpenML
 
 	template <typename T>
 	class Sphere
-		: public BoundingVolume
+		: public BoundingVolume<T>
 	{
 	public:
 		Vec3<T> center;
@@ -47,6 +47,13 @@ namespace OpenML
 		/// Build the sphere from 4 points
 		/// </summary>
 		API_INTERFACE Sphere(const Vec3<T> &point1, const Vec3<T> &point2, const Vec3<T> &point3, const Vec3<T> &point4);
+
+		/// <summary>
+		/// Get the center of sphere
+		/// </summary>
+		API_INTERFACE inline Vec3<T> centerOfBoundingVolume() const override {
+			return center;
+		}
 
 		/// <summary>
 		/// Check the status of colision against the point

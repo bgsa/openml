@@ -12,7 +12,7 @@ namespace OpenML
 
 	template <typename T>
 	class AABB
-		: public BoundingVolume
+		: public BoundingVolume<T>
 	{
 	public:
 		Vec3<T> minPoint;
@@ -37,6 +37,11 @@ namespace OpenML
 		///Get the center of AABB
 		///</summary>
 		API_INTERFACE inline Vec3<T> center() const;
+
+		///<summary>
+		///Get the center of bounding volumne (AABB)
+		///</summary>
+		API_INTERFACE inline Vec3<T> centerOfBoundingVolume() const override;
 
 		///<summary>
 		///Get the SQUARED distance from a point and AABB

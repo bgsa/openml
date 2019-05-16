@@ -53,6 +53,7 @@ namespace OpenML
 	template <typename T>
 	class Quat;
 
+	template <typename T>
 	class BoundingVolume;
 
 	template <typename T>

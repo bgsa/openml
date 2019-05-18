@@ -4,7 +4,7 @@
 
 namespace OpenML 
 {
-	const float DefaultErrorMargin = 0.0009f;
+	const float DefaultErrorMargin = 0.0001f;
 	
 #define PI (3.14159265358979323846)
 #define TWO_PI (6.28318530717958647692)
@@ -49,6 +49,17 @@ namespace OpenML
 	}
 
 	///<summary>
+	///Return -1 if value <  0
+	///Return  0 if value == 0
+	///Return  1 if value >  0
+	///</summary>
+	template <typename T> 
+	inline int API_INTERFACE sign(T value) 
+	{
+		return (T(0) < value) - (value < T(0));
+	}
+
+	///<summary>
 	///Check the number is power of 2
 	///</summary>
 	template <typename T>
@@ -84,7 +95,7 @@ namespace OpenML
 		double m = (number < 0.0) ? -1.0 : 1.0;   // check if input is negative
 		double power = pow(10, decimals);
 
-		return T((floor(number * m * power + 0.5) / power) * m);
+		return T((floor(m * number * power + 0.5) / power) * m);
 	}
 
 	///<summary>

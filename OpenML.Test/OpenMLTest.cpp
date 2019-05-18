@@ -38,6 +38,18 @@ namespace OpenMLTest
 			expected = 0.0001f;
 			Assert::AreEqual(expected, result, L"Wrong value.", LINE_INFO());
 		}
+
+		TEST_METHOD(sign_Test)
+		{
+			int result = sign(0.1f);
+			Assert::AreEqual(1, result, L"Wrong value.", LINE_INFO());
+
+			result = sign(-0.1f);
+			Assert::AreEqual(-1, result, L"Wrong value.", LINE_INFO());
+
+			result = sign(0);
+			Assert::AreEqual(0, result, L"Wrong value.", LINE_INFO());
+		}
 	
 	};
 }

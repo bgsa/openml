@@ -82,8 +82,8 @@ namespace OpenMLTest
 
 			Vec2f* result = circle1.findIntersection(circle2);
 
-			Vec2f intersection1 = Vec2f(-1.001f, 4.101f);
-			Vec2f intersection2 = Vec2f(-4.56f, 6.947f);
+			Vec2f intersection1 = Vec2f(-1.0017f, 4.1013f);
+			Vec2f intersection2 = Vec2f(-4.5592f, 6.9474f);
 			
 			Assert::IsNotNull(result, L"Circles should intersect.", LINE_INFO());
 			

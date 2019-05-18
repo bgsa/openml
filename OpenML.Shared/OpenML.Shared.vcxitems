@@ -18,6 +18,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)AABB.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BinaryTree.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BinaryTreeNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BisectionAlgorithm.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BoundingVolume.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BoundingVolumeHierarchy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Circle2D.h" />
@@ -48,6 +49,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)AABB.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BinaryTree.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BinaryTreeNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)BisectionAlgorithm.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BoundingVolumeHierarchy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Circle2D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Line2D.cpp" />

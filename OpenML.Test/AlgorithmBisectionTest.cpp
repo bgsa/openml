@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CppUnitTest.h"
-#include <BisectionAlgorithm.h>
+#include <AlgorithmBisection.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace OpenML;
@@ -19,7 +19,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(BisectionAlgorithm_Test)
 		{
-			BisectionAlgorithm<float> alg;
+			AlgorithmBisection<float> alg;
 			float result = alg.solve(1.0f, 2.0f, func);
 			
 			Assert::IsTrue(isCloseEnough(result, 1.36523f), L"Wrong value.", LINE_INFO());
@@ -27,7 +27,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(BisectionAlgorithm_maxNumberOfIteration_Test)
 		{
-			BisectionAlgorithm<float> alg;
+			AlgorithmBisection<float> alg;
 			int result = alg.maxNumberOfIteration();
 
 			Assert::AreEqual(result, 14, L"Wrong value.", LINE_INFO());

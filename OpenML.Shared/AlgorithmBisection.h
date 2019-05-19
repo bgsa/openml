@@ -6,7 +6,7 @@ namespace OpenML
 {
 
 	template <typename T>
-	class BisectionAlgorithm
+	class AlgorithmBisection
 	{
 	public:
 	

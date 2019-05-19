@@ -1,7 +1,7 @@
-#include "BisectionAlgorithm.h"
+#include "AlgorithmBisection.h"
 
 template <typename T>
-T BisectionAlgorithm<T>::solve(T intervalA, T intervalB, T functor(T) )
+T AlgorithmBisection<T>::solve(T intervalA, T intervalB, T functor(T) )
 {
 	const T closesTo = T(0);
 	
@@ -27,7 +27,7 @@ T BisectionAlgorithm<T>::solve(T intervalA, T intervalB, T functor(T) )
 }
 
 template <typename T>
-int BisectionAlgorithm<T>::maxNumberOfIteration()
+int AlgorithmBisection<T>::maxNumberOfIteration()
 {
 	const double log2 = log10(2);
 	const double v = log10(DefaultErrorMargin);	
@@ -38,7 +38,7 @@ int BisectionAlgorithm<T>::maxNumberOfIteration()
 
 namespace OpenML
 {
-	template class BisectionAlgorithm<int>;
-	template class BisectionAlgorithm<float>;
-	template class BisectionAlgorithm<double>;
+	template class AlgorithmBisection<int>;
+	template class AlgorithmBisection<float>;
+	template class AlgorithmBisection<double>;
 }

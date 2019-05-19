@@ -78,7 +78,7 @@
     <ClCompile Include="BoundingVolumeHierarchyTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BisectionAlgorithmTest.cpp">
+    <ClCompile Include="AlgorithmBisectionTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

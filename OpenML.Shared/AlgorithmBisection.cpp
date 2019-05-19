@@ -1,7 +1,7 @@
 #include "AlgorithmBisection.h"
 
 template <typename T>
-T AlgorithmBisection<T>::solve(T intervalA, T intervalB, T functor(T) )
+T AlgorithmBisection<T>::solve(T intervalA, T intervalB, T functor(T), int maxOfInteration)
 {
 	const T closesTo = T(0);
 	
@@ -9,21 +9,26 @@ T AlgorithmBisection<T>::solve(T intervalA, T intervalB, T functor(T) )
 	T valueMidPoint = functor(midPoint);
 	T valueA = functor(intervalA);
 	
-	while ( ! isCloseEnough(valueMidPoint, closesTo) )
+	while (maxOfInteration != 0)
 	{
-		if (sign(valueA) * sign(valueMidPoint) > 0) 
-		{			
+		if (isCloseEnough(valueMidPoint, closesTo))
+			return midPoint;
+
+		if (sign(valueA) * sign(valueMidPoint) > 0)
+		{
 			intervalA = midPoint;
 			valueA = valueMidPoint;
 		}
 		else
 			intervalB = midPoint;
 
- 		midPoint = intervalA + ((intervalB - intervalA) * T(0.5));
+		midPoint = intervalA + ((intervalB - intervalA) * T(0.5));
 		valueMidPoint = functor(midPoint);
+
+		maxOfInteration--;
 	}
 
-	return midPoint;
+	return T(NAN);
 }
 
 template <typename T>

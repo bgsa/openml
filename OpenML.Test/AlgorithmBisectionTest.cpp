@@ -8,27 +8,27 @@ using namespace OpenML;
 
 namespace OpenMLTest
 {
-	float func(float x)
+	float funcBisection(float x)
 	{
 		return std::powf(x, 3) + 4 * std::pow(x, 2) - 10;
 	}
 
-	TEST_CLASS(BisectionAlgorithmTest)
+	TEST_CLASS(AlgorithmBisectionTest)
 	{
 	public:
 
-		TEST_METHOD(BisectionAlgorithm_Test)
+		TEST_METHOD(AlgorithmBisection_solve_Test)
 		{
-			AlgorithmBisection<float> alg;
-			float result = alg.solve(1.0f, 2.0f, func);
+			AlgorithmBisection<float> algorithm;
+			float result = algorithm.solve(1.0f, 2.0f, funcBisection);
 			
-			Assert::IsTrue(isCloseEnough(result, 1.36523f), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(result, 1.3652f), L"Wrong value.", LINE_INFO());
 		}
 
-		TEST_METHOD(BisectionAlgorithm_maxNumberOfIteration_Test)
+		TEST_METHOD(AlgorithmBisection_maxNumberOfIteration_Test)
 		{
-			AlgorithmBisection<float> alg;
-			int result = alg.maxNumberOfIteration();
+			AlgorithmBisection<float> algorithm;
+			int result = algorithm.maxNumberOfIteration();
 
 			Assert::AreEqual(result, 14, L"Wrong value.", LINE_INFO());
 		}

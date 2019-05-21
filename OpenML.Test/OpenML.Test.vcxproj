@@ -292,6 +292,7 @@
     <ClCompile Include="AABBTest.cpp" />
     <ClCompile Include="AlgorithmFixedPointTest.cpp" />
     <ClCompile Include="AlgorithmNewtonTest.cpp" />
+    <ClCompile Include="AlgorithmSecantTest.cpp" />
     <ClCompile Include="BinaryTreeNodeTest.cpp" />
     <ClCompile Include="BinaryTreeTest.cpp" />
     <ClCompile Include="AlgorithmBisectionTest.cpp" />

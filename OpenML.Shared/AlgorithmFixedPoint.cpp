@@ -2,9 +2,7 @@
 
 template <typename T>
 T AlgorithmFixedPoint<T>::solve(T approximation, T functor(T), int maxOfInteration)
-{
-	const T closesTo = T(0);
-	
+{	
 	while (maxOfInteration != 0)
 	{
 		T f_Aproximation = functor(approximation);

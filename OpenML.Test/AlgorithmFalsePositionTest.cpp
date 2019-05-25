@@ -20,7 +20,7 @@ namespace OpenMLTest
 		TEST_METHOD(AlgorithmFalsePosition_solve_Test)
 		{
 			AlgorithmFalsePosition<float> algorithm;
-			float result = algorithm.solve(0.5f, PI/4, funcFalsePosition);
+			float result = algorithm.solve(0.5f, float(PI/4.0f), funcFalsePosition);
 
 			Assert::IsTrue(isCloseEnough(result, 0.7390f), L"Wrong value.", LINE_INFO());
 		}

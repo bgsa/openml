@@ -93,6 +93,9 @@
     <ClCompile Include="AlgorithmFalsePositionTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AlgorithmSteffensenTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Asserts.h">

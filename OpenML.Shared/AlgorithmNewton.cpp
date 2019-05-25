@@ -7,7 +7,7 @@ T AlgorithmNewton<T>::solve(T approximation, T functor(T), T derivedFunctor(T), 
 	{
 		T newApproximation = approximation - (functor(approximation) / derivedFunctor(approximation));
 
-		if (isCloseEnough(newApproximation - approximation, T(0)))
+		if (isCloseEnough(newApproximation, approximation))
 			return newApproximation;
 
 		approximation = newApproximation;

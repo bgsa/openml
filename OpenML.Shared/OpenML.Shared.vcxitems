@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)AABB.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)AlgorithmAitken.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AlgorithmFalsePosition.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AlgorithmFixedPoint.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AlgorithmNewton.h" />
@@ -52,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)AABB.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)AlgorithmAitken.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)AlgorithmFalsePosition.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)AlgorithmFixedPoint.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)AlgorithmNewton.cpp" />

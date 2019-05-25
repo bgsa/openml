@@ -5,12 +5,12 @@ T AlgorithmFixedPoint<T>::solve(T approximation, T functor(T), int maxOfInterati
 {	
 	while (maxOfInteration != 0)
 	{
-		T f_Aproximation = functor(approximation);
+		T newApproximation = functor(approximation);
 
-		if (isCloseEnough(f_Aproximation, approximation))
-			return approximation;
+		if (isCloseEnough(newApproximation, approximation))
+			return newApproximation;
 
-		approximation = f_Aproximation;
+		approximation = newApproximation;
 
 		maxOfInteration--;
 	}

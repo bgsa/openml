@@ -8,7 +8,12 @@ T AlgorithmSteffensen<T>::solve(T approximation, T functor(T), int maxOfInterati
 		T aproximation1 = functor(approximation);
 		T aproximation2 = functor(aproximation1);
 
-		T newAproximation = T(approximation - std::pow(aproximation1 - approximation, 2) / (aproximation2 - (2 * aproximation1) + approximation));
+		T divisor = (aproximation2 - (2 * aproximation1) + approximation);
+
+		if (divisor == T(0))
+			return aproximation2;
+
+		T newAproximation = T(approximation - std::pow(aproximation1 - approximation, 2) / divisor);
 
 		if (isCloseEnough(newAproximation, approximation))
 			return approximation;

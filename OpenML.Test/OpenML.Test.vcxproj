@@ -290,6 +290,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AABBTest.cpp" />
+    <ClCompile Include="AlgorithmFalsePositionTest.cpp" />
     <ClCompile Include="AlgorithmFixedPointTest.cpp" />
     <ClCompile Include="AlgorithmNewtonTest.cpp" />
     <ClCompile Include="AlgorithmSecantTest.cpp" />

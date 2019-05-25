@@ -10,7 +10,7 @@ namespace OpenMLTest
 {
 	float funcNewton(float x)
 	{
-		return std::cos(x) - x;;
+		return std::cos(x) - x;
 	}
 
 	float funcDerivatedNewton(float x)

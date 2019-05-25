@@ -10,7 +10,7 @@ namespace OpenMLTest
 {
 	float funcSecant(float x)
 	{
-		return std::cos(x) - x;;
+		return std::cos(x) - x;
 	}
 
 	TEST_CLASS(AlgorithmSecantTest)

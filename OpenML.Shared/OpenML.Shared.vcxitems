@@ -19,6 +19,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)AlgorithmAitken.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AlgorithmFalsePosition.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AlgorithmFixedPoint.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)AlgorithmHorner.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AlgorithmNewton.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AlgorithmSecant.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AlgorithmSteffensen.h" />
@@ -56,6 +57,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)AlgorithmAitken.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)AlgorithmFalsePosition.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)AlgorithmFixedPoint.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)AlgorithmHorner.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)AlgorithmNewton.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)AlgorithmSecant.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)AlgorithmSteffensen.cpp" />

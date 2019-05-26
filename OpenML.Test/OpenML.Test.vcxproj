@@ -293,6 +293,7 @@
     <ClCompile Include="AlgorithmAitkenTest.cpp" />
     <ClCompile Include="AlgorithmFalsePositionTest.cpp" />
     <ClCompile Include="AlgorithmFixedPointTest.cpp" />
+    <ClCompile Include="AlgorithmHornerTest.cpp" />
     <ClCompile Include="AlgorithmNewtonTest.cpp" />
     <ClCompile Include="AlgorithmSecantTest.cpp" />
     <ClCompile Include="AlgorithmSteffensenTest.cpp" />

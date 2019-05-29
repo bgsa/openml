@@ -294,6 +294,7 @@
     <ClCompile Include="AlgorithmFalsePositionTest.cpp" />
     <ClCompile Include="AlgorithmFixedPointTest.cpp" />
     <ClCompile Include="AlgorithmHornerTest.cpp" />
+    <ClCompile Include="AlgorithmInterpolationTest.cpp" />
     <ClCompile Include="AlgorithmLagrangecpp.cpp" />
     <ClCompile Include="AlgorithmNewtonTest.cpp" />
     <ClCompile Include="AlgorithmSecantTest.cpp" />

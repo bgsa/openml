@@ -12,10 +12,15 @@ namespace OpenML
 	{
 	public:
 		Vec3<T>* points;
-		int count = 0;
+		int count;
 
 		///<summary>
 		///Default Constructor
+		///</summary>
+		Vec3List();
+
+		///<summary>
+		///Constructor with points
 		///</summary>
 		Vec3List(Vec3<T>* points, int count);
 		

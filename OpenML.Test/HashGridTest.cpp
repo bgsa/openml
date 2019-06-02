@@ -92,14 +92,16 @@ namespace OpenMLTest
 						index++;
 					}
 
-			Vec3f* result = grid.findRangeCell(aabb);
+			Vec3List<float>* result = grid.findRangeCell(aabb);
 
 			for (size_t index = 0; index < 64; index++) 
 			{
-				Assert::AreEqual(expectedCells[index][0], result[index][0], L"Wrong value.", LINE_INFO());
-				Assert::AreEqual(expectedCells[index][1], result[index][1], L"Wrong value.", LINE_INFO());
-				Assert::AreEqual(expectedCells[index][2], result[index][2], L"Wrong value.", LINE_INFO());
+				Assert::AreEqual(expectedCells[index][0], result->points[index][0], L"Wrong value.", LINE_INFO());
+				Assert::AreEqual(expectedCells[index][1], result->points[index][1], L"Wrong value.", LINE_INFO());
+				Assert::AreEqual(expectedCells[index][2], result->points[index][2], L"Wrong value.", LINE_INFO());
 			}
+
+			delete result;
 		}
 
 		TEST_METHOD(AlgorithmAitken_findRangeCell_Test2)
@@ -118,13 +120,40 @@ namespace OpenMLTest
 						index++;
 					}
 
-			Vec3f* result = grid.findRangeCell(aabb);
+			Vec3List<float>* result = grid.findRangeCell(aabb);
 
 			for (size_t index = 0; index < 27; index++)
 			{
-				Assert::AreEqual(expectedCells[index][0], result[index][0], L"Wrong value.", LINE_INFO());
-				Assert::AreEqual(expectedCells[index][1], result[index][1], L"Wrong value.", LINE_INFO());
-				Assert::AreEqual(expectedCells[index][2], result[index][2], L"Wrong value.", LINE_INFO());
+				Assert::AreEqual(expectedCells[index][0], result->points[index][0], L"Wrong value.", LINE_INFO());
+				Assert::AreEqual(expectedCells[index][1], result->points[index][1], L"Wrong value.", LINE_INFO());
+				Assert::AreEqual(expectedCells[index][2], result->points[index][2], L"Wrong value.", LINE_INFO());
+			}
+
+			delete result;
+		}
+
+		TEST_METHOD(AlgorithmAitken_findCollisions_Test1)
+		{
+			HashGrid<float> grid(10);
+
+			AABBf aabb1 = AABBf({ 1.0f, 1.0f, 1.0f }, { 12.0f, 12.0f, 12.0f });
+			AABBf aabb2 = AABBf({ 100.0f, 100.0f, 100.0f }, { 120.0f, 120.0f, 120.0f });
+			AABBf aabb3 = AABBf({ 12.0f, 12.0f, 12.0f }, { 22.0f, 22.0f, 22.0f });
+
+			AABBf aabbs[3] = { aabb1, aabb2, aabb3 };
+
+			std::pair<AABBf, AABBf> expected[1] = { {aabb3, aabb1 } };
+			
+			std::unordered_multimap<AABBf, AABBf, AABBf, AABBf> result = grid.findCollisions(aabbs, 3);
+
+			Assert::AreEqual(size_t(1), result.size());
+
+			size_t i = 0;
+			for (std::pair<AABBf, AABBf> element : result)
+			{
+				Assert::IsTrue(expected[i].first == element.first, L"Wrong value.", LINE_INFO());
+				Assert::IsTrue(expected[i].second == element.second, L"Wrong value.", LINE_INFO());
+				i++;
 			}
 		}
 

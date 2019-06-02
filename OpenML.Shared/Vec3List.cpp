@@ -1,6 +1,13 @@
 #include "Vec3List.h"
 
 template <typename T>
+Vec3List<T>::Vec3List()
+{
+	points = nullptr;
+	count = 0;
+}
+
+template <typename T>
 Vec3List<T>::Vec3List(Vec3<T>* points, int count)
 {
 	this->points = points;

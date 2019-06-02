@@ -1,6 +1,16 @@
 #include "HashGrid.h"
 
 template <typename T>
+int findCellIndexByCellId(const Vec3<T>& cell)
+{
+	const int h1 = 0x8da6b343; // Large multiplicative constants; 
+	const int h2 = 0xd8163841; // here arbitrarily chosen primes 
+	const int h3 = 0xcb1ab31f;
+
+	return h1 * int(cell[0]) + h2 * int(cell[1]) + h3 * int(cell[2]);
+}
+
+template <typename T>
 HashGrid<T>::HashGrid()
 {
 	setCellSize(10);
@@ -55,34 +65,73 @@ int HashGrid<T>::findCellIndex(const Vec3<T>& point)
 {
 	Vec3<T> cell = findCell(point);
 
-	const int h1 = 0x8da6b343; // Large multiplicative constants; 
-	const int h2 = 0xd8163841; // here arbitrarily chosen primes 
-	const int h3 = 0xcb1ab31f;
-	
-	return h1 * int(cell[0]) + h2 * int(cell[1]) + h3 * int(cell[2]);
+	return findCellIndexByCellId(cell);
 }
 
 template <typename T>
-Vec3<T>* HashGrid<T>::findRangeCell(const AABB<T>& aabb) 
-{
+Vec3List<T>* HashGrid<T>::findRangeCell(const AABB<T>& aabb) 
+{	
+	Vec3List<T>* list = new Vec3List<T>();
 	Vec3<T> minCell = findCell(aabb.minPoint);
 	Vec3<T> maxCell = findCell(aabb.maxPoint);
 
 	Vec3<T> deltaPoints = (maxCell - minCell) + T(1);
+		
+	list->count = size_t(deltaPoints[0] * deltaPoints[1] * deltaPoints[2]);
+	list->points = new Vec3<T>[list->count];
 
-	Vec3<T>* result = new Vec3<T>[size_t(deltaPoints[0] * deltaPoints[1] * deltaPoints[2])];
 	size_t index = 0;
-
-	for (T x = T(0); x < deltaPoints[0]; x++)
-		for (T y = T(0); y < deltaPoints[1]; y++)
-			for (T z = T(0); z < deltaPoints[2]; z++) 
+	
+	for (T x = minCell[0]; x <= maxCell[0]; x++)
+		for (T y = minCell[1]; y <= maxCell[1]; y++)
+			for (T z = minCell[2]; z <= maxCell[2]; z++)
 			{
-				result[index] = Vec3<T>(x, y, z);
+				list->points[index] = Vec3<T>(x, y, z);
 				index++;
 			}
 
-	return result;
+	return list;
 }
+
+template <typename T>
+std::vector<int> HashGrid<T>::findRangeCellIndex(const AABB<T>& aabb)
+{
+	Vec3List<T>* cells = findRangeCell(aabb);
+
+	std::vector<int> hashes = std::vector<int>(cells->count);
+
+	for (int i = 0; i < cells->count; i++)
+		hashes[i] = findCellIndexByCellId(cells->points[i]);
+
+	delete cells;
+	
+	return hashes;
+}
+
+template <typename T>
+std::unordered_multimap<AABB<T>, AABB<T>, AABB<T>, AABB<T>> HashGrid<T>::findCollisions(AABB<T>* aabbs, size_t aabbCount)
+{
+	std::unordered_multimap<AABB<T>, AABB<T>, AABB<T>, AABB<T> > pairs;
+	std::unordered_multimap<int, AABB<T>> spatialVolume;
+		
+	for (size_t aabbIndex = 0; aabbIndex < aabbCount; aabbIndex++)
+	{
+		std::vector<int> hashes = findRangeCellIndex(aabbs[aabbIndex]);
+		
+		for each (int hash in hashes)
+		{
+			auto its = spatialVolume.equal_range(hash);
+
+			for (auto it = its.first; it != its.second; ++it) 
+				pairs.insert(std::make_pair( aabbs[aabbIndex], it->second ));
+
+			spatialVolume.insert({ hash, aabbs[aabbIndex] });
+		}
+	}
+
+	return pairs;
+}
+
 
 namespace OpenML
 {

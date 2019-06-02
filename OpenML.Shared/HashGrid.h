@@ -2,6 +2,7 @@
 
 #include "OpenML.h"
 #include "AABB.h"
+#include <unordered_map>
 
 namespace OpenML
 {
@@ -24,8 +25,13 @@ namespace OpenML
 
 		API_INTERFACE int findCellIndex(const Vec3<T>& point);
 
-		API_INTERFACE Vec3<T>* findRangeCell(const AABB<T>& aabb);
+		API_INTERFACE Vec3List<T>* findRangeCell(const AABB<T>& aabb);
+
+		API_INTERFACE std::vector<int> findRangeCellIndex(const AABB<T>& aabb);
+
+		API_INTERFACE std::unordered_multimap<AABB<T>, AABB<T>, AABB<T>, AABB<T>> findCollisions(AABB<T>* aabbs, size_t aabbCount);
 
 	};
 
 }
+

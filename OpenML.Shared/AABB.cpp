@@ -202,6 +202,19 @@ AABB<T> AABB<T>::enclose(const Sphere<T>& sphere)
 	return enclose(AABB<T>::buildFrom(sphere));
 }
 
+template <typename T>
+bool AABB<T>::operator==(const AABB<T>& aabb) const
+{
+	return this->minPoint == aabb.minPoint 
+		&& this->maxPoint == aabb.maxPoint;
+}
+
+template <typename T>
+bool AABB<T>::operator!=(const AABB<T>& aabb) const
+{
+	return ! (*this == aabb);
+}
+
 namespace OpenML
 {
 	template class AABB<int>;

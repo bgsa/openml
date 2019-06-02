@@ -98,6 +98,40 @@ namespace OpenML
 		///</summary>
 		API_INTERFACE AABB<T> enclose(const Sphere<T>& sphere);
 
+		/// <summary>
+		///Compare this AABB to another one. Compare each minPoint and maxPoint
+		/// </summary>
+		API_INTERFACE inline bool operator==(const AABB<T>& aabb) const;
+
+		/// <summary>
+		///Compare this AABB to another one. Compare each minPoint and maxPoint
+		/// </summary>
+		API_INTERFACE inline bool operator!=(const AABB<T>& aabb) const;
+
+		/// <summary>
+		///Hash code function
+		/// </summary>
+		API_INTERFACE size_t operator()(const AABB<T>& aabb) const
+		{ 
+			T hash = T(1);
+			const T constant = T(3);
+
+			hash = constant * hash + aabb.minPoint[0];
+			hash = constant * hash + aabb.minPoint[1];
+			hash = constant * hash + aabb.maxPoint[0];
+			hash = constant * hash + aabb.maxPoint[1];
+
+			return size_t(hash);
+		}
+		
+		/// <summary>
+		///Equals function
+		/// </summary>
+		API_INTERFACE bool operator()(const AABB<T>& aabb1, const AABB<T>& aabb2) const
+		{
+			return aabb1 == aabb2;
+		}
+
 	};
 
 	typedef AABB<int> AABBi;

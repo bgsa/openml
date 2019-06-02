@@ -303,6 +303,7 @@
     <ClCompile Include="BinaryTreeTest.cpp" />
     <ClCompile Include="AlgorithmBisectionTest.cpp" />
     <ClCompile Include="Circle2DTest.cpp" />
+    <ClCompile Include="HashGridTest.cpp" />
     <ClCompile Include="Line2DTest.cpp" />
     <ClCompile Include="Line3DTest.cpp" />
     <ClCompile Include="Mat2Test.cpp" />

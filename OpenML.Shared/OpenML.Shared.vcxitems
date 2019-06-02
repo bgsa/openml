@@ -32,6 +32,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)BoundingVolumeHierarchy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Circle2D.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ColisionStatus.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)HashGrid.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Line2D.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Line3D.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Mat.h" />
@@ -70,6 +71,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)AlgorithmBisection.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BoundingVolumeHierarchy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Circle2D.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)HashGrid.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Line2D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Line3D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mat.cpp" />

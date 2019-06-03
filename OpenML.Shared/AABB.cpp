@@ -215,6 +215,28 @@ bool AABB<T>::operator!=(const AABB<T>& aabb) const
 	return ! (*this == aabb);
 }
 
+template <typename T>
+size_t AABB<T>::operator()(const AABB<T>& aabb) const
+{
+	T hash = T(1);
+	const T constant = T(3);
+
+	hash = constant * hash + aabb.minPoint[0];
+	hash = constant * hash + aabb.minPoint[1];
+	hash = constant * hash + aabb.minPoint[2];
+	hash = constant * hash + aabb.maxPoint[0];
+	hash = constant * hash + aabb.maxPoint[1];
+	hash = constant * hash + aabb.maxPoint[2];
+
+	return size_t(hash);
+}
+
+template <typename T>
+bool AABB<T>::operator()(const AABB<T>& aabb1, const AABB<T>& aabb2) const
+{
+	return aabb1 == aabb2;
+}
+
 namespace OpenML
 {
 	template class AABB<int>;

@@ -113,9 +113,9 @@ namespace OpenMLTest
 			Vec3f expectedCells[27];
 			size_t index = 0;
 
-			for (float x = 0; x < 3; x++)
-				for (float y = 0; y < 3; y++)
-					for (float z = 0; z < 3; z++) {
+			for (float x = -2; x < 1; x++)
+				for (float y = -2; y < 1; y++)
+					for (float z = -2; z < 1; z++) {
 						expectedCells[index] = Vec3f(x, y, z);
 						index++;
 					}
@@ -155,6 +155,44 @@ namespace OpenMLTest
 				Assert::IsTrue(expected[i].second == element.second, L"Wrong value.", LINE_INFO());
 				i++;
 			}
+		}
+
+		TEST_METHOD(AlgorithmAitken_findCollisions_Test2)
+		{
+			HashGrid<float> grid(10);
+
+			AABBf aabb1 = AABBf({ -1.0f, 1.0f, 1.0f }, { -12.0f, 12.0f, 12.0f });
+			AABBf aabb2 = AABBf({ 100.0f, 100.0f, 100.0f }, { 120.0f, 120.0f, 120.0f });
+			AABBf aabb3 = AABBf({ 12.0f, 12.0f, 12.0f }, { 22.0f, 22.0f, 22.0f });
+
+			AABBf aabbs[3] = { aabb1, aabb2, aabb3 };
+
+			std::pair<AABBf, AABBf> expected[1] = { {aabb3, aabb1 } };
+
+			std::unordered_multimap<AABBf, AABBf, AABBf, AABBf> result = grid.findCollisions(aabbs, 3);
+
+			Assert::AreEqual(size_t(0), result.size());
+		}
+
+		TEST_METHOD(AlgorithmAitken_findCollisions_Test3)
+		{
+			HashGrid<float> grid(10);
+
+			AABBf aabb1 = AABBf({ -1.0f, 1.0f, 1.0f }, { 12.0f, 12.0f, 12.0f });
+			AABBf aabb2 = AABBf({ 0.0f, 0.0f, 0.0f }, { 0.5f, 0.5f, 0.5f });
+			AABBf aabb3 = AABBf({ 1.0f, 1.0f, 1.0f }, { 1.0f, 12.0f, 0.0f });
+
+			AABBf aabbs[3] = { aabb1, aabb2, aabb3 };
+
+			std::pair<AABBf, AABBf> expected[1] = { {aabb3, aabb1 } };
+
+			std::unordered_multimap<AABBf, AABBf, AABBf, AABBf> result = grid.findCollisions(aabbs, 3);
+
+			Assert::AreEqual(size_t(3), result.size());
+
+			//aabb2 - aabb1
+			//aabb3 - aabb1
+			//aabb3 - aabb2
 		}
 
 	};

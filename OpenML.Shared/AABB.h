@@ -111,26 +111,12 @@ namespace OpenML
 		/// <summary>
 		///Hash code function
 		/// </summary>
-		API_INTERFACE size_t operator()(const AABB<T>& aabb) const
-		{ 
-			T hash = T(1);
-			const T constant = T(3);
-
-			hash = constant * hash + aabb.minPoint[0];
-			hash = constant * hash + aabb.minPoint[1];
-			hash = constant * hash + aabb.maxPoint[0];
-			hash = constant * hash + aabb.maxPoint[1];
-
-			return size_t(hash);
-		}
+		API_INTERFACE size_t operator()(const AABB<T>& aabb) const;
 		
 		/// <summary>
 		///Equals function
 		/// </summary>
-		API_INTERFACE bool operator()(const AABB<T>& aabb1, const AABB<T>& aabb2) const
-		{
-			return aabb1 == aabb2;
-		}
+		API_INTERFACE bool operator()(const AABB<T>& aabb1, const AABB<T>& aabb2) const;
 
 	};
 

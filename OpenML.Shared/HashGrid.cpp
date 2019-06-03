@@ -109,9 +109,22 @@ std::vector<int> HashGrid<T>::findRangeCellIndex(const AABB<T>& aabb)
 }
 
 template <typename T>
+bool findValue(std::unordered_multimap<AABB<T>, AABB<T>, AABB<T>, AABB<T>>& map, AABB<T> key, AABB<T> value)
+{
+	std::pair<AABB<T>, AABB<T>> pair = std::make_pair(key, value);
+	auto its = map.equal_range(key);
+	
+	for (auto it = its.first; it != its.second; ++it) 
+		if (it->second == value)
+			return true;
+
+	return false;
+}
+
+template <typename T>
 std::unordered_multimap<AABB<T>, AABB<T>, AABB<T>, AABB<T>> HashGrid<T>::findCollisions(AABB<T>* aabbs, size_t aabbCount)
 {
-	std::unordered_multimap<AABB<T>, AABB<T>, AABB<T>, AABB<T> > pairs;
+	std::unordered_multimap<AABB<T>, AABB<T>, AABB<T>, AABB<T>> pairs;
 	std::unordered_multimap<int, AABB<T>> spatialVolume;
 		
 	for (size_t aabbIndex = 0; aabbIndex < aabbCount; aabbIndex++)
@@ -122,9 +135,10 @@ std::unordered_multimap<AABB<T>, AABB<T>, AABB<T>, AABB<T>> HashGrid<T>::findCol
 		{
 			auto its = spatialVolume.equal_range(hash);
 
-			for (auto it = its.first; it != its.second; ++it) 
-				pairs.insert(std::make_pair( aabbs[aabbIndex], it->second ));
-
+			for (auto it = its.first; it != its.second; ++it)
+				if (!findValue(pairs, aabbs[aabbIndex], it->second))   //check if exists on map
+					pairs.insert(std::make_pair(aabbs[aabbIndex], it->second));
+			
 			spatialVolume.insert({ hash, aabbs[aabbIndex] });
 		}
 	}

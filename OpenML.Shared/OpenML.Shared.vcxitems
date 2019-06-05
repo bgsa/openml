@@ -24,6 +24,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)AlgorithmLagrange.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AlgorithmNewton.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AlgorithmSecant.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)AlgorithmSorting.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AlgorithmSteffensen.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BinaryTree.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BinaryTreeNode.h" />
@@ -65,6 +66,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)AlgorithmLagrange.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)AlgorithmNewton.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)AlgorithmSecant.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)AlgorithmSorting.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)AlgorithmSteffensen.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BinaryTree.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BinaryTreeNode.cpp" />

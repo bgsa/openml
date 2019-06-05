@@ -77,7 +77,11 @@ Vec3List<T>* HashGrid<T>::findRangeCell(const AABB<T>& aabb)
 
 	Vec3<T> deltaPoints = (maxCell - minCell) + T(1);
 		
-	list->count = size_t(deltaPoints[0] * deltaPoints[1] * deltaPoints[2]);
+	list->count = int(std::abs(
+			(deltaPoints[0] == T(0) ? T(1) : deltaPoints[0])
+		* (deltaPoints[1] == T(0) ? T(1) : deltaPoints[1]) 
+		* (deltaPoints[2] == T(0) ? T(1) : deltaPoints[2])));
+
 	list->points = new Vec3<T>[list->count];
 
 	size_t index = 0;
@@ -109,7 +113,7 @@ std::vector<int> HashGrid<T>::findRangeCellIndex(const AABB<T>& aabb)
 }
 
 template <typename T>
-bool findValue(std::unordered_multimap<AABB<T>, AABB<T>, AABB<T>, AABB<T>>& map, AABB<T> key, AABB<T> value)
+bool findValue(const std::unordered_multimap<AABB<T>, AABB<T>, AABB<T>, AABB<T>>& map, const AABB<T>& key, const AABB<T>& value)
 {
 	std::pair<AABB<T>, AABB<T>> pair = std::make_pair(key, value);
 	auto its = map.equal_range(key);
@@ -122,10 +126,23 @@ bool findValue(std::unordered_multimap<AABB<T>, AABB<T>, AABB<T>, AABB<T>>& map,
 }
 
 template <typename T>
+bool findValue2(const std::unordered_multimap<AABB<T>, AABB<T>, AABB<T>, AABB<T>>& map, const AABB<T>& key, const AABB<T>& value)
+{
+	std::pair<AABB<T>, AABB<T>> pair = std::make_pair(key, value);
+	auto its = map.equal_range(key);
+
+	for (auto it = its.first; it != its.second; ++it)
+		if (it->second == value)
+			return true;
+
+	return false;
+}
+
+template <typename T>
 std::unordered_multimap<AABB<T>, AABB<T>, AABB<T>, AABB<T>> HashGrid<T>::findCollisions(AABB<T>* aabbs, size_t aabbCount)
 {
 	std::unordered_multimap<AABB<T>, AABB<T>, AABB<T>, AABB<T>> pairs;
-	std::unordered_multimap<int, AABB<T>> spatialVolume;
+	std::multimap<int, AABB<T>> spatialVolume;
 		
 	for (size_t aabbIndex = 0; aabbIndex < aabbCount; aabbIndex++)
 	{
@@ -137,9 +154,9 @@ std::unordered_multimap<AABB<T>, AABB<T>, AABB<T>, AABB<T>> HashGrid<T>::findCol
 
 			for (auto it = its.first; it != its.second; ++it)
 				if (!findValue(pairs, aabbs[aabbIndex], it->second))   //check if exists on map
-					pairs.insert(std::make_pair(aabbs[aabbIndex], it->second));
+					pairs.emplace(aabbs[aabbIndex], it->second);
 			
-			spatialVolume.insert({ hash, aabbs[aabbIndex] });
+			spatialVolume.emplace( hash, aabbs[aabbIndex] );
 		}
 	}
 

@@ -298,6 +298,7 @@
     <ClCompile Include="AlgorithmLagrangecpp.cpp" />
     <ClCompile Include="AlgorithmNewtonTest.cpp" />
     <ClCompile Include="AlgorithmSecantTest.cpp" />
+    <ClCompile Include="AlgorithmSortingTest.cpp" />
     <ClCompile Include="AlgorithmSteffensenTest.cpp" />
     <ClCompile Include="BinaryTreeNodeTest.cpp" />
     <ClCompile Include="BinaryTreeTest.cpp" />

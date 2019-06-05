@@ -3,6 +3,7 @@
 #include "CppUnitTest.h"
 #include <HashGrid.h>
 #include "AABB.h"
+#include "Randomizer.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace OpenML;
@@ -14,7 +15,7 @@ namespace OpenMLTest
 	{
 	public:
 
-		TEST_METHOD(AlgorithmAitken_findCell_Test)
+		TEST_METHOD(HashGrid_findCell_Test)
 		{
 			HashGrid<float> grid(10);
 			Vec3f point = {0.0f, 0.0f, 0.0f};
@@ -52,7 +53,7 @@ namespace OpenMLTest
 				Assert::AreEqual(result[i], expected[i], L"Wrong value.", LINE_INFO());
 		}
 
-		TEST_METHOD(AlgorithmAitken_findCellIndex_Test)
+		TEST_METHOD(HashGrid_findCellIndex_Test)
 		{
 			HashGrid<float> grid(10);
 			Vec3f point = { 12.0f, 1.0f, 34.0f };
@@ -76,7 +77,7 @@ namespace OpenMLTest
 			Assert::AreEqual(expected, result, L"Wrong value.", LINE_INFO());
 		}
 
-		TEST_METHOD(AlgorithmAitken_findRangeCell_Test1)
+		TEST_METHOD(HashGrid_findRangeCell_Test1)
 		{
 			HashGrid<float> grid(10);
 
@@ -104,7 +105,7 @@ namespace OpenMLTest
 			delete result;
 		}
 
-		TEST_METHOD(AlgorithmAitken_findRangeCell_Test2)
+		TEST_METHOD(HashGrid_findRangeCell_Test2)
 		{
 			HashGrid<float> grid(10);
 
@@ -132,7 +133,7 @@ namespace OpenMLTest
 			delete result;
 		}
 
-		TEST_METHOD(AlgorithmAitken_findCollisions_Test1)
+		TEST_METHOD(HashGrid_findCollisions_Test1)
 		{
 			HashGrid<float> grid(10);
 
@@ -157,11 +158,11 @@ namespace OpenMLTest
 			}
 		}
 
-		TEST_METHOD(AlgorithmAitken_findCollisions_Test2)
+		TEST_METHOD(HashGrid_findCollisions_Test2)
 		{
 			HashGrid<float> grid(10);
 
-			AABBf aabb1 = AABBf({ -1.0f, 1.0f, 1.0f }, { -12.0f, 12.0f, 12.0f });
+			AABBf aabb1 = AABBf({ -12.0f, 1.0f, 1.0f }, { -1.0f, 12.0f, 12.0f });
 			AABBf aabb2 = AABBf({ 100.0f, 100.0f, 100.0f }, { 120.0f, 120.0f, 120.0f });
 			AABBf aabb3 = AABBf({ 12.0f, 12.0f, 12.0f }, { 22.0f, 22.0f, 22.0f });
 
@@ -174,7 +175,7 @@ namespace OpenMLTest
 			Assert::AreEqual(size_t(0), result.size());
 		}
 
-		TEST_METHOD(AlgorithmAitken_findCollisions_Test3)
+		TEST_METHOD(HashGrid_findCollisions_Test3)
 		{
 			HashGrid<float> grid(10);
 
@@ -184,15 +185,57 @@ namespace OpenMLTest
 
 			AABBf aabbs[3] = { aabb1, aabb2, aabb3 };
 
-			std::pair<AABBf, AABBf> expected[1] = { {aabb3, aabb1 } };
+			std::pair<AABBf, AABBf> expected[3] = { {aabb2, aabb1 }, { aabb3, aabb1 }, {aabb3, aabb2} };
 
 			std::unordered_multimap<AABBf, AABBf, AABBf, AABBf> result = grid.findCollisions(aabbs, 3);
 
 			Assert::AreEqual(size_t(3), result.size());
 
-			//aabb2 - aabb1
-			//aabb3 - aabb1
-			//aabb3 - aabb2
+			size_t index = 0;
+			for (auto it = result.begin(); it != result.end(); it++, index++)
+			{
+				Assert::IsTrue(expected[index].first == it->first, L"Wrong value.", LINE_INFO());
+				Assert::IsTrue(expected[index].second == it->second, L"Wrong value.", LINE_INFO());
+			}
+		}
+
+		TEST_METHOD(HashGrid_findCollisions_TestPerformance1)
+		{
+			Randomizer<int> randomizerSize(0, 30);
+			Randomizer<int> randomizerLocation(0, 1000);
+			HashGrid<float> grid(10);
+
+			size_t count = 10000;
+			AABBf* aabbs = new AABBf[count];
+
+			for (size_t i = 0; i < count; i++) 
+			{
+				int xMin = randomizerSize.rand();
+				int yMin = randomizerSize.rand();
+				int zMin = randomizerSize.rand();
+
+				int xMax = randomizerSize.rand();
+				int yMax = randomizerSize.rand();
+				int zMax = randomizerSize.rand();
+
+				int locationX = randomizerLocation.rand();
+				int locationY = randomizerLocation.rand();
+				int locationZ = randomizerLocation.rand();
+
+				if (xMin > xMax)
+					std::swap(xMin, xMax);
+
+				if (yMin > yMax)
+					std::swap(yMin, yMax);
+
+				if (zMin > zMax)
+					std::swap(zMin, zMax);
+
+				aabbs[i] = AABBf({ float(xMin + locationX), float(yMin + locationY), float(zMin + locationZ) }
+								, { float(xMax + locationX), float(yMax + locationY), float(zMax + locationZ) });
+			}
+			
+			std::unordered_multimap<AABBf, AABBf, AABBf, AABBf> result = grid.findCollisions(aabbs, count);
 		}
 
 	};

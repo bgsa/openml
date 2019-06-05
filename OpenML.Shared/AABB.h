@@ -109,6 +109,16 @@ namespace OpenML
 		API_INTERFACE inline bool operator!=(const AABB<T>& aabb) const;
 
 		/// <summary>
+		///Comparator function
+		/// </summary>
+		API_INTERFACE bool operator<(const AABB<T>& aabb) const;
+
+		/// <summary>
+		///Comparator function
+		/// </summary>
+		API_INTERFACE bool operator>(const AABB<T>& aabb) const;
+
+		/// <summary>
 		///Hash code function
 		/// </summary>
 		API_INTERFACE size_t operator()(const AABB<T>& aabb) const;

@@ -216,6 +216,36 @@ bool AABB<T>::operator!=(const AABB<T>& aabb) const
 }
 
 template <typename T>
+bool AABB<T>::operator<(const AABB<T>& aabb) const
+{
+	if (this->minPoint[0] < aabb.minPoint[0])
+		return true;
+
+	if (this->minPoint[1] < aabb.minPoint[1])
+		return true;
+
+	if (this->minPoint[2] < aabb.minPoint[2])
+		return true;
+
+	return false;
+}
+
+template <typename T>
+bool AABB<T>::operator>(const AABB<T>& aabb) const
+{
+	if (this->maxPoint[0] > aabb.maxPoint[0])
+		return true;
+
+	if (this->maxPoint[1] > aabb.maxPoint[1])
+		return true;
+
+	if (this->maxPoint[2] > aabb.maxPoint[2])
+		return true;
+
+	return false;
+}
+
+template <typename T>
 size_t AABB<T>::operator()(const AABB<T>& aabb) const
 {
 	T hash = T(1);

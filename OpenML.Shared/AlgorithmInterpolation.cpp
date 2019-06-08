@@ -29,6 +29,70 @@ T AlgorithmInterpolation<T>::findInterpolation(T x, Vec2<T>* points, size_t poin
 	return result;
 }
 
+template <typename T>
+void getInterpolationPolynomialRecursive(Vec2<T>* points, size_t pointsCount, T x0, T* result, size_t iteration)
+{
+	if (pointsCount == 1)
+		return;
+
+	Vec2<T>* newPoints = new Vec2<T>[pointsCount - 1];
+
+	for (size_t i = 0; i < pointsCount - 1; i++)
+	{
+		T value = iteration != 0 ? points[1][0] - x0 : points[i + 1][0] - points[i][0];
+
+		newPoints[i][0] = points[i + 1][0];
+		newPoints[i][1] = (points[i + 1][1] - points[i][1]) / value;
+	}
+
+	iteration++;
+
+	result[iteration] = newPoints[0][1];
+
+	getInterpolationPolynomialRecursive(newPoints, pointsCount - 1, x0, result, iteration);
+
+	delete[] newPoints;
+}
+
+template <typename T>
+T* AlgorithmInterpolation<T>::getInterpolationPolynomial(Vec2<T>* points, size_t pointsCount)
+{
+	T* result = new T[pointsCount];
+
+	result[0] = points[0][1];
+
+	getInterpolationPolynomialRecursive(points, pointsCount, points[0][0], result, 0);
+
+	return result;
+}
+
+template <typename T>
+std::string AlgorithmInterpolation<T>::getInterpolationPolynomialDescription(Vec2<T>* points, size_t pointsCount)
+{
+	T* result = new T[pointsCount];
+	result[0] = points[0][1];
+	getInterpolationPolynomialRecursive(points, pointsCount, points[0][0], result, 0);
+
+	std::stringstream output;
+
+	output << "P" << (pointsCount -1) << "(x) = " << result[0];
+
+	for (size_t i = 1; i < pointsCount; i++)
+	{
+		if (result[i] < T(0))
+			output << " - " << (result[i] * T(-1));
+		else
+			output << " + " << result[i];
+		
+		for (size_t j = 0; j < i; j++)
+			output << "(x - " << points[j][0] << ")";
+	}
+
+	delete[] result;
+
+	return output.str();
+}
+
 namespace OpenML
 {
 	template class AlgorithmInterpolation<int>;

@@ -146,15 +146,20 @@ std::unordered_multimap<AABB<T>, AABB<T>, AABB<T>, AABB<T>> HashGrid<T>::findCol
 		
 	for (size_t aabbIndex = 0; aabbIndex < aabbCount; aabbIndex++)
 	{
-		std::vector<int> hashes = findRangeCellIndex(aabbs[aabbIndex]);
+		AABB<T> aabb = aabbs[aabbIndex];
+		std::vector<int> hashes = findRangeCellIndex(aabb);
 		
 		for each (int hash in hashes)
 		{
 			auto its = spatialVolume.equal_range(hash);
 
-			for (auto it = its.first; it != its.second; ++it)
-				if (!findValue(pairs, aabbs[aabbIndex], it->second))   //check if exists on map
-					pairs.emplace(aabbs[aabbIndex], it->second);
+			for (auto it = its.first; it != its.second; ++it) 
+			{
+				bool hasCollisionAABB = aabb.colisionStatus(it->second) == ColisionStatus::INSIDE;
+
+				if (hasCollisionAABB && !findValue(pairs, aabb, it->second))   //check if exists on map
+					pairs.emplace(aabb, it->second);
+			}
 			
 			spatialVolume.emplace( hash, aabbs[aabbIndex] );
 		}

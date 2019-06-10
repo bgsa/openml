@@ -21,6 +21,23 @@ namespace OpenML
 
 		///<summary>
 		///Given a function by ordered points ("points" parameter), 
+		///find a polynomial that interpolate these points.
+		///This method is not continous in the extreme points. For this, uses Fixed Spline Cubic Method
+		///This algorithm uses Natural Spline Cubic Method.
+		///</summary>
+		API_INTERFACE T** naturalSpline(Vec2<T>* points, size_t pointsCount);
+
+		///<summary>
+		///Given a function by ordered points ("points" parameter), 
+		///find a polynomial that interpolate these points.
+		///This method is not continous in the extreme points. For this, uses Fixed Spline Cubic Method
+		///This algorithm uses Natural Spline Cubic Method.
+		///The description suffix mehotds just show how to use the method
+		///</summary>
+		API_INTERFACE std::string naturalSplineDescription(Vec2<T>* points, size_t pointsCount);
+
+		///<summary>
+		///Given a function by ordered points ("points" parameter), 
 		///find the interpolation polynomial
 		///This algorithm uses Newton Difference Divided Method
 		///</summary>

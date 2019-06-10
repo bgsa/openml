@@ -30,6 +30,92 @@ T AlgorithmInterpolation<T>::findInterpolation(T x, Vec2<T>* points, size_t poin
 }
 
 template <typename T>
+T** AlgorithmInterpolation<T>::naturalSpline(Vec2<T>* points, size_t pointsCount)
+{
+	T** result = new T*[pointsCount - 1];
+
+	T* h = new T[pointsCount];
+	h[pointsCount - 1] = T(0);
+
+	for (size_t i = 0; i < pointsCount - 1; i++)
+		h[i] = points[i + 1][0] - points[i][0];
+
+	T* alpha = new T[pointsCount];
+	alpha[0] = T(0);
+	alpha[pointsCount - 1] = T(0);
+
+	T* l = new T[pointsCount];
+	T* u = new T[pointsCount];
+	T* z = new T[pointsCount];
+	T* c = new T[pointsCount];
+	T* b = new T[pointsCount];
+	T* d = new T[pointsCount];
+
+	b[pointsCount - 1] = T(0);
+	d[pointsCount - 1] = T(0);
+
+	l[0] = T(1);
+	l[pointsCount - 1] = T(1);
+
+	u[0] = T(0);
+
+	z[0] = T(0);	
+	z[pointsCount - 1] = T(0);
+
+	c[pointsCount - 1] = T(0);
+	
+	for (size_t i = 1; i < pointsCount - 1; i++)
+	{
+		alpha[i] = ((T(3) / h[i]) * (points[i + 1][1] - points[i][1])) - ((T(3) / h[i - 1]) * (points[i][1] - points[i - 1][1]));
+
+		l[i] = (2 * (points[i + 1][0] - points[i-1][0])) - (h[i - 1] * u[i - 1]);
+		u[i] = h[i] / l[i];
+		z[i] = (alpha[i] - (h[i - 1] * z[i - 1])) / l[i];
+	}
+
+	for (int j = pointsCount - 2; j >= T(0); j--)
+	{
+		c[j] = z[j] - u[j] * c[j + 1];
+		b[j] = (points[j + 1][1] - points[j][1]) / h[j] - h[j] * (c[j + 1] + 2 * c[j]) / 3;
+		d[j] = (c[j + 1] - c[j]) / (3 * h[j]);
+	}
+
+	for (size_t i = 0; i < pointsCount - 1; i++)
+	{
+		result[i] = new T[4];
+		result[i][0] = points[i][1];
+		result[i][1] = b[i];
+		result[i][2] = c[i];
+		result[i][3] = d[i];
+	}
+
+	delete[] h, alpha, l, u, z, c, b, d;
+	return result;
+}
+
+template <typename T>
+std::string AlgorithmInterpolation<T>::naturalSplineDescription(Vec2<T>* points, size_t pointsCount)
+{
+	std::ostringstream output;
+
+	T** spline = naturalSpline(points, pointsCount);
+
+	for (size_t i = 0; i < pointsCount - 1; i++)
+	{
+		T diff = points[i][0] - points[0][0];
+
+		output << "(" << spline[i][0] << ") + (" 
+			<< spline[i][1] << ")(x - " << diff << ") + (" 
+			<< spline[i][2] << ")(x - " << diff << ")^2 + (" 
+			<< spline[i][3] << ")(x - " << diff << ")^3 "
+			<< std::endl;
+	}
+	
+	delete[] spline;
+	return output.str();
+}
+
+template <typename T>
 void getInterpolationPolynomialRecursive(Vec2<T>* points, size_t pointsCount, T x0, T* result, size_t iteration)
 {
 	if (pointsCount == 1)

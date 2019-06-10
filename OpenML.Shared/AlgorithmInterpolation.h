@@ -38,6 +38,16 @@ namespace OpenML
 
 		///<summary>
 		///Given a function by ordered points ("points" parameter), 
+		///find a polynomial that interpolate these points.
+		///This method is continous in the extreme points. Due to this factm 2 more parameters are required.
+		///1- derivedFx0 = Derived Function in x0
+		///2- derivedFx0 = Derived Function in xn, where "n" is the points count
+		///This algorithm uses Fixed Spline Cubic Method.
+		///</summary>
+		API_INTERFACE T** fixedSpline(Vec2<T>* points, size_t pointsCount, T derivedFx0, T derivedFxn);
+
+		///<summary>
+		///Given a function by ordered points ("points" parameter), 
 		///find the interpolation polynomial
 		///This algorithm uses Newton Difference Divided Method
 		///</summary>

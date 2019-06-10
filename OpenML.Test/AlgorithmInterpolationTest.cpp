@@ -41,7 +41,7 @@ namespace OpenMLTest
 				{3.0f, std::powf(EULER_NUMBER, 3)}
 			};
 
-			float expected[3 * pointsCount] = {
+			float expected[4 * (pointsCount-1)] = {
 				1.0f, 1.466f, 0.0f, 0.25228f,
 				2.71828f, 2.22285f, 0.75685f, 1.69107f,
 				7.38906f, 8.80977f, 5.83007f, -1.94336f
@@ -75,6 +75,60 @@ namespace OpenMLTest
 			std::string result = algorithm.naturalSplineDescription(points, pointsCount);
 
 			Assert::AreEqual(expected.str(), result, L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(AlgorithmInterpolation_fixedSpline_Test1)
+		{
+			AlgorithmInterpolation<float> algorithm;
+			const size_t pointsCount = 4;
+			Vec2<float> points[pointsCount] = {
+				{0.0f, 1.0f},
+				{1.0f, EULER_NUMBER},
+				{2.0f, std::powf(EULER_NUMBER, 2)},
+				{3.0f, std::powf(EULER_NUMBER, 3)}
+			};
+			const float derivedFx0 = 1.0f;
+			const float derivedFx3 = std::powf(EULER_NUMBER, 3);
+
+			float expected[4 * (pointsCount - 1)] = {
+				1.0f, 1.0f, 0.44468f, 0.27360f,
+				2.71828f, 2.71016f, 1.26548f, 0.69513f,
+				7.38906f, 7.32652f, 3.35087f, 2.01909f
+			};
+
+			float** result = algorithm.fixedSpline(points, pointsCount, derivedFx0, derivedFx3);
+
+			for (size_t i = 0; i < 3; i++)
+				for (size_t j = 0; j < pointsCount; j++)
+					Assert::IsTrue(isCloseEnough(expected[i * 4 + j], result[i][j]), L"Wrong value.", LINE_INFO());
+
+			delete[] result, expected;
+		}
+
+		TEST_METHOD(AlgorithmInterpolation_fixedSpline_Test2)
+		{
+			AlgorithmInterpolation<float> algorithm;
+			const size_t pointsCount = 3;
+			Vec2<float> points[pointsCount] = {
+				{1.0f, 2.0f},
+				{2.0f, 3.0f},
+				{3.0f, 5.0f}
+			};
+			const float derivedFx0 = 2.0f;
+			const float derivedFx3 = 1.0f;
+
+			float expected[4 * (pointsCount - 1)] = {
+				2.0f, 2.0f, -2.5f, 3.0f / 2.0f,
+				3.0f, 3.0f / 2.0f, 2.0f, -3.0f / 2.0f
+			};
+
+			float** result = algorithm.fixedSpline(points, pointsCount, derivedFx0, derivedFx3);
+
+			for (size_t i = 0; i < pointsCount - 1; i++)
+				for (size_t j = 0; j < 4; j++)
+					Assert::IsTrue(isCloseEnough(expected[i * 4 + j], result[i][j]), L"Wrong value.", LINE_INFO());
+
+			delete[] result, expected;
 		}
 
 		TEST_METHOD(AlgorithmInterpolation_getInterpolationPolynomial_Test)

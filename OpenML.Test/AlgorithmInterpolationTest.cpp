@@ -178,5 +178,77 @@ namespace OpenMLTest
 			Assert::AreEqual(expected, result, L"Wrong value.", LINE_INFO());
 		}
 
+		TEST_METHOD(AlgorithmInterpolation_getInterpolationPolynomialUsingHermite_Test1)
+		{
+			AlgorithmInterpolation<float> algorithm;
+			const size_t pointsCount = 3;
+			Vec2<float> points[pointsCount] = {
+				{-0.5f, -0.02475f},
+				{-0.25f, 0.3349375f},
+				{0.0f, 1.101f}
+			};
+			float deriveds[pointsCount] = { 0.751f, 2.189f, 4.002f };
+
+			float expected[6] = {
+				-0.02475f, 0.751f, 2.751f, 1.0f, 0.0f, 0.0f
+			};
+
+			float* result = algorithm.getInterpolationPolynomialUsingHermite(points, pointsCount, deriveds);
+			
+			for (size_t i = 0; i < 2 * pointsCount; i++)
+				Assert::IsTrue(isCloseEnough(expected[i], result[i]), L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(AlgorithmInterpolation_getInterpolationPolynomialUsingHermite_Test2)
+		{
+			AlgorithmInterpolation<float> algorithm;
+			const size_t pointsCount = 4;
+			Vec2<float> points[pointsCount] = {
+				{0.1f, -0.62049958f},
+				{0.2f, -0.28398668f},
+				{0.3f, 0.00660095f},
+				{0.4f, 0.24842440f}
+			};
+			float deriveds[pointsCount] = { 3.58502082f, 3.14033271f, 2.66668043f, 2.16529366f };
+
+			float expected[2 * pointsCount] = {
+				-0.6205f, 3.58502f, -2.19892f, -0.490355f, 0.0366034f, 0.0446431f, -0.0197349f, 0.0673337f
+			};
+
+			/*float expected[8] = {
+				-0.62049958f, 3.5850208f, -2.1989182f, -0.490447f, 
+				0.037205f, 0.040475f, -0.002527777f, 0.0029629628f
+			};*/
+
+			float* result = algorithm.getInterpolationPolynomialUsingHermite(points, pointsCount, deriveds);
+
+			for (size_t i = 0; i < 2 * pointsCount; i++)
+				Assert::IsTrue(isCloseEnough(expected[i], result[i]), L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(AlgorithmInterpolation_getInterpolationPolynomialUsingHermiteDescription_Test)
+		{
+			AlgorithmInterpolation<float> algorithm;
+			const size_t pointsCount = 4;
+			Vec2<float> points[pointsCount] = {
+				{0.1f, -0.62049958f},
+				{0.2f, -0.28398668f},
+				{0.3f, 0.00660095f},
+				{0.4f, 0.24842440f}
+			};
+			float deriveds[pointsCount] = { 3.58502082f, 3.14033271f, 2.66668043f, 2.16529366f };
+
+			std::string expected = "(-0.6205) + (3.58502)(x - 0.1) + (-2.19892)(x - 0.1)^2 + (-0.490355)(x - 0.1)^2(x - 0.2) + (0.0366034)(x - 0.1)^2(x - 0.2)^2 + (0.0446431)(x - 0.1)^2(x - 0.2)^2(x - 0.3) + (-0.0197349)(x - 0.1)^2(x - 0.2)^2(x - 0.3)^2 + (0.0673337)(x - 0.1)^2(x - 0.2)^2(x - 0.3)^2(x - 0.4) ";
+
+			/*float expected[8] = {
+				-0.62049958f, 3.5850208f, -2.1989182f, -0.490447f,
+				0.037205f, 0.040475f, -0.002527777f, 0.0029629628f
+			};*/
+
+			std::string result = algorithm.getInterpolationPolynomialUsingHermiteDescription(points, pointsCount, deriveds);
+
+			Assert::AreEqual(expected, result, L"Wrong value.", LINE_INFO());
+		}
+
 	};
 }

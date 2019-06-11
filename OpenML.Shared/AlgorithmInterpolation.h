@@ -60,6 +60,23 @@ namespace OpenML
 		///</summary>
 		API_INTERFACE std::string getInterpolationPolynomialDescription(Vec2<T>* points, size_t pointsCount);
 
+		///<summary>
+		///Given a function by ordered points ("points" parameter) 
+		///and deriveds of theses points, 
+		///find the interpolation polynomial
+		///This algorithm uses Hermite Interpolation Method with Divided Difference Newton
+		///Returns a data table that should be uses to appoximate by closest point (top line, middle line or bottom line)
+		///</summary>
+		API_INTERFACE T* getInterpolationPolynomialUsingHermite(Vec2<T>* points, size_t pointsCount, T* deriveds);
+
+		///<summary>
+		///Given a function by ordered points ("points" parameter) 
+		///and deriveds of theses points, 
+		///find the interpolation polynomial
+		///This algorithm uses Hermite Interpolation Method with Divided Difference Newton
+		///Returns a data table that should be uses to appoximate by closest point (top line, middle line or bottom line)
+		///</summary>
+		API_INTERFACE std::string getInterpolationPolynomialUsingHermiteDescription(Vec2<T>* points, size_t pointsCount, T* deriveds);
 	};
 
 }

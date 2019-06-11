@@ -242,6 +242,74 @@ std::string AlgorithmInterpolation<T>::getInterpolationPolynomialDescription(Vec
 	return output.str();
 }
 
+template <typename T>
+T* AlgorithmInterpolation<T>::getInterpolationPolynomialUsingHermite(Vec2<T>* points, size_t pointsCount, T* deriveds)
+{
+	const size_t twoN1 = 2 * pointsCount + 1;
+
+	T* Q = new T[twoN1 * twoN1];
+	T* z = new T[twoN1];
+	T* result = new T[pointsCount * 2];
+
+	std::memset(Q, 0, sizeof(T) * twoN1 * twoN1);
+
+	for (size_t i = 0; i < pointsCount; i++)
+	{
+		size_t row = 2 * i;
+
+		z[row] = points[i][0];
+		z[row + 1] = points[i][0];
+
+		Q[row * twoN1] = points[i][1];
+		Q[(row + 1) * twoN1 + 0] = points[i][1];
+		Q[(row + 1) * twoN1 + 1] = deriveds[i];
+
+		if (i != 0)
+			Q[row * twoN1 + 1] = (Q[row * twoN1] - Q[(row - 1) * twoN1]) / (z[row] - z[row - 1]);
+	}
+
+	for (size_t row = 2; row < twoN1; row++)
+		for (size_t column = 2; column <= row; column++)
+			Q[row * twoN1 + column] = (Q[row* twoN1 + column - 1] - Q[(row -1) * twoN1 + column - 1]) / (z[row] - z[row - column]);
+
+	for (size_t i = 0; i < pointsCount * 2; i++)
+		result[i] = Q[i * twoN1 + i];
+
+	delete[] Q, z;
+	return result;
+}
+
+template <typename T>
+std::string AlgorithmInterpolation<T>::getInterpolationPolynomialUsingHermiteDescription(Vec2<T>* points, size_t pointsCount, T* deriveds)
+{
+	T* polynomial = getInterpolationPolynomialUsingHermite(points, pointsCount, deriveds);
+	std::ostringstream output;
+
+	size_t index = 0;
+
+	for (size_t i = 0; i < 2* pointsCount; i++)
+	{
+		output << "+ (" << polynomial[i] << ")";
+
+		index = 0;
+		for (size_t j = 0; j < i; j++)
+		{
+			if (j +1 < i) {
+				output << "(x - " << points[index][0] << ")^2";
+				index++;
+				j++;
+			}
+			else
+				output << "(x - " << points[index][0] << ")";
+		}
+
+		output << " ";
+	}
+
+	delete[] polynomial;
+	return output.str().substr(2);
+}
+
 namespace OpenML
 {
 	template class AlgorithmInterpolation<int>;

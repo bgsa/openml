@@ -48,6 +48,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Sphere.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SystemOfLinearEquations.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Triangle2D.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Triangle3D.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Vec2.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Vec2List.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Vec3List.h" />
@@ -85,6 +86,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Rectangle2D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Sphere.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Triangle2D.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Triangle3D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Vec2.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Vec2List.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Vec3.cpp" />

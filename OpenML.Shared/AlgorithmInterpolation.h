@@ -65,7 +65,6 @@ namespace OpenML
 		///and deriveds of theses points, 
 		///find the interpolation polynomial
 		///This algorithm uses Hermite Interpolation Method with Divided Difference Newton
-		///Returns a data table that should be uses to appoximate by closest point (top line, middle line or bottom line)
 		///</summary>
 		API_INTERFACE T* getInterpolationPolynomialUsingHermite(Vec2<T>* points, size_t pointsCount, T* deriveds);
 
@@ -74,9 +73,19 @@ namespace OpenML
 		///and deriveds of theses points, 
 		///find the interpolation polynomial
 		///This algorithm uses Hermite Interpolation Method with Divided Difference Newton
-		///Returns a data table that should be uses to appoximate by closest point (top line, middle line or bottom line)
 		///</summary>
 		API_INTERFACE std::string getInterpolationPolynomialUsingHermiteDescription(Vec2<T>* points, size_t pointsCount, T* deriveds);
+	
+		/*
+		///<summary>
+		///Given a function by ordered points ("points" parameter) 
+		///and control points (xLeft, yLeft)...; (xRight, yRight)..., 
+		///find the interpolation polynomial
+		///This algorithm uses Cubic Bezier Interpolation Method
+		///Returns a list of Vec4. For each Vec, it contains the polynomial of the interval xi -> xi+1 and the next is the polynomial yi -> yi+1
+		///</summary>
+		API_INTERFACE Vec4<T>* getInterpolationPolynomialUsingBezier(Vec2<T>* points, size_t pointsCount, Vec2<T>* leftControlPoints, Vec2<T>* rightControlPoints);
+		*/
 	};
 
 }

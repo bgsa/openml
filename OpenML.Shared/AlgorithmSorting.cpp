@@ -129,14 +129,12 @@ float* AlgorithmSorting::radix(float* vector, size_t count)
 		size_t pos = _2(ai);
 
 		pf2(array);
+
 		sort[++b2[pos]] = IFloatFlip(ai);
 	}
 
 	return sorted;
 }
-
-
-
 
 class RadixIntComparator
 {
@@ -179,4 +177,26 @@ void msd_radix_sort(int *first, int *last, int msb = 31)
 void AlgorithmSorting::radix(int *data, size_t n)
 {
 	msd_radix_sort(data, data + n);
+}
+
+void AlgorithmSorting::native(float* vector, size_t count)
+{
+	std::sort(vector, vector + count, std::less<float>());
+}
+
+
+bool compare(int a, int b, float* data)
+{
+	return data[a] < data[b];
+}
+
+size_t* AlgorithmSorting::nativeIndex(float* vector, size_t count)
+{
+	size_t* index = new size_t[count];
+
+	std::iota(index, index + count, 0); // fill index with {0,1,2,...} This only needs to happen once
+
+	std::sort(index, index + count, std::bind(compare, std::placeholders::_1, std::placeholders::_2, vector));
+
+	return index;
 }

@@ -250,5 +250,77 @@ namespace OpenMLTest
 			Assert::AreEqual(expected, result, L"Wrong value.", LINE_INFO());
 		}
 
+		/*
+		TEST_METHOD(AlgorithmInterpolation_getInterpolationPolynomialUsingBezier_Test1)
+		{
+			AlgorithmInterpolation<float> algorithm;
+			const size_t pointsCount = 2;
+			Vec2<float> points[pointsCount] = {
+				{0.0f, 0.0f},
+				{5.0f, 2.0f}
+			};
+			Vec2f leftControlPoints[1] = { Vec2f(1.0f, 1.0f) };
+			Vec2f rightControlPoints[1] = { Vec2f(6.0f, 1.0f) };
+
+			Vec4f expected[2] = { 
+				Vec4f(-10.0f, 14.0f, 1.0f, 0.0f),
+				Vec4f(-2.0f, 3.0f, 1.0f, 0.0f)
+			};
+
+			Vec4f* result = algorithm.getInterpolationPolynomialUsingBezier(points, pointsCount, leftControlPoints, rightControlPoints);
+
+			for (size_t i = 0; i < 2; i++)
+				for (size_t j = 0; j < 4; j++)
+					Assert::IsTrue( isCloseEnough(expected[i][j], result[i][j]), L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(AlgorithmInterpolation_getInterpolationPolynomialUsingBezier_Test2)
+		{
+			AlgorithmInterpolation<float> algorithm;
+			const size_t pointsCount = 2;
+			Vec2<float> points[pointsCount] = {
+				{0.0f, 0.0f},
+				{5.0f, 2.0f}
+			};
+			Vec2f leftControlPoints[1] = { Vec2f(1.0f, 1.0f) };
+			Vec2f rightControlPoints[1] = { Vec2f(6.0f, 1.0f) };
+
+			Vec4f expected[2] = {
+				Vec4f(-10.0f, 14.0f, 1.0f, 0.0f),
+				Vec4f(-4.0f, 5.0f, 1.0f, 0.0f)
+			};
+
+			Vec4f* result = algorithm.getInterpolationPolynomialUsingBezier(points, pointsCount, leftControlPoints, rightControlPoints);
+
+			for (size_t i = 0; i < 2; i++)
+				for (size_t j = 0; j < 4; j++)
+					Assert::IsTrue(isCloseEnough(expected[i][j], result[i][j]), L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(AlgorithmInterpolation_getInterpolationPolynomialUsingBezier_Test3)
+		{
+			AlgorithmInterpolation<float> algorithm;
+			const size_t pointsCount = 2;
+			Vec2<float> points[pointsCount] = {
+				{0.0f, 0.0f},
+				{5.0f, 2.0f}
+			};
+			Vec2f leftControlPoints[1] = { Vec2f(2.0f, 2.0f) };
+			Vec2f rightControlPoints[1] = { Vec2f(7.0f, 0.0f) };
+
+			Vec4f expected[2] = {
+				Vec4f(-10.0f, 13.0f, 2.0f, 0.0f),
+				Vec4f(0.0f, 0.0f, 2.0f, 0.0f)
+			};
+
+			Vec4f* result = algorithm.getInterpolationPolynomialUsingBezier(points, pointsCount, leftControlPoints, rightControlPoints);
+
+			for (size_t i = 0; i < 2; i++)
+				for (size_t j = 0; j < 4; j++)
+					Assert::IsTrue(isCloseEnough(expected[i][j], result[i][j]), L"Wrong value.", LINE_INFO());
+		}
+		*/
+
+
 	};
 }

@@ -310,6 +310,34 @@ std::string AlgorithmInterpolation<T>::getInterpolationPolynomialUsingHermiteDes
 	return output.str().substr(2);
 }
 
+/*
+template <typename T>
+Vec4<T>* AlgorithmInterpolation<T>::getInterpolationPolynomialUsingBezier(Vec2<T>* points, size_t pointsCount, Vec2<T>* leftControlPoints, Vec2<T>* rightControlPoints)
+{
+	Vec4<T>* result = new Vec4<T>[pointsCount];
+	size_t index = 0;
+
+	for (size_t i = 0; i < pointsCount - 1; i++)
+	{
+		result[index][0] = points[i][0];
+		result[index][1] = 3 * (leftControlPoints[i][0] - points[i][0]);
+		result[index][2] = 3 * (points[i][0] + rightControlPoints[i][0] - (2* leftControlPoints[i][0]));
+		result[index][3] = points[i + 1][0] - points[i][0] + (3* leftControlPoints[i][0]) - (3 * rightControlPoints[i][0]);
+
+		index++;
+
+		result[index][0] = points[i][1];
+		result[index][1] = 3 * (leftControlPoints[i][1] - points[i][1]);
+		result[index][2] = 3 * (points[i][1] + rightControlPoints[i][1] - 2 * leftControlPoints[i][1]);
+		result[index][3] = points[i + 1][1] - points[i][1] + 3 * leftControlPoints[i][1] - 3 * rightControlPoints[i][1];
+
+		index++;
+	}
+
+	return result;
+}
+*/
+
 namespace OpenML
 {
 	template class AlgorithmInterpolation<int>;

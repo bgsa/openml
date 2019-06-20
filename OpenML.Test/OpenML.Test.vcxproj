@@ -318,6 +318,7 @@
     <ClCompile Include="SphereTest.cpp" />
     <ClCompile Include="SystemOfLinearEquationsTest.cpp" />
     <ClCompile Include="Triangle2DTest.cpp" />
+    <ClCompile Include="Triangle3DTest.cpp" />
     <ClCompile Include="Vec2Test.cpp" />
     <ClCompile Include="Vec3ListTest.cpp" />
     <ClCompile Include="Vec3Test.cpp" />

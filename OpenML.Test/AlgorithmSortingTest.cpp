@@ -16,13 +16,14 @@ namespace OpenMLTest
 		TEST_METHOD(AlgorithmSorting_radix_Test1)
 		{
 			AlgorithmSorting sorting;
+			const size_t count = 7;
 
-			float vec[5] = { 3.4f, 2.0f, 7.0f, 3.1f, -2.0f };
-			float expected[5] = { -2.0f, 2.0f, 3.1f, 3.4f, 7.0f };
+			float vec[count] = { 3.4f, 2.0f, 7.0f, 3.1f, -2.0f, 3.12f, 3.01f };
+			float expected[count] = { -2.0f, 2.0f, 3.01f, 3.1f, 3.12f, 3.4f, 7.0f };
 
-			float* result = sorting.radix(vec, 5);
+			float* result = sorting.radix(vec, count);
 
-			for (size_t i = 0; i < 5; i++)
+			for (size_t i = 0; i < count; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
 		}
 
@@ -36,6 +37,34 @@ namespace OpenMLTest
 			sorting.radix(result, 12);
 
 			for (size_t i = 0; i < 12; i++)
+				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(AlgorithmSorting_native_Test1)
+		{
+			AlgorithmSorting sorting;
+			const size_t count = 7;
+
+			float vec[count] = { 3.4f, 2.0f, 7.0f, 3.1f, -2.0f, 3.12f, 3.01f };
+			float expected[count] = { -2.0f, 2.0f, 3.01f, 3.1f, 3.12f, 3.4f, 7.0f };
+
+			sorting.native(vec, count);
+
+			for (size_t i = 0; i < count; i++)
+				Assert::AreEqual(expected[i], vec[i], L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(AlgorithmSorting_nativeIndex_Test1)
+		{
+			AlgorithmSorting sorting;
+			const size_t count = 7;
+
+			float vec[count] = { 3.4f, 2.0f, 7.0f, 3.1f, -2.0f, 3.12f, 3.01f };
+			size_t expected[count] = { 4, 1, 6, 3, 5, 0, 2 };
+
+			size_t* result = sorting.nativeIndex(vec, count);
+
+			for (size_t i = 0; i < count; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
 		}
 

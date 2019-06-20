@@ -11394,9 +11394,9 @@ namespace OpenMLTest
 		{
 			HashGrid<float> grid(10);
 
-			size_t count = 100;
-			AABBf* aabbs = get100();
-			//AABBf* aabbs = get1000();
+			size_t count = 1000;
+			//AABBf* aabbs = get100();
+			AABBf* aabbs = get1000();
 			//AABBf* aabbs = get10000();
 			//AABBf* aabbs = getRandom(count);
 

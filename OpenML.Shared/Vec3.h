@@ -9,10 +9,8 @@ namespace OpenML
 	template <typename T>
 	class Vec3
 	{
-	private:
-		T values[VEC3_SIZE];
-
 	public:
+		T x, y, z;
 
 		/// <summary>
 		/// Default construct
@@ -27,22 +25,7 @@ namespace OpenML
 		/// Construct with args
 		/// </summary>
 		API_INTERFACE Vec3(Vec2<T> vector2D, T z);
-
-		/// <summary>
-		/// First value in the vector
-		/// </summary>
-		API_INTERFACE inline T x() const;
-
-		/// <summary>
-		/// Second value in the vector
-		/// </summary>
-		API_INTERFACE inline T y() const;
-
-		/// <summary>
-		/// Third value in the vector
-		/// </summary>
-		API_INTERFACE inline T z() const;
-
+		
 		/// <summary>
 		/// Get the component values in the vector
 		/// </summary>

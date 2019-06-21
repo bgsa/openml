@@ -35,10 +35,10 @@ Rectangle2D<T>::Rectangle2D(T* point1, T* point2, T* point3, T* point4)
 template<typename T>
 T Rectangle2D<T>::width() const
 {
-	T width = point1.x() - point2.x();
+	T width = point1.x - point2.x;
 
 	if (width == 0)
-		width = point1.x() - point3.x();
+		width = point1.x - point3.x;
 
 	return abs(width);
 }
@@ -46,10 +46,10 @@ T Rectangle2D<T>::width() const
 template<typename T>
 T Rectangle2D<T>::height() const
 {
-	T height = point1.y() - point2.y();
+	T height = point1.y - point2.y;
 
 	if (height == 0)
-		height = point1.y() - point3.y();
+		height = point1.y - point3.y;
 
 	return abs(height);
 }
@@ -189,10 +189,10 @@ Rectangle2D<T> Rectangle2D<T>::getBoundingBox(Vec2List<T> &points)
 	Vec2<T>* maxY = points.findMaxY();
 	
 	return Rectangle2D<T>(
-		Vec2<T>(minX->x(), minY->y()),
-		Vec2<T>(maxX->x(), minY->y()),
-		Vec2<T>(maxX->x(), maxY->y()),
-		Vec2<T>(minX->x(), maxY->y())
+		Vec2<T>(minX->x, minY->y),
+		Vec2<T>(maxX->x, minY->y),
+		Vec2<T>(maxX->x, maxY->y),
+		Vec2<T>(minX->x, maxY->y)
 	);
 }
 

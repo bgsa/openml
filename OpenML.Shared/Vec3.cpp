@@ -4,53 +4,35 @@ using namespace OpenML;
 
 template <typename T>
 Vec3<T>::Vec3(T defaultValue) {
-	values[0] = defaultValue;
-	values[1] = defaultValue;
-	values[2] = defaultValue;
+	x = defaultValue;
+	y = defaultValue;
+	z = defaultValue;
 }
 
 template <typename T>
 Vec3<T>::Vec3(T x, T y, T z) {
-	values[0] = x;
-	values[1] = y;
-	values[2] = z;
+	this->x = x;
+	this->y = y;
+	this->z = z;
 }
 
 template <typename T>
 Vec3<T>::Vec3(Vec2<T> vector2D, T z) {
-	values[0] = vector2D[0];
-	values[1] = vector2D[1];
-	values[2] = z;
-}
-
-template <typename T>
-T Vec3<T>::x() const
-{
-	return values[0];
-}
-
-template <typename T>
-T Vec3<T>::y() const
-{
-	return values[1];
-}
-
-template <typename T>
-T Vec3<T>::z() const
-{
-	return values[2];
+	x = vector2D[0];
+	y = vector2D[1];
+	z = z;
 }
 
 template <typename T>
 T* Vec3<T>::getValues()
 {
-	return values;
+	return reinterpret_cast<T*>(this);
 }
 
 template <typename T>
 T Vec3<T>::squaredLength() const
 {
-	return (values[0] * values[0]) + (values[1] * values[1]) + (values[2] * values[2]);
+	return (x * x) + (y * y) + (z * z);
 }
 
 template <typename T>
@@ -62,11 +44,13 @@ T Vec3<T>::length() const
 template <typename T>
 T Vec3<T>::maximum() const
 {
-	T value = values[0];
+	T value = x;
 
-	for (size_t i = 1; i < 3; i++)
-		if (values[i] > value)
-			value = values[i];
+	if (y > value)
+		value = y;
+
+	if (z > value)
+		value = z;
 
 	return value;
 }
@@ -74,11 +58,13 @@ T Vec3<T>::maximum() const
 template <typename T>
 T Vec3<T>::minimum() const
 {
-	T value = values[0];
+	T value = x;
 
-	for (size_t i = 1; i < 3; i++)
-		if (values[i] < value)
-			value = values[i];
+	if (y < value)
+		value = y;
+
+	if (z < value)
+		value = z;
 
 	return value;
 }
@@ -92,18 +78,18 @@ T Vec3<T>::tripleProduct(const Vec3<T> &v, const Vec3<T> &u) const
 template <typename T>
 void Vec3<T>::add(const Vec3<T>& vector)
 {
-	values[0] += vector[0];
-	values[1] += vector[1];
-	values[2] += vector[2];
+	x += vector.x;
+	y += vector.y;
+	z += vector.z;
 }
 
 template <typename T>
 Vec3<T> Vec3<T>::subtract(const Vec3<T>& vector)
 {
 	return Vec3<T>(
-			values[0] -= vector[0],
-			values[1] -= vector[1],
-			values[2] -= vector[2]
+		x -= vector.x,
+		y -= vector.y,
+		z -= vector.z
 		);
 }
 
@@ -111,27 +97,27 @@ template <typename T>
 Vec3<T> Vec3<T>::multiply(const Vec3<T>& vector) const
 {
 	return Vec3<T>(
-		values[0] * vector[0],
-		values[1] * vector[1],
-		values[2] * vector[2]
+		x * vector.x,
+		y * vector.y,
+		z * vector.z
 		);
 }
 
 template <typename T>
 void Vec3<T>::scale(T scale)
 {
-	values[0] *= scale;
-	values[1] *= scale;
-	values[2] *= scale;
+	x *= scale;
+	y *= scale;
+	z *= scale;
 }
 
 template <typename T>
 Vec3<T> Vec3<T>::rotateX(float angle)
 {
 	return Vec3<T>(
-			values[0],
-			T(values[1] * cosf(angle) - values[2] * sinf(angle)),
-			T(values[1] * sinf(angle) + values[2] * cosf(angle))
+			x,
+			T(y * cosf(angle) - z * sinf(angle)),
+			T(y * sinf(angle) + z * cosf(angle))
 		);
 }
 
@@ -142,8 +128,8 @@ Vec3<T> Vec3<T>::rotateX(float angle, Vec3<T> referencePoint)
 	angle *= -1.0f;
 
 	return Vec3<T>(
-		values[0],
-		T(referencePoint[1] + direction[1] * cosf(angle) + (referencePoint[2] - values[2]) * sinf(angle)),
+		x,
+		T(referencePoint[1] + direction[1] * cosf(angle) + (referencePoint[2] - z) * sinf(angle)),
 		T(referencePoint[2] + direction[1] * sinf(angle) + direction[2] * cosf(angle))
 	);
 }
@@ -152,9 +138,9 @@ template <typename T>
 Vec3<T> Vec3<T>::rotateY(float angle)
 {
 	return Vec3<T>(
-		T(values[0] * cosf(angle) + values[2] * sinf(angle)),
-		values[1],
-		T(values[2] * cosf(angle) - values[0] * sinf(angle))
+		T(x * cosf(angle) + z * sinf(angle)),
+		y,
+		T(z * cosf(angle) - x * sinf(angle))
 	);
 }
 
@@ -165,8 +151,8 @@ Vec3<T> Vec3<T>::rotateY(float angle, Vec3<T> referencePoint)
 	angle *= -1.0f;
 
 	return Vec3<T>(
-		values[0],
-			T(referencePoint[1] + direction[1] * cosf(angle) + (referencePoint[2] - values[2]) * sinf(angle)),
+		x,
+			T(referencePoint[1] + direction[1] * cosf(angle) + (referencePoint[2] - z) * sinf(angle)),
 			T(referencePoint[2] + direction[1] * sinf(angle) + direction[2] * cosf(angle))
 		);
 }
@@ -175,9 +161,9 @@ template <typename T>
 Vec3<T> Vec3<T>::rotateZ(float angle)
 {
 	return Vec3<T>(
-			T(values[0] * cosf(angle) - values[1] * sinf(angle)),
-			T(values[0] * sinf(angle) + values[1] * cosf(angle)),
-			values[2]
+			T(x * cosf(angle) - y * sinf(angle)),
+			T(x * sinf(angle) + y * cosf(angle)),
+			z
 		);
 }
 
@@ -187,9 +173,9 @@ Vec3<T> Vec3<T>::rotateZ(float angle, Vec3<T> referencePoint)
 	Vec3<T> direction = this->subtract(referencePoint);
 
 	return Vec3<T>(
-			T(referencePoint[0] + direction[0] * cosf(angle) + (referencePoint[1] - values[1]) * sinf(angle)),
-			T(referencePoint[1] + direction[0] * sinf(angle) + direction[1] * cosf(angle)),
-			values[2]
+			T(referencePoint.x + direction.x * cosf(angle) + (referencePoint[1] - y) * sinf(angle)),
+			T(referencePoint[1] + direction.x * sinf(angle) + direction[1] * cosf(angle)),
+			z
 		);
 }
 
@@ -197,9 +183,9 @@ template <typename T>
 Vec3<T> Vec3<T>::cross(const Vec3<T>& vector) const
 {
 	Vec3<T> result = Vec3<T>(
-		result[0] = values[1] * vector[2] - vector[1] * values[2],
-		result[1] = -values[0] * vector[2] + vector[0] * values[2],
-		result[2] = values[0] * vector[1] - vector[0] * values[1]
+		y * vector[2] - vector[1] * z,
+		-x * vector[2] + vector[0] * z,
+		x * vector[1] - vector[0] * y
 	);
 
 	return result;
@@ -208,7 +194,7 @@ Vec3<T> Vec3<T>::cross(const Vec3<T>& vector) const
 template <typename T>
 T Vec3<T>::dot(const Vec3<T>& vector) const
 {
-	return values[0] * vector[0] + values[1] * vector[1] + values[2] * vector[2];
+	return x * vector.x + y * vector.y + z * vector.z;
 }
 
 template <typename T>
@@ -223,9 +209,9 @@ Vec3<T> Vec3<T>::normalize() const
 	T vectorLengthInverted = T(1) / length();
 
 	return Vec3<T> {
-		values[0] * vectorLengthInverted,
-		values[1] * vectorLengthInverted,
-		values[2] * vectorLengthInverted
+		x * vectorLengthInverted,
+		y * vectorLengthInverted,
+		z * vectorLengthInverted
 	};
 }
 
@@ -238,31 +224,26 @@ void Vec3<T>::transformToUnit()
 template <typename T>
 T Vec3<T>::squaredDistance(const Vec3<T>& vector) const
 {
-	T x = values[0] - vector[0];
-	x = x * x;
+	T xTemp = x - vector.x;
+	xTemp = xTemp * xTemp;
 
-	T y = values[1] - vector[1];
-	y = y * y;
+	T yTemp = y - vector.y;
+	yTemp = yTemp * yTemp;
 
-	T z = values[2] - vector[2];
-	z = z * z;
+	T zTemp = z - vector.z;
+	zTemp = zTemp * zTemp;
 
-	return x + y + z;
+	return xTemp + yTemp + zTemp;
 }
 
 template <typename T>
 T Vec3<T>::distance(const Vec3<T>& vector) const
 {
-	T x = values[0] - vector[0];
-	x = x*x;
+	T xTemp = x - vector.x;
+	T yTemp = y - vector.y;
+	T zTemp = z - vector.z;
 
-	T y = values[1] - vector[1];
-	y = y*y;
-
-	T z = values[2] - vector[2];
-	z = z*z;
-
-	return T(std::sqrt(x + y + z));
+	return T(std::sqrt(xTemp *xTemp + yTemp * yTemp + zTemp * zTemp));
 }
 
 template <typename T>
@@ -275,66 +256,62 @@ template <typename T>
 Vec3<T> Vec3<T>::fractional()
 {
 	return Vec3<T> {
-		T(values[0] - floor(values[0])),
-		T(values[1] - floor(values[1])),
-		T(values[2] - floor(values[2]))
+		T(x - floor(x)),
+		T(y - floor(y)),
+		T(z - floor(z))
 	};
 }
 
 template <typename T>
 Vec3<T> Vec3<T>::clone() const
 {
-	return Vec3<T>(values[0], values[1], values[2]);
+	return Vec3<T>(x, y, z);
 }
 
 template <typename T>
 void Vec3<T>::operator=(const Vec3<T>& value)
 {
-	values[0] = value[0];
-	values[1] = value[1];
-	values[2] = value[2];
+	x = value.x;
+	y = value.y;
+	z = value.z;
 }
 
 template <typename T>
 Vec3<T> Vec3<T>::operator/(T value) const
 {
-	Vec3<T> result;
-
-	result[0] = values[0] / value;
-	result[1] = values[1] / value;
-	result[2] = values[2] / value;
-
-	return result;
+	return Vec3<T>(
+		x / value,
+		y / value,
+		z / value
+		);
 }
 
 template <typename T>
 Vec3<T> Vec3<T>::operator/(Vec3<T> vector) const
 {
 	return Vec3<T>(
-		values[0] / vector[0],
-		values[1] / vector[1],
-		values[2] / vector[2]
+		x / vector.x,
+		y / vector.y,
+		z / vector.z
 	);
 }
 
 template <typename T>
 Vec3<T> Vec3<T>::operator*(T value) const
 {
-	Vec3<T> result;
-
-	result[0] = values[0] * value;
-	result[1] = values[1] * value;
-	result[2] = values[2] * value;
-
-	return result;
+	return Vec3<T>(
+		x * value,
+		y * value,
+		z * value
+		);
 }
 
 template <typename T>
 void Vec3<T>::operator*=(T value)
 {
-	values[0] = values[0] * value;
-	values[1] = values[1] * value;
-	values[2] = values[2] * value;
+	x *= value;
+	y *= value;
+	z *= value;
 }
 
 template <typename T>
@@ -346,107 +323,99 @@ Vec3<T> Vec3<T>::operator*(const Vec3<T>& vector) const
 template <typename T>
 Vec3<T> Vec3<T>::operator+(const Vec3<T>& vector) const
 {
-	Vec3<T> result;
-
-	result[0] = values[0] + vector[0];
-	result[1] = values[1] + vector[1];
-	result[2] = values[2] + vector[2];
-
-	return result;
+	return Vec3<T>(
+		x + vector.x,
+		y + vector.y,
+		z + vector.z
+		);
 }
 
 template <typename T>
 void Vec3<T>::operator+=(const Vec3<T>& vector)
 {
-	values[0] = values[0] + vector[0];
-	values[1] = values[1] + vector[1];
-	values[2] = values[2] + vector[2];
+	x += vector.x;
+	y += vector.y;
+	z += vector.z;
 }
 
 template <typename T>
 Vec3<T> Vec3<T>::operator+(T value) const
 {
-	Vec3<T> result;
-
-	result[0] = values[0] + value;
-	result[1] = values[1] + value;
-	result[2] = values[2] + value;
-
-	return result;
+	return Vec3<T>(
+		x + value,
+		y + value,
+		z + value
+		);
 }
 
 template <typename T>
 Vec3<T> Vec3<T>::operator-(const Vec3<T>& vector) const
 {
-	Vec3<T> result;
-
-	result[0] = values[0] - vector[0];
-	result[1] = values[1] - vector[1];
-	result[2] = values[2] - vector[2];
-
-	return result;
+	return Vec3<T>(
+		x - vector.x,
+		y - vector.y,
+		z - vector.z
+		);
 }
 
 template <typename T>
 void Vec3<T>::operator-=(const Vec3<T>& vector)
 {
-	values[0] = values[0] - vector[0];
-	values[1] = values[1] - vector[1];
-	values[2] = values[2] - vector[2];
+	x -= vector.x;
+	y -= vector.y;
+	z -= vector.z;
 }
 
 template <typename T>
 Vec3<T> Vec3<T>::operator-(T value) const
 {
-	Vec3<T> result;
-
-	result[0] = values[0] - value;
-	result[1] = values[1] - value;
-	result[2] = values[2] - value;
-
-	return result;
+	return Vec3<T>(
+		x - value,
+		y - value,
+		z - value
+		);
 }
 
 template <typename T>
 Vec3<T> Vec3<T>::operator-() const
 {
 	return Vec3<T>(
-		-values[0],
-		-values[1],
-		-values[2]
+		-x,
+		-y,
+		-z
 		);
 }
 
 template <typename T>
 bool Vec3<T>::operator==(const Vec3<T>& vector) const
 {
-	return values[0] == vector[0]
-		&& values[1] == vector[1]
-		&& values[2] == vector[2];
+	return x == vector.x
+		&& y == vector.y
+		&& z == vector.z;
 }
 
 template <typename T>
 bool Vec3<T>::operator==(T value) const
 {
-	return values[0] == value
-		&& values[1] == value
-		&& values[2] == value;
+	return x == value
+		&& y == value
+		&& z == value;
 }
 
 template <typename T>
 bool Vec3<T>::operator!=(const Vec3<T>& vector) const
 {
-	return values[0] != vector[0]
-		|| values[1] != vector[1]
-		|| values[2] != vector[2];
+	return x != vector.x
+		|| y != vector.y
+		|| z != vector.z;
 }
 
 template <typename T>
 bool Vec3<T>::operator!=(T value) const
 {
-	return values[0] != value
-		|| values[1] != value
-		|| values[2] != value;
+	return x != value
+		|| y != value
+		|| z != value;
 }
 
 template <typename T>
@@ -454,7 +423,7 @@ T& Vec3<T>::operator[](int index)
 {
 	assert(index >= 0 && index < VEC3_SIZE);
 
-	return values[index];
+	return reinterpret_cast<T*>(this)[index];
 }
 
 template <typename T>
@@ -462,25 +431,25 @@ T Vec3<T>::operator[](int index) const
 {
 	assert(index >= 0 && index < VEC3_SIZE);
 
-	return values[index];
+	return reinterpret_cast<const T*>(this)[index];
 }
 
 template <typename T>
 Vec3<T>::operator void*() const
 {
-	return (void*)values;
+	return (void*)(this);
 }
 
 template <typename T>
 Vec3<T>::operator void*()
 {
-	return (void*)values;
+	return reinterpret_cast<void*>(this);
 }
 
 template <typename T>
 Vec3<T>::operator T*()
 {
-	return values;
+	return reinterpret_cast<T*>(this);
 }
 
 namespace OpenML

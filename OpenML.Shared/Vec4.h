@@ -9,10 +9,8 @@ namespace OpenML
 	template <typename T>
 	class Vec4
 	{
-	private:
-		T values[VEC4_SIZE];
-
 	public:
+		T x, y, z, w;
 
 		/// <summary>
 		/// Default constructor
@@ -34,26 +32,6 @@ namespace OpenML
 		/// </summary>
 		API_INTERFACE inline Vec4(T x, T y, T z, T w);
 		
-		/// <summary>
-		/// First value in the vector / X coordinate
-		/// </summary>
-		API_INTERFACE inline T x() const;
-
-		/// <summary>
-		/// Second value in the vector / Y coordinate
-		/// </summary>
-		API_INTERFACE inline T y() const;
-
-		/// <summary>
-		/// Third value in the vector / Z coordinate
-		/// </summary>
-		API_INTERFACE inline T z() const;
-
-		/// <summary>
-		/// Fourth value in the vector / W coordinate
-		/// </summary>
-		API_INTERFACE inline T w() const;
-
 		/// <summary>
 		/// Get the component values in the vector
 		/// </summary>

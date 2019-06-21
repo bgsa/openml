@@ -7,7 +7,7 @@ int findCellIndexByCellId(const Vec3<T>& cell)
 	const int h2 = 0xd8163841; // here arbitrarily chosen primes 
 	const int h3 = 0xcb1ab31f;
 
-	return h1 * int(cell[0]) + h2 * int(cell[1]) + h3 * int(cell[2]);
+	return h1 * int(cell.x) + h2 * int(cell.y) + h3 * int(cell.z);
 }
 
 template <typename T>
@@ -42,19 +42,19 @@ Vec3<T> HashGrid<T>::findCell(const Vec3<T>& point)
 	int negativeCellY = 0;
 	int negativeCellZ = 0;
 
-	if (point[0] < T(0))
+	if (point.x < T(0))
 		negativeCellX = -1;
 
-	if (point[1] < T(0))
+	if (point.y < T(0))
 		negativeCellY = -1;
 
-	if (point[2] < T(0))
+	if (point.z < T(0))
 		negativeCellZ = -1;
 
 	Vec3<T> cell = {
-		T(int(point[0] * cellSizeInverted) + negativeCellX),
-		T(int(point[1] * cellSizeInverted) + negativeCellY),
-		T(int(point[2] * cellSizeInverted) + negativeCellZ)
+		T(int(point.x * cellSizeInverted) + negativeCellX),
+		T(int(point.y * cellSizeInverted) + negativeCellY),
+		T(int(point.z * cellSizeInverted) + negativeCellZ)
 	};
 	
 	return cell;
@@ -78,17 +78,17 @@ Vec3List<T>* HashGrid<T>::findRangeCell(const AABB<T>& aabb)
 	Vec3<T> deltaPoints = (maxCell - minCell) + T(1);
 		
 	list->count = int(std::abs(
-			(deltaPoints[0] == T(0) ? T(1) : deltaPoints[0])
-		* (deltaPoints[1] == T(0) ? T(1) : deltaPoints[1]) 
-		* (deltaPoints[2] == T(0) ? T(1) : deltaPoints[2])));
+			(deltaPoints.x == T(0) ? T(1) : deltaPoints.x)
+		* (deltaPoints.y == T(0) ? T(1) : deltaPoints.y) 
+		* (deltaPoints.z == T(0) ? T(1) : deltaPoints.z)));
 
 	list->points = new Vec3<T>[list->count];
 
 	size_t index = 0;
 	
-	for (T x = minCell[0]; x <= maxCell[0]; x++)
-		for (T y = minCell[1]; y <= maxCell[1]; y++)
-			for (T z = minCell[2]; z <= maxCell[2]; z++)
+	for (T x = minCell.x; x <= maxCell.x; x++)
+		for (T y = minCell.y; y <= maxCell.y; y++)
+			for (T z = minCell.z; z <= maxCell.z; z++)
 			{
 				list->points[index] = Vec3<T>(x, y, z);
 				index++;

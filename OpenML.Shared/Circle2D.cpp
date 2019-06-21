@@ -19,9 +19,9 @@ Circle2D<T>::Circle2D(const Vec2<T>& point1, const Vec2<T>& point2, const Vec2<T
 {
 	Mat4<T> matrix = {
 		T(1), T(1), T(1), T(1),
-		point1.x() * point1.x() + point1.y() * point1.y(), point1.x(), point1.y(), T(1),
-		point2.x() * point2.x() + point2.y() * point2.y(), point2.x(), point2.y(), T(1),
-		point3.x() * point3.x() + point3.y() * point3.y(), point3.x(), point3.y(), T(1),
+		point1.x * point1.x + point1.y * point1.y, point1.x, point1.y, T(1),
+		point2.x * point2.x + point2.y * point2.y, point2.x, point2.y, T(1),
+		point3.x * point3.x + point3.y * point3.y, point3.x, point3.y, T(1),
 	};
 
 	T value = matrix.cofactorIJ(0, 0);
@@ -61,8 +61,8 @@ T* Circle2D<T>::calculatePoints(size_t& pointsCount) const
 
 	for (double angle = 0.0; angle < TWO_PI; angle += 0.1)
 	{
-		points[index + 0] = T(ray * cos(angle) + center.x());
-		points[index + 1] = T(ray * sin(angle) + center.y());
+		points[index + 0] = T(ray * cos(angle) + center.x);
+		points[index + 1] = T(ray * sin(angle) + center.y);
 
 		index += 2;
 	}
@@ -120,8 +120,8 @@ Vec2<T>* Circle2D<T>::findIntersection(const Circle2D<T>& circle2) const
 
 	Vec2<T> p3 = ((point2AsVector - point1AsVector) * T(a / distance)) + center;
 
-	T x3 = T( p3[0] + h * (circle2.center.y() - center.y()) / distance );
-	T y3 = T( p3[1] - h * (circle2.center.x() - center.x()) / distance );
+	T x3 = T( p3[0] + h * (circle2.center.y - center.y) / distance );
+	T y3 = T( p3[1] - h * (circle2.center.x - center.x) / distance );
 
 	Vec2<T>* result;
 
@@ -134,8 +134,8 @@ Vec2<T>* Circle2D<T>::findIntersection(const Circle2D<T>& circle2) const
 	}
 	else
 	{
-		T x4 = T( p3[0] - h * (circle2.center.y() - center.y()) / distance);
-		T y4 = T( p3[1] + h * (circle2.center.x() - center.x()) / distance);
+		T x4 = T( p3[0] - h * (circle2.center.y - center.y) / distance);
+		T y4 = T( p3[1] + h * (circle2.center.x - center.x) / distance);
 
 		result = new Vec2<T>[2];
 		result[0] = Vec2<T>(x3, y3);

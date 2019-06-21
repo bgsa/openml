@@ -29,9 +29,9 @@ namespace OpenMLTest
 			Asserts::isCloseEnough(plane.normalVector[1], normalVectorExpected[1], 0.0009f, "Wrong value", LINE_INFO());
 			Asserts::isCloseEnough(plane.normalVector[2], normalVectorExpected[2], 0.0009f, "Wrong value", LINE_INFO());
 
-			Assert::AreEqual(point2.x(), plane.point.x(), L"Wrong value.", LINE_INFO());
-			Assert::AreEqual(point2.y(), plane.point.y(), L"Wrong value.", LINE_INFO());
-			Assert::AreEqual(point2.z(), plane.point.z(), L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(point2.x, plane.point.x, L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(point2.y, plane.point.y, L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(point2.z, plane.point.z, L"Wrong value.", LINE_INFO());
 		}
 		
 		TEST_METHOD(Plane3D_getEquation1_Test)
@@ -89,9 +89,9 @@ namespace OpenMLTest
 
 			Assert::IsNotNull(intersection, L"There should be an intersection", LINE_INFO());
 
-			Asserts::isCloseEnough(expected.x(), intersection->x(), 0.0009f, "Wrong value", LINE_INFO());
-			Asserts::isCloseEnough(expected.y(), intersection->y(), 0.0009f, "Wrong value", LINE_INFO());
-			Asserts::isCloseEnough(expected.z(), intersection->z(), 0.0009f, "Wrong value", LINE_INFO());
+			Asserts::isCloseEnough(expected.x, intersection->x, 0.0009f, "Wrong value", LINE_INFO());
+			Asserts::isCloseEnough(expected.y, intersection->y, 0.0009f, "Wrong value", LINE_INFO());
+			Asserts::isCloseEnough(expected.z, intersection->z, 0.0009f, "Wrong value", LINE_INFO());
 		}
 
 		TEST_METHOD(Plane3D_angle_Test1)

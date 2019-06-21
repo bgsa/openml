@@ -8,11 +8,9 @@ namespace OpenML
 
 	template <typename T>
 	class Vec2
-	{
-	private:
-		T values[VEC2_SIZE];
-		
+	{		
 	public:
+		T x, y;
 
 		/// <summary>
 		/// Default constructor
@@ -23,17 +21,7 @@ namespace OpenML
 		/// Constructor with parameters
 		/// </summary>
 		API_INTERFACE inline Vec2(T x, T y);
-
-		/// <summary>
-		/// First value in the vector
-		/// </summary>
-		API_INTERFACE inline T x() const;
-
-		/// <summary>
-		/// Second value in the vector
-		/// </summary>
-		API_INTERFACE inline T y() const;
-
+		
 		/// <summary>
 		/// Get the component values in the vector
 		/// </summary>
@@ -191,7 +179,7 @@ namespace OpenML
 		/// <summary>
 		/// Auto convertion to void *
 		/// </summary>
-		API_INTERFACE inline operator T*() const;
+		API_INTERFACE inline operator T*();
 
 		/// <summary>
 		/// Serialize current object

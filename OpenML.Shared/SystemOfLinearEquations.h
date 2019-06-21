@@ -117,8 +117,8 @@ public:
 		
 		Mat3<T> matrix = {
 			T(1), T(1), T(1),
-			point1.x(), point1.y(), T(1),
-			point2.x(), point2.y(), T(1)
+			point1.x, point1.y, T(1),
+			point2.x, point2.y, T(1)
 		};
 
 		T a = matrix.cofactorIJ(0, 0);
@@ -137,15 +137,15 @@ public:
 	{
 		Vec4<T> result;
 
-		T m21 = pow(point1.x(), 2) + pow(point1.y(), 2);
-		T m31 = pow(point2.x(), 2) + pow(point2.y(), 2);
-		T m41 = pow(point3.x(), 2) + pow(point3.y(), 2);
+		T m21 = pow(point1.x, 2) + pow(point1.y, 2);
+		T m31 = pow(point2.x, 2) + pow(point2.y, 2);
+		T m41 = pow(point3.x, 2) + pow(point3.y, 2);
 
 		Mat4<T> matrix = {
 			T(1), T(1), T(1), T(1),
-			m21, point1.x(), point1.y(), T(1),
-			m31, point2.x(), point2.y(), T(1),
-			m41, point3.x(), point3.y(), T(1)
+			m21, point1.x, point1.y, T(1),
+			m31, point2.x, point2.y, T(1),
+			m41, point3.x, point3.y, T(1)
 		};
 
 		T a = matrix.cofactorIJ(0, 0);

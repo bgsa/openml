@@ -160,12 +160,12 @@ Mat3<T> Vec3List<T>::covariance() const
 		Vec3<T> p = points[i] - centerOfMass;
 		
 		// Compute covariance of translated points 
-		e00 += p[0] * p[0];
-		e11 += p[1] * p[1];
-		e22 += p[2] * p[2];
-		e01 += p[0] * p[1];
-		e02 += p[0] * p[2];
-		e12 += p[1] * p[2];
+		e00 += p.x * p.x;
+		e11 += p.y * p.y;
+		e22 += p.z * p.z;
+		e01 += p.x * p.y;
+		e02 += p.x * p.z;
+		e12 += p.y * p.z;
 	} 
 	
 	// Fill in the covariance matrix elements 

@@ -5,51 +5,39 @@ using namespace OpenML;
 template <typename T>
 Vec2<T>::Vec2(T value)
 {
-	values[0] = value;
-	values[1] = value;
+	x = value;
+	y = value;
 }
 
 template <typename T>
 Vec2<T>::Vec2(T x, T y)
 {
-	values[0] = x;
-	values[1] = y;
-}
-
-template <typename T>
-T Vec2<T>::x() const
-{
-	return values[0];
-}
-
-template <typename T>
-T Vec2<T>::y() const
-{
-	return values[1];
+	this->x = x;
+	this->y = y;
 }
 
 template <typename T>
 T* Vec2<T>::getValues()
 {
-	return values;
+	return reinterpret_cast<T*>(this);
 }
 
 template <typename T>
 T Vec2<T>::maximum() const
 {
-	if (values[0] > values[1])
-		return values[0];
+	if (x > y)
+		return x;
 	else
-		return values[1];
+		return y;
 }
 
 template <typename T>
 T Vec2<T>::minimum() const
 {
-	if (values[0] < values[1])
-		return values[0];
+	if (x < y)
+		return x;
 	else
-		return values[1];
+		return y;
 }
 
 template <typename T>
@@ -61,34 +49,34 @@ T Vec2<T>::length() const
 template <typename T>
 T Vec2<T>::squared() const
 {
-	return (values[0] * values[0]) + (values[1] * values[1]);
+	return (x * x) + (y * y);
 }
 
 template <typename T>
 void Vec2<T>::add(const Vec2<T>& vector)
 {
-	values[0] += vector[0];
-	values[1] += vector[1];
+	x += vector.x;
+	y += vector.y;
 }
 
 template <typename T>
 void Vec2<T>::subtract(const Vec2<T>& vector)
 {
-	values[0] -= vector[0];
-	values[1] -= vector[1];
+	x -= vector.x;
+	y -= vector.y;
 }
 
 template <typename T>
 void Vec2<T>::scale(T scale)
 {
-	values[0] *= scale;
-	values[1] *= scale;
+	x *= scale;
+	y *= scale;
 }
 
 template <typename T>
 T Vec2<T>::dot(const Vec2<T>& vector) const
 {
-	return values[0] * vector[0] + values[1] * vector[1];
+	return x * vector.x + y * vector.y;
 }
 
 template <typename T>
@@ -112,8 +100,8 @@ Vec2<T> Vec2<T>::normalize() const
 	T vectorLength = length();
 
 	return Vec2<T> {
-		values[0] / vectorLength,
-			values[1] / vectorLength
+		x / vectorLength,
+			y / vectorLength
 	};
 }
 
@@ -126,21 +114,18 @@ void Vec2<T>::transformToUnit()
 template <typename T>
 T Vec2<T>::distance(const Vec2<T>& vector) const
 {
-	T x = values[0] - vector[0];
-	x = x*x;
+	T xTemp = x - vector.x;
+	T yTemp = y - vector.y;
 
-	T y = values[1] - vector[1];
-	y = y*y;
-
-	return T(sqrt(x + y));
+	return T(sqrt(xTemp * xTemp + yTemp * yTemp));
 }
 
 template <typename T>
 Vec2<T> Vec2<T>::fractional()
 {
 	return Vec2<T> {
-		T(values[0] - floor(values[0])),
-		T(values[1] - floor(values[1]))
+		T(x - floor(x)),
+		T(y - floor(y))
 	};
 }
 
@@ -151,8 +136,8 @@ Vec2<T>* Vec2<T>::orthogonalProjection(const Vec2<T>& vector) const
 
 	Vec2<T> v1 = vector * value;
 	Vec2<T> v2 = {
-		vector[0] - v1[0],
-		vector[1] - v1[1]
+		vector.x - v1.x,
+		vector.y - v1.y
 	};
 
 	Vec2<T>* result = new Vec2<T>[2];
@@ -165,110 +150,98 @@ Vec2<T>* Vec2<T>::orthogonalProjection(const Vec2<T>& vector) const
 template <typename T>
 Vec2<T> Vec2<T>::clone() const
 {
-	return Vec2<T>(values[0], values[1]);
+	return Vec2<T>(x, y);
 }
 
 template <typename T>
 Vec2<T> Vec2<T>::operator*(T value) const
 {
-	Vec2<T> result;
-
-	result[0] = values[0] * value;
-	result[1] = values[1] * value;
-
-	return result;
+	return Vec2<T>(
+		x * value,
+		y * value
+		);
 }
 
 template <typename T>
 Vec2<T> Vec2<T>::operator/(T value) const
 {
-	Vec2<T> result;
-
-	result[0] = values[0] / value;
-	result[1] = values[1] / value;
-
-	return result;
+	return Vec2<T> (
+		x / value,
+		y / value
+		);
 }
 
 template <typename T>
 Vec2<T> Vec2<T>::operator+(const Vec2<T>& vector) const
 {
-	Vec2<T> result;
-
-	result[0] = values[0] + vector[0];
-	result[1] = values[1] + vector[1];
-
-	return result;
+	return Vec2<T> (
+		x + vector.x,
+		y + vector.y
+		);
 }
 
 template <typename T>
 Vec2<T> Vec2<T>::operator+(T value) const
 {
-	Vec2<T> result;
-
-	result[0] = values[0] + value;
-	result[1] = values[1] + value;
-
-	return result;
+	return Vec2<T>(
+		x + value,
+		y + value
+		);
 }
 
 template <typename T>
 Vec2<T> Vec2<T>::operator-(const Vec2<T>& vector) const
 {
-	Vec2<T> result;
-
-	result[0] = values[0] - vector[0];
-	result[1] = values[1] - vector[1];
-
-	return result;
+	return Vec2<T>(
+		x - vector.x,
+		y - vector.y
+		);
 }
 
 template <typename T>
 Vec2<T> Vec2<T>::operator-(T value) const
 {
-	Vec2<T> result;
-
-	result[0] = values[0] - value;
-	result[1] = values[1] - value;
-
-	return result;
+	return Vec2<T> (
+		x - value,
+		y - value
+		);
 }
 
 template <typename T>
 Vec2<T> Vec2<T>::operator-() const
 {
 	return Vec2<T>(
-		-values[0],
-		-values[1]
+		-x,
+		-y
 		);
 }
 
 template <typename T>
 bool Vec2<T>::operator==(const Vec2<T>& vector) const
 {
-	return values[0] == vector[0]
-		&& values[1] == vector[1];
+	return x == vector.x
+		&& y == vector.y;
 }
 
 template <typename T>
 bool Vec2<T>::operator==(T value) const
 {
-	return values[0] == value
-		&& values[1] == value;
+	return x == value 
+		&& y == value;
 }
 
 template <typename T>
 bool Vec2<T>::operator!=(const Vec2<T>& vector) const
 {
-	return values[0] != vector[0]
-		|| values[1] != vector[1];
+	return x != vector.x
+		|| y != vector.y;
 }
 
 template <typename T>
 bool Vec2<T>::operator!=(T value) const
 {
-	return values[0] != value
-		|| values[1] != value;
+	return x != value
+		|| y != value;
 }
 
 template <typename T>
@@ -276,7 +249,7 @@ T& Vec2<T>::operator[](int index)
 {
 	assert(index >= 0 && index < VEC2_SIZE);
 
-	return values[index];
+	return reinterpret_cast<T*>(this)[index];
 }
 
 template <typename T>
@@ -284,26 +257,26 @@ T Vec2<T>::operator[](int index) const
 {
 	assert(index >= 0 && index < VEC2_SIZE);
 
-	return values[index];
+	return reinterpret_cast<const T*>(this)[index];
 }
 
 template <typename T>
-Vec2<T>::operator T*() const
+Vec2<T>::operator T*()
 {
-	return (T*)values;
+	return reinterpret_cast<T*>(this);
 }
 
 template <typename T>
 std::ostream& operator<<(std::ostream& outputStream, const Vec2<T>& vector)
 {
-	return outputStream << vector[0] << "," << vector[1];
+	return outputStream << vector.x << "," << vector.y;
 }
 
 template <typename T>
 std::istream& operator>>(std::istream& inputStream, Vec2<T>& vector)
 {
 	char separator;
-	return inputStream >> vector[0] >> separator >> vector[1];
+	return inputStream >> vector.x >> separator >> vector.y;
 }
 
 template <typename T>

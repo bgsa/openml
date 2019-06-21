@@ -26,8 +26,8 @@ namespace OpenMLTest
 			Vec2f center = circle.center;
 			float ray = circle.ray;
 
-			Assert::AreEqual(1.0f, center.x(), L"Wrong value.", LINE_INFO());
-			Assert::AreEqual(1.0f, center.y(), L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(1.0f, center.x, L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(1.0f, center.y, L"Wrong value.", LINE_INFO());
 			Assert::AreEqual(5.0f, ray, L"Wrong value.", LINE_INFO());
 		}
 
@@ -87,11 +87,11 @@ namespace OpenMLTest
 			
 			Assert::IsNotNull(result, L"Circles should intersect.", LINE_INFO());
 			
-			Assert::IsTrue(isCloseEnough(result[0].x(), intersection1.x()), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(result[0].y(), intersection1.y()), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(result[0].x, intersection1.x), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(result[0].y, intersection1.y), L"Wrong value.", LINE_INFO());
 
-			Assert::IsTrue(isCloseEnough(intersection2.x(), result[1].x()), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(intersection2.y(), result[1].y()), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(intersection2.x, result[1].x), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(intersection2.y, result[1].y), L"Wrong value.", LINE_INFO());
 		}
 
 		TEST_METHOD(Circle2D_findIntersection2_Test)
@@ -105,8 +105,8 @@ namespace OpenMLTest
 
 			Assert::IsNotNull(result, L"Circles should intersect.", LINE_INFO());
 
-			Assert::AreEqual(intersection.x(), OpenML::round(result[0].x(), 3), L"Wrong value.", LINE_INFO());
-			Assert::AreEqual(intersection.y(), OpenML::round(result[0].y(), 3), L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(intersection.x, OpenML::round(result[0].x, 3), L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(intersection.y, OpenML::round(result[0].y, 3), L"Wrong value.", LINE_INFO());
 		}
 
 	};

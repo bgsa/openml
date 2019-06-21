@@ -35,7 +35,7 @@ Vec2<T>* Vec2List<T>::findMinX()
 
 	for (size_t i = 0 ; i != list.size() ; i ++)
 	{
-		if (list[i].x() < result->x())
+		if (list[i].x < result->x)
 			result = &list[i];
 	}
 
@@ -52,7 +52,7 @@ Vec2<T>* Vec2List<T>::findMinY()
 
 	for (size_t i = 0; i != list.size(); i++)
 	{
-		if (list[i].y() < result->y())
+		if (list[i].y < result->y)
 			result = &list[i];
 	}
 
@@ -69,7 +69,7 @@ Vec2<T>* Vec2List<T>::findMaxX()
 
 	for (size_t i = 0; i != list.size(); i++)
 	{
-		if (list[i].x() > result->x())
+		if (list[i].x > result->x)
 			result = &list[i];
 	}
 
@@ -86,7 +86,7 @@ Vec2<T>* Vec2List<T>::findMaxY()
 
 	for (size_t i = 0; i != list.size(); i++)
 	{
-		if (list[i].y() > result->y())
+		if (list[i].y > result->y)
 			result = &list[i];
 	}
 
@@ -209,8 +209,8 @@ std::stack<Vec2<T>> Vec2List<T>::convexUpperHull()
 
 			Mat3<T> lineMatrix = {
 				T(1), T(1), T(1),
-				currentPoint[0], point1[0], point2[0],
-				currentPoint[1], point1[1], point2[1]
+				currentPoint.x, point1.x, point2.x,
+				currentPoint.y, point1.y, point2.y
 			};
 
 			isCounterClockwise = lineMatrix.determinant() >= T(0);
@@ -243,8 +243,8 @@ std::stack<Vec2<T>> Vec2List<T>::convexLowerHull()
 
 		Mat3<T> lineMatrix = {
 			T(1), T(1), T(1),
-			currentPoint[0], point1[0], point2[0],
-			currentPoint[1], point1[1], point2[1]
+			currentPoint.x, point1.x, point2.x,
+			currentPoint.y, point1.y, point2.y
 		};
 
 		determinant = lineMatrix.determinant();
@@ -263,8 +263,8 @@ std::stack<Vec2<T>> Vec2List<T>::convexLowerHull()
 
 			Mat3<T> lineMatrix = {
 				T(1), T(1), T(1),
-				currentPoint[0], point1[0], point2[0],
-				currentPoint[1], point1[1], point2[1]
+				currentPoint.x, point1.x, point2.x,
+				currentPoint.y, point1.y, point2.y
 			};
 
 			isCounterClockwise = lineMatrix.determinant() >= T(0);

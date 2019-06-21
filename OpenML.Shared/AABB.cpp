@@ -18,10 +18,11 @@ template <typename T>
 AABB<T>::AABB(Vec3<T> minPoint, T width, T height, T depth) 
 {
 	this->minPoint = minPoint;
+
 	maxPoint = Vec3<T>(
-		minPoint[0] + width,
-		minPoint[1] + height,
-		minPoint[2] + depth
+		minPoint.x + width,
+		minPoint.y + height,
+		minPoint.z + depth
 		);
 }
 
@@ -66,13 +67,13 @@ T AABB<T>::distance(const Vec3<T>& target)
 template <typename T>
 ColisionStatus AABB<T>::colisionStatus(const AABB<T>& aabb) 
 {
-	if (maxPoint[0] < aabb.minPoint[0] || minPoint[0] > aabb.maxPoint[0])
+	if (maxPoint.x < aabb.minPoint.x || minPoint.x > aabb.maxPoint.x)
 		return ColisionStatus::OUTSIDE;
 
-	if (maxPoint[1] < aabb.minPoint[1] || minPoint[1] > aabb.maxPoint[1])
+	if (maxPoint.y < aabb.minPoint.y || minPoint.y > aabb.maxPoint.y)
 		return ColisionStatus::OUTSIDE;
 
-	if (maxPoint[2] < aabb.minPoint[2] || minPoint[2] > aabb.maxPoint[2])
+	if (maxPoint.z < aabb.minPoint.z || minPoint.z > aabb.maxPoint.z)
 		return ColisionStatus::OUTSIDE;
 
 	return ColisionStatus::INSIDE;
@@ -87,9 +88,9 @@ ColisionStatus AABB<T>::colisionStatus(const Plane3D<T>& plane)
 
 	// Compute the projection interval radius of AABB onto L(t) = center + t * normalPlane
 	double r = 
-		  halfDistanceFromCenter[0] * std::abs(plane.normalVector[0])
-		+ halfDistanceFromCenter[1] * std::abs(plane.normalVector[1])
-		+ halfDistanceFromCenter[2] * std::abs(plane.normalVector[2]);
+		  halfDistanceFromCenter.x * std::abs(plane.normalVector.x)
+		+ halfDistanceFromCenter.y * std::abs(plane.normalVector.y)
+		+ halfDistanceFromCenter.z * std::abs(plane.normalVector.z);
 	
 	double distanceFromAABB2Plane = std::abs(plane.normalVector.dot(centerPoint) + d);
 	
@@ -150,14 +151,14 @@ AABB<T> AABB<T>::buildFrom(const Vec3List<T>& pointList)
 
 	return AABB<T>(
 		Vec3<T>(
-			pointList.points[indexes[0]][0],
-			pointList.points[indexes[2]][1],
-			pointList.points[indexes[4]][2]
+			pointList.points[indexes[0]].x,
+			pointList.points[indexes[2]].y,
+			pointList.points[indexes[4]].z
 			), 
 		Vec3<T>(
-			pointList.points[indexes[1]][0],
-			pointList.points[indexes[3]][1],
-			pointList.points[indexes[5]][2]
+			pointList.points[indexes[1]].x,
+			pointList.points[indexes[3]].y,
+			pointList.points[indexes[5]].z
 		)
 	);
 }
@@ -167,14 +168,14 @@ AABB<T> AABB<T>::buildFrom(const Sphere<T>& sphere)
 {	
 	return AABB<T>(
 		Vec3<T>(
-			sphere.center[0] - sphere.ray,
-			sphere.center[1] - sphere.ray,
-			sphere.center[2] - sphere.ray
+			sphere.center.x - sphere.ray,
+			sphere.center.y - sphere.ray,
+			sphere.center.z - sphere.ray
 			),
 		Vec3<T>(
-			sphere.center[0] + sphere.ray,
-			sphere.center[1] + sphere.ray,
-			sphere.center[2] + sphere.ray
+			sphere.center.x + sphere.ray,
+			sphere.center.y + sphere.ray,
+			sphere.center.z + sphere.ray
 			)
 		);
 }
@@ -184,14 +185,14 @@ AABB<T> AABB<T>::enclose(const AABB<T>& aabb)
 {
 	return AABB<T>(
 		Vec3<T>(
-			std::min(this->minPoint[0], aabb.minPoint[0]),
-			std::min(this->minPoint[1], aabb.minPoint[1]),
-			std::min(this->minPoint[2], aabb.minPoint[2])
+			std::min(this->minPoint.x, aabb.minPoint.x),
+			std::min(this->minPoint.y, aabb.minPoint.y),
+			std::min(this->minPoint[2], aabb.minPoint.z)
 		),
 		Vec3<T>(
-			std::max(this->maxPoint[0], aabb.maxPoint[0]),
-			std::max(this->maxPoint[1], aabb.maxPoint[1]),
-			std::max(this->maxPoint[2], aabb.maxPoint[2])
+			std::max(this->maxPoint.x, aabb.maxPoint.x),
+			std::max(this->maxPoint.y, aabb.maxPoint.y),
+			std::max(this->maxPoint.z, aabb.maxPoint.z)
 		)
 	);
 }
@@ -218,13 +219,13 @@ bool AABB<T>::operator!=(const AABB<T>& aabb) const
 template <typename T>
 bool AABB<T>::operator<(const AABB<T>& aabb) const
 {
-	if (this->minPoint[0] < aabb.minPoint[0])
+	if (this->minPoint.x < aabb.minPoint.x)
 		return true;
 
-	if (this->minPoint[1] < aabb.minPoint[1])
+	if (this->minPoint.y < aabb.minPoint.y)
 		return true;
 
-	if (this->minPoint[2] < aabb.minPoint[2])
+	if (this->minPoint.z < aabb.minPoint.z)
 		return true;
 
 	return false;
@@ -233,13 +234,13 @@ bool AABB<T>::operator<(const AABB<T>& aabb) const
 template <typename T>
 bool AABB<T>::operator>(const AABB<T>& aabb) const
 {
-	if (this->maxPoint[0] > aabb.maxPoint[0])
+	if (this->maxPoint.x > aabb.maxPoint.x)
 		return true;
 
-	if (this->maxPoint[1] > aabb.maxPoint[1])
+	if (this->maxPoint.y > aabb.maxPoint.y)
 		return true;
 
-	if (this->maxPoint[2] > aabb.maxPoint[2])
+	if (this->maxPoint.z > aabb.maxPoint.z)
 		return true;
 
 	return false;
@@ -251,12 +252,12 @@ size_t AABB<T>::operator()(const AABB<T>& aabb) const
 	T hash = T(1);
 	const T constant = T(3);
 
-	hash = constant * hash + aabb.minPoint[0];
-	hash = constant * hash + aabb.minPoint[1];
-	hash = constant * hash + aabb.minPoint[2];
-	hash = constant * hash + aabb.maxPoint[0];
-	hash = constant * hash + aabb.maxPoint[1];
-	hash = constant * hash + aabb.maxPoint[2];
+	hash = constant * hash + aabb.minPoint.x;
+	hash = constant * hash + aabb.minPoint.y;
+	hash = constant * hash + aabb.minPoint.z;
+	hash = constant * hash + aabb.maxPoint.x;
+	hash = constant * hash + aabb.maxPoint.y;
+	hash = constant * hash + aabb.maxPoint.z;
 
 	return size_t(hash);
 }

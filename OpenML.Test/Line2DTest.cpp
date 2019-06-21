@@ -146,8 +146,8 @@ namespace OpenMLTest
 			Vec2f* result = line1.findIntersection(line2);
 
 			Assert::IsNotNull(result, L"Result shoud not be null.", LINE_INFO());
-			Assert::AreEqual(expected.x(), result->x(), L"Wrong value.", LINE_INFO());
-			Assert::AreEqual(expected.y(), result->y(), L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(expected.x, result->x, L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(expected.y, result->y, L"Wrong value.", LINE_INFO());
 		}
 
 		TEST_METHOD(Line2D_hasIntersection_Inside_Test)

@@ -392,9 +392,9 @@ namespace OpenMLTest
 
 			Assert::IsNotNull(result, L"Value should not be null.", LINE_INFO());
 
-			Assert::AreEqual(expected.x(), result->x(), L"Wrong value.", LINE_INFO());
-			Assert::AreEqual(expected.y(), result->y(), L"Wrong value.", LINE_INFO());
-			Assert::AreEqual(expected.z(), result->z(), L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(expected.x, result->x, L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(expected.y, result->y, L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(expected.z, result->z, L"Wrong value.", LINE_INFO());
 		}
 
 		TEST_METHOD(Line3D_closestPointOnTheLine_point_Test1)
@@ -406,9 +406,9 @@ namespace OpenMLTest
 
 			Vec3f result = line.closestPointOnTheLine(point);
 			
-			Assert::AreEqual(expected.x(), result.x(), L"Wrong value.", LINE_INFO());
-			Assert::AreEqual(expected.y(), result.y(), L"Wrong value.", LINE_INFO());
-			Assert::AreEqual(expected.z(), result.z(), L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(expected.x, result.x, L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(expected.y, result.y, L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(expected.z, result.z, L"Wrong value.", LINE_INFO());
 		}
 
 		TEST_METHOD(Line3D_closestPointOnTheLine_point_Test2)
@@ -420,9 +420,9 @@ namespace OpenMLTest
 
 			Vec3f result = line.closestPointOnTheLine(point);
 
-			Assert::AreEqual(expected.x(), result.x(), L"Wrong value.", LINE_INFO());
-			Assert::AreEqual(expected.y(), result.y(), L"Wrong value.", LINE_INFO());
-			Assert::AreEqual(expected.z(), result.z(), L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(expected.x, result.x, L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(expected.y, result.y, L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(expected.z, result.z, L"Wrong value.", LINE_INFO());
 		}
 
 		TEST_METHOD(Line3D_closestPointOnTheLine_point_Test3)
@@ -434,9 +434,9 @@ namespace OpenMLTest
 
 			Vec3f result = line.closestPointOnTheLine(point);
 
-			Assert::AreEqual(expected.x(), result.x(), L"Wrong value.", LINE_INFO());
-			Assert::AreEqual(expected.y(), result.y(), L"Wrong value.", LINE_INFO());
-			Assert::AreEqual(expected.z(), result.z(), L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(expected.x, result.x, L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(expected.y, result.y, L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(expected.z, result.z, L"Wrong value.", LINE_INFO());
 		}
 
 		TEST_METHOD(Line3D_squaredDistance_point_Test1)

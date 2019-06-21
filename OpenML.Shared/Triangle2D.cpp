@@ -22,7 +22,7 @@ Triangle2D<T>::Triangle2D(T* point1, T* point2, T* point3)
 template<typename T>
 T Triangle2D<T>::area() const
 {
-	double numerator = abs(point1.x() * point2.y() + point2.x() * point3.y() + point3.x() * point1.y() - point1.y() * point2.x() - point2.y() * point3.x() - point3.y() * point1.x());
+	double numerator = abs(point1.x * point2.y + point2.x * point3.y + point3.x * point1.y - point1.y * point2.x - point2.y * point3.x - point3.y * point1.x);
 	T area = T(numerator / 2);
 
 	return area;
@@ -31,9 +31,9 @@ T Triangle2D<T>::area() const
 template<typename T>
 T Triangle2D<T>::perimeter() const
 {
-	double term1 = sqrt((point1.x() - point2.x()) * (point1.x() - point2.x()) + (point1.y() - point2.y()) * (point1.y() - point2.y()));
-	double term2 = sqrt((point2.x() - point3.x()) * (point2.x() - point3.x()) + (point2.y() - point3.y()) * (point2.y() - point3.y()));
-	double term3 = sqrt((point3.x() - point1.x()) * (point3.x() - point1.x()) + (point3.y() - point1.y()) * (point3.y() - point1.y()));
+	double term1 = sqrt((point1.x - point2.x) * (point1.x - point2.x) + (point1.y - point2.y) * (point1.y - point2.y));
+	double term2 = sqrt((point2.x - point3.x) * (point2.x - point3.x) + (point2.y - point3.y) * (point2.y - point3.y));
+	double term3 = sqrt((point3.x - point1.x) * (point3.x - point1.x) + (point3.y - point1.y) * (point3.y - point1.y));
 
 	T perimeter = T(term1) + T(term2) + T(term3);
 

@@ -17,7 +17,7 @@ namespace OpenMLTest
 			Vec2f vector = { 2.0f, -9.0f };
 			float expected = 2.0f;
 
-			float result = vector.x();
+			float result = vector.x;
 
 			Assert::AreEqual(expected, result, L"Wrong value.", LINE_INFO());
 		}
@@ -27,7 +27,7 @@ namespace OpenMLTest
 			Vec2f vector = { 2.0f, -9.0f };
 			float expected = -9.0f;
 
-			float result = vector.y();
+			float result = vector.y;
 
 			Assert::AreEqual(expected, result, L"Wrong value.", LINE_INFO());
 		}

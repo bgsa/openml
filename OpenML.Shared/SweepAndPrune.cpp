@@ -18,10 +18,10 @@ int comparatorXAxisForQuickSort(const void* a, const void* b)
 	AABB<float>* obj1 = (AABB<float>*) a;
 	AABB<float>* obj2 = (AABB<float>*) b;
 
-	if (obj1->minPoint[0] < obj2->minPoint[0])
+	if (obj1->minPoint.x < obj2->minPoint.x)
 		return -1;
 	else
-		if (obj1->minPoint[0] > obj2->minPoint[0])
+		if (obj1->minPoint.x > obj2->minPoint.x)
 			return 1;
 
 	return 0;
@@ -66,7 +66,7 @@ SweepAndPruneResult SweepAndPrune::findCollisions(AABB<T>* aabbs, size_t count)
 
 		for (size_t j = activeListIndexIndex; j > 0; j--)
 		{
-			if (aabbs[activeListIndex[j - 1]].maxPoint[0] < currentAABB.minPoint[0])
+			if (aabbs[activeListIndex[j - 1]].maxPoint.x < currentAABB.minPoint.x)
 			{
 				erase_element(activeListIndex, count, j - 1); //remove from active list
 				activeListIndexIndex --;

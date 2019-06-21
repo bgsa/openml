@@ -25,8 +25,8 @@ Line2D<T>::Line2D(T* point1, T* point2)
 template <typename T>
 T Line2D<T>::angle() const
 {
-	T deltaY = point2.y() - point1.y();
-	T deltaX = point2.x() - point1.x();
+	T deltaY = point2.y - point1.y;
+	T deltaX = point2.x - point1.x;
 
 	T angle = T(atan(deltaY / deltaX));
 	return angle;
@@ -35,8 +35,8 @@ T Line2D<T>::angle() const
 template <typename T>
 T Line2D<T>::slope() const
 {
-	T deltaY = point2.y() - point1.y();
-	T deltaX = point2.x() - point1.x();
+	T deltaY = point2.y - point1.y;
+	T deltaX = point2.x - point1.x;
 
 	T slope = T(deltaY / deltaX);
 
@@ -47,7 +47,7 @@ template <typename T>
 Vec2<T> Line2D<T>::getParametricEquation() const
 {
 	T m = slope();
-	T b = -(m * point1.x()) + point1.y();
+	T b = -(m * point1.x) + point1.y;
 
 	return Vec2<T>(m, b);
 }
@@ -79,14 +79,14 @@ bool Line2D<T>::isOnTheLine(const Vec2<T>& point) const
 		return false;
 
 	// check the range of the line x point
-	T point1PosX = point1.x() > point2.x() ? point2.x() : point1.x();
+	T point1PosX = point1.x > point2.x ? point2.x : point1.x;
 	T point2PosX = point1PosX + deltaX();
 
-	T point1PosY = point1.y() > point2.y() ? point2.y() : point1.y();
+	T point1PosY = point1.y > point2.y ? point2.y : point1.y;
 	T point2PosY = point1PosY + deltaY();
 
-	if (point.x() < point1PosX || point.x() > point2PosX
-		|| point.y() < point1PosY || point.y() > point2PosY)
+	if (point.x < point1PosX || point.x > point2PosX
+		|| point.y < point1PosY || point.y > point2PosY)
 		return false;
 
 	return true;
@@ -109,8 +109,8 @@ Orientation Line2D<T>::getOrientation(const Vec2<T>& point) const
 {
 	Mat3<T> lineMatrix = {
 		T(1), T(1), T(1),
-		point1.x(), point2.x(), point.x(),
-		point1.y(), point2.y(), point.y()
+		point1.x, point2.x, point.x,
+		point1.y, point2.y, point.y
 	};
 
 	int determinant = (int)lineMatrix.determinant();
@@ -128,8 +128,8 @@ T Line2D<T>::getDistance(Vec2<T> point) const
 {
 	Vec3<T> values = getEquation();
 
-	double numerador = fabs(values[0] * point.x() + values[1] * point.y() + values[2]);
-	double denominador = sqrt(values[0] * values[0] + values[1] * values[1]);
+	double numerador = fabs(values.x * point.x + values.y * point.y + values.z);
+	double denominador = sqrt(values.x * values.x + values.y * values.y);
 
 	double distanceFromPointToLine = numerador / denominador;
 
@@ -142,17 +142,17 @@ Vec2<T>* Line2D<T>::findIntersection(const Line2D<T>& otherLine) const
 	Vec2<T> line2Point1 = otherLine.point1;
 	Vec2<T> line2Point2 = otherLine.point2;
 
-	T determinant = (line2Point2.x() - line2Point1.x()) * (point2.y() - point1.y()) - (line2Point2.y() - line2Point1.y()) * (point2.x() - point1.x());
+	T determinant = (line2Point2.x - line2Point1.x) * (point2.y - point1.y) - (line2Point2.y - line2Point1.y) * (point2.x - point1.x);
 
 	if (determinant == 0.0)
 		return nullptr; // intersection not found
 
-	double s = ((line2Point2.x() - line2Point1.x()) * (line2Point1.y() - point1.y()) - (line2Point2.y() - line2Point1.y()) * (line2Point1.x() - point1.x())) / determinant;
+	double s = ((line2Point2.x - line2Point1.x) * (line2Point1.y - point1.y) - (line2Point2.y - line2Point1.y) * (line2Point1.x - point1.x)) / determinant;
 	//double t = ((point2.x - point1.x) * (line2Point1.y - point1.y) - (point2.y - point1.y) * (line2Point1.x - point1.x)) / determinant;
 
 	Vec2<T>* intersection = new Vec2<T>(
-		point1.x() + (point2.x() - point1.x())* T(s),
-		point1.y() + (point2.y() - point1.y())* T(s)
+		point1.x + (point2.x - point1.x)* T(s),
+		point1.y + (point2.y - point1.y)* T(s)
 		);
 
 	if (!isOnTheLine(*intersection))
@@ -182,13 +182,13 @@ ColisionStatus Line2D<T>::hasIntersections(const Circle2D<T>& circle) const
 template <typename T>
 T Line2D<T>::deltaX() const
 {
-	return abs(point1.x() - point2.x());
+	return abs(point1.x - point2.x);
 }
 
 template <typename T>
 T Line2D<T>::deltaY() const
 {
-	return abs(point1.y() - point2.y());
+	return abs(point1.y - point2.y);
 }
 
 

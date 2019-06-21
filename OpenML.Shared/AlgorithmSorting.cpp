@@ -200,3 +200,24 @@ size_t* AlgorithmSorting::nativeIndex(float* vector, size_t count)
 
 	return index;
 }
+
+template <typename T>
+size_t* AlgorithmSorting::nativeIndex(T* vector, size_t count, bool(*comparator)(int, int, T*))
+{
+	size_t* index = new size_t[count];
+
+	std::iota(index, index + count, 0); // fill index with {0,1,2,...} This only needs to happen once
+
+	std::sort(index, index + count, std::bind(comparator, std::placeholders::_1, std::placeholders::_2, vector));
+		
+	return index;
+}
+template size_t* AlgorithmSorting::nativeIndex(AABB<int>* vector, size_t count, bool(*comparator)(int, int, AABB<int>*));
+template size_t* AlgorithmSorting::nativeIndex(AABB<float>* vector, size_t count, bool(*comparator)(int, int, AABB<float>*));
+template size_t* AlgorithmSorting::nativeIndex(AABB<double>* vector, size_t count, bool(*comparator)(int, int, AABB<double>*));
+
+
+void AlgorithmSorting::quickSortNative(void* vector, size_t count, size_t sizeOfOneElement, int(*comparator)(const void*, const void*))
+{
+	std::qsort(vector, count, sizeOfOneElement, comparator);
+}

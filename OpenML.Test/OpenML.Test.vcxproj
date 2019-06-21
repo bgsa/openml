@@ -317,6 +317,7 @@
     <ClCompile Include="Rectangle2DTest.cpp" />
     <ClCompile Include="BoundingVolumeHierarchyTest.cpp" />
     <ClCompile Include="SphereTest.cpp" />
+    <ClCompile Include="SweepAndPruneTest.cpp" />
     <ClCompile Include="SystemOfLinearEquationsTest.cpp" />
     <ClCompile Include="Triangle2DTest.cpp" />
     <ClCompile Include="Triangle3DTest.cpp" />

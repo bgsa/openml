@@ -14,10 +14,10 @@ namespace OpenMLTest
 	{
 	private:
 
-		AABBf* getRandom(size_t count)
+		AABBf* getRandom(size_t count, size_t spaceSize = 1000)
 		{
 			Randomizer<int> randomizerSize(0, 30);
-			Randomizer<int> randomizerLocation(0, 1000);
+			Randomizer<int> randomizerLocation(0, spaceSize);
 
 			AABBf* aabbs = new AABBf[count];
 
@@ -1071,10 +1071,10 @@ namespace OpenMLTest
 
 		TEST_METHOD(SweepAndPrune_findCollisions_Test)
 		{
-			size_t count = 1000;
-			AABBf* aabbs = get1000();
-			//size_t count = std::pow(2, 17);
-			//AABBf* aabbs = getRandom(count);
+			//size_t count = 1000;
+			//AABBf* aabbs = get1000();
+			size_t count = std::pow(2, 17);
+			AABBf* aabbs = getRandom(count, 1000);
 
 			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 

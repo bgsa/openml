@@ -47,56 +47,48 @@ void erase_element(T* array, size_t count, size_t index)
 template <typename T>
 SweepAndPruneResult SweepAndPrune::findCollisions(AABB<T>* aabbs, size_t count)
 {
-	size_t* aabbIndexes1 = new size_t[count * 100];
-	size_t* aabbIndexes2 = new size_t[count * 100];
+	size_t* aabbIndexes1 = new size_t[count];
+	size_t* aabbIndexes2 = new size_t[count];
 	size_t aabbIndex = 0;
-
-	size_t* candidates = new size_t[count];
-	size_t candidatesCount = 0;
-	
+		
 	size_t* activeListIndex = new size_t[count];
 	size_t activeListIndexIndex = 0;
+	size_t activeListAABBIndex = 0;
 	
 	AlgorithmSorting::quickSortNative(aabbs, count, sizeof(AABB<T>), comparatorXAxisForQuickSort);
 	
 	for (size_t i = 0; i < count; i++)
 	{
-		AABB<T> currentAABB = aabbs[i];
-		bool hasCollision = false;
+		Vec3<T> currentMaxPoint = aabbs[i].maxPoint;
+		Vec3<T> currentMinPoint = aabbs[i].minPoint;
 
 		for (size_t j = activeListIndexIndex; j > 0; j--)
 		{
-			if (aabbs[activeListIndex[j - 1]].maxPoint.x < currentAABB.minPoint.x)
+			activeListAABBIndex = activeListIndex[j - 1];
+
+			if (aabbs[activeListAABBIndex].maxPoint.x < currentMinPoint.x)
 			{
-				erase_element(activeListIndex, count, j - 1); //remove from active list
+				erase_element(activeListIndex, activeListIndexIndex + 1, j - 1); //remove from active list
 				activeListIndexIndex --;
 			}
 			else
 			{
-				if (currentAABB.colisionStatus(aabbs[activeListIndex[j - 1]]) == ColisionStatus::INSIDE)
+				//check collision AABB x AABB
+				if (  (currentMaxPoint.x > aabbs[activeListAABBIndex].minPoint.x && currentMinPoint.x < aabbs[activeListAABBIndex].maxPoint.x)
+					&&(currentMaxPoint.y > aabbs[activeListAABBIndex].minPoint.y && currentMinPoint.y < aabbs[activeListAABBIndex].maxPoint.y)
+					&&(currentMaxPoint.z > aabbs[activeListAABBIndex].minPoint.z && currentMinPoint.z < aabbs[activeListAABBIndex].maxPoint.z))
 				{
 					aabbIndexes1[aabbIndex] = i;
 					aabbIndexes2[aabbIndex] = j - 1;
 					aabbIndex ++;
 				}
-
-				/*
-				aabbIndexes1[aabbIndex1++] = i;
-				aabbIndexes2[aabbIndex2++] = j - 1;
-
-				if (!hasCollision)
-				{
-					hasCollision = true;
-					candidates[candidatesCount++] = i;
-				}
-				*/
 			}
 		}
 
 		activeListIndex[activeListIndexIndex++] = i;
 	}
 
-	delete[] candidates, activeListIndex;
+	delete[] activeListIndex;
 	
 	return SweepAndPruneResult(aabbIndexes1, aabbIndexes2, aabbIndex);
 }

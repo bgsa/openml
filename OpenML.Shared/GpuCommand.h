@@ -7,6 +7,8 @@ namespace OpenML
 	class GpuCommand
 	{
 	private:
+		GpuContext* context = nullptr;
+
 		cl_program program = nullptr;
 		cl_command_queue commandQueue = nullptr;
 		cl_kernel kernel = nullptr;
@@ -15,11 +17,11 @@ namespace OpenML
 		cl_mem outputParameter = nullptr;
 		size_t outputSize = 0;
 
-		GpuCommand();
+		GpuCommand(GpuContext* context);
 
 	public:
 
-		static GpuCommand* create();
+		static GpuCommand* create(GpuContext* context);
 
 		GpuCommand* setInputParameter(void* value, size_t sizeOfValue);
 

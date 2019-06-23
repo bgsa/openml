@@ -14,9 +14,18 @@ namespace OpenMLTest
 
 		TEST_METHOD(GPUContext_instance_Test)
 		{
-			GpuContext* gpu = GpuContext::instance();
+			std::vector<cl_platform_id> platforms = GpuContext::getPlatforms();
+
+			GpuContext* gpu = GpuContext::init(platforms[0]);
 
 			delete gpu;
+		}
+
+		TEST_METHOD(GPUContext_getPlatforms_Test)
+		{
+			std::vector<cl_platform_id> platforms = GpuContext::getPlatforms();
+
+			Assert::IsTrue(platforms.size() > 0, L"Wrong value.", LINE_INFO());
 		}
 
 	};

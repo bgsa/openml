@@ -7,28 +7,29 @@
 #endif
 
 #include "OpenML.h"
+#include "GpuDevice.h"
 
 namespace OpenML
 {
 	class GpuContext
 	{
-	private:		
-		friend class GpuCommand;
-
-		cl_context openclContext;
-		size_t plataformCount;
+	private:
 		cl_platform_id platformId;
-		cl_device_id deviceId = NULL;
-		cl_uint devicesCount;
-
-		GpuContext();
+		
+		GpuContext(cl_platform_id platformId);
 
 	public:
+		GpuDevice* defaultDevice = nullptr;
+		//cl_context defaultContext;
 		
-		API_INTERFACE static GpuContext* instance();
+		API_INTERFACE static GpuContext* init();
+		API_INTERFACE static GpuContext* init(cl_platform_id platformId);
+
+		API_INTERFACE static std::vector<cl_platform_id> getPlatforms();
+
+		API_INTERFACE static cl_platform_id GpuContext::getDefaultPlatforms();
 		
 		~GpuContext();
-
 	};
 
 }

@@ -1,24 +1,22 @@
 #include "GpuCommand.h"
 
-GpuCommand::GpuCommand()
+GpuCommand::GpuCommand(GpuContext* context)
 {
+	this->context = context;
+
+	cl_int errorCode;
+	commandQueue = clCreateCommandQueue(context->defaultDevice->deviceContext, context->defaultDevice->id, 0, &errorCode);
 }
 
-GpuCommand* GpuCommand::create()
+GpuCommand* GpuCommand::create(GpuContext* context)
 {
-	GpuContext* gpu = GpuContext::instance();
-	cl_int errorCode;
-
-	GpuCommand* command = new GpuCommand;
-	command->commandQueue = clCreateCommandQueue(gpu->openclContext, gpu->deviceId, 0, &errorCode);
-
-	return command;
+	return new GpuCommand(context);
 }
 
 GpuCommand* GpuCommand::setInputParameter(void* value, size_t sizeOfValue)
 {
 	cl_int errorCode;
-	cl_mem memoryBuffer = clCreateBuffer(GpuContext::instance()->openclContext, CL_MEM_READ_ONLY, sizeOfValue, NULL, &errorCode);
+	cl_mem memoryBuffer = clCreateBuffer(context->defaultDevice->deviceContext, CL_MEM_READ_ONLY, sizeOfValue, NULL, &errorCode);
 
 	errorCode = clEnqueueWriteBuffer(commandQueue, memoryBuffer, CL_TRUE, 0, sizeOfValue, value, 0, NULL, NULL);
 
@@ -30,7 +28,7 @@ GpuCommand* GpuCommand::setInputParameter(void* value, size_t sizeOfValue)
 GpuCommand* GpuCommand::setOutputParameter(size_t sizeOfValue)
 {
 	cl_int errorCode;
-	outputParameter = clCreateBuffer(GpuContext::instance()->openclContext, CL_MEM_WRITE_ONLY, sizeOfValue, NULL, &errorCode);	
+	outputParameter = clCreateBuffer(context->defaultDevice->deviceContext, CL_MEM_WRITE_ONLY, sizeOfValue, NULL, &errorCode);
 	outputSize = sizeOfValue;
 
 	return this;
@@ -40,7 +38,7 @@ GpuCommand* GpuCommand::setSource(const char* source, size_t sourceSize)
 {
 	cl_int errorCode;
 
-	program = clCreateProgramWithSource(GpuContext::instance()->openclContext, 1, &source, &sourceSize, &errorCode);
+	program = clCreateProgramWithSource(context->defaultDevice->deviceContext, 1, &source, &sourceSize, &errorCode);
 
 	return this;
 }
@@ -48,8 +46,9 @@ GpuCommand* GpuCommand::setSource(const char* source, size_t sourceSize)
 GpuCommand* GpuCommand::build(std::string kernelName)
 {
 	cl_int errorCode;
+	const cl_device_id* id = &context->defaultDevice->id;
 
-	errorCode = clBuildProgram(program, 1, &GpuContext::instance()->deviceId, NULL, NULL, NULL);
+	errorCode = clBuildProgram(program, 1, id, NULL, NULL, NULL);
 
 	kernel = clCreateKernel(program, kernelName.c_str(), &errorCode);
 

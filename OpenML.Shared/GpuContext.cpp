@@ -1,32 +1,70 @@
 #include "GpuContext.h"
 
 static GpuContext* gpu = nullptr;
+static std::vector<cl_platform_id> platforms;
+static std::vector<GpuDevice*> devices;
 
-GpuContext::GpuContext()
+GpuContext::GpuContext(cl_platform_id platformId)
 {
+	this->platformId = platformId;
+
+	size_t devicesCount;
+	clGetDeviceIDs(platformId, CL_DEVICE_TYPE_ALL, 0, NULL, &devicesCount);
+
+	cl_device_id* devicesAsArray = new cl_device_id[devicesCount];
+	clGetDeviceIDs(platformId, CL_DEVICE_TYPE_ALL, devicesCount, devicesAsArray, NULL);		
+
+	for (size_t i = 0; i < devicesCount; i++) 
+	{
+		GpuDevice* device = new GpuDevice(this, devicesAsArray[i]);
+		devices.emplace_back(device);
+
+		if (devicesCount == 1 || device->type & CL_DEVICE_TYPE_DEFAULT)
+			defaultDevice = device;
+	}
 }
 
-GpuContext* GpuContext::instance()
+GpuContext* GpuContext::init(cl_platform_id platformId)
 {
 	if (gpu != nullptr)
 		return gpu;
 	
-	gpu = new GpuContext;
+	return new GpuContext(platformId);
+}
 
-	clGetPlatformIDs(1, &gpu->platformId, &gpu->plataformCount);
-	clGetDeviceIDs(gpu->platformId, CL_DEVICE_TYPE_DEFAULT, 1, &gpu->deviceId, &gpu->devicesCount);
+GpuContext* GpuContext::init()
+{
+	return init(getDefaultPlatforms());
+}
+
+std::vector<cl_platform_id> GpuContext::getPlatforms()
+{
+	if (platforms.size() > 0)
+		return platforms;
 
 	cl_int errorCode;
-	gpu->openclContext = clCreateContext(NULL, 1, &gpu->deviceId, NULL, NULL, &errorCode);
 
-	return gpu;
+	size_t platformCount;
+	errorCode = clGetPlatformIDs(NULL, NULL, &platformCount);
+
+	cl_platform_id* platformsAsArray = new cl_platform_id[platformCount];
+	platforms.resize(platformCount);
+
+	errorCode = clGetPlatformIDs(platformCount, platformsAsArray, NULL);
+
+	platforms.assign(platformsAsArray, platformsAsArray + platformCount);
+
+	delete[] platformsAsArray;
+	return platforms;
+}
+
+cl_platform_id GpuContext::getDefaultPlatforms()
+{
+	return getPlatforms()[0];
 }
 
 GpuContext::~GpuContext()
 {
-	if (openclContext != nullptr) 
-	{
-		clReleaseContext(openclContext);
-		openclContext = nullptr;
-	}
+	for (size_t i = 0; i < devices.size(); i++)
+		delete devices[i];
 }

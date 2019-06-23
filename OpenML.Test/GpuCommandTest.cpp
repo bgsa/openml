@@ -19,8 +19,8 @@ namespace OpenMLTest
 			float* param2 = (float*)malloc(sizeof(float) * LIST_SIZE);
 			
 			for (size_t i = 0; i < LIST_SIZE; i++) {
-				param1[i] = i;
-				param2[i] = LIST_SIZE - i;
+				param1[i] = float(i);
+				param2[i] = float(LIST_SIZE - i);
 			}
 
 			std::string source = "__kernel void sum(__global const float *A, __global const float *B, __global float *C) {";
@@ -30,7 +30,8 @@ namespace OpenMLTest
 			size_t globalWorkSize = LIST_SIZE;
 			size_t localWorkSize = 64;
 
-			GpuCommand* command = GpuCommand::create();
+			GpuContext* context = GpuContext::init();
+			GpuCommand* command = GpuCommand::create(context);
 
 			float* result = command
 				->setInputParameter(param1, sizeof(float) * LIST_SIZE)

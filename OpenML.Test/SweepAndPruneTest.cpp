@@ -1071,10 +1071,10 @@ namespace OpenMLTest
 
 		TEST_METHOD(SweepAndPrune_findCollisions_Test)
 		{
-			//size_t count = 1000;
-			//AABBf* aabbs = get1000();
-			size_t count = std::pow(2, 17);
-			AABBf* aabbs = getRandom(count, 1000);
+			size_t count = 1000;
+			AABBf* aabbs = get1000();
+			//size_t count = std::pow(2, 17);
+			//AABBf* aabbs = getRandom(count, 1000);
 
 			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 

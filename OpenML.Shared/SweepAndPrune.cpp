@@ -52,7 +52,7 @@ SweepAndPruneResult SweepAndPrune::findCollisions(AABB<T>* aabbs, size_t count)
 	size_t aabbIndex = 0;
 		
 	size_t* activeListIndex = new size_t[count];
-	size_t activeListIndexIndex = 0;
+	size_t activeListIndexCount = 0;
 	size_t activeListAABBIndex = 0;
 	
 	AlgorithmSorting::quickSortNative(aabbs, count, sizeof(AABB<T>), comparatorXAxisForQuickSort);
@@ -62,14 +62,14 @@ SweepAndPruneResult SweepAndPrune::findCollisions(AABB<T>* aabbs, size_t count)
 		Vec3<T> currentMaxPoint = aabbs[i].maxPoint;
 		Vec3<T> currentMinPoint = aabbs[i].minPoint;
 
-		for (size_t j = activeListIndexIndex; j > 0; j--)
+		for (size_t j = activeListIndexCount; j > 0; j--)
 		{
 			activeListAABBIndex = activeListIndex[j - 1];
 
 			if (aabbs[activeListAABBIndex].maxPoint.x < currentMinPoint.x)
 			{
-				erase_element(activeListIndex, activeListIndexIndex + 1, j - 1); //remove from active list
-				activeListIndexIndex --;
+				erase_element(activeListIndex, activeListIndexCount, j - 1); //remove from active list
+				activeListIndexCount --;
 			}
 			else
 			{
@@ -85,7 +85,7 @@ SweepAndPruneResult SweepAndPrune::findCollisions(AABB<T>* aabbs, size_t count)
 			}
 		}
 
-		activeListIndex[activeListIndexIndex++] = i;
+		activeListIndex[activeListIndexCount++] = i;
 	}
 
 	delete[] activeListIndex;

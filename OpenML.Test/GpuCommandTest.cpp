@@ -1,7 +1,8 @@
 #pragma once
 
 #include "CppUnitTest.h"
-#include <GpuCommand.h>
+#include "GpuContext.h"
+#include "GpuCommand.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace OpenML;
@@ -29,22 +30,22 @@ namespace OpenMLTest
 
 			size_t globalWorkSize = LIST_SIZE;
 			size_t localWorkSize = 64;
-
+			
 			GpuContext* context = GpuContext::init();
-			GpuCommand* command = GpuCommand::create(context);
+			GpuCommand* command = context->defaultDevice->commandManager->createCommand();
 
 			float* result = command
 				->setInputParameter(param1, sizeof(float) * LIST_SIZE)
 				->setInputParameter(param2, sizeof(float) * LIST_SIZE)
 				->setOutputParameter(sizeof(float) * LIST_SIZE)
-				->setSource(source.c_str(), sizeof(char) * source.length())
-				->build("sum")
+				->build(source.c_str(), sizeof(char) * source.length(), "sum")
 				->execute(&globalWorkSize, &localWorkSize)
 				->fetch<float>();
 
 			Assert::AreEqual(1024.0f, *result, L"Wrong value.", LINE_INFO());
 
 			delete command;
+			delete[] result, param1, param2;
 		}
 
 	};

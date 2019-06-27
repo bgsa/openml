@@ -19,8 +19,8 @@ namespace OpenML
 		GpuContext(cl_platform_id platformId);
 
 	public:
+		std::vector<GpuDevice*> devices;
 		GpuDevice* defaultDevice = nullptr;
-		//cl_context defaultContext;
 		
 		API_INTERFACE static GpuContext* init();
 		API_INTERFACE static GpuContext* init(cl_platform_id platformId);

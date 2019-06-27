@@ -2,7 +2,6 @@
 
 static GpuContext* gpu = nullptr;
 static std::vector<cl_platform_id> platforms;
-static std::vector<GpuDevice*> devices;
 
 GpuContext::GpuContext(cl_platform_id platformId)
 {
@@ -16,12 +15,15 @@ GpuContext::GpuContext(cl_platform_id platformId)
 
 	for (size_t i = 0; i < devicesCount; i++) 
 	{
-		GpuDevice* device = new GpuDevice(this, devicesAsArray[i]);
+		GpuDevice* device = new GpuDevice(devicesAsArray[i]);
 		devices.emplace_back(device);
 
-		if (devicesCount == 1 || device->type & CL_DEVICE_TYPE_DEFAULT)
+		if (device->type & CL_DEVICE_TYPE_DEFAULT)
 			defaultDevice = device;
 	}
+
+	if (defaultDevice == nullptr && devicesCount > 0)
+		defaultDevice = devices[0];
 }
 
 GpuContext* GpuContext::init(cl_platform_id platformId)

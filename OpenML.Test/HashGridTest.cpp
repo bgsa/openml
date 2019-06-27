@@ -18,7 +18,7 @@ namespace OpenMLTest
 {
 	void writeToConsole(std::string content) 
 	{
-		std::wostringstream output;
+		std::ostringstream output;
 
 		output << content.c_str();
 
@@ -36,7 +36,7 @@ namespace OpenMLTest
 
 			AABBf* aabbs = new AABBf[count];
 
-			std::wostringstream output;
+			std::ostringstream output;
 			output << "AABBf* aabbs = new AABBf[ " << count << " ];" << std::endl;
 			OutputDebugString(output.str().c_str());
 
@@ -75,7 +75,7 @@ namespace OpenMLTest
 				aabbs[i] = AABBf({ float(xMin + locationX), float(yMin + locationY), float(zMin + locationZ) }
 				, { float(xMax + locationX), float(yMax + locationY), float(zMax + locationZ) });
 
-				std::wostringstream output1;
+				std::ostringstream output1;
 				output1 << "aabbs[" << i << "] = AABBf({ " << xMin + locationX << ".0f, " << yMin + locationY << ".0f, " << zMin + locationZ << ".0f }, { " << xMax + locationX << ".0f, " << yMax + locationY << ".0f, " << zMax + locationZ << ".0f }); " << std::endl;
 				OutputDebugString(output1.str().c_str());
 			}

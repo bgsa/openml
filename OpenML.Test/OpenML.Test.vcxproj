@@ -109,6 +109,7 @@
   </ImportGroup>
   <ImportGroup Label="Shared">
     <Import Project="..\OpenML.Shared\OpenML.Shared.vcxitems" Label="Shared" />
+    <Import Project="..\..\apollo\src\PixelEffect.Framework.vcxitems" Label="Shared" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug-COLUMN_ORDER|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -164,8 +165,8 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.\..\$(SolutionName).Shared;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories);$(OPENCL_INC_PATH);</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>MAJOR_COLUMN_ORDER;UNIT_TEST;WINDOWS;API_EXPORT;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\apollo\src;.\..\$(SolutionName).Shared;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories);$(OPENCL_INC_PATH)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>MAJOR_COLUMN_ORDER;UNIT_TEST;WINDOWS;API_EXPORT;DEBUG;</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
       <CallingConvention>Cdecl</CallingConvention>
     </ClCompile>
@@ -181,7 +182,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.\..\$(SolutionName).Shared;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories);$(OPENCL_INC_PATH);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\apollo\src;.\..\$(SolutionName).Shared;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories);$(OPENCL_INC_PATH)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>MAJOR_ROW_ORDER;_WIN32;API_EXPORT;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
     </ClCompile>
@@ -198,7 +199,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.2\include;.\..\MathPP.Shared;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>MAJOR_COLUMN_ORDER;UNIT_TEST;WINDOWS;API_EXPORT;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>MAJOR_COLUMN_ORDER;UNIT_TEST;WINDOWS;API_EXPORT;DEBUG;</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
     </ClCompile>
     <Link>
@@ -231,8 +232,8 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>.\..\$(SolutionName).Shared;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories);$(OPENCL_INC_PATH);</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>MAJOR_COLUMN_ORDER;_WIN32;API_EXPORT;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\apollo\src;.\..\$(SolutionName).Shared;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories);$(OPENCL_INC_PATH)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>MAJOR_COLUMN_ORDER;_WIN32;API_EXPORT;NDEBUG;</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
     </ClCompile>
     <Link>
@@ -251,8 +252,8 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>.\..\$(SolutionName).Shared;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories);$(OPENCL_INC_PATH);</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>MAJOR_ROW_ORDER;_WIN32;API_EXPORT;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\apollo\src;.\..\$(SolutionName).Shared;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories);$(OPENCL_INC_PATH)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>MAJOR_ROW_ORDER;_WIN32;API_EXPORT;NDEBUG;</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
     </ClCompile>
     <Link>
@@ -272,7 +273,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.2\include;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_WIN32;API_EXPORT;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>MAJOR_COLUMN_ORDER;_WIN32;API_EXPORT;NDEBUG;</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
     </ClCompile>
     <Link>
@@ -292,7 +293,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.2\include;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_WIN32;API_EXPORT;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>MAJOR_ROW_ORDER;_WIN32;API_EXPORT;NDEBUG;</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
     </ClCompile>
     <Link>

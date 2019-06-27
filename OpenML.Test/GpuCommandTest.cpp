@@ -4,6 +4,10 @@
 #include "GpuContext.h"
 #include "GpuCommand.h"
 
+#include <IFile.h>
+#include <IFileManager.h>
+#include <Factory.h>
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace OpenML;
 
@@ -24,9 +28,8 @@ namespace OpenMLTest
 				param2[i] = float(LIST_SIZE - i);
 			}
 
-			std::string source = "__kernel void sum(__global const float *A, __global const float *B, __global float *C) {";
-			source += "int i = get_global_id(0);";
-			source += "C[i] = A[i] + B[i];}";
+			IFileManager* fileManager = Factory::getFileManagerInstance();
+			std::string source = fileManager->readTextFile("sumVector.cl");
 
 			size_t globalWorkSize = LIST_SIZE;
 			size_t localWorkSize = 64;
@@ -44,7 +47,7 @@ namespace OpenMLTest
 
 			Assert::AreEqual(1024.0f, *result, L"Wrong value.", LINE_INFO());
 
-			delete command;
+			delete command, fileManager;
 			delete[] result, param1, param2;
 		}
 

@@ -96,6 +96,7 @@
   </ImportGroup>
   <ImportGroup Label="Shared">
     <Import Project="..\OpenML.Shared\OpenML.Shared.vcxitems" Label="Shared" />
+    <Import Project="..\..\apollo\src\PixelEffect.Framework.vcxitems" Label="Shared" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug-COLUMN_ORDER|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -156,8 +157,8 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>MAJOR_COLUMN_ORDER;API_EXPORT;DEBUG;WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);$(OPENCL_INC_PATH);</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>MAJOR_COLUMN_ORDER;API_EXPORT;DEBUG;WINDOWS;</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\apollo\src;%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);$(OPENCL_INC_PATH)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -178,8 +179,8 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>MAJOR_ROW_ORDER;API_EXPORT;DEBUG;WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);$(OPENCL_INC_PATH);</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>MAJOR_ROW_ORDER;API_EXPORT;DEBUG;WINDOWS;</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\apollo\src;%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);$(OPENCL_INC_PATH)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -202,8 +203,8 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>MAJOR_COLUMN_ORDER;API_EXPORT;WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);$(OPENCL_INC_PATH);</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>MAJOR_COLUMN_ORDER;API_EXPORT;WINDOWS;NDEBUG;</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\apollo\src;%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);$(OPENCL_INC_PATH)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -228,8 +229,8 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>MAJOR_ROW_ORDER;API_EXPORT;WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);$(OPENCL_INC_PATH);</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>MAJOR_ROW_ORDER;API_EXPORT;WINDOWS;NDEBUG;</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\apollo\src;%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);$(OPENCL_INC_PATH)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -253,9 +254,9 @@
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>MAJOR_COLUMN_ORDER;API_EXPORT;DEBUG;WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>MAJOR_COLUMN_ORDER;API_EXPORT;DEBUG;WINDOWS;</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);$(OPENCL_INC_PATH);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\apollo\src;%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);$(OPENCL_INC_PATH)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug-ROW_ORDER|x64'">
@@ -265,20 +266,20 @@
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>MAJOR_ROW_ORDER;API_EXPORT;DEBUG;WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);$(OPENCL_INC_PATH);</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>MAJOR_ROW_ORDER;API_EXPORT;DEBUG;WINDOWS;</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\apollo\src;%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);$(OPENCL_INC_PATH)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release-COLUMN_ORDER|x64'">
     <ClCompile>
-      <PreprocessorDefinitions>MAJOR_COLUMN_ORDER;API_EXPORT;WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);$(OPENCL_INC_PATH);</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>MAJOR_COLUMN_ORDER;API_EXPORT;WINDOWS;NDEBUG;</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\apollo\src;%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);$(OPENCL_INC_PATH)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release-ROW_ORDER|x64'">
     <ClCompile>
-      <PreprocessorDefinitions>MAJOR_ROW_ORDER;API_EXPORT;WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);$(OPENCL_INC_PATH);</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>MAJOR_ROW_ORDER;API_EXPORT;WINDOWS;NDEBUG;</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\apollo\src;%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);$(OPENCL_INC_PATH)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>

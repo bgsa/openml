@@ -48,9 +48,7 @@ inline size_t IFloatFlip(size_t f)
 	return f ^ mask;
 }
 
-// ================================================================================================
-// Main radix sort
-// ================================================================================================
+
 float* AlgorithmSorting::radix(float* vector, size_t count)
 {
 	float* sorted = new float[count];
@@ -69,7 +67,7 @@ float* AlgorithmSorting::radix(float* vector, size_t count)
 	for (i = 0; i < kHist * 3; i++)
 		b0[i] = 0;
 	//memset(b0, 0, kHist * 12);
-
+	 
 	// 1.  parallel histogramming pass
 	for (i = 0; i < count; i++) 
 	{
@@ -136,47 +134,46 @@ float* AlgorithmSorting::radix(float* vector, size_t count)
 	return sorted;
 }
 
-class RadixIntComparator
+void AlgorithmSorting::radix(size_t *vector, size_t n)
 {
-private:
-	const int bit; // bit position [0..31] to examine
+	size_t maxElement = 0;
 
-public:
-	RadixIntComparator(int offset) : bit(offset) {} // constructor
+	for (size_t i = 0; i < n; i++)
+		if (vector[i] > maxElement)
+			maxElement = vector[i];
 
-	bool operator()(int value) const // function call operator
+	size_t maxDigit = digitCount(maxElement);
+
+	size_t* output = new size_t[n];
+	const size_t bucketCount = 10;
+	size_t bucket[bucketCount];
+	size_t value;
+
+	for (size_t digitIndex = 0; digitIndex < maxDigit; digitIndex++)
 	{
-		if (bit == 31) // sign bit
-			return value < 0; // negative int to left partition
-		else
-			return !(value & (1 << bit)); // 0 bit to left partition
-	}
-};
+		std::memset(bucket, 0, sizeof(size_t) * bucketCount);
 
-// Least significant digit radix sort
-void lsd_radix_sort(int *first, int *last)
-{
-	for (int lsb = 0; lsb < 32; ++lsb) // least-significant-bit
-	{
-		std::stable_partition(first, last, RadixIntComparator(lsb));
-	}
-}
+		for (size_t j = 0; j < n; j++)    //make histogram
+		{
+			value = digit(vector[j], digitIndex);
+			bucket[value]++;
+		}
 
-// Most significant digit radix sort (recursive)
-void msd_radix_sort(int *first, int *last, int msb = 31)
-{
-	if (first != last && msb >= 0)
-	{
-		int *mid = std::partition(first, last, RadixIntComparator(msb));
-		msb--; // decrement most-significant-bit
-		msd_radix_sort(first, mid, msb); // sort left partition
-		msd_radix_sort(mid, last, msb); // sort right partition
-	}
-}
+		for (size_t j = 1; j < bucketCount; j++)
+			bucket[j] += bucket[j - 1];
 
-void AlgorithmSorting::radix(int *data, size_t n)
-{
-	msd_radix_sort(data, data + n);
+		for (int j = n - 1; j >= 0; j--)
+		{
+			value = digit(vector[j], digitIndex);
+
+			output[bucket[value] - 1] = vector[j];
+			bucket[value]--;
+		}
+
+		std::memcpy(vector, output, sizeof(size_t) * n);
+	}
+
+	delete[] output;
 }
 
 void AlgorithmSorting::native(float* vector, size_t count)

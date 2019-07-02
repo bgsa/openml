@@ -24,6 +24,8 @@ namespace OpenML
 #define degreesToHout(x)	((x) * 15.0))
 #define radiansToHour(x)	degreesToHout(radiansToDegrees(x))
 
+#define DECIMAL_BASE (10)
+
 	///<summary>
 	///Check the number is even or not
 	///</summary>
@@ -40,6 +42,31 @@ namespace OpenML
 	inline bool API_INTERFACE isOdd(T value)
 	{
 		return ! isEven(value);
+	}
+	
+	///<summary>
+	///Get the count of digits of the number given by value parameter
+	///</summary>
+	inline size_t API_INTERFACE digitCount(size_t value)
+	{
+		size_t len = 1;
+
+		for (len = 0; value > 0; len++)
+			value = value / 10;
+
+		return len;
+	}
+
+	///<summary>
+	///Get a digit of the number given by value parameter and the index
+	///</summary>
+	inline size_t API_INTERFACE digit(size_t value, size_t index)
+	{
+		size_t power = (size_t)std::pow(DECIMAL_BASE, index);
+
+		size_t result = (value / power) % (DECIMAL_BASE * (index + 1));
+
+		return result;
 	}
 
 	///<summary>

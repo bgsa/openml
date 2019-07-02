@@ -5,8 +5,27 @@
 #include <chrono>
 #include "Randomizer.h"
 
+#if OPENCL_ENABLED
+	#include <GpuCommand.h>
+#endif
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace OpenML;
+
+
+int comparatorXAxisForQuickSort1(const void* a, const void* b)
+{
+	AABB<float>* obj1 = (AABB<float>*) a;
+	AABB<float>* obj2 = (AABB<float>*) b;
+
+	if (obj1->minPoint.x < obj2->minPoint.x)
+		return -1;
+	else
+		if (obj1->minPoint.x > obj2->minPoint.x)
+			return 1;
+
+	return 0;
+}
 
 namespace OpenMLTest
 {
@@ -1087,6 +1106,32 @@ namespace OpenMLTest
 
 			delete[] aabbs;
 		}
+
+#if OPENCL_ENABLED
+
+		TEST_METHOD(SweepAndPrune_findCollisionsGPU_Test)
+		{
+			GpuContext* context = GpuContext::init();
+			GpuCommandManager* commandManager = context->defaultDevice->commandManager;
+
+			const size_t count = 1000;
+			AABBf* aabbs = get1000();
+			//const size_t count = std::pow(2, 17);
+			//AABBf* aabbs = getRandom(count, 1000);
+			
+			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
+
+			SweepAndPruneResult result = SweepAndPrune::findCollisionsGPU(commandManager, aabbs, count);
+
+			std::chrono::high_resolution_clock::time_point currentTime2 = std::chrono::high_resolution_clock::now();
+			std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
+
+			Assert::AreEqual(size_t(9), result.count, L"wrong value", LINE_INFO());
+
+			delete[] aabbs;
+		}
+
+#endif
 
 	};
 }

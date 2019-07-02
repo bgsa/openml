@@ -166,7 +166,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)..\apollo\src;.\..\$(SolutionName).Shared;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories);$(OPENCL_INC_PATH)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>MAJOR_COLUMN_ORDER;UNIT_TEST;WINDOWS;API_EXPORT;DEBUG;</PreprocessorDefinitions>
+      <PreprocessorDefinitions>OPENCL_ENABLED;MAJOR_COLUMN_ORDER;UNIT_TEST;WINDOWS;API_EXPORT;DEBUG;</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
       <CallingConvention>Cdecl</CallingConvention>
     </ClCompile>
@@ -177,7 +177,8 @@
       <AdditionalDependencies>OpenCL.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y $(MSBuildProjectDirectory)\resources\opencl-src\*.cl $(OutDir)</Command>
+      <Command>copy /Y $(MSBuildProjectDirectory)\resources\opencl-src\*.cl $(OutDir)
+copy /Y $(SolutionDir)resources\opencl\src\*.cl $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug-ROW_ORDER|Win32'">
@@ -205,7 +206,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.2\include;.\..\MathPP.Shared;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>MAJOR_COLUMN_ORDER;UNIT_TEST;WINDOWS;API_EXPORT;DEBUG;</PreprocessorDefinitions>
+      <PreprocessorDefinitions>OPENCL_ENABLED;MAJOR_COLUMN_ORDER;UNIT_TEST;WINDOWS;API_EXPORT;DEBUG;</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
     </ClCompile>
     <Link>
@@ -215,7 +216,8 @@
       <AdditionalDependencies>OpenCL.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y $(MSBuildProjectDirectory)\resources\opencl-src\*.cl $(OutDir)</Command>
+      <Command>copy /Y $(MSBuildProjectDirectory)\resources\opencl-src\*.cl $(OutDir)
+copy /Y $(SolutionDir)resources\opencl\src\*.cl $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug-ROW_ORDER|x64'">
@@ -245,7 +247,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>$(SolutionDir)..\apollo\src;.\..\$(SolutionName).Shared;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories);$(OPENCL_INC_PATH)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>MAJOR_COLUMN_ORDER;_WIN32;API_EXPORT;NDEBUG;</PreprocessorDefinitions>
+      <PreprocessorDefinitions>OPENCL_ENABLED;MAJOR_COLUMN_ORDER;_WIN32;API_EXPORT;NDEBUG;</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
     </ClCompile>
     <Link>
@@ -291,7 +293,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.2\include;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>MAJOR_COLUMN_ORDER;_WIN32;API_EXPORT;NDEBUG;</PreprocessorDefinitions>
+      <PreprocessorDefinitions>OPENCL_ENABLED;MAJOR_COLUMN_ORDER;_WIN32;API_EXPORT;NDEBUG;</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
     </ClCompile>
     <Link>

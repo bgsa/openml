@@ -1,3 +1,5 @@
+#if OPENCL_ENABLED
+
 #pragma once
 
 #ifdef APPLE
@@ -33,3 +35,5 @@ namespace OpenML
 	};
 
 }
+
+#endif

@@ -1,8 +1,5 @@
 #include "SweepAndPrune.h"
 
-#include <list>
-#include <forward_list>
-
 template <typename T>
 bool comparatorXAxisForNativeSort(int index1, int index2, AABB<T>* aabbs)
 {
@@ -92,7 +89,70 @@ SweepAndPruneResult SweepAndPrune::findCollisions(AABB<T>* aabbs, size_t count)
 	
 	return SweepAndPruneResult(aabbIndexes1, aabbIndexes2, aabbIndex);
 }
-
 template SweepAndPruneResult SweepAndPrune::findCollisions<int>(AABB<int>*, size_t);
 template SweepAndPruneResult SweepAndPrune::findCollisions<float>(AABB<float>*, size_t);
 template SweepAndPruneResult SweepAndPrune::findCollisions<double>(AABB<double>*, size_t);
+
+#if OPENCL_ENABLED
+
+template <typename T>
+SweepAndPruneResult SweepAndPrune::findCollisionsGPU(GpuCommandManager* gpuCommandManager, AABB<T>* aabbs, size_t count)
+{
+	IFileManager* fileManager = Factory::getFileManagerInstance();
+	std::string source = fileManager->readTextFile("SweepAndPrune.cl");
+	size_t globalIndex = 0;
+
+	size_t globalWorkSize = nextPowOf2(count);
+	size_t workDimension = 1;
+	size_t localWorkSize = 64;
+	
+	const size_t outputCount = count * 3 * 2;
+
+	AlgorithmSorting::quickSortNative(aabbs, count, sizeof(AABB<T>), comparatorXAxisForQuickSort);
+
+	T* points = new T[outputCount];
+
+	size_t index = 0;
+	for (size_t i = 0; i < count; i++)
+	{
+		points[index + 0] = aabbs[i].minPoint.x;
+		points[index + 1] = aabbs[i].minPoint.y;
+		points[index + 2] = aabbs[i].minPoint.z;
+
+		points[index + 3] = aabbs[i].maxPoint.x;
+		points[index + 4] = aabbs[i].maxPoint.y;
+		points[index + 5] = aabbs[i].maxPoint.z;
+
+		index += 6;
+	}
+
+	GpuCommand* command = gpuCommandManager->createCommand();
+
+	T* output = command
+		->setInputParameter(points, sizeof(T) * outputCount)
+		->setInputParameter(&count, sizeof(size_t))
+		->setInputParameter(&globalIndex, sizeof(size_t), CL_MEM_READ_WRITE)
+		->setOutputParameter(sizeof(T) * count * 2)
+		->build(source.c_str(), sizeof(char) * source.length(), "sweepAndPrune")
+		->execute(workDimension, &globalWorkSize, &localWorkSize)
+		->fetch<T>();
+	
+	globalIndex = *command->fetchInOutParameter<size_t>(2);
+
+	size_t* aabbIndex1 = new size_t[globalIndex / 2];
+	size_t* aabbIndex2 = new size_t[globalIndex / 2];
+	for (size_t i = 0; i < globalIndex / 2; i++)
+	{
+		aabbIndex1[i] = size_t(points[i * 2]);
+		aabbIndex2[i] = size_t(points[i * 2 + 1]);
+	}
+
+	delete fileManager, command;
+	delete[] points;
+	return SweepAndPruneResult(aabbIndex1, aabbIndex2, globalIndex / 2);
+}
+template SweepAndPruneResult SweepAndPrune::findCollisionsGPU<int>(GpuCommandManager* gpuCommandManager, AABB<int>*, size_t);
+template SweepAndPruneResult SweepAndPrune::findCollisionsGPU<float>(GpuCommandManager* gpuCommandManager, AABB<float>*, size_t);
+template SweepAndPruneResult SweepAndPrune::findCollisionsGPU<double>(GpuCommandManager* gpuCommandManager, AABB<double>*, size_t);
+
+#endif

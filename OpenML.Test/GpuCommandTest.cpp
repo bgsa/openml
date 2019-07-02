@@ -42,7 +42,7 @@ namespace OpenMLTest
 				->setInputParameter(param2, sizeof(float) * LIST_SIZE)
 				->setOutputParameter(sizeof(float) * LIST_SIZE)
 				->build(source.c_str(), sizeof(char) * source.length(), "sum")
-				->execute(&globalWorkSize, &localWorkSize)
+				->execute(1, &globalWorkSize, &localWorkSize)
 				->fetch<float>();
 
 			Assert::AreEqual(1024.0f, *result, L"Wrong value.", LINE_INFO());

@@ -1,3 +1,5 @@
+#if OPENCL_ENABLED
+
 #include "GpuDevice.h"
 
 GpuDevice::GpuDevice(cl_device_id id)
@@ -6,6 +8,7 @@ GpuDevice::GpuDevice(cl_device_id id)
 
 	cl_int errorCode;
 	this->deviceContext = clCreateContext(NULL, 1, &this->id, NULL, NULL, &errorCode);
+	assert(errorCode == CL_SUCCESS);
 
 	this->commandManager = new GpuCommandManager(deviceContext, id);
 		
@@ -28,7 +31,11 @@ GpuDevice::GpuDevice(cl_device_id id)
 	clGetDeviceInfo(id, CL_DEVICE_MAX_PARAMETER_SIZE, sizeof(maxParameterSize), &maxParameterSize, NULL);
 	clGetDeviceInfo(id, CL_DEVICE_MAX_WORK_GROUP_SIZE, sizeof(maxWorkGroupSize), &maxWorkGroupSize, NULL);
 	clGetDeviceInfo(id, CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS, sizeof(maxWorkItemDimension), &maxWorkItemDimension, NULL);
-
+	clGetDeviceInfo(id, CL_DEVICE_MAX_WORK_ITEM_SIZES, sizeof(size_t) * 3, maxWorkItemSizes, NULL);
+	clGetDeviceInfo(id, CL_DEVICE_GLOBAL_MEM_SIZE, sizeof(cl_ulong), &globalMemorySize, NULL);
+	clGetDeviceInfo(id, CL_DEVICE_GLOBAL_MEM_CACHE_SIZE, sizeof(cl_ulong), &globalMemoryCacheSize, NULL);	
+	clGetDeviceInfo(id, CL_DEVICE_LOCAL_MEM_SIZE, sizeof(cl_ulong), &localMemorySize, NULL);
+	
 	clGetDeviceInfo(id, CL_DEVICE_PROFILE, 0, NULL, &valueSize);
 	char* profileAsArray = (char*)malloc(valueSize);
 	clGetDeviceInfo(id, CL_DEVICE_PROFILE, valueSize, profileAsArray, NULL);
@@ -77,3 +84,5 @@ GpuDevice::~GpuDevice()
 	delete[] version;
 	delete[] driverVersion;
 }
+
+#endif

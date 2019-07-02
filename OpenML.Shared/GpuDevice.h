@@ -1,3 +1,5 @@
+#if OPENCL_ENABLED
+
 #pragma once
 
 #include <OpenML.h>
@@ -24,6 +26,10 @@ namespace OpenML
 		size_t maxParameterSize = 256;
 		size_t maxWorkGroupSize = 1;
 		cl_uint maxWorkItemDimension = 3;
+		size_t maxWorkItemSizes[3];
+		cl_ulong globalMemorySize;
+		cl_ulong globalMemoryCacheSize;
+		cl_ulong  localMemorySize;
 		std::string profile;
 
 		GpuCommandManager* commandManager = nullptr;
@@ -37,3 +43,5 @@ namespace OpenML
 	};
 
 }
+
+#endif

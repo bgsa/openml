@@ -1,3 +1,5 @@
+#if OPENCL_ENABLED
+
 #pragma once
 
 #include "GpuCommand.h"
@@ -22,3 +24,5 @@ namespace OpenML
 	};
 
 }
+
+#endif

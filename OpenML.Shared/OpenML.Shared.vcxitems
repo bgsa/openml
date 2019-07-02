@@ -35,12 +35,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ColisionStatus.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)CollisionDetection.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GpuCommand.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)GpuCommandFactory.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GpuCommandManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GpuContext.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GpuDevice.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)HashGrid.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)IGpuCommand.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Line2D.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Line3D.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Mat.h" />

@@ -102,36 +102,27 @@ namespace OpenML
 	{
 		return (value & (1 << index)) >> index;
 	}
-		
+
 	///<summary>
-	///Get the count of digits of the number given by value parameter
+	///Get the parts of float (expoent and mantissa)
+	///The mantissa just returns the 4th numbers
 	///</summary>
-	inline size_t API_INTERFACE digitCount(size_t value)
+	inline size_t API_INTERFACE floatParts(float value, size_t* expoent)
 	{
-		size_t len = 1;
-
-		for (len = 0; value > 0; len++)
-			value = value / 10;
-
-		return len;
+		*expoent = (size_t)value;
+		return size_t(std::fabsf(*expoent - value) * 10000.0f);
 	}
 
 	///<summary>
-	///Get the count of digits of the number given by value parameter
+	///Get a digit of the number given by value parameter and the index
 	///</summary>
-	inline size_t API_INTERFACE digitCount(int value)
+	inline int API_INTERFACE digit(int value, int index)
 	{
-		size_t len = 1;
-		
-		if (value < 0)
-			value *= -1;
+		int result = int(value / std::pow(DECIMAL_BASE, index)) % DECIMAL_BASE;
 
-		for (len = 0; value > 0; len++)
-			value = value / 10;
-
-		return len;
+		assert(result >= 0 && result < 10);
+		return result;
 	}
-
 	///<summary>
 	///Get a digit of the number given by value parameter and the index
 	///</summary>
@@ -145,13 +136,14 @@ namespace OpenML
 	///<summary>
 	///Get a digit of the number given by value parameter and the index
 	///</summary>
-	inline int API_INTERFACE digit(int value, int index)
+	inline int API_INTERFACE digit(float value, int index)
 	{
 		int result = int(value / std::pow(DECIMAL_BASE, index)) % DECIMAL_BASE;
 
 		assert(result >= 0 && result < 10);
 		return result;
 	}
+
 
 	///<summary>
 	///Check the numbers have the same sign
@@ -260,7 +252,53 @@ namespace OpenML
 	{
 		return isCloseEnough(value, compare, T(DefaultErrorMargin));
 	}
-	
+
+
+	///<summary>
+	///Get the count of digits of the number given by value parameter
+	///</summary>
+	inline size_t API_INTERFACE digitCount(int value)
+	{
+		size_t len = 1;
+
+		if (value < 0)
+			value *= -1;
+
+		for (len = 0; value > 0; len++)
+			value = value / 10;
+
+		return len;
+	}
+	///<summary>
+	///Get the count of digits of the number given by value parameter
+	///</summary>
+	inline size_t API_INTERFACE digitCount(size_t value)
+	{
+		size_t len = 1;
+
+		for (len = 0; value > 0; len++)
+			value = value / 10;
+
+		return len;
+	}
+	///<summary>
+	///Get the count of digits of the number given by value parameter
+	///</summary>
+	inline size_t API_INTERFACE digitMantissaCount(float value)
+	{
+		float temp;
+		float d = std::modff(value, &temp);
+		size_t counter = 0;
+
+		while (d > 0 && !isCloseEnough(d, 0.0f)) {
+			d *= 10;
+			d = d - ((size_t)d);
+			counter++;
+		}
+
+		return counter;
+	}
+
 }
 
 #include "ColisionStatus.h"

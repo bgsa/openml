@@ -15,12 +15,6 @@ namespace OpenML
 	public:
 
 		///<summary>
-		///Fast sorting of numbers array using Radix method
-		///Complexity O(n)
-		///</summary>
-		API_INTERFACE static float* radix(float* vector, size_t count);
-
-		///<summary>
 		///Fast sorting of numbers array using Counting method
 		///Complexity O(n)
 		///</summary>
@@ -31,6 +25,12 @@ namespace OpenML
 		///Complexity O(n)
 		///</summary>
 		API_INTERFACE static void radix(size_t* vector, size_t count);
+
+		///<summary>
+		///Fast sorting of numbers array using Radix method
+		///Complexity O(n)
+		///</summary>
+		API_INTERFACE static void radix(float* vector, size_t count);
 
 		///<summary>
 		///Fast sorting of numbers array using "C" native method

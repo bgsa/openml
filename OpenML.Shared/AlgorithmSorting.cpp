@@ -1,10 +1,10 @@
 #include "AlgorithmSorting.h"
 
+/*
 // ---- utils for accessing 11-bit quantities
 #define _0(x)	(x & 0x7FF)
 #define _1(x)	(x >> 11 & 0x7FF)
 #define _2(x)	(x >> 22 )
-
 
 #if PREFETCH
 #include <xmmintrin.h>	// for prefetch
@@ -17,20 +17,19 @@
 #define pf2(x)
 #endif
 
-
 // ================================================================================================
 // flip a float for sorting
 //  finds SIGN of fp number.
 //  if it's 1 (negative float), it flips all bits
 //  if it's 0 (positive float), it flips the sign only
 // ================================================================================================
-size_t FloatFlip(size_t f)
+inline size_t FloatFlip(size_t f)
 {
 	size_t mask = -int(f >> 31) | 0x80000000;
 	return f ^ mask;
 }
 
-void FloatFlipX(size_t &f)
+inline void FloatFlipX(size_t &f)
 {
 	size_t mask = -int(f >> 31) | 0x80000000;
 	f ^= mask;
@@ -47,7 +46,6 @@ inline size_t IFloatFlip(size_t f)
 	size_t mask = ((f >> 31) - 1) | 0x80000000;
 	return f ^ mask;
 }
-
 
 float* AlgorithmSorting::radix(float* vector, size_t count)
 {
@@ -133,6 +131,85 @@ float* AlgorithmSorting::radix(float* vector, size_t count)
 
 	return sorted;
 }
+*/
+
+void AlgorithmSorting::radix(float* vector, size_t n)
+{
+	const size_t maxDigitMantissa = 4;
+	int tempExp;
+	int minElement = INT_MAX;
+	int maxElement = 0;
+	size_t exp;
+	
+	for (size_t i = 0; i < n; i++)
+	{
+		tempExp = (int)vector[i];
+
+		if (tempExp > maxElement)
+			maxElement = tempExp;
+
+		if (tempExp < minElement)
+			minElement = tempExp;
+	}
+	minElement = std::abs(minElement);
+	int maxDigitExpoent = (int) digitCount(std::max(minElement, maxElement));
+
+	float* output = new float[n];
+	size_t* digitsCache = new size_t[n];
+	const size_t bucketCount = 10;
+	size_t bucket[bucketCount];
+	size_t bucketIndex;
+
+	for (size_t digitIndex = 0; digitIndex < maxDigitMantissa; digitIndex++)
+	{
+		std::memset(bucket, 0, sizeof(size_t) * bucketCount);
+
+		for (size_t j = 0; j < n; j++)    //make histogram
+		{
+			bucketIndex = digitsCache[j] = digit(floatParts(vector[j], &exp), digitIndex);
+			bucket[bucketIndex]++;
+		}
+
+		for (size_t j = 1; j < bucketCount; j++)
+			bucket[j] += bucket[j - 1];
+
+		for (int j = n - 1; j >= 0; j--)
+		{
+			bucketIndex = digitsCache[j];
+
+			output[bucket[bucketIndex] - 1] = vector[j];
+			bucket[bucketIndex]--;
+		}
+
+		std::memcpy(vector, output, sizeof(float) * n);
+	}
+
+	for (int digitIndex = 0; digitIndex < maxDigitExpoent; digitIndex++)
+	{
+		std::memset(bucket, 0, sizeof(size_t) * bucketCount);
+
+		for (size_t j = 0; j < n; j++)    //make histogram
+		{
+			bucketIndex = digitsCache[j] = digit((int)vector[j] + minElement, digitIndex);
+			bucket[bucketIndex]++;
+		}
+
+		for (size_t j = 1; j < bucketCount; j++)
+			bucket[j] += bucket[j - 1];
+
+		for (int j = n - 1; j >= 0; j--)
+		{
+			bucketIndex = digitsCache[j];
+
+			output[bucket[bucketIndex] - 1] = vector[j];
+			bucket[bucketIndex]--;
+		}
+
+		std::memcpy(vector, output, sizeof(float) * n);
+	}
+
+	delete[] output, digitsCache;
+}
 
 void AlgorithmSorting::radix(size_t *vector, size_t n)
 {
@@ -145,6 +222,7 @@ void AlgorithmSorting::radix(size_t *vector, size_t n)
 	size_t maxDigit = digitCount(maxElement);
 
 	size_t* output = new size_t[n];
+	size_t* digitsCache = new size_t[n];
 	const size_t bucketCount = 10;
 	size_t bucket[bucketCount];
 	size_t bucketIndex;
@@ -155,7 +233,7 @@ void AlgorithmSorting::radix(size_t *vector, size_t n)
 
 		for (size_t j = 0; j < n; j++)    //make histogram
 		{
-			bucketIndex = digit(vector[j], digitIndex);
+			bucketIndex = digitsCache[j] = digit(vector[j], digitIndex);
 			bucket[bucketIndex]++;
 		}
 
@@ -164,7 +242,7 @@ void AlgorithmSorting::radix(size_t *vector, size_t n)
 
 		for (int j = n - 1; j >= 0; j--)
 		{
-			bucketIndex = digit(vector[j], digitIndex);
+			bucketIndex = digitsCache[j];
 
 			output[bucket[bucketIndex] - 1] = vector[j];
 			bucket[bucketIndex]--;
@@ -173,13 +251,13 @@ void AlgorithmSorting::radix(size_t *vector, size_t n)
 		std::memcpy(vector, output, sizeof(size_t) * n);
 	}
 
-	delete[] output;
+	delete[] output, digitsCache;
 }
 
 void AlgorithmSorting::radix(int* vector, size_t n)
 {
-	int maxElement = INT32_MIN;
-	int minElement = INT32_MAX;
+	int maxElement = INT_MIN;
+	int minElement = INT_MAX;
 
 	for (size_t i = 0; i < n; i++) 
 	{
@@ -199,6 +277,7 @@ void AlgorithmSorting::radix(int* vector, size_t n)
 		minElement *= -1;
 
 	int* output = new int[n];
+	int* digitsCache = new int[n];
 	const size_t bucketCount = 10;
 	int bucket[bucketCount];
 	size_t bucketIndex;
@@ -209,7 +288,7 @@ void AlgorithmSorting::radix(int* vector, size_t n)
 
 		for (size_t j = 0; j < n; j++)    //make histogram
 		{
-			bucketIndex = digit(size_t(vector[j] + minElement), digitIndex);
+			bucketIndex = digitsCache[j] = digit(size_t(vector[j] + minElement), digitIndex);
 			bucket[bucketIndex]++;
 		}
 
@@ -218,7 +297,7 @@ void AlgorithmSorting::radix(int* vector, size_t n)
 
 		for (int j = n - 1; j >= 0; j--)
 		{
-			bucketIndex = digit(size_t(vector[j] + minElement), digitIndex);
+			bucketIndex = digitsCache[j];
 
 			output[bucket[bucketIndex] - 1] = vector[j];
 			bucket[bucketIndex]--;
@@ -227,14 +306,13 @@ void AlgorithmSorting::radix(int* vector, size_t n)
 		std::memcpy(vector, output, sizeof(int) * n);
 	}
 
-	delete[] output;
+	delete[] output, digitsCache;
 }
 
 void AlgorithmSorting::native(float* vector, size_t count)
 {
 	std::sort(vector, vector + count, std::less<float>());
 }
-
 
 bool compare(int a, int b, float* data)
 {

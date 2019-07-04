@@ -33,11 +33,11 @@ namespace OpenMLTest
 
 			float vec[count] = { 3.4f, 2.0f, 7.0f, 3.1f, -2.0f, 3.12f, 3.01f };
 			float expected[count] = { -2.0f, 2.0f, 3.01f, 3.1f, 3.12f, 3.4f, 7.0f };
-
-			float* result = AlgorithmSorting::radix(vec, count);
+			
+			AlgorithmSorting::radix(vec, count);
 
 			for (size_t i = 0; i < count; i++)
-				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
+				Assert::AreEqual(expected[i], vec[i], L"Wrong value.", LINE_INFO());
 		}
 
 		TEST_METHOD(AlgorithmSorting_radix_Test2)
@@ -70,6 +70,42 @@ namespace OpenMLTest
 			AlgorithmSorting::radix(result, 8);
 
 			for (size_t i = 0; i < 8; i++)
+				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(AlgorithmSorting_radix_Test5)
+		{
+			const size_t count = 6;
+			float result[count] = { 0.1f,0.111f,0.23f,0.03f,0.53f,0.08f };
+			float expected[count] = { 0.03f, 0.08f, 0.1f, 0.111f, 0.23f, 0.53f };
+
+			AlgorithmSorting::radix(result, count);
+
+			for (size_t i = 0; i < count; i++)
+				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(AlgorithmSorting_radix_Test6)
+		{
+			const size_t count = 6;
+			float result[count] = { 57.1f, 0.111f, 1.23f, 0.03f, 0.53f, 2.08f };
+			float expected[count] = { 0.03f, 0.111f, 0.53f, 1.23f, 2.08f, 57.1f };
+
+			AlgorithmSorting::radix(result, count);
+
+			for (size_t i = 0; i < count; i++)
+				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(AlgorithmSorting_radix_Test7)
+		{
+			const size_t count = 7;
+			float result[count] = { 57.1f, 0.111f, -1.23f, 0.03f, 0.53f, 2.08f, -34567.56f };
+			float expected[count] = { -34567.56f, -1.23f, 0.03f, 0.111f, 0.53f, 2.08f, 57.1f };
+
+			AlgorithmSorting::radix(result, count);
+
+			for (size_t i = 0; i < count; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
 		}
 

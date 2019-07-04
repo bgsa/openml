@@ -147,7 +147,7 @@ void AlgorithmSorting::radix(size_t *vector, size_t n)
 	size_t* output = new size_t[n];
 	const size_t bucketCount = 10;
 	size_t bucket[bucketCount];
-	size_t value;
+	size_t bucketIndex;
 
 	for (size_t digitIndex = 0; digitIndex < maxDigit; digitIndex++)
 	{
@@ -155,8 +155,8 @@ void AlgorithmSorting::radix(size_t *vector, size_t n)
 
 		for (size_t j = 0; j < n; j++)    //make histogram
 		{
-			value = digit(vector[j], digitIndex);
-			bucket[value]++;
+			bucketIndex = digit(vector[j], digitIndex);
+			bucket[bucketIndex]++;
 		}
 
 		for (size_t j = 1; j < bucketCount; j++)
@@ -164,13 +164,67 @@ void AlgorithmSorting::radix(size_t *vector, size_t n)
 
 		for (int j = n - 1; j >= 0; j--)
 		{
-			value = digit(vector[j], digitIndex);
+			bucketIndex = digit(vector[j], digitIndex);
 
-			output[bucket[value] - 1] = vector[j];
-			bucket[value]--;
+			output[bucket[bucketIndex] - 1] = vector[j];
+			bucket[bucketIndex]--;
 		}
 
 		std::memcpy(vector, output, sizeof(size_t) * n);
+	}
+
+	delete[] output;
+}
+
+void AlgorithmSorting::radix(int* vector, size_t n)
+{
+	int maxElement = INT32_MIN;
+	int minElement = INT32_MAX;
+
+	for (size_t i = 0; i < n; i++) 
+	{
+		if (vector[i] > maxElement)
+			maxElement = vector[i];
+
+		if (vector[i] < minElement)
+			minElement = vector[i];
+	}
+
+	size_t maxDigit = digitCount(maxElement);
+	maxDigit = std::max(maxDigit, digitCount(minElement));
+
+	if (minElement > 0)
+		minElement = 0;
+	else
+		minElement *= -1;
+
+	int* output = new int[n];
+	const size_t bucketCount = 10;
+	int bucket[bucketCount];
+	size_t bucketIndex;
+
+	for (size_t digitIndex = 0; digitIndex < maxDigit; digitIndex++)
+	{
+		std::memset(bucket, 0, sizeof(int) * bucketCount);
+
+		for (size_t j = 0; j < n; j++)    //make histogram
+		{
+			bucketIndex = digit(size_t(vector[j] + minElement), digitIndex);
+			bucket[bucketIndex]++;
+		}
+
+		for (size_t j = 1; j < bucketCount; j++)
+			bucket[j] += bucket[j - 1];
+
+		for (int j = n - 1; j >= 0; j--)
+		{
+			bucketIndex = digit(size_t(vector[j] + minElement), digitIndex);
+
+			output[bucket[bucketIndex] - 1] = vector[j];
+			bucket[bucketIndex]--;
+		}
+
+		std::memcpy(vector, output, sizeof(int) * n);
 	}
 
 	delete[] output;

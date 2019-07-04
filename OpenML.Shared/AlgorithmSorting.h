@@ -24,6 +24,12 @@ namespace OpenML
 		///Fast sorting of numbers array using Counting method
 		///Complexity O(n)
 		///</summary>
+		API_INTERFACE static void radix(int* vector, size_t count);
+
+		///<summary>
+		///Fast sorting of numbers array using Counting method
+		///Complexity O(n)
+		///</summary>
 		API_INTERFACE static void radix(size_t* vector, size_t count);
 
 		///<summary>

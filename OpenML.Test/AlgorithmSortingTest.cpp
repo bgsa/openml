@@ -40,7 +40,7 @@ namespace OpenMLTest
 				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
 		}
 
-		TEST_METHOD(AlgorithmSorting_radix_Test1)
+		TEST_METHOD(AlgorithmSorting_radix_Test2)
 		{
 			size_t result[8] = { 2, 5,3,0,2,3,0,3 };
 			size_t expected[8] = { 0,0,2,2,3,3,3,5 };
@@ -51,11 +51,22 @@ namespace OpenMLTest
 				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
 		}
 
-		TEST_METHOD(AlgorithmSorting_radix_Test2)
+		TEST_METHOD(AlgorithmSorting_radix_Test3)
 		{
 			size_t result[8] = { 200, 54, 35, 10, 4, 3, 50, 33 };
 			size_t expected[8] = { 3, 4, 10, 33, 35, 50, 54, 200 };
 
+			AlgorithmSorting::radix(result, 8);
+
+			for (size_t i = 0; i < 8; i++)
+				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
+		}
+
+		TEST_METHOD(AlgorithmSorting_radix_Test4)
+		{
+			int result[8] = { 200, 54, 35, -10, 4, 3, -50, 33 };
+			int expected[8] = { -50, -10, 3, 4, 33, 35, 54, 200 };
+			
 			AlgorithmSorting::radix(result, 8);
 
 			for (size_t i = 0; i < 8; i++)

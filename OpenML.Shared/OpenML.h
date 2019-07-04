@@ -34,7 +34,17 @@ namespace OpenML
 	{
 		return (value % 2) == 0;
 	}
-
+	template <>
+	inline bool API_INTERFACE isEven<int>(int value)
+	{
+		return !(value & 1);
+	}
+	template <>
+	inline bool API_INTERFACE isEven<size_t>(size_t value)
+	{
+		return !(value & 1);
+	}
+	
 	///<summary>
 	///Check the number is odd or not
 	///</summary>
@@ -43,7 +53,56 @@ namespace OpenML
 	{
 		return ! isEven(value);
 	}
-	
+	template <>
+	inline bool API_INTERFACE isOdd<int>(int value)
+	{
+		return value & 1;
+	}
+	template <>
+	inline bool API_INTERFACE isOdd<size_t>(size_t value)
+	{
+		return value & 1;
+	}
+
+	///<summary>
+	///Modify a bit of a integer value, given a index bit
+	///</summary>
+	inline int modifyBit(int value, int index, int bit)
+	{
+		return (value & ~(1 << index)) | ((bit << index) & (1 << index));
+	}
+
+	///<summary>
+	///Set a bit to ZERO of a integer value, given a index bit
+	///</summary>
+	inline int clearBit(int value, int index)
+	{
+		return modifyBit(value, index, 0);
+	}
+
+	///<summary>
+	///Set a bit to ONE of a integer value, given a index bit
+	///</summary>
+	inline int setBit(int value, int index)
+	{
+		return modifyBit(value, index, 1);
+	}
+
+	///<summary>
+	///GFet a bit of a integer value, given a index bit
+	///</summary>
+	inline int getBit(int value, int index)
+	{
+		return (value & (1 << index)) >> index;
+	}
+	///<summary>
+	///GFet a bit of a integer value, given a index bit
+	///</summary>
+	inline int getBit(size_t value, int index)
+	{
+		return (value & (1 << index)) >> index;
+	}
+		
 	///<summary>
 	///Get the count of digits of the number given by value parameter
 	///</summary>
@@ -58,14 +117,39 @@ namespace OpenML
 	}
 
 	///<summary>
+	///Get the count of digits of the number given by value parameter
+	///</summary>
+	inline size_t API_INTERFACE digitCount(int value)
+	{
+		size_t len = 1;
+		
+		if (value < 0)
+			value *= -1;
+
+		for (len = 0; value > 0; len++)
+			value = value / 10;
+
+		return len;
+	}
+
+	///<summary>
 	///Get a digit of the number given by value parameter and the index
 	///</summary>
 	inline size_t API_INTERFACE digit(size_t value, size_t index)
 	{
-		size_t power = (size_t)std::pow(DECIMAL_BASE, index);
+		size_t result = size_t(value / std::pow(DECIMAL_BASE, index)) % DECIMAL_BASE;
 
-		size_t result = (value / power) % (DECIMAL_BASE * (index + 1));
+		assert(result >= 0 && result < 10);
+		return result;
+	}
+	///<summary>
+	///Get a digit of the number given by value parameter and the index
+	///</summary>
+	inline int API_INTERFACE digit(int value, int index)
+	{
+		int result = int(value / std::pow(DECIMAL_BASE, index)) % DECIMAL_BASE;
 
+		assert(result >= 0 && result < 10);
 		return result;
 	}
 

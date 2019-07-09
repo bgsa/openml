@@ -1114,13 +1114,13 @@ namespace OpenMLTest
 			GpuContext* context = GpuContext::init();
 			GpuCommandManager* commandManager = context->defaultDevice->commandManager;
 
-			const size_t count = 1000;
-			AABBf* aabbs = get1000();
-			//const size_t count = std::pow(2, 17);
-			//AABBf* aabbs = getRandom(count, 1000);
-			
-			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
+			//const size_t count = 1000;
+			//AABBf* aabbs = get1000();
+			const size_t count = std::pow(2, 17);
+			AABBf* aabbs = getRandom(count, 1000);
 
+			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
+			
 			SweepAndPruneResult result = SweepAndPrune::findCollisionsGPU(commandManager, aabbs, count);
 
 			std::chrono::high_resolution_clock::time_point currentTime2 = std::chrono::high_resolution_clock::now();

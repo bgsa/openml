@@ -49,6 +49,21 @@ GpuCommand* GpuCommand::build(const char* source, size_t sourceSize, std::string
 
 	errorCode = clBuildProgram(program, 1, &deviceId, NULL, NULL, NULL);
 
+#if  DEBUG
+	if (errorCode == CL_BUILD_PROGRAM_FAILURE) 
+	{
+		size_t logSize;
+		errorCode = clGetProgramBuildInfo(program, deviceId, CL_PROGRAM_BUILD_LOG, 0, NULL, &logSize);
+		char* msg = (char*)malloc((logSize + 1));
+		clGetProgramBuildInfo(program, deviceId, CL_PROGRAM_BUILD_LOG, logSize, msg, NULL);
+		msg[logSize] = '\0';
+
+		assert(false);
+		free(msg);
+	}
+#endif
+
+
 	assert(errorCode == CL_SUCCESS);
 
 	kernel = clCreateKernel(program, kernelName.c_str(), &errorCode);
@@ -68,6 +83,9 @@ GpuCommand* GpuCommand::build(const char* source, size_t sourceSize, std::string
 
 GpuCommand* GpuCommand::execute(size_t workDimnmsion, size_t* globalWorkSize, size_t* localWorkSize)
 {
+	assert(isPowerOf2(*globalWorkSize));
+	//assert(isPowerOf2(*localWorkSize));
+
 	cl_int errorCode;
 	errorCode = clEnqueueNDRangeKernel(commandQueue, kernel, workDimnmsion, NULL, globalWorkSize, localWorkSize, 0, NULL, NULL);
 

@@ -148,5 +148,33 @@ namespace OpenMLTest
 				Assert::AreEqual(expected[i], vec[i], L"Wrong value.", LINE_INFO());
 		}
 
+		TEST_METHOD(AlgorithmSorting_radixGPU_Test1)
+		{
+			const size_t count = 7;
+			float vector[count] = { 57.1f, 0.111f, -1.23f, 0.03f, 0.53f, 2.08f, -34567.56f };
+			float expected[count] = { -34567.56f, -1.23f, 0.03f, 0.111f, 0.53f, 2.08f, 57.1f };
+
+			float* result = AlgorithmSorting::radixGPU(vector, count);
+
+			for (size_t i = 0; i < count; i++)
+				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
+
+			delete[] result;
+		}
+
+		TEST_METHOD(AlgorithmSorting_radixGPU_Test2)
+		{
+			const size_t count = 10;
+			float vector[count] = { 57.1f, 0.111f, -1.23f, 0.03f, 0.53f, 2.08f, -34567.56f, 10.4f, -10.4f, 10.45f };
+			float expected[count] = { -34567.56f, -10.4f , -1.23f, 0.03f, 0.111f, 0.53f, 2.08f, 10.4f, 10.45f, 57.1f };
+
+			float* result = AlgorithmSorting::radixGPU(vector, count);
+
+			for (size_t i = 0; i < count; i++)
+				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
+
+			delete[] result;
+		}
+
 	};
 }

@@ -167,15 +167,9 @@ namespace OpenML
 	///<summary>
 	///Check the number is power of 2
 	///</summary>
-	template <typename T>
-	inline unsigned int API_INTERFACE isPow2(T value)
+	inline bool API_INTERFACE isPowerOf2(size_t value)
 	{
-		T nPow2 = T(1);
-
-		while (value > nPow2)
-			nPow2 = (nPow2 << 1);
-
-		return nPow2;
+		return value && !(value & (value - 1));
 	}
 
 	///<summary>

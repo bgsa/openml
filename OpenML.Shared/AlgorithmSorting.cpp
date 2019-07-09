@@ -350,3 +350,32 @@ void AlgorithmSorting::quickSortNative(void* vector, size_t count, size_t sizeOf
 {
 	std::qsort(vector, count, sizeOfOneElement, comparator);
 }
+
+
+float* AlgorithmSorting::radixGPU(float* vector, size_t n)
+{	
+	IFileManager* fileManager = Factory::getFileManagerInstance();
+	std::string source = fileManager->readTextFile("RadixSorting.cl");
+	
+	const size_t bucketCount = 10;
+	size_t bucket[bucketCount];
+
+	size_t globalWorkSize = nextPowOf2(n); //required for OpenCL
+	//size_t localWorkSize = nextPowOf2((size_t)globalWorkSize / 16);
+	size_t localWorkSize = nextPowOf2(n);
+	
+	GpuContext* context = GpuContext::init();
+	GpuCommand* command = context->defaultDevice->commandManager->createCommand();
+	
+	float* output = command
+		->setInputParameter(vector, sizeof(float) * n, CL_MEM_READ_WRITE)
+		->setInputParameter(&n, sizeof(size_t), CL_MEM_READ_WRITE)
+		->setInputParameter(bucket, sizeof(size_t) * bucketCount, CL_MEM_READ_WRITE)
+		->setOutputParameter(sizeof(float) * 10) //temp
+		->build(source.c_str(), sizeof(char) * source.length(), "sort")
+		->execute(1, &globalWorkSize, &localWorkSize)
+		->fetch<float>();
+
+	delete command, context;
+	return output;
+}

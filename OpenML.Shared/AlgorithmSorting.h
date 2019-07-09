@@ -7,6 +7,14 @@
 
 #include <AABB.h>
 
+#ifdef OPENCL_ENABLED
+	#include "GpuContext.h"
+	#include "GpuCommand.h"
+	#include "IFileManager.h"
+	#include "Factory.h"
+	#undef max
+#endif
+
 namespace OpenML
 {
 
@@ -58,6 +66,11 @@ namespace OpenML
 		///</summary>
 		API_INTERFACE static void quickSortNative(void* vector, size_t count, size_t sizeOfOneElement, int(*comparator)(const void*, const  void*));
 
+		///<summary>
+		///Fast sorting of numbers array using Counting method in GPU
+		///Complexity O(n)
+		///</summary>
+		API_INTERFACE static float* radixGPU(float* vector, size_t count);
 	};
 
 }

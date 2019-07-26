@@ -351,31 +351,82 @@ void AlgorithmSorting::quickSortNative(void* vector, size_t count, size_t sizeOf
 	std::qsort(vector, count, sizeOfOneElement, comparator);
 }
 
+#ifdef OPENCL_ENABLED
 
-float* AlgorithmSorting::radixGPU(float* vector, size_t n)
-{	
+void AlgorithmSorting::radixGPU(GpuDevice* gpu, float* input, size_t n)
+{
 	IFileManager* fileManager = Factory::getFileManagerInstance();
-	std::string source = fileManager->readTextFile("RadixSorting.cl");
 	
-	const size_t bucketCount = 10;
-	size_t bucket[bucketCount];
+	// 2^17 elementos
+	// Total de 1024 threads executando
+	// 8 grupos
+	// 128 threads em cada grupo
+	// cada thread processa 128 elementos
+	const size_t countAsPowOf2 = nextPowOf2(n); //required for OpenCL
+	size_t elementsPerWorkItem = countAsPowOf2 / gpu->maxWorkGroupSize;
+	const size_t threadsCount = countAsPowOf2 / elementsPerWorkItem; 
+	size_t globalWorkSize[3] = { threadsCount, 0 , 0 };
+	size_t localWorkSize[3] = { elementsPerWorkItem, 0, 0 };
+	const size_t groupCount = threadsCount / elementsPerWorkItem;
+	size_t elementsPerGroup = elementsPerWorkItem * elementsPerWorkItem;
+	size_t iteraions = ((size_t) std::log(groupCount)) + 1;
 
-	size_t globalWorkSize = nextPowOf2(n); //required for OpenCL
-	//size_t localWorkSize = nextPowOf2((size_t)globalWorkSize / 16);
-	size_t localWorkSize = nextPowOf2(n);
-	
-	GpuContext* context = GpuContext::init();
-	GpuCommand* command = context->defaultDevice->commandManager->createCommand();
-	
-	float* output = command
-		->setInputParameter(vector, sizeof(float) * n, CL_MEM_READ_WRITE)
-		->setInputParameter(&n, sizeof(size_t), CL_MEM_READ_WRITE)
-		->setInputParameter(bucket, sizeof(size_t) * bucketCount, CL_MEM_READ_WRITE)
-		->setOutputParameter(sizeof(float) * 10) //temp
-		->build(source.c_str(), sizeof(char) * source.length(), "sort")
-		->execute(1, &globalWorkSize, &localWorkSize)
-		->fetch<float>();
+	std::string sourceRadixSort = fileManager->readTextFile("RadixSortingByGroup.cl");
+	sourceRadixSort = sourceRadixSort.insert(0, "#define ELEMENTS_PER_WORKITEM (" + StringHelper::toString(elementsPerWorkItem) + ")   \n");
+	std::string sourceBitonicSort = fileManager->readTextFile("BitonicSorting2Groups.cl");
 
-	delete command, context;
-	return output;
+	GpuCommand* command = gpu->commandManager->createCommand();
+	command
+		->setInputParameter(input, sizeof(float) * n, CL_MEM_READ_WRITE)
+		->setInputParameter(&n, sizeof(float))
+		->setOutputParameter(sizeof(float) * n)
+		->build(sourceRadixSort.c_str(), sizeof(char) * sourceRadixSort.length(), "sort")
+		->execute(1, globalWorkSize, localWorkSize)
+		->fetch(input);
+	delete command;
+
+	do
+	{
+		localWorkSize[0] = elementsPerWorkItem;
+
+		command = gpu->commandManager->createCommand();
+		command
+			->setInputParameter(input, sizeof(float) * n, CL_MEM_READ_WRITE)
+			->setInputParameter(&n, sizeof(size_t))
+			->build(sourceBitonicSort.c_str(), sizeof(char) * sourceBitonicSort.length(), "sort")
+			->execute(1, globalWorkSize, localWorkSize)
+			->fetchInOutParameter(input, 0);
+		delete command;
+
+		command = gpu->commandManager->createCommand();
+		command
+			->setInputParameter(input, sizeof(float) * n, CL_MEM_READ_WRITE)
+			->setInputParameter(&n, sizeof(size_t))
+			->setOutputParameter(sizeof(float) * n)
+			->build(sourceRadixSort.c_str(), sizeof(char)*sourceRadixSort.length(), "sort")
+			->execute(1, globalWorkSize, localWorkSize)
+			->fetch(input);
+		delete command;
+
+		/*
+		// check the command is correct ! (TEST)
+		for (size_t groups = 1; groups < n; groups += 2 * elementsPerGroup)
+			for (size_t i = groups; i < groups + 2 * elementsPerGroup - 1; i++)
+				assert(input[i - 1] <= input[i]);
+		*/
+
+		elementsPerWorkItem *= 2;
+		elementsPerGroup *= 2;
+		--iteraions;
+	} while (iteraions > 0);
+
+
+	/*
+	for (size_t i = 1; i < n; ++i)
+		assert(input[i - 1] <= input[i]);
+	*/
+
+	delete fileManager;
 }
+
+#endif

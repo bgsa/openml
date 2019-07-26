@@ -102,9 +102,8 @@ SweepAndPruneResult SweepAndPrune::findCollisionsGPU(GpuCommandManager* gpuComma
 	std::string source = fileManager->readTextFile("SweepAndPrune.cl");
 	size_t globalIndex = 0;
 
-	size_t globalWorkSize = nextPowOf2(count);
-	size_t workDimension = 1;
-	size_t localWorkSize = 64;
+	size_t globalWorkSize[3] = { nextPowOf2(count), 0, 0 };
+	size_t localWorkSize[3] = { 64, 0, 0 };
 	
 	const size_t outputCount = count * 3 * 2;
 
@@ -134,7 +133,7 @@ SweepAndPruneResult SweepAndPrune::findCollisionsGPU(GpuCommandManager* gpuComma
 		->setInputParameter(&globalIndex, sizeof(size_t), CL_MEM_READ_WRITE)
 		->setOutputParameter(sizeof(T) * count * 2)
 		->build(source.c_str(), sizeof(char) * source.length(), "sweepAndPrune")
-		->execute(workDimension, &globalWorkSize, &localWorkSize)
+		->execute(1, globalWorkSize, localWorkSize)
 		->fetch<T>();
 	
 	globalIndex = *command->fetchInOutParameter<size_t>(2);

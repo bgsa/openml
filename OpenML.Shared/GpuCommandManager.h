@@ -15,10 +15,12 @@ namespace OpenML
 		cl_context deviceContext;
 		cl_command_queue commandQueue;
 
-		GpuCommandManager(cl_context deviceContext, cl_device_id deviceId);
+		GpuCommandManager(cl_context deviceContext, cl_device_id deviceId, cl_command_queue_properties queueProperties = NULL);
 
 	public:
 		GpuCommand* createCommand();
+
+		void flush();
 
 		~GpuCommandManager();
 	};

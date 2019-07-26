@@ -38,6 +38,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)GpuCommandManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GpuContext.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GpuDevice.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GpuLog.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)HashGrid.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Line2D.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Line3D.h" />

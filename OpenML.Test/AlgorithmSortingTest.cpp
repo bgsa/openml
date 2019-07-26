@@ -2,6 +2,8 @@
 
 #include "CppUnitTest.h"
 #include <AlgorithmSorting.h>
+#include <chrono>
+#include "Randomizer.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace OpenML;
@@ -25,6 +27,20 @@ namespace OpenMLTest
 
 	TEST_CLASS(AlgorithmSortingTest)
 	{
+	private:
+
+		float* getRandom(size_t count, size_t spaceSize = 10000)
+		{
+			Randomizer<int> randomizer(0, spaceSize);
+
+			float* result = new float[count];
+
+			for (size_t i = 0; i < count; i++)
+				result[i] = randomizer.rand() / 100.0f;
+
+			return result;
+		}
+
 	public:
 
 		TEST_METHOD(AlgorithmSorting_radix_Test1)
@@ -147,33 +163,36 @@ namespace OpenMLTest
 			for (size_t i = 0; i < count; i++)
 				Assert::AreEqual(expected[i], vec[i], L"Wrong value.", LINE_INFO());
 		}
-
+		
 		TEST_METHOD(AlgorithmSorting_radixGPU_Test1)
 		{
-			const size_t count = 7;
-			float vector[count] = { 57.1f, 0.111f, -1.23f, 0.03f, 0.53f, 2.08f, -34567.56f };
-			float expected[count] = { -34567.56f, -1.23f, 0.03f, 0.111f, 0.53f, 2.08f, 57.1f };
+			const size_t count = (size_t)std::pow(2.0, 17.0);
+			float* vector = getRandom(count);
+			float* result = new float[count];
+			std::memcpy(result, vector, sizeof(float) * count);
 
-			float* result = AlgorithmSorting::radixGPU(vector, count);
+			GpuContext* context = GpuContext::init();
+			GpuDevice* gpu = context->defaultDevice;
+
+			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
+
+			AlgorithmSorting::native(vector, count);
+
+			std::chrono::high_resolution_clock::time_point currentTime2 = std::chrono::high_resolution_clock::now();
+			std::chrono::milliseconds ms1 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
+
+			currentTime = std::chrono::high_resolution_clock::now();
+
+			AlgorithmSorting::radixGPU(gpu, &result[0], count);
+
+			currentTime2 = std::chrono::high_resolution_clock::now();
+			std::chrono::milliseconds ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
 
 			for (size_t i = 0; i < count; i++)
-				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
+				Assert::AreEqual(vector[i], result[i], L"Wrong value.", LINE_INFO());
 
-			delete[] result;
-		}
-
-		TEST_METHOD(AlgorithmSorting_radixGPU_Test2)
-		{
-			const size_t count = 10;
-			float vector[count] = { 57.1f, 0.111f, -1.23f, 0.03f, 0.53f, 2.08f, -34567.56f, 10.4f, -10.4f, 10.45f };
-			float expected[count] = { -34567.56f, -10.4f , -1.23f, 0.03f, 0.111f, 0.53f, 2.08f, 10.4f, 10.45f, 57.1f };
-
-			float* result = AlgorithmSorting::radixGPU(vector, count);
-
-			for (size_t i = 0; i < count; i++)
-				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
-
-			delete[] result;
+			delete[] vector, result;
+			delete context;
 		}
 
 	};

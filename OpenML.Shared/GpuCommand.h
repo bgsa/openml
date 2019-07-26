@@ -3,6 +3,7 @@
 #pragma once
 
 #include "OpenML.h"
+#include "GpuLog.hpp"
 #include "CL/cl.h"
 
 namespace OpenML
@@ -24,10 +25,12 @@ namespace OpenML
 		std::vector<size_t> inputParametersSize;
 		cl_mem outputParameter = nullptr;
 		size_t outputSize = 0;
-		
+				
 		GpuCommand(cl_device_id deviceId, cl_context deviceContext, cl_command_queue commandQueue);
 
 	public:
+
+		double timeToExecuteInMiliseconds = 0.0;
 
 		GpuCommand* setInputParameter(void* value, size_t sizeOfValue, cl_mem_flags memoryFlags);
 		GpuCommand* setInputParameter(void* value, size_t sizeOfValue);
@@ -36,10 +39,14 @@ namespace OpenML
 		
 		GpuCommand* build(const char* source, size_t sourceSize, std::string kernelName);
 
-		GpuCommand* execute(size_t workDimnmsion, size_t* globalWorkSize, size_t* localWorkSize);
+		GpuCommand* execute(size_t workDimnmsion, size_t* globalWorkSize, size_t* localWorkSize, const size_t* globalOffset = NULL);
 
-		template <typename T>
+		void fetch(void* buffer);
+
+		template <typename T> 
 		T* fetch();
+
+		void fetchInOutParameter(void* buffer, size_t index);
 
 		template <typename T>
 		T* fetchInOutParameter(size_t index);

@@ -43,18 +43,14 @@ std::vector<cl_platform_id> GpuContext::getPlatforms()
 {
 	if (platforms.size() > 0)
 		return platforms;
-
-	cl_int errorCode;
-
+	
 	size_t platformCount;
-	errorCode = clGetPlatformIDs(NULL, NULL, &platformCount);
-	assert(errorCode == CL_SUCCESS);
+	HANDLE_OPENCL_ERROR(clGetPlatformIDs(NULL, NULL, &platformCount));
 
 	cl_platform_id* platformsAsArray = new cl_platform_id[platformCount];
 	platforms.resize(platformCount);
 
-	errorCode = clGetPlatformIDs(platformCount, platformsAsArray, NULL);
-	assert(errorCode == CL_SUCCESS);
+	HANDLE_OPENCL_ERROR(clGetPlatformIDs(platformCount, platformsAsArray, NULL));
 
 	platforms.assign(platformsAsArray, platformsAsArray + platformCount);
 

@@ -13,6 +13,7 @@
 	#include "IFileManager.h"
 	#include "Factory.h"
 	#undef max
+	#undef min
 #endif
 
 namespace OpenML
@@ -66,11 +67,16 @@ namespace OpenML
 		///</summary>
 		API_INTERFACE static void quickSortNative(void* vector, size_t count, size_t sizeOfOneElement, int(*comparator)(const void*, const  void*));
 
+#ifdef OPENCL_ENABLED
+
 		///<summary>
-		///Fast sorting of numbers array using Counting method in GPU
-		///Complexity O(n)
+		///Fast sorting of numbers array using Bitonic method in GPU
+		///Complexity O(log n)
 		///</summary>
-		API_INTERFACE static float* radixGPU(float* vector, size_t count);
+		API_INTERFACE static void radixGPU(GpuDevice* gpu, float* vector, size_t count);
+		
+#endif
+
 	};
 
 }

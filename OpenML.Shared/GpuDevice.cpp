@@ -8,7 +8,7 @@ GpuDevice::GpuDevice(cl_device_id id)
 
 	cl_int errorCode;
 	this->deviceContext = clCreateContext(NULL, 1, &this->id, NULL, NULL, &errorCode);
-	assert(errorCode == CL_SUCCESS);
+	HANDLE_OPENCL_ERROR(errorCode);
 
 	this->commandManager = new GpuCommandManager(deviceContext, id);
 		

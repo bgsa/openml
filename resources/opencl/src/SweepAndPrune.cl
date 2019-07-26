@@ -1,12 +1,8 @@
-    //uint dimension = get_work_dim();
-    //size_t workItemCountInDimension = get_global_size (dimension);
-    //size_t localWorkItemCountInDimension = get_local_size (dimension);
-    //size_t workGroupCountForKernel = get_num_groups (dimension);
-    //size_t workGroupIndex = get_group_id (dimension);
-    //size_t workItemIndexInWorkGroup = get_local_id (dimension);
-	//size_t workItemIndex = get_global_id(dimension);
-
-__kernel void sweepAndPrune(__global const float* points, __global const size_t* pointsCount, __global size_t* globalIndex, __global float* output) 
+__kernel void sweepAndPrune(
+	__global const float* points, 
+	__global const size_t* pointsCount, 
+	__global size_t* globalIndex, 
+	__global float* output) 
 {
     __private size_t workItemIndex = get_global_id(0);
     __private size_t index = workItemIndex * 6;
@@ -64,5 +60,4 @@ __kernel void sweepAndPrune(__global const float* points, __global const size_t*
 
         previousAABBIndex--;
     }
-
 }

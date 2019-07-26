@@ -1114,10 +1114,10 @@ namespace OpenMLTest
 			GpuContext* context = GpuContext::init();
 			GpuCommandManager* commandManager = context->defaultDevice->commandManager;
 
-			//const size_t count = 1000;
-			//AABBf* aabbs = get1000();
-			const size_t count = std::pow(2, 17);
-			AABBf* aabbs = getRandom(count, 1000);
+			const size_t count = 1000;
+			AABBf* aabbs = get1000();
+			//const size_t count = (size_t) std::pow(2.0, 17.0);
+			//AABBf* aabbs = getRandom(count, 1000);
 
 			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 			

@@ -13,10 +13,9 @@ GpuCommand* GpuCommand::setInputParameter(void* value, size_t sizeOfValue, cl_me
 {
 	cl_int errorCode;
 	cl_mem memoryBuffer = clCreateBuffer(deviceContext, memoryFlags, sizeOfValue, NULL, &errorCode);
+	HANDLE_OPENCL_ERROR(errorCode);
 
-	errorCode = clEnqueueWriteBuffer(commandQueue, memoryBuffer, CL_TRUE, 0, sizeOfValue, value, 0, NULL, NULL);
-
-	assert(errorCode == CL_SUCCESS);
+	HANDLE_OPENCL_ERROR(clEnqueueWriteBuffer(commandQueue, memoryBuffer, CL_TRUE, 0, sizeOfValue, value, 0, NULL, NULL));
 
 	inputParameters.emplace_back(memoryBuffer);
 	inputParametersSize.emplace_back(sizeOfValue);
@@ -35,7 +34,7 @@ GpuCommand* GpuCommand::setOutputParameter(size_t sizeOfValue)
 	outputParameter = clCreateBuffer(deviceContext, CL_MEM_WRITE_ONLY, sizeOfValue, NULL, &errorCode);
 	outputSize = sizeOfValue;
 
-	assert(errorCode == CL_SUCCESS);
+	HANDLE_OPENCL_ERROR(errorCode);
 
 	return this;
 }
@@ -45,53 +44,52 @@ GpuCommand* GpuCommand::build(const char* source, size_t sourceSize, std::string
 	cl_int errorCode;
 	program = clCreateProgramWithSource(deviceContext, 1, &source, &sourceSize, &errorCode);
 
-	assert(errorCode == CL_SUCCESS);
+	HANDLE_OPENCL_ERROR(errorCode);
 
-	errorCode = clBuildProgram(program, 1, &deviceId, NULL, NULL, NULL);
-
-#if  DEBUG
-	if (errorCode == CL_BUILD_PROGRAM_FAILURE) 
-	{
-		size_t logSize;
-		errorCode = clGetProgramBuildInfo(program, deviceId, CL_PROGRAM_BUILD_LOG, 0, NULL, &logSize);
-		char* msg = (char*)malloc((logSize + 1));
-		clGetProgramBuildInfo(program, deviceId, CL_PROGRAM_BUILD_LOG, logSize, msg, NULL);
-		msg[logSize] = '\0';
-
-		assert(false);
-		free(msg);
-	}
-#endif
-
-
-	assert(errorCode == CL_SUCCESS);
-
+	HANDLE_OPENCL_BUILD_ERROR(clBuildProgram(program, 1, &deviceId, NULL, NULL, NULL), program, deviceId);
+	
 	kernel = clCreateKernel(program, kernelName.c_str(), &errorCode);
 
-	assert(errorCode == CL_SUCCESS);
+	HANDLE_OPENCL_ERROR(errorCode);
 
 	for (size_t i = 0; i < inputParameters.size(); i++) 
-	{
-		errorCode = clSetKernelArg(kernel, i, sizeof(cl_mem), (void *)&inputParameters[i]);
-		assert(errorCode == CL_SUCCESS);
-	}
+		HANDLE_OPENCL_ERROR(clSetKernelArg(kernel, i, sizeof(cl_mem), (void *)&inputParameters[i]));
 
 	clSetKernelArg(kernel, inputParameters.size(), sizeof(cl_mem), (void *)&outputParameter);
 
 	return this;
 }
 
-GpuCommand* GpuCommand::execute(size_t workDimnmsion, size_t* globalWorkSize, size_t* localWorkSize)
+GpuCommand* GpuCommand::execute(size_t workDimnmsion, size_t* globalWorkSize, size_t* localWorkSize, const size_t* globalOffset)
 {
 	assert(isPowerOf2(*globalWorkSize));
 	//assert(isPowerOf2(*localWorkSize));
 
-	cl_int errorCode;
-	errorCode = clEnqueueNDRangeKernel(commandQueue, kernel, workDimnmsion, NULL, globalWorkSize, localWorkSize, 0, NULL, NULL);
+	cl_event* events = NULL;
 
-	assert(errorCode == CL_SUCCESS);
+#ifdef DEBUG
+	events = new cl_event[1];
+	cl_ulong time_start, time_end;
+#endif
+
+	HANDLE_OPENCL_ERROR(clEnqueueNDRangeKernel(commandQueue, kernel, workDimnmsion, globalOffset, globalWorkSize, localWorkSize, 0, NULL, events));
+
+#ifdef DEBUG
+	clWaitForEvents(1, events);
+	clGetEventProfilingInfo(events[0], CL_PROFILING_COMMAND_START, sizeof(time_start), &time_start, NULL);
+	clGetEventProfilingInfo(events[0], CL_PROFILING_COMMAND_END, sizeof(time_end), &time_end, NULL);
+
+	timeToExecuteInMiliseconds = (time_end - time_start) / 1000000.0;
+
+	delete[] events;
+#endif
 
 	return this;
+}
+
+void GpuCommand::fetch(void* buffer)
+{
+	HANDLE_OPENCL_RUNTIME_ERROR(clEnqueueReadBuffer(commandQueue, outputParameter, CL_TRUE, 0, outputSize, buffer, 0, NULL, NULL));
 }
 
 template <typename T>
@@ -99,10 +97,8 @@ T* GpuCommand::fetch()
 {
 	void* result = std::malloc(outputSize);
 
-	cl_int errorCode = clEnqueueReadBuffer(commandQueue, outputParameter, CL_TRUE, 0, outputSize, result, 0, NULL, NULL);
-
-	assert(errorCode == CL_SUCCESS);
-
+	HANDLE_OPENCL_RUNTIME_ERROR(clEnqueueReadBuffer(commandQueue, outputParameter, CL_TRUE, 0, outputSize, result, 0, NULL, NULL));
+	
 	return (T*) result;
 }
 template void* GpuCommand::fetch();
@@ -114,15 +110,21 @@ template long long* OpenML::GpuCommand::fetch();
 template float* GpuCommand::fetch();
 template double* GpuCommand::fetch();
 
+void GpuCommand::fetchInOutParameter(void* buffer, size_t index)
+{
+	size_t size = inputParametersSize[index];	
+
+	HANDLE_OPENCL_RUNTIME_ERROR(clEnqueueReadBuffer(commandQueue, inputParameters[index], CL_TRUE, 0, size, buffer, 0, NULL, NULL));
+}
+
 template <typename T>
 T* GpuCommand::fetchInOutParameter(size_t index)
 {
 	size_t size = inputParametersSize[index];
 
 	void* result = std::malloc(size);
-	cl_int errorCode = clEnqueueReadBuffer(commandQueue, inputParameters[index], CL_TRUE, 0, size, result, 0, NULL, NULL);
 
-	assert(errorCode == CL_SUCCESS);
+	HANDLE_OPENCL_RUNTIME_ERROR(clEnqueueReadBuffer(commandQueue, inputParameters[index], CL_TRUE, 0, size, result, 0, NULL, NULL));
 
 	return (T*)result;
 }

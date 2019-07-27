@@ -18,7 +18,13 @@ namespace OpenML
 		GpuCommandManager(cl_context deviceContext, cl_device_id deviceId, cl_command_queue_properties queueProperties = NULL);
 
 	public:
+		std::vector<cl_program> cachedPrograms;
+
 		GpuCommand* createCommand();
+
+		size_t cacheProgram(const char* source, size_t sourceSize);
+
+		void executeReadBuffer(cl_mem gpuBuffer, size_t bufferSize, void* cpuBuffer, bool waitToFinish);
 
 		void flush();
 

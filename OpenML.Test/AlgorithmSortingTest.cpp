@@ -169,6 +169,7 @@ namespace OpenMLTest
 			const size_t count = (size_t)std::pow(2.0, 17.0);
 			float* vector = getRandom(count);
 			float* result = new float[count];
+			//float* result = getRandom(count);
 			std::memcpy(result, vector, sizeof(float) * count);
 
 			GpuContext* context = GpuContext::init();
@@ -183,7 +184,7 @@ namespace OpenMLTest
 
 			currentTime = std::chrono::high_resolution_clock::now();
 
-			AlgorithmSorting::radixGPU(gpu, &result[0], count);
+			AlgorithmSorting::radixGPU(gpu, result, count);
 
 			currentTime2 = std::chrono::high_resolution_clock::now();
 			std::chrono::milliseconds ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
@@ -192,6 +193,7 @@ namespace OpenMLTest
 				Assert::AreEqual(vector[i], result[i], L"Wrong value.", LINE_INFO());
 
 			delete[] vector, result;
+			//delete[] result;
 			delete context;
 		}
 

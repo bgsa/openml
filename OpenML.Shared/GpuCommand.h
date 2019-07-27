@@ -23,6 +23,7 @@ namespace OpenML
 
 		std::vector<cl_mem> inputParameters;
 		std::vector<size_t> inputParametersSize;
+		std::vector<bool> inputParametersKeep;
 		cl_mem outputParameter = nullptr;
 		size_t outputSize = 0;
 				
@@ -32,12 +33,16 @@ namespace OpenML
 
 		double timeToExecuteInMiliseconds = 0.0;
 
-		GpuCommand* setInputParameter(void* value, size_t sizeOfValue, cl_mem_flags memoryFlags);
+		cl_mem getInputParameter(size_t index);
+
+		GpuCommand* setInputParameter(void* value, size_t sizeOfValue, cl_mem_flags memoryFlags, bool keepBuffer = false);
 		GpuCommand* setInputParameter(void* value, size_t sizeOfValue);
+		GpuCommand* setInputParameter(cl_mem buffer, size_t sizeOfValue);
 
 		GpuCommand* setOutputParameter(size_t sizeOfValue);
 		
-		GpuCommand* build(const char* source, size_t sourceSize, std::string kernelName);
+		GpuCommand* buildFromProgram(cl_program program, const char* kernelName);
+		GpuCommand* build(const char* source, size_t sourceSize, const char* kernelName);
 
 		GpuCommand* execute(size_t workDimnmsion, size_t* globalWorkSize, size_t* localWorkSize, const size_t* globalOffset = NULL);
 

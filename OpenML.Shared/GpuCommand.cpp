@@ -9,16 +9,31 @@ GpuCommand::GpuCommand(cl_device_id deviceId, cl_context deviceContext, cl_comma
 	this->commandQueue = commandQueue;
 }
 
-GpuCommand* GpuCommand::setInputParameter(void* value, size_t sizeOfValue, cl_mem_flags memoryFlags)
+cl_mem GpuCommand::getInputParameter(size_t index)
+{
+	return inputParameters[index];
+}
+
+GpuCommand* GpuCommand::setInputParameter(cl_mem buffer, size_t sizeOfValue)
+{	
+	inputParameters.emplace_back(buffer);
+	inputParametersSize.emplace_back(sizeOfValue);
+	inputParametersKeep.emplace_back(true);
+
+	return this;
+}
+
+GpuCommand* GpuCommand::setInputParameter(void* value, size_t sizeOfValue, cl_mem_flags memoryFlags, bool keepBuffer)
 {
 	cl_int errorCode;
 	cl_mem memoryBuffer = clCreateBuffer(deviceContext, memoryFlags, sizeOfValue, NULL, &errorCode);
 	HANDLE_OPENCL_ERROR(errorCode);
 
-	HANDLE_OPENCL_ERROR(clEnqueueWriteBuffer(commandQueue, memoryBuffer, CL_TRUE, 0, sizeOfValue, value, 0, NULL, NULL));
+	HANDLE_OPENCL_ERROR(clEnqueueWriteBuffer(commandQueue, memoryBuffer, CL_FALSE, 0, sizeOfValue, value, 0, NULL, NULL));
 
 	inputParameters.emplace_back(memoryBuffer);
 	inputParametersSize.emplace_back(sizeOfValue);
+	inputParametersKeep.emplace_back(keepBuffer);
 
 	return this;
 }
@@ -39,7 +54,22 @@ GpuCommand* GpuCommand::setOutputParameter(size_t sizeOfValue)
 	return this;
 }
 
-GpuCommand* GpuCommand::build(const char* source, size_t sourceSize, std::string kernelName)
+GpuCommand* GpuCommand::buildFromProgram(cl_program program, const char* kernelName)
+{
+	cl_int errorCode;
+
+	kernel = clCreateKernel(program, kernelName, &errorCode);
+	HANDLE_OPENCL_ERROR(errorCode);
+
+	for (size_t i = 0; i < inputParameters.size(); i++)
+		HANDLE_OPENCL_ERROR(clSetKernelArg(kernel, i, sizeof(cl_mem), (void *)&inputParameters[i]));
+
+	clSetKernelArg(kernel, inputParameters.size(), sizeof(cl_mem), (void *)&outputParameter);
+
+	return this;
+}
+
+GpuCommand* GpuCommand::build(const char* source, size_t sourceSize, const char* kernelName)
 {
 	cl_int errorCode;
 	program = clCreateProgramWithSource(deviceContext, 1, &source, &sourceSize, &errorCode);
@@ -48,16 +78,7 @@ GpuCommand* GpuCommand::build(const char* source, size_t sourceSize, std::string
 
 	HANDLE_OPENCL_BUILD_ERROR(clBuildProgram(program, 1, &deviceId, NULL, NULL, NULL), program, deviceId);
 	
-	kernel = clCreateKernel(program, kernelName.c_str(), &errorCode);
-
-	HANDLE_OPENCL_ERROR(errorCode);
-
-	for (size_t i = 0; i < inputParameters.size(); i++) 
-		HANDLE_OPENCL_ERROR(clSetKernelArg(kernel, i, sizeof(cl_mem), (void *)&inputParameters[i]));
-
-	clSetKernelArg(kernel, inputParameters.size(), sizeof(cl_mem), (void *)&outputParameter);
-
-	return this;
+	return buildFromProgram(program, kernelName);
 }
 
 GpuCommand* GpuCommand::execute(size_t workDimnmsion, size_t* globalWorkSize, size_t* localWorkSize, const size_t* globalOffset)
@@ -139,32 +160,25 @@ template double* GpuCommand::fetchInOutParameter(size_t index);
 
 GpuCommand::~GpuCommand()
 {
-	cl_int errorCode;
-
 	if (kernel != nullptr)
 	{
-		errorCode = clReleaseKernel(kernel);
-		assert(errorCode == CL_SUCCESS);
+		HANDLE_OPENCL_ERROR(clReleaseKernel(kernel));
 		kernel = nullptr;
 	}
 		
 	if (program != nullptr)
 	{
-		errorCode = clReleaseProgram(program);
-		assert(errorCode == CL_SUCCESS);
+		HANDLE_OPENCL_ERROR(clReleaseProgram(program));
 		program = nullptr;
 	}
 	
 	for (size_t i = 0; i < inputParameters.size(); i++) 
-	{
-		errorCode = clReleaseMemObject(inputParameters[i]);
-		assert(errorCode == CL_SUCCESS);
-	}
+		if (!inputParametersKeep[i]) 
+			HANDLE_OPENCL_ERROR(clReleaseMemObject(inputParameters[i]));
 
 	if (outputParameter != nullptr)
 	{
-		errorCode = clReleaseMemObject(outputParameter);
-		assert(errorCode == CL_SUCCESS);
+		HANDLE_OPENCL_ERROR(clReleaseMemObject(outputParameter));
 		outputParameter = nullptr;
 	}
 }

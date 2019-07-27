@@ -379,37 +379,30 @@ void AlgorithmSorting::radixGPU(GpuDevice* gpu, float* input, size_t n)
 	size_t bitonicSortProgramIndex = gpu->commandManager->cacheProgram(sourceBitonicSort.c_str(), sizeof(char) * sourceBitonicSort.length());
 	size_t radixSortProgramIndex = gpu->commandManager->cacheProgram(sourceRadixSort.c_str(), sizeof(char) * sourceRadixSort.length());
 
-	GpuCommand* command = gpu->commandManager->createCommand();
-	command
+	GpuCommand* commandRadix = gpu->commandManager->createCommand();
+	commandRadix
 		->setInputParameter(input, inputBufferSize, CL_MEM_READ_WRITE, true)
 		->setInputParameter(&n, sizeof(float), CL_MEM_READ_ONLY, true)
 		->setOutputParameter(inputBufferSize)
 		->buildFromProgram(gpu->commandManager->cachedPrograms[radixSortProgramIndex], "sort")
 		->execute(1, globalWorkSize, localWorkSize);
-	cl_mem inputBuffer = command->getInputParameter(0);
-	cl_mem inputMemBufferSize = command->getInputParameter(1);
-	delete command;
+
+	cl_mem inputBuffer = commandRadix->getInputParameter(0);
+	cl_mem inputMemBufferSize = commandRadix->getInputParameter(1);
+
+	GpuCommand* commandBitonic = gpu->commandManager->createCommand();
+	commandBitonic
+		->setInputParameter(inputBuffer, inputBufferSize)
+		->setInputParameter(inputMemBufferSize, sizeof(float))
+		->buildFromProgram(gpu->commandManager->cachedPrograms[bitonicSortProgramIndex], "sort");
 
 	do
 	{
 		localWorkSize[0] = elementsPerWorkItem;
 
-		command = gpu->commandManager->createCommand();
-		command
-			->setInputParameter(inputBuffer, inputBufferSize)
-			->setInputParameter(inputMemBufferSize, sizeof(float))
-			->buildFromProgram(gpu->commandManager->cachedPrograms[bitonicSortProgramIndex], "sort")
-			->execute(1, globalWorkSize, localWorkSize);
-		delete command;
+		commandBitonic->execute(1, globalWorkSize, localWorkSize);
 
-		command = gpu->commandManager->createCommand();
-		command
-			->setInputParameter(inputBuffer, inputBufferSize)
-			->setInputParameter(inputMemBufferSize, sizeof(float))
-			->setOutputParameter(inputBufferSize)
-			->buildFromProgram(gpu->commandManager->cachedPrograms[radixSortProgramIndex], "sort")
-			->execute(1, globalWorkSize, localWorkSize);
-		delete command;
+		commandRadix->execute(1, globalWorkSize, localWorkSize);
 
 		/*
 		// check the command is correct ! (TEST)
@@ -430,9 +423,10 @@ void AlgorithmSorting::radixGPU(GpuDevice* gpu, float* input, size_t n)
 	*/
 
 	gpu->commandManager->executeReadBuffer(inputBuffer, inputBufferSize, input, true);
+
 	HANDLE_OPENCL_ERROR(clReleaseMemObject(inputBuffer));
 	HANDLE_OPENCL_ERROR(clReleaseMemObject(inputMemBufferSize));
-	delete fileManager;
+	delete fileManager, commandRadix, commandBitonic;
 }
 
 #endif

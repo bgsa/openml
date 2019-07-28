@@ -19,12 +19,39 @@ namespace OpenML
 #define radiansToDegrees(x)	((x) * INV_PI_DIV_180)
 
 #define hourToDegrees(x) ( x * (1.0 / 15.0) )
-#define hourToRadians(x)	degreesToRadians(hourToDegrees(x))
+#define hourToRadians(x) degreesToRadians(hourToDegrees(x))
 
-#define degreesToHout(x)	((x) * 15.0))
-#define radiansToHour(x)	degreesToHout(radiansToDegrees(x))
+#define degreesToHout(x) ((x) * 15.0))
+#define radiansToHour(x) degreesToHout(radiansToDegrees(x))
 
 #define DECIMAL_BASE (10)
+
+
+	///<summary>
+	///Fast multiplication by 2
+	///</summary>
+	template <typename T>
+	inline T API_INTERFACE multiplyBy2(T value)
+	{
+		return (value << 1);
+	}
+	///<summary>
+	///Fast multiplication by 10
+	///</summary>
+	inline size_t API_INTERFACE multiplyBy10(size_t value)
+	{
+		return ((value << 3) + (value << 1));
+	}
+
+	///<summary>
+	///Fast division by 2
+	///</summary>
+	template <typename T>
+	inline T API_INTERFACE divideBy2(T value)
+	{
+		return (value >> 1);
+	}
+
 
 	///<summary>
 	///Check the number is even or not
@@ -44,7 +71,7 @@ namespace OpenML
 	{
 		return !(value & 1);
 	}
-	
+		
 	///<summary>
 	///Check the number is odd or not
 	///</summary>
@@ -67,7 +94,7 @@ namespace OpenML
 	///<summary>
 	///Modify a bit of a integer value, given a index bit
 	///</summary>
-	inline int modifyBit(int value, int index, int bit)
+	inline int API_INTERFACE modifyBit(int value, int index, int bit)
 	{
 		return (value & ~(1 << index)) | ((bit << index) & (1 << index));
 	}
@@ -75,7 +102,7 @@ namespace OpenML
 	///<summary>
 	///Set a bit to ZERO of a integer value, given a index bit
 	///</summary>
-	inline int clearBit(int value, int index)
+	inline int API_INTERFACE clearBit(int value, int index)
 	{
 		return modifyBit(value, index, 0);
 	}
@@ -83,7 +110,7 @@ namespace OpenML
 	///<summary>
 	///Set a bit to ONE of a integer value, given a index bit
 	///</summary>
-	inline int setBit(int value, int index)
+	inline int API_INTERFACE setBit(int value, int index)
 	{
 		return modifyBit(value, index, 1);
 	}
@@ -91,14 +118,14 @@ namespace OpenML
 	///<summary>
 	///GFet a bit of a integer value, given a index bit
 	///</summary>
-	inline int getBit(int value, int index)
+	inline int API_INTERFACE getBit(int value, int index)
 	{
 		return (value & (1 << index)) >> index;
 	}
 	///<summary>
 	///GFet a bit of a integer value, given a index bit
 	///</summary>
-	inline int getBit(size_t value, int index)
+	inline int API_INTERFACE getBit(size_t value, int index)
 	{
 		return (value & (1 << index)) >> index;
 	}
@@ -180,7 +207,7 @@ namespace OpenML
 		int rval = 1;
 
 		while (rval < value) 
-			rval *= 2;
+			rval = rval << 1; // multiply by 2
 
 		return rval;
 	}
@@ -214,7 +241,7 @@ namespace OpenML
 	}
 
 	///<summary>
-	///Check the number is even or not
+	///
 	///</summary>
 	template <typename T>
 	inline T API_INTERFACE clamp(T value, T minValue, T maxValue)

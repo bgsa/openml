@@ -1,5 +1,8 @@
 #include "AlgorithmSorting.h"
 
+static size_t bitonicSortProgramIndex;
+static size_t radixSortProgramIndex;
+
 /*
 // ---- utils for accessing 11-bit quantities
 #define _0(x)	(x & 0x7FF)
@@ -353,10 +356,21 @@ void AlgorithmSorting::quickSortNative(void* vector, size_t count, size_t sizeOf
 
 #ifdef OPENCL_ENABLED
 
-void AlgorithmSorting::radixGPU(GpuDevice* gpu, float* input, size_t n)
+void AlgorithmSorting::init(GpuDevice* gpu)
 {
 	IFileManager* fileManager = Factory::getFileManagerInstance();
-	
+
+	std::string sourceRadixSort = fileManager->readTextFile("RadixSortingByGroup.cl");
+	std::string sourceBitonicSort = fileManager->readTextFile("BitonicSorting2Groups.cl");
+
+	bitonicSortProgramIndex = gpu->commandManager->cacheProgram(sourceBitonicSort.c_str(), sizeof(char) * sourceBitonicSort.length());
+	radixSortProgramIndex = gpu->commandManager->cacheProgram(sourceRadixSort.c_str(), sizeof(char) * sourceRadixSort.length());
+
+	delete fileManager;
+}
+
+void AlgorithmSorting::radixGPU(GpuDevice* gpu, float* input, size_t n)
+{
 	// 2^17 elementos
 	// Total de 1024 threads executando
 	// 8 grupos
@@ -370,19 +384,13 @@ void AlgorithmSorting::radixGPU(GpuDevice* gpu, float* input, size_t n)
 	const size_t groupCount = threadsCount / elementsPerWorkItem;
 	size_t elementsPerGroup = elementsPerWorkItem * elementsPerWorkItem;
 	size_t iteraions = ((size_t) std::log(groupCount)) + 1;
-	size_t inputBufferSize = sizeof(float) * n;
-
-	std::string sourceRadixSort = fileManager->readTextFile("RadixSortingByGroup.cl");
-	sourceRadixSort = sourceRadixSort.insert(0, "#define ELEMENTS_PER_WORKITEM (" + StringHelper::toString(elementsPerWorkItem) + ")   \n");
-	std::string sourceBitonicSort = fileManager->readTextFile("BitonicSorting2Groups.cl");
-
-	size_t bitonicSortProgramIndex = gpu->commandManager->cacheProgram(sourceBitonicSort.c_str(), sizeof(char) * sourceBitonicSort.length());
-	size_t radixSortProgramIndex = gpu->commandManager->cacheProgram(sourceRadixSort.c_str(), sizeof(char) * sourceRadixSort.length());
+	const size_t inputBufferSize = sizeof(float) * n;
 
 	GpuCommand* commandRadix = gpu->commandManager->createCommand();
 	commandRadix
 		->setInputParameter(input, inputBufferSize, CL_MEM_READ_WRITE, true)
-		->setInputParameter(&n, sizeof(float), CL_MEM_READ_ONLY, true)
+		->setInputParameter(&n, sizeof(size_t), CL_MEM_READ_ONLY, true)
+		->setInputParameter(&elementsPerWorkItem, sizeof(size_t))
 		->setOutputParameter(inputBufferSize)
 		->buildFromProgram(gpu->commandManager->cachedPrograms[radixSortProgramIndex], "sort")
 		->execute(1, globalWorkSize, localWorkSize);
@@ -411,8 +419,8 @@ void AlgorithmSorting::radixGPU(GpuDevice* gpu, float* input, size_t n)
 				assert(input[i - 1] <= input[i]);
 		*/
 
-		elementsPerWorkItem *= 2;
-		elementsPerGroup *= 2;
+		elementsPerWorkItem = elementsPerWorkItem << 1; // multiply by 2
+		elementsPerGroup = elementsPerGroup << 1;    // multiply by 2
 		--iteraions;
 	} while (iteraions > 0);
 
@@ -426,7 +434,7 @@ void AlgorithmSorting::radixGPU(GpuDevice* gpu, float* input, size_t n)
 
 	HANDLE_OPENCL_ERROR(clReleaseMemObject(inputBuffer));
 	HANDLE_OPENCL_ERROR(clReleaseMemObject(inputMemBufferSize));
-	delete fileManager, commandRadix, commandBitonic;
+	delete commandRadix, commandBitonic;
 }
 
 #endif

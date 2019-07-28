@@ -70,6 +70,11 @@ namespace OpenML
 #ifdef OPENCL_ENABLED
 
 		///<summary>
+		///Init algorithms for GPU
+		///</summary>
+		API_INTERFACE static void init(GpuDevice* gpu);
+
+		///<summary>
 		///Fast sorting of numbers array using Bitonic method in GPU
 		///Complexity O(log n)
 		///</summary>

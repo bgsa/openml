@@ -1,13 +1,13 @@
 __kernel void sweepAndPrune(
-	__global const float* points, 
-	__global const size_t* pointsCount, 
-	__global size_t* globalIndex, 
-	__global float* output) 
+	__constant float*  points, 
+	__constant size_t* pointsCount, 
+	__global   size_t* globalIndex, 
+	__global   float*  output) 
 {
     __private size_t workItemIndex = get_global_id(0);
     __private size_t index = workItemIndex * 6;
     __private size_t previousAABBIndex = workItemIndex - 1;
-    __private const size_t aabbCount = *pointsCount;
+    __private size_t aabbCount = *pointsCount;
 
     __private float minPointX = points[index];
     __private float minPointY = points[index + 1];

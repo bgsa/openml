@@ -174,6 +174,7 @@ namespace OpenMLTest
 
 			GpuContext* context = GpuContext::init();
 			GpuDevice* gpu = context->defaultDevice;
+			AlgorithmSorting::init(gpu);
 
 			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 

@@ -23,7 +23,7 @@ GpuCommand* GpuCommandManager::createCommand()
 	return new GpuCommand(deviceId, deviceContext, commandQueue);
 }
 
-size_t GpuCommandManager::cacheProgram(const char* source, size_t sourceSize)
+size_t GpuCommandManager::cacheProgram(const char* source, size_t sourceSize, const char* buildOptions)
 {
 	cl_int errorCode;
 	cl_program program = clCreateProgramWithSource(deviceContext, 1, &source, &sourceSize, &errorCode);
@@ -31,7 +31,7 @@ size_t GpuCommandManager::cacheProgram(const char* source, size_t sourceSize)
 
 	cachedPrograms.emplace_back(program);
 
-	HANDLE_OPENCL_BUILD_ERROR(clBuildProgram(program, 1, &deviceId, NULL, NULL, NULL), program, deviceId);
+	HANDLE_OPENCL_BUILD_ERROR(clBuildProgram(program, 1, &deviceId, buildOptions, NULL, NULL), program, deviceId);
 
 	return cachedPrograms.size() - 1;
 }

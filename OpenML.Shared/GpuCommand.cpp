@@ -26,7 +26,7 @@ GpuCommand* GpuCommand::setInputParameter(cl_mem buffer, size_t sizeOfValue)
 GpuCommand* GpuCommand::setInputParameter(void* value, size_t sizeOfValue, cl_mem_flags memoryFlags, bool keepBuffer)
 {
 	cl_int errorCode;
-	cl_mem memoryBuffer = clCreateBuffer(deviceContext, memoryFlags, sizeOfValue, NULL, &errorCode);
+	cl_mem memoryBuffer = clCreateBuffer(deviceContext, memoryFlags, sizeOfValue, value, &errorCode);
 	HANDLE_OPENCL_ERROR(errorCode);
 
 	HANDLE_OPENCL_ERROR(clEnqueueWriteBuffer(commandQueue, memoryBuffer, CL_FALSE, 0, sizeOfValue, value, 0, NULL, NULL));

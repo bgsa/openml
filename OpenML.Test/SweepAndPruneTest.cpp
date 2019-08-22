@@ -1112,7 +1112,11 @@ namespace OpenMLTest
 		TEST_METHOD(SweepAndPrune_findCollisionsGPU_Test)
 		{
 			GpuContext* context = GpuContext::init();
+			GpuDevice* gpu = context->defaultDevice;
+			SweepAndPrune::init(gpu);
+
 			GpuCommandManager* commandManager = context->defaultDevice->commandManager;
+			
 
 			const size_t count = 1000;
 			AABBf* aabbs = get1000();
@@ -1121,7 +1125,7 @@ namespace OpenMLTest
 
 			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 			
-			SweepAndPruneResult result = SweepAndPrune::findCollisionsGPU(commandManager, aabbs, count);
+			SweepAndPruneResult result = SweepAndPrune::findCollisionsGPU(gpu, aabbs, count);
 
 			std::chrono::high_resolution_clock::time_point currentTime2 = std::chrono::high_resolution_clock::now();
 			std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);

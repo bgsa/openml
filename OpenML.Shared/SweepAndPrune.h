@@ -39,6 +39,11 @@ namespace OpenML
 	public:
 
 		///<summary>
+		/// Init Sweep And Prune Algorithm on GPU
+		///</summary>
+		static void init(GpuDevice* gpu);
+
+		///<summary>
 		/// Find the collisions using Sweep and Prune method
 		/// Returns the pair indexes
 		///</summary>
@@ -52,7 +57,7 @@ namespace OpenML
 		/// Returns the pair indexes
 		///</summary>
 		template <typename T>
-		API_INTERFACE static SweepAndPruneResult findCollisionsGPU(GpuCommandManager* gpuCommandManager, AABB<T>* aabbs, size_t count);
+		API_INTERFACE static SweepAndPruneResult findCollisionsGPU(GpuDevice* gpuCommandManager, AABB<T>* aabbs, size_t count);
 
 #endif
 

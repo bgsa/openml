@@ -22,7 +22,7 @@ namespace OpenML
 
 		GpuCommand* createCommand();
 
-		size_t cacheProgram(const char* source, size_t sourceSize);
+		size_t cacheProgram(const char* source, size_t sourceSize, const char* buildOptions = "-Werror -cl-denorms-are-zero -cl-mad-enable -cl-finite-math-only -cl-finite-math-only");
 
 		void executeReadBuffer(cl_mem gpuBuffer, size_t bufferSize, void* cpuBuffer, bool waitToFinish);
 

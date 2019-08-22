@@ -54,30 +54,30 @@ SweepAndPruneResult SweepAndPrune::findCollisions(AABB<T>* aabbs, size_t count)
 	
 	AlgorithmSorting::quickSortNative(aabbs, count, sizeof(AABB<T>), comparatorXAxisForQuickSort);
 	
-	for (size_t i = 0; i < count; i++)
+	for (size_t i = 0; i < count; ++i)
 	{
 		Vec3<T> currentMaxPoint = aabbs[i].maxPoint;
 		Vec3<T> currentMinPoint = aabbs[i].minPoint;
 
-		for (size_t j = activeListIndexCount; j > 0; j--)
+		for (size_t j = activeListIndexCount; j > 0; --j)
 		{
 			activeListAABBIndex = activeListIndex[j - 1];
 
 			if (aabbs[activeListAABBIndex].maxPoint.x < currentMinPoint.x)
 			{
 				erase_element(activeListIndex, activeListIndexCount, j - 1); //remove from active list
-				activeListIndexCount --;
+				--activeListIndexCount;
 			}
 			else
 			{
 				//check collision AABB x AABB
-				if (  (currentMaxPoint.x > aabbs[activeListAABBIndex].minPoint.x && currentMinPoint.x < aabbs[activeListAABBIndex].maxPoint.x)
-					&&(currentMaxPoint.y > aabbs[activeListAABBIndex].minPoint.y && currentMinPoint.y < aabbs[activeListAABBIndex].maxPoint.y)
-					&&(currentMaxPoint.z > aabbs[activeListAABBIndex].minPoint.z && currentMinPoint.z < aabbs[activeListAABBIndex].maxPoint.z))
+				if (  (currentMaxPoint.x >= aabbs[activeListAABBIndex].minPoint.x && currentMinPoint.x <= aabbs[activeListAABBIndex].maxPoint.x)
+					&&(currentMaxPoint.y >= aabbs[activeListAABBIndex].minPoint.y && currentMinPoint.y <= aabbs[activeListAABBIndex].maxPoint.y)
+					&&(currentMaxPoint.z >= aabbs[activeListAABBIndex].minPoint.z && currentMinPoint.z <= aabbs[activeListAABBIndex].maxPoint.z))
 				{
 					aabbIndexes1[aabbIndex] = i;
-					aabbIndexes2[aabbIndex] = j - 1;
-					aabbIndex ++;
+					aabbIndexes2[aabbIndex] = activeListAABBIndex;					
+					++aabbIndex;
 				}
 			}
 		}

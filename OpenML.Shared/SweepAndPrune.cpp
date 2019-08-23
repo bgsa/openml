@@ -58,14 +58,11 @@ SweepAndPruneResult SweepAndPrune::findCollisions(AABB<T>* aabbs, size_t count)
 	
 	for (size_t i = 0; i < count; ++i)
 	{
-		Vec3<T> currentMaxPoint = aabbs[i].maxPoint;
-		Vec3<T> currentMinPoint = aabbs[i].minPoint;
-
 		for (size_t j = activeListIndexCount; j > 0; --j)
 		{
 			activeListAABBIndex = activeListIndex[j - 1];
 
-			if (aabbs[activeListAABBIndex].maxPoint.x < currentMinPoint.x)
+			if (aabbs[activeListAABBIndex].maxPoint.x < aabbs[i].minPoint.x)
 			{
 				erase_element(activeListIndex, activeListIndexCount, j - 1); //remove from active list
 				--activeListIndexCount;
@@ -73,12 +70,12 @@ SweepAndPruneResult SweepAndPrune::findCollisions(AABB<T>* aabbs, size_t count)
 			else
 			{
 				//check collision AABB x AABB
-				if (  (currentMaxPoint.x >= aabbs[activeListAABBIndex].minPoint.x && currentMinPoint.x <= aabbs[activeListAABBIndex].maxPoint.x)
-					&&(currentMaxPoint.y >= aabbs[activeListAABBIndex].minPoint.y && currentMinPoint.y <= aabbs[activeListAABBIndex].maxPoint.y)
-					&&(currentMaxPoint.z >= aabbs[activeListAABBIndex].minPoint.z && currentMinPoint.z <= aabbs[activeListAABBIndex].maxPoint.z))
+				if (  (aabbs[i].maxPoint.x >= aabbs[activeListAABBIndex].minPoint.x && aabbs[i].minPoint.x <= aabbs[activeListAABBIndex].maxPoint.x)
+					&&(aabbs[i].maxPoint.y >= aabbs[activeListAABBIndex].minPoint.y && aabbs[i].minPoint.y <= aabbs[activeListAABBIndex].maxPoint.y)
+					&&(aabbs[i].maxPoint.z >= aabbs[activeListAABBIndex].minPoint.z && aabbs[i].minPoint.z <= aabbs[activeListAABBIndex].maxPoint.z))
 				{
 					aabbIndexes1[aabbIndex] = i;
-					aabbIndexes2[aabbIndex] = activeListAABBIndex;					
+					aabbIndexes2[aabbIndex] = activeListAABBIndex;
 					++aabbIndex;
 				}
 			}
@@ -88,7 +85,6 @@ SweepAndPruneResult SweepAndPrune::findCollisions(AABB<T>* aabbs, size_t count)
 	}
 
 	delete[] activeListIndex;
-	
 	return SweepAndPruneResult(aabbIndexes1, aabbIndexes2, aabbIndex);
 }
 template SweepAndPruneResult SweepAndPrune::findCollisions<int>(AABB<int>*, size_t);

@@ -1117,7 +1117,6 @@ namespace OpenMLTest
 
 			GpuCommandManager* commandManager = context->defaultDevice->commandManager;
 			
-
 			const size_t count = 1000;
 			AABBf* aabbs = get1000();
 			//const size_t count = (size_t) std::pow(2.0, 17.0);

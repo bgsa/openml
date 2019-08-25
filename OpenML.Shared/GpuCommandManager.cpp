@@ -20,7 +20,7 @@ GpuCommandManager::GpuCommandManager(cl_context deviceContext, cl_device_id devi
 
 GpuCommand* GpuCommandManager::createCommand()
 {
-	return new GpuCommand(deviceId, deviceContext, commandQueue);
+	return ALLOC_NEW(GpuCommand)(deviceId, deviceContext, commandQueue);
 }
 
 size_t GpuCommandManager::cacheProgram(const char* source, size_t sourceSize, const char* buildOptions)

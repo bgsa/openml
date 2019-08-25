@@ -33,7 +33,7 @@ namespace OpenMLTest
 		{
 			Randomizer<int> randomizer(0, spaceSize);
 
-			float* result = new float[count];
+			float* result = ALLOC_ARRAY(float, count);
 
 			for (size_t i = 0; i < count; i++)
 				result[i] = randomizer.rand() / 100.0f;
@@ -168,9 +168,7 @@ namespace OpenMLTest
 		{
 			const size_t count = (size_t)std::pow(2.0, 17.0);
 			float* vector = getRandom(count);
-			float* result = new float[count];
-			//float* result = getRandom(count);
-			std::memcpy(result, vector, sizeof(float) * count);
+			float* result = ALLOC_COPY(vector, float, count);
 
 			GpuContext* context = GpuContext::init();
 			GpuDevice* gpu = context->defaultDevice;
@@ -193,9 +191,8 @@ namespace OpenMLTest
 			for (size_t i = 0; i < count; i++)
 				Assert::AreEqual(vector[i], result[i], L"Wrong value.", LINE_INFO());
 
-			delete[] vector, result;
-			//delete[] result;
-			delete context;
+			ALLOC_RELEASE(result);
+			ALLOC_RELEASE(vector);
 		}
 
 	};

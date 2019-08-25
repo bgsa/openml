@@ -89,7 +89,7 @@ GpuCommand* GpuCommand::execute(size_t workDimnmsion, size_t* globalWorkSize, si
 	cl_event* events = NULL;
 
 #ifdef DEBUG
-	events = new cl_event[1];
+	events = ALLOC_ARRAY(cl_event, 1);
 	cl_ulong time_start, time_end;
 #endif
 
@@ -102,7 +102,7 @@ GpuCommand* GpuCommand::execute(size_t workDimnmsion, size_t* globalWorkSize, si
 
 	timeToExecuteInMiliseconds = (time_end - time_start) / 1000000.0;
 
-	delete[] events;
+	ALLOC_RELEASE(events);
 #endif
 
 	return this;
@@ -116,7 +116,7 @@ void GpuCommand::fetch(void* buffer)
 template <typename T>
 T* GpuCommand::fetch()
 {
-	void* result = std::malloc(outputSize);
+	void* result = ALLOC_SIZE(outputSize);
 
 	HANDLE_OPENCL_RUNTIME_ERROR(clEnqueueReadBuffer(commandQueue, outputParameter, CL_TRUE, 0, outputSize, result, 0, NULL, NULL));
 	
@@ -143,7 +143,7 @@ T* GpuCommand::fetchInOutParameter(size_t index)
 {
 	size_t size = inputParametersSize[index];
 
-	void* result = std::malloc(size);
+	void* result = ALLOC_SIZE(size);
 
 	HANDLE_OPENCL_RUNTIME_ERROR(clEnqueueReadBuffer(commandQueue, inputParameters[index], CL_TRUE, 0, size, result, 0, NULL, NULL));
 

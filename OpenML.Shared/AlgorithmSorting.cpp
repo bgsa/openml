@@ -434,7 +434,8 @@ void AlgorithmSorting::radixGPU(GpuDevice* gpu, float* input, size_t n)
 
 	HANDLE_OPENCL_ERROR(clReleaseMemObject(inputBuffer));
 	HANDLE_OPENCL_ERROR(clReleaseMemObject(inputMemBufferSize));
-	delete commandRadix, commandBitonic;
+	commandRadix->~GpuCommand();
+	commandBitonic->~GpuCommand();
 }
 
 #endif

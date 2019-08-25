@@ -46,11 +46,11 @@ void erase_element(T* array, size_t count, size_t index)
 template <typename T>
 SweepAndPruneResult SweepAndPrune::findCollisions(AABB<T>* aabbs, size_t count)
 {
-	size_t* aabbIndexes1 = new size_t[count];
-	size_t* aabbIndexes2 = new size_t[count];
+	size_t* aabbIndexes1 = ALLOC_ARRAY(size_t, count);
+	size_t* aabbIndexes2 = ALLOC_ARRAY(size_t, count);
 	size_t aabbIndex = 0;
 		
-	size_t* activeListIndex = new size_t[count];
+	size_t* activeListIndex = ALLOC_ARRAY(size_t, count);
 	size_t activeListIndexCount = 0;
 	size_t activeListAABBIndex = 0;
 	
@@ -84,7 +84,7 @@ SweepAndPruneResult SweepAndPrune::findCollisions(AABB<T>* aabbs, size_t count)
 		activeListIndex[activeListIndexCount++] = i;
 	}
 
-	delete[] activeListIndex;
+	ALLOC_RELEASE(activeListIndex);
 	return SweepAndPruneResult(aabbIndexes1, aabbIndexes2, aabbIndex);
 }
 template SweepAndPruneResult SweepAndPrune::findCollisions<int>(AABB<int>*, size_t);
@@ -115,7 +115,7 @@ SweepAndPruneResult SweepAndPrune::findCollisionsGPU(GpuDevice* gpu, AABB<T>* aa
 
 	AlgorithmSorting::quickSortNative(aabbs, count, sizeof(AABB<T>), comparatorXAxisForQuickSort);
 
-	T* points = new T[outputCount];
+	T* points = ALLOC_ARRAY(T, outputCount);
 	size_t index = 0;
 	for (size_t i = 0; i < count; i++)
 	{
@@ -143,16 +143,15 @@ SweepAndPruneResult SweepAndPrune::findCollisionsGPU(GpuDevice* gpu, AABB<T>* aa
 	
 	globalIndex = *command->fetchInOutParameter<size_t>(2) >> 1; //divide by 2
 
-	size_t* aabbIndex1 = new size_t[globalIndex];
-	size_t* aabbIndex2 = new size_t[globalIndex];
+	size_t* aabbIndex1 = ALLOC_ARRAY(size_t, globalIndex);
+	size_t* aabbIndex2 = ALLOC_ARRAY(size_t, globalIndex);
 	for (size_t i = 0; i < globalIndex; i++)
 	{
 		aabbIndex1[i] = output[i * 2];
 		aabbIndex2[i] = output[i * 2 + 1];
 	}
 
-	delete command;
-	delete[] points, output;
+	command->~GpuCommand();
 	return SweepAndPruneResult(aabbIndex1, aabbIndex2, globalIndex);
 }
 template SweepAndPruneResult SweepAndPrune::findCollisionsGPU<int>(GpuDevice* gpuCommandManager, AABB<int>*, size_t);

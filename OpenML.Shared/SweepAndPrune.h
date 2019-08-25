@@ -30,7 +30,8 @@ namespace OpenML
 
 		~SweepAndPruneResult()
 		{
-			delete[] aabbIndexes1, aabbIndexes2;
+			ALLOC_RELEASE(aabbIndexes2);
+			ALLOC_RELEASE(aabbIndexes1);
 		}
 	};
 

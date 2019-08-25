@@ -81,7 +81,7 @@ namespace OpenMLTest
 
 		AABBf* get1000()
 		{
-			AABBf* aabbs = NEW_ARRAY(1000, AABBf);
+			AABBf* aabbs = ALLOC_ARRAY(AABBf, 1000);
 			aabbs[0] = AABBf({ 272.0f, 544.0f, 360.0f }, { 273.0f, 545.0f, 362.0f });
 			aabbs[1] = AABBf({ 583.0f, 506.0f, 140.0f }, { 584.0f, 518.0f, 144.0f });
 			aabbs[2] = AABBf({ 791.0f, 759.0f, 216.0f }, { 799.0f, 775.0f, 227.0f });
@@ -1104,7 +1104,7 @@ namespace OpenMLTest
 
 			Assert::AreEqual(size_t(9), result.count, L"wrong value", LINE_INFO());
 
-			RELEASE(aabbs);
+			ALLOC_RELEASE(aabbs);
 		}
 
 #if OPENCL_ENABLED
@@ -1131,7 +1131,7 @@ namespace OpenMLTest
 
 			Assert::AreEqual(size_t(9), result.count, L"wrong value", LINE_INFO());
 
-			delete[] aabbs;
+			ALLOC_RELEASE(aabbs);
 		}
 
 #endif

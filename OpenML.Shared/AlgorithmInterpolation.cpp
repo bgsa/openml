@@ -3,7 +3,7 @@
 template <typename T>
 T AlgorithmInterpolation<T>::findInterpolation(T x, Vec2<T>* points, size_t pointsCount)
 {
-	T* q = new T[pointsCount * pointsCount];
+	T* q = ALLOC_ARRAY(T, pointsCount * pointsCount);
 
 	std::memset(q, 0, pointsCount * pointsCount * sizeof(T)); //initialize array with Zeros
 	
@@ -24,7 +24,7 @@ T AlgorithmInterpolation<T>::findInterpolation(T x, Vec2<T>* points, size_t poin
 	
 	T result = q[pointsCount * pointsCount - 1];
 
-	delete[] q;
+	ALLOC_RELEASE(q);
 
 	return result;
 }
@@ -32,24 +32,27 @@ T AlgorithmInterpolation<T>::findInterpolation(T x, Vec2<T>* points, size_t poin
 template <typename T>
 T** AlgorithmInterpolation<T>::naturalSpline(Vec2<T>* points, size_t pointsCount)
 {
-	T** result = new T*[pointsCount - 1];
+	T** result = ALLOC_ARRAY(T*, pointsCount - 1);
 
-	T* h = new T[pointsCount];
+	for (size_t i = 0; i < pointsCount - 1; i++)
+		result[i] = ALLOC_ARRAY(T, 4);
+
+	T* h = ALLOC_ARRAY(T, pointsCount);
 	h[pointsCount - 1] = T(0);
 
 	for (size_t i = 0; i < pointsCount - 1; i++)
 		h[i] = points[i + 1][0] - points[i][0];
 
-	T* alpha = new T[pointsCount];
+	T* alpha = ALLOC_ARRAY(T, pointsCount);
 	alpha[0] = T(0);
 	alpha[pointsCount - 1] = T(0);
 
-	T* l = new T[pointsCount];
-	T* u = new T[pointsCount];
-	T* z = new T[pointsCount];
-	T* c = new T[pointsCount];
-	T* b = new T[pointsCount];
-	T* d = new T[pointsCount];
+	T* l = ALLOC_ARRAY(T, pointsCount);
+	T* u = ALLOC_ARRAY(T, pointsCount);
+	T* z = ALLOC_ARRAY(T, pointsCount);
+	T* c = ALLOC_ARRAY(T, pointsCount);
+	T* b = ALLOC_ARRAY(T, pointsCount);
+	T* d = ALLOC_ARRAY(T, pointsCount);
 
 	b[pointsCount - 1] = T(0);
 	d[pointsCount - 1] = T(0);
@@ -82,14 +85,13 @@ T** AlgorithmInterpolation<T>::naturalSpline(Vec2<T>* points, size_t pointsCount
 
 	for (size_t i = 0; i < pointsCount - 1; i++)
 	{
-		result[i] = new T[4];
 		result[i][0] = points[i][1];
 		result[i][1] = b[i];
 		result[i][2] = c[i];
 		result[i][3] = d[i];
 	}
 
-	delete[] h, alpha, l, u, z, c, b, d;
+	ALLOC_RELEASE(h);
 	return result;
 }
 
@@ -111,7 +113,7 @@ std::string AlgorithmInterpolation<T>::naturalSplineDescription(Vec2<T>* points,
 			<< std::endl;
 	}
 	
-	delete[] spline;
+	ALLOC_RELEASE(spline);
 	return output.str();
 }
 
@@ -121,7 +123,7 @@ void getInterpolationPolynomialRecursive(Vec2<T>* points, size_t pointsCount, T 
 	if (pointsCount == 1)
 		return;
 
-	Vec2<T>* newPoints = new Vec2<T>[pointsCount - 1];
+	Vec2<T>* newPoints = ALLOC_ARRAY(Vec2<T>, pointsCount - 1);
 
 	for (size_t i = 0; i < pointsCount - 1; i++)
 	{
@@ -137,31 +139,34 @@ void getInterpolationPolynomialRecursive(Vec2<T>* points, size_t pointsCount, T 
 
 	getInterpolationPolynomialRecursive(newPoints, pointsCount - 1, x0, result, iteration);
 
-	delete[] newPoints;
+	ALLOC_RELEASE(newPoints);
 }
 
 template <typename T>
 T** AlgorithmInterpolation<T>::fixedSpline(Vec2<T>* points, size_t pointsCount, T derivedFx0, T derivedFxn)
 {
-	T** result = new T*[pointsCount - 1];
+	T** result = ALLOC_ARRAY(T*, pointsCount - 1);
 	size_t n = pointsCount - 1;
 
-	T* h = new T[pointsCount];
+	for (size_t i = 0; i < n; i++)
+		result[i] = ALLOC_ARRAY(T, 4);
+
+	T* h = ALLOC_ARRAY(T, pointsCount);
 	h[n] = T(0);
 
 	for (size_t i = 0; i < n; i++)
 		h[i] = points[i + 1][0] - points[i][0];
 
-	T* alpha = new T[pointsCount];
+	T* alpha = ALLOC_ARRAY(T, pointsCount);
 	alpha[0] = T(3) * ((points[1][1] - points[0][1]) / h[0]) - (T(3) * derivedFx0);
 	alpha[n] = T(3) * derivedFxn - (T(3) * (points[n][1] - points[n - 1][1])) / h[n - 1];
 
-	T* l = new T[pointsCount];
-	T* u = new T[pointsCount];
-	T* z = new T[pointsCount];
-	T* c = new T[pointsCount];
-	T* b = new T[pointsCount];
-	T* d = new T[pointsCount];
+	T* l = ALLOC_ARRAY(T, pointsCount);
+	T* u = ALLOC_ARRAY(T, pointsCount);
+	T* z = ALLOC_ARRAY(T, pointsCount);
+	T* c = ALLOC_ARRAY(T, pointsCount);
+	T* b = ALLOC_ARRAY(T, pointsCount);
+	T* d = ALLOC_ARRAY(T, pointsCount);
 
 	b[n] = T(0);
 	d[n] = T(0);
@@ -192,21 +197,20 @@ T** AlgorithmInterpolation<T>::fixedSpline(Vec2<T>* points, size_t pointsCount, 
 
 	for (size_t i = 0; i < n; i++)
 	{
-		result[i] = new T[4];
 		result[i][0] = points[i][1];
 		result[i][1] = b[i];
 		result[i][2] = c[i];
 		result[i][3] = d[i];
 	}
 
-	delete[] h, alpha, l, u, z, c, b, d;
+	ALLOC_RELEASE(h);
 	return result;
 }
 
 template <typename T>
 T* AlgorithmInterpolation<T>::getInterpolationPolynomial(Vec2<T>* points, size_t pointsCount)
 {
-	T* result = new T[pointsCount];
+	T* result = ALLOC_ARRAY(T, pointsCount);
 
 	result[0] = points[0][1];
 
@@ -218,7 +222,7 @@ T* AlgorithmInterpolation<T>::getInterpolationPolynomial(Vec2<T>* points, size_t
 template <typename T>
 std::string AlgorithmInterpolation<T>::getInterpolationPolynomialDescription(Vec2<T>* points, size_t pointsCount)
 {
-	T* result = new T[pointsCount];
+	T* result = ALLOC_ARRAY(T, pointsCount);
 	result[0] = points[0][1];
 	getInterpolationPolynomialRecursive(points, pointsCount, points[0][0], result, 0);
 
@@ -237,7 +241,7 @@ std::string AlgorithmInterpolation<T>::getInterpolationPolynomialDescription(Vec
 			output << "(x - " << points[j][0] << ")";
 	}
 
-	delete[] result;
+	ALLOC_RELEASE(result);
 
 	return output.str();
 }
@@ -247,12 +251,12 @@ T* AlgorithmInterpolation<T>::getInterpolationPolynomialUsingHermite(Vec2<T>* po
 {
 	const size_t twoN1 = 2 * pointsCount + 1;
 
-	T* Q = new T[twoN1 * twoN1];
-	T* z = new T[twoN1];
-	T* result = new T[pointsCount * 2];
+	T* result = ALLOC_ARRAY(T, pointsCount * 2);
+	T* Q = ALLOC_ARRAY(T, twoN1 * twoN1);
+	T* z = ALLOC_ARRAY(T, twoN1);
 
 	std::memset(Q, 0, sizeof(T) * twoN1 * twoN1);
-
+	
 	for (size_t i = 0; i < pointsCount; i++)
 	{
 		size_t row = 2 * i;
@@ -275,7 +279,7 @@ T* AlgorithmInterpolation<T>::getInterpolationPolynomialUsingHermite(Vec2<T>* po
 	for (size_t i = 0; i < pointsCount * 2; i++)
 		result[i] = Q[i * twoN1 + i];
 
-	delete[] Q, z;
+	ALLOC_RELEASE(Q);
 	return result;
 }
 
@@ -306,7 +310,7 @@ std::string AlgorithmInterpolation<T>::getInterpolationPolynomialUsingHermiteDes
 		output << " ";
 	}
 
-	delete[] polynomial;
+	ALLOC_RELEASE(polynomial);
 	return output.str().substr(2);
 }
 

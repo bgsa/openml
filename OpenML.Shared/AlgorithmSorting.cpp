@@ -157,8 +157,8 @@ void AlgorithmSorting::radix(float* vector, size_t n)
 	minElement = std::abs(minElement);
 	int maxDigitExpoent = (int) digitCount(std::max(minElement, maxElement));
 
-	float* output = new float[n];
-	size_t* digitsCache = new size_t[n];
+	float* output = ALLOC_ARRAY(float, n);
+	size_t* digitsCache = ALLOC_ARRAY(size_t, n);
 	const size_t bucketCount = 10;
 	size_t bucket[bucketCount];
 	size_t bucketIndex;
@@ -211,7 +211,7 @@ void AlgorithmSorting::radix(float* vector, size_t n)
 		std::memcpy(vector, output, sizeof(float) * n);
 	}
 
-	delete[] output, digitsCache;
+	ALLOC_RELEASE(output);
 }
 
 void AlgorithmSorting::radix(size_t *vector, size_t n)
@@ -224,8 +224,8 @@ void AlgorithmSorting::radix(size_t *vector, size_t n)
 
 	size_t maxDigit = digitCount(maxElement);
 
-	size_t* output = new size_t[n];
-	size_t* digitsCache = new size_t[n];
+	size_t* output = ALLOC_ARRAY(size_t, n);
+	size_t* digitsCache = ALLOC_ARRAY(size_t, n);
 	const size_t bucketCount = 10;
 	size_t bucket[bucketCount];
 	size_t bucketIndex;
@@ -254,7 +254,7 @@ void AlgorithmSorting::radix(size_t *vector, size_t n)
 		std::memcpy(vector, output, sizeof(size_t) * n);
 	}
 
-	delete[] output, digitsCache;
+	ALLOC_RELEASE(output);
 }
 
 void AlgorithmSorting::radix(int* vector, size_t n)
@@ -279,8 +279,8 @@ void AlgorithmSorting::radix(int* vector, size_t n)
 	else
 		minElement *= -1;
 
-	int* output = new int[n];
-	int* digitsCache = new int[n];
+	int* output = ALLOC_ARRAY(int, n);
+	int* digitsCache = ALLOC_ARRAY(int, n);
 	const size_t bucketCount = 10;
 	int bucket[bucketCount];
 	size_t bucketIndex;
@@ -309,7 +309,7 @@ void AlgorithmSorting::radix(int* vector, size_t n)
 		std::memcpy(vector, output, sizeof(int) * n);
 	}
 
-	delete[] output, digitsCache;
+	ALLOC_RELEASE(output);
 }
 
 void AlgorithmSorting::native(float* vector, size_t count)
@@ -324,7 +324,7 @@ bool compare(int a, int b, float* data)
 
 size_t* AlgorithmSorting::nativeIndex(float* vector, size_t count)
 {
-	size_t* index = new size_t[count];
+	size_t* index = ALLOC_ARRAY(size_t, count);
 
 	std::iota(index, index + count, 0); // fill index with {0,1,2,...} This only needs to happen once
 
@@ -336,7 +336,7 @@ size_t* AlgorithmSorting::nativeIndex(float* vector, size_t count)
 template <typename T>
 size_t* AlgorithmSorting::nativeIndex(T* vector, size_t count, bool(*comparator)(int, int, T*))
 {
-	size_t* index = new size_t[count];
+	size_t* index = ALLOC_ARRAY(size_t, count);
 
 	std::iota(index, index + count, 0); // fill index with {0,1,2,...} This only needs to happen once
 

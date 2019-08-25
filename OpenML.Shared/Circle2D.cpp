@@ -56,7 +56,7 @@ T* Circle2D<T>::calculatePoints(size_t& pointsCount) const
 	const size_t vertexCount = 126;
 	pointsCount = vertexCount / 2;
 
-	T* points = new T[vertexCount];
+	T* points = ALLOC_ARRAY(T, vertexCount);
 	size_t index = 0;
 
 	for (double angle = 0.0; angle < TWO_PI; angle += 0.1)
@@ -127,7 +127,7 @@ Vec2<T>* Circle2D<T>::findIntersection(const Circle2D<T>& circle2) const
 
 	if (ray + circle2.ray == distance)   //has only one point
 	{
-		result = new Vec2<T>[1];
+		result = ALLOC_ARRAY(Vec2<T>, 1);
 		result[0] = Vec2<T>(x3, y3);
 
 		return result;
@@ -137,7 +137,7 @@ Vec2<T>* Circle2D<T>::findIntersection(const Circle2D<T>& circle2) const
 		T x4 = T( p3[0] - h * (circle2.center.y - center.y) / distance);
 		T y4 = T( p3[1] + h * (circle2.center.x - center.x) / distance);
 
-		result = new Vec2<T>[2];
+		result = ALLOC_ARRAY(Vec2<T>, 2);
 		result[0] = Vec2<T>(x3, y3);
 		result[1] = Vec2<T>(x4, y4);
 	}

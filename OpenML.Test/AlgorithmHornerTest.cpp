@@ -41,6 +41,8 @@ namespace OpenMLTest
 
 			for (size_t i = 0; i < 5; i++)
 				Assert::IsTrue(isCloseEnough(result[i], expected[i]), L"Wrong value.", LINE_INFO());
+
+			ALLOC_RELEASE(result);
 		}
 
 	};

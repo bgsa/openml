@@ -55,7 +55,7 @@ T Triangle2D<T>::height() const
 template<typename T>
 Line2D<T>* Triangle2D<T>::getLines() const
 {
-	Line2D<T>* lines = new Line2D<T>[3];
+	Line2D<T>* lines = ALLOC_ARRAY(Line2D<T>, 3);
 	lines[0] = Line2D<T>(point1, point2);
 	lines[1] = Line2D<T>(point2, point3);
 	lines[2] = Line2D<T>(point3, point1);
@@ -134,9 +134,13 @@ bool Triangle2D<T>::hasIntersection(const Circle2D<T>& circle) const
 		ColisionStatus status = line.hasIntersections(circle);
 
 		if (status == ColisionStatus::INLINE || status == ColisionStatus::INSIDE)
+		{
+			ALLOC_RELEASE(linesOfTriangle);
 			return true;
+		}
 	}
 
+	ALLOC_RELEASE(linesOfTriangle);
 	return false;
 }
 

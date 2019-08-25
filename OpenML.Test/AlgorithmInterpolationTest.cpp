@@ -53,7 +53,7 @@ namespace OpenMLTest
 				for (size_t j = 0; j < pointsCount; j++)
  					Assert::IsTrue(isCloseEnough(expected[i * 4 + j], result[i][j]), L"Wrong value.", LINE_INFO());
 
-			delete[] result, expected;
+			ALLOC_RELEASE(result); 
 		}
 
 		TEST_METHOD(AlgorithmInterpolation_naturalSplineDescription_Test)
@@ -102,7 +102,7 @@ namespace OpenMLTest
 				for (size_t j = 0; j < pointsCount; j++)
 					Assert::IsTrue(isCloseEnough(expected[i * 4 + j], result[i][j]), L"Wrong value.", LINE_INFO());
 
-			delete[] result, expected;
+			ALLOC_RELEASE(result);
 		}
 
 		TEST_METHOD(AlgorithmInterpolation_fixedSpline_Test2)
@@ -128,7 +128,7 @@ namespace OpenMLTest
 				for (size_t j = 0; j < 4; j++)
 					Assert::IsTrue(isCloseEnough(expected[i * 4 + j], result[i][j]), L"Wrong value.", LINE_INFO());
 
-			delete[] result, expected;
+			ALLOC_RELEASE(result);
 		}
 
 		TEST_METHOD(AlgorithmInterpolation_getInterpolationPolynomial_Test)
@@ -156,7 +156,7 @@ namespace OpenMLTest
 			for (size_t i = 0; i < 5; i++)
 				Assert::IsTrue(isCloseEnough(expected[i], result[i]), L"Wrong value.", LINE_INFO());			
 
-			delete[] result;
+			ALLOC_RELEASE(result);
 		}
 
 		TEST_METHOD(AlgorithmInterpolation_getInterpolationPolynomialDescription_Test)
@@ -197,6 +197,8 @@ namespace OpenMLTest
 			
 			for (size_t i = 0; i < 2 * pointsCount; i++)
 				Assert::IsTrue(isCloseEnough(expected[i], result[i]), L"Wrong value.", LINE_INFO());
+
+			ALLOC_RELEASE(result);
 		}
 
 		TEST_METHOD(AlgorithmInterpolation_getInterpolationPolynomialUsingHermite_Test2)
@@ -224,6 +226,8 @@ namespace OpenMLTest
 
 			for (size_t i = 0; i < 2 * pointsCount; i++)
 				Assert::IsTrue(isCloseEnough(expected[i], result[i]), L"Wrong value.", LINE_INFO());
+
+			ALLOC_RELEASE(result);
 		}
 
 		TEST_METHOD(AlgorithmInterpolation_getInterpolationPolynomialUsingHermiteDescription_Test)

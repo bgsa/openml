@@ -84,7 +84,7 @@ T Rectangle2D<T>::diagonalLength() const
 template<typename T>
 Line2D<T>* Rectangle2D<T>::getLines() const
 {
-	Line2D<T>* lines = new Line2D<T>[4];
+	Line2D<T>* lines = ALLOC_ARRAY(Line2D<T>, 4);
 	lines[0] = Line2D<T>(point1, point2);
 	lines[1] = Line2D<T>(point2, point3);
 	lines[2] = Line2D<T>(point3, point4);
@@ -119,24 +119,28 @@ bool Rectangle2D<T>::hasIntersection(const Line2D<T>& line) const
 	Line2D<T> line4 = Line2D<T>(point4, point1);
 
 	Vec2<T>* point = line1.findIntersection(line);
-
-	if (point != nullptr)
+	if (point != NULL) {
+		ALLOC_RELEASE(point);
 		return true;
+	}
 
 	point = line2.findIntersection(line);
-
-	if (point != nullptr)
+	if (point != NULL) {
+		ALLOC_RELEASE(point);
 		return true;
+	}
 
 	point = line3.findIntersection(line);
-
-	if (point != nullptr)
+	if (point != NULL) {
+		ALLOC_RELEASE(point);
 		return true;
+	}
 
 	point = line4.findIntersection(line);
-
-	if (point != nullptr)
+	if (point != NULL) {
+		ALLOC_RELEASE(point);
 		return true;
+	}
 
 	return false;
 }
@@ -155,10 +159,14 @@ bool Rectangle2D<T>::hasIntersection(const Triangle2D<T>& triangle) const
 
 			Vec2<T>* point = line1.findIntersection(line2);
 
-			if (point != nullptr)
+			if (point != nullptr) 
+			{
+				ALLOC_RELEASE(linesOfRectangle);
 				return true;
+			}
 		}
 
+	ALLOC_RELEASE(linesOfRectangle);
 	return false;
 }
 
@@ -173,10 +181,14 @@ bool Rectangle2D<T>::hasIntersection(const Circle2D<T>& circle) const
 
 		ColisionStatus status = line.hasIntersections(circle);
 
-		if (status == ColisionStatus::INLINE || status == ColisionStatus::INSIDE)
+		if (status == ColisionStatus::INLINE || status == ColisionStatus::INSIDE) 
+		{
+			ALLOC_RELEASE(linesOfRectangle);
 			return true;
+		}
 	}
 
+	ALLOC_RELEASE(linesOfRectangle);
 	return false;
 }
 

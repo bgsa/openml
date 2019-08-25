@@ -20,7 +20,7 @@ int* Vec3List<T>::findExtremePointsAlongDirection(const Vec3<T>& direction) cons
 	T minProjection = std::numeric_limits<T>().max();
 	T maxProjection = -minProjection;
 
-	int* result = new int[2];
+	int* result = ALLOC_ARRAY(int, 2);
 		
 	for (int i = 0; i < count; i++) 
 	{ 
@@ -79,7 +79,7 @@ int* Vec3List<T>::findExtremePointsAlongAxisXYZ() const
 	Vec3<T> directionY = Vec3<T>(T(0), T(1), T(0));
 	Vec3<T> directionZ = Vec3<T>(T(0), T(0), T(1));
 
-	int* result = new int[6];
+	int* result = ALLOC_ARRAY(int, 6);
 
 	for (int i = 0; i < count; i++)
 	{
@@ -181,7 +181,7 @@ int* Vec3List<T>::closestPoint_UsingBruteForce() const
 {
 	T minimunDistance = std::numeric_limits<T>().max();
 
-	int* result = new int[2];
+	int* result = ALLOC_ARRAY(int, 2);
 
 	for (int i = 0; i < count; i++)
 		for (int j = i+1; j < count; j++)
@@ -205,7 +205,7 @@ Vec3List<T>::~Vec3List()
 {
 	if (points != nullptr)
 	{
-		delete[] points;
+		ALLOC_RELEASE(points);
 		points = nullptr;
 		count = 0;
 	}

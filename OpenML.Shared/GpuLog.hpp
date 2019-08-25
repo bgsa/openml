@@ -41,14 +41,14 @@ namespace OpenML
 
 				errorCode = clGetProgramBuildInfo(program, deviceId, CL_PROGRAM_BUILD_LOG, 0, NULL, &logSize);
 
-				char* errorMessage = (char*)malloc((logSize + 1));
+				char* errorMessage = (char*)ALLOC_SIZE(logSize + 1);
 
 				clGetProgramBuildInfo(program, deviceId, CL_PROGRAM_BUILD_LOG, logSize, errorMessage, NULL);
 
 				errorMessage[logSize] = '\0';
 
 				assert(false);
-				std::free(errorMessage);
+				ALLOC_RELEASE(errorMessage);
 			}
 		}
 

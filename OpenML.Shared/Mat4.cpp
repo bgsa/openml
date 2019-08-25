@@ -752,7 +752,7 @@ Mat4<T>* Mat4<T>::decomposeLU() const
 {
 	Mat4<T> lowerMatrix = Mat4<T>::identity();
 	Mat4<T> upperMatrix = this->clone();
-	Mat4<T>* result = new Mat4<T>[2];
+	Mat4<T>* result = ALLOC_ARRAY(Mat4<T>, 2);
 
 	std::vector<Mat4<T>> elementarInverseMatrixes;
 	Mat4<T> elementarInverseMatrix;
@@ -838,7 +838,7 @@ template <typename T>
 Mat4<T>* Mat4<T>::decomposeLDU() const
 {
 	Mat4<T> diagonalMatrix = Mat4<T>::identity();
-	Mat4<T>* result = new Mat4<T>[3];
+	Mat4<T>* result = ALLOC_ARRAY(Mat4<T>, 3);
 
 	Mat4<T>* lowerAndUpperMatrixes = decomposeLU();
 

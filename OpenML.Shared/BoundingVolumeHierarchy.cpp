@@ -15,7 +15,7 @@ void BoundingVolumeHierarchy::insert(const BoundingVolume<float>& boundingVolume
 {
 	if (isEmpty()) 
 	{
-		root = new BinaryTreeNode<BoundingVolume<float>>(boundingVolume);
+		root = ALLOC_NEW(BinaryTreeNode<BoundingVolume<float>>)(boundingVolume);
 		return;
 	}
 

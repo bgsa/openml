@@ -71,7 +71,7 @@ int HashGrid<T>::findCellIndex(const Vec3<T>& point)
 template <typename T>
 Vec3List<T>* HashGrid<T>::findRangeCell(const AABB<T>& aabb) 
 {	
-	Vec3List<T>* list = new Vec3List<T>();
+	Vec3List<T>* list = ALLOC(Vec3List<T>);
 	Vec3<T> minCell = findCell(aabb.minPoint);
 	Vec3<T> maxCell = findCell(aabb.maxPoint);
 
@@ -82,7 +82,7 @@ Vec3List<T>* HashGrid<T>::findRangeCell(const AABB<T>& aabb)
 		* (deltaPoints.y == T(0) ? T(1) : deltaPoints.y) 
 		* (deltaPoints.z == T(0) ? T(1) : deltaPoints.z)));
 
-	list->points = new Vec3<T>[list->count];
+	list->points = ALLOC_ARRAY(Vec3<T>, list->count);
 
 	size_t index = 0;
 	
@@ -107,7 +107,7 @@ std::vector<int> HashGrid<T>::findRangeCellIndex(const AABB<T>& aabb)
 	for (int i = 0; i < cells->count; i++)
 		hashes[i] = findCellIndexByCellId(cells->points[i]);
 
-	delete cells;
+	ALLOC_RELEASE(cells);
 	
 	return hashes;
 }

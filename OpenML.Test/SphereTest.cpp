@@ -166,7 +166,7 @@ namespace OpenMLTest
 		TEST_METHOD(Sphere_buildFrom_pointList_Test)
 		{
 			int pointsCont = 6;
-			Vec3f* points = new Vec3f[pointsCont];
+			Vec3f* points = ALLOC_ARRAY(Vec3f, pointsCont);
 			points[0] = { 0.0f, 0.0f, 0.3f };
 			points[1] = { 10.0f, 10.0f, 10.0f };
 			points[2] = { 5.0f, 5.0f, 5.0f };

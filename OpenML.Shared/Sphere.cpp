@@ -181,12 +181,11 @@ Sphere<T> Sphere<T>::buildFrom(const AABB<T> &aabb)
 template <typename T>
 Sphere<T> Sphere<T>::buildFrom(const Vec3List<T>& pointList)
 {
-	Vec3<T>* suportPoints = new Vec3<T>[pointList.count];
+	Vec3<T>* suportPoints = ALLOC_ARRAY(Vec3<T>, pointList.count);
 
 	Sphere<T> result = WelzlSphere(pointList.points, pointList.count, suportPoints, 0);
 
-	delete[] suportPoints;
-
+	ALLOC_RELEASE(suportPoints);
 	return result;
 }
 

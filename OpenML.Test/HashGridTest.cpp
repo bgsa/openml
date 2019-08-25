@@ -34,7 +34,7 @@ namespace OpenMLTest
 			Randomizer<int> randomizerSize(0, 30);
 			Randomizer<int> randomizerLocation(0, 1000);
 
-			AABBf* aabbs = new AABBf[count];
+			AABBf* aabbs = ALLOC_ARRAY(AABBf, count);
 
 			std::ostringstream output;
 			output << "AABBf* aabbs = new AABBf[ " << count << " ];" << std::endl;
@@ -85,7 +85,7 @@ namespace OpenMLTest
 
 		AABBf* get10000()
 		{
-			AABBf* aabbs = new AABBf[10000];
+			AABBf* aabbs = ALLOC_ARRAY(AABBf, 10000);
 			aabbs[0] = AABBf({ 784.0f, 343.0f, 64.0f }, { 803.0f, 355.0f, 81.0f });
 			aabbs[1] = AABBf({ 263.0f, 511.0f, 354.0f }, { 280.0f, 527.0f, 358.0f });
 			aabbs[2] = AABBf({ 772.0f, 34.0f, 1001.0f }, { 798.0f, 48.0f, 1010.0f });
@@ -10092,7 +10092,7 @@ namespace OpenMLTest
 
 		AABBf* get1000()
 		{
-			AABBf* aabbs = new AABBf[1000];
+			AABBf* aabbs = ALLOC_ARRAY(AABBf, 1000);
 			aabbs[0] = AABBf({ 272.0f, 544.0f, 360.0f }, { 273.0f, 545.0f, 362.0f });
 			aabbs[1] = AABBf({ 583.0f, 506.0f, 140.0f }, { 584.0f, 518.0f, 144.0f });
 			aabbs[2] = AABBf({ 791.0f, 759.0f, 216.0f }, { 799.0f, 775.0f, 227.0f });
@@ -11099,7 +11099,7 @@ namespace OpenMLTest
 
 		AABBf* get100()
 		{
-			AABBf* aabbs = new AABBf[100];
+			AABBf* aabbs = ALLOC_ARRAY(AABBf, 100);
 			aabbs[0] = AABBf({ 368.0f, 191.0f, 881.0f }, { 372.0f, 194.0f, 899.0f });
 			aabbs[1] = AABBf({ 1005.0f, 461.0f, 661.0f }, { 1025.0f, 475.0f, 672.0f });
 			aabbs[2] = AABBf({ 89.0f, 251.0f, 204.0f }, { 106.0f, 271.0f, 229.0f });
@@ -11293,7 +11293,7 @@ namespace OpenMLTest
 				Assert::AreEqual(expectedCells[index][2], result->points[index][2], L"Wrong value.", LINE_INFO());
 			}
 
-			delete result;
+			ALLOC_RELEASE(result);
 		}
 
 		TEST_METHOD(HashGrid_findRangeCell_Test2)
@@ -11321,7 +11321,7 @@ namespace OpenMLTest
 				Assert::AreEqual(expectedCells[index][2], result->points[index][2], L"Wrong value.", LINE_INFO());
 			}
 
-			delete result;
+			ALLOC_RELEASE(result);
 		}
 
 		TEST_METHOD(HashGrid_findCollisions_Test1)
@@ -11407,7 +11407,7 @@ namespace OpenMLTest
 			std::chrono::high_resolution_clock::time_point currentTime2 = std::chrono::high_resolution_clock::now();
 			std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
 
-			delete[] aabbs;
+			ALLOC_RELEASE(aabbs);
 		}
 
 	};

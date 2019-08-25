@@ -16,61 +16,67 @@ namespace OpenMLTest
 		TEST_METHOD(solve_2varaibles_Test)
 		{
 			SystemOfLinearEquations<float> linearSystem;
-			size_t rowSize = 2;
-			size_t colSize = 3;
+			const size_t rowSize = 2;
+			const size_t colSize = 3;
 
-			float* matrix = new float[rowSize * colSize] {
+			float matrix[rowSize * colSize] {
 				1.0f,  1.0f, 3.0f,
 				1.0f, -1.0f, 1.0f
 			};
 
-			float* expected = new float[colSize - 1] { 2.0f, 1.0f };
+			float expected[colSize - 1] = { 2.0f, 1.0f };
 
 			float* result = linearSystem.solve(matrix, rowSize, colSize);
 
 			for (size_t i = 0; i < colSize - 1; i++)
 				Assert::AreEqual(expected[i], ceil(result[i]), L"Value wrong", LINE_INFO());
+
+			ALLOC_RELEASE(result);
 		}
 
 		TEST_METHOD(solve_3varaibles_Test)
 		{				
 			SystemOfLinearEquations<float> linearSystem;
-			size_t rowSize = 3;
-			size_t colSize = 4;
+			const size_t rowSize = 3;
+			const size_t colSize = 4;
 
-			float* matrix = new float[rowSize * colSize]{
+			float matrix[rowSize * colSize]{
 				2.0f,  1.0f, -3.0f, -1.0f,
 				-1.0f, 3.0f, 2.0f, 12.0f,
 				3.0f, 1.0f, -3.0, 0.0f
 			};
 
-			float* expected = new float[colSize - 1]{ 1.0f, 3.0f, 2.0f };
+			float expected[colSize - 1] = { 1.0f, 3.0f, 2.0f };
 
 			float* result = linearSystem.solve(matrix, rowSize, colSize);
 
 			for (size_t i = 0; i < colSize - 1; i++)
 				Assert::AreEqual(expected[i], ceil(result[i]), L"Value wrong", LINE_INFO());
+
+			ALLOC_RELEASE(result);
 		}
 
 		TEST_METHOD(solve_4varaibles_Test)
 		{
 			SystemOfLinearEquations<float> linearSystem;
-			size_t rowSize = 4;
-			size_t colSize = 5;
+			const size_t rowSize = 4;
+			const size_t colSize = 5;
 
-			float* matrix = new float[rowSize * colSize]{
+			float matrix[rowSize * colSize] {
 				1.0f, -1.0f, 2.0f, -1.0f, -8.0f,
 				2.0f, -2.0f, 3.0f, -3.0f, -20.0f,
 				1.0f, 1.0f, 1.0f, 0.0f, -2.0f,
 				1.0f, -1.0f, 4.0f, 3.0f, 4.0f,
 			};
 
-			float* expected = new float[colSize - 1]{ -7.0f, 3.0f, 2.0f, 2.0f };
+			float expected[colSize - 1] = { -7.0f, 3.0f, 2.0f, 2.0f };
 
 			float* result = linearSystem.solve(matrix, rowSize, colSize);
 
 			for (size_t i = 0; i < colSize - 1; i++)
 				Assert::AreEqual(expected[i], ceil(result[i]), L"Value wrong", LINE_INFO());
+
+			ALLOC_RELEASE(result);
 		}
 
 		TEST_METHOD(getLineEquation_Test)

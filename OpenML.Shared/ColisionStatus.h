@@ -23,7 +23,7 @@ namespace OpenML
 		{
 			this->status = status;
 
-			points = new Vec3<T>[1];
+			points = ALLOC_ARRAY(Vec3<T>,1);
 			points[0] = point1;
 
 			pointsCount = 1;
@@ -33,7 +33,7 @@ namespace OpenML
 		{
 			this->status = status;
 
-			points = new Vec3<T>[2];
+			points = ALLOC_ARRAY(Vec3<T>,2);
 			points[0] = point1;
 			points[1] = point2;
 

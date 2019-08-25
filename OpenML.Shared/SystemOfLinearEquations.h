@@ -42,11 +42,12 @@ public:
 	/// </summary>
 	API_INTERFACE T* solve(T* matrix, size_t rowSize, size_t colSize) 
 	{
-		T* upperMatrix = new T[rowSize * colSize];
-		memcpy(upperMatrix, matrix, sizeof(upperMatrix) * rowSize * colSize);
+		T* result = ALLOC_ARRAY(T, colSize - 1);
 
-		T* result = new T[colSize - 1];
-		
+		T* upperMatrix = ALLOC_ARRAY(T, rowSize * colSize);
+		//ALLOC_COPY()
+		std::memcpy(upperMatrix, matrix, sizeof(upperMatrix) * rowSize * colSize);
+
 		size_t pivotColumnIndex = 0;
 
 		for (size_t line = 0; line < rowSize; line++)
@@ -103,6 +104,7 @@ public:
 			}
 		}
 		
+		ALLOC_RELEASE(upperMatrix);
 		return result;
 	}
 

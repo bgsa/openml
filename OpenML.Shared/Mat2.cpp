@@ -10,13 +10,13 @@ Mat2<T>::Mat2(T defaultValue)
 		defaultValue, defaultValue
 	};
 
-	memcpy(&values, emptyMatrix, sizeof(values));
+	std::memcpy(&values, emptyMatrix, sizeof(values));
 }
 
 template <typename T>
 Mat2<T>::Mat2(T* values)
 {
-	memcpy(&this->values, values, sizeof(this->values));
+	std::memcpy(&this->values, values, sizeof(this->values));
 }
 
 template <typename T>
@@ -37,7 +37,7 @@ Mat2<T> Mat2<T>::identity()
 	};
 
 	Mat2 result;
-	memcpy(&result, identityMatrix, sizeof(values));
+	std::memcpy(&result, identityMatrix, sizeof(values));
 
 	return result;
 }

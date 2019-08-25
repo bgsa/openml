@@ -38,7 +38,7 @@ namespace OpenMLTest
 			Randomizer<int> randomizerSize(0, 30);
 			Randomizer<int> randomizerLocation(0, spaceSize);
 
-			AABBf* aabbs = new AABBf[count];
+			AABBf* aabbs = ALLOC_ARRAY(AABBf, count);
 
 			for (size_t i = 0; i < count; i++)
 			{

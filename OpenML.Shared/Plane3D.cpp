@@ -74,7 +74,7 @@ Vec3<T>* Plane3D<T>::findIntersection(const Line3D<T>& line) const
 
 	T t = numerator / denominator;
 
-	Vec3<T>* intersection = new Vec3<T>(
+	Vec3<T>* intersection = ALLOC_NEW(Vec3<T>)(
 		line.point1[0] + lineAsVector[0] * t,
 		line.point1[1] + lineAsVector[1] * t,
 		line.point1[2] + lineAsVector[2] * t
@@ -103,7 +103,7 @@ Line3D<T>* Plane3D<T>::findIntersection(const Plane3D<T>& plane) const
 	// find another point on the line
 	Vec3<T> point2 = point1 + lineDirection;
 
-	return new Line3D<T>(point1, point2);
+	return ALLOC_NEW(Line3D<T>)(point1, point2);
 }
 
 template <typename T>

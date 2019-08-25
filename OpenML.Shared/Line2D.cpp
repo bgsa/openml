@@ -29,6 +29,7 @@ T Line2D<T>::angle() const
 	T deltaX = point2.x - point1.x;
 
 	T angle = T(atan(deltaY / deltaX));
+
 	return angle;
 }
 
@@ -150,16 +151,22 @@ Vec2<T>* Line2D<T>::findIntersection(const Line2D<T>& otherLine) const
 	double s = ((line2Point2.x - line2Point1.x) * (line2Point1.y - point1.y) - (line2Point2.y - line2Point1.y) * (line2Point1.x - point1.x)) / determinant;
 	//double t = ((point2.x - point1.x) * (line2Point1.y - point1.y) - (point2.y - point1.y) * (line2Point1.x - point1.x)) / determinant;
 
-	Vec2<T>* intersection = new Vec2<T>(
+	Vec2<T>* intersection = ALLOC_NEW(Vec2<T>)(
 		point1.x + (point2.x - point1.x)* T(s),
 		point1.y + (point2.y - point1.y)* T(s)
 		);
 
 	if (!isOnTheLine(*intersection))
+	{
+		ALLOC_RELEASE(intersection);
 		return nullptr;  // intersection not found on this line
+	}
 
-	if (!otherLine.isOnTheLine(*intersection))
+	if (!otherLine.isOnTheLine(*intersection)) 
+	{
+		ALLOC_RELEASE(intersection);
 		return nullptr;  // intersection not found on this line
+	}
 
 	return intersection;
 }

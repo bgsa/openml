@@ -3,7 +3,7 @@
 template <typename T>
 T* AlgorithmHorner<T>::polynomialDivision(T x0, T* polynomial, int polynomialDegree)
 {
-	T* result = new T[polynomialDegree];
+	T* result = ALLOC_ARRAY(T, polynomialDegree);
 	result[0] = polynomial[0];
 
 	for (int i = 1; i < polynomialDegree; i++)
@@ -26,7 +26,7 @@ T solvePolynomial(T* coefficients, int polynomialDegree, T x)
 template <typename T>
 T* AlgorithmHorner<T>::findRoots(T x0, T* polynomial, int polynomialDegree)
 {
-	T* result = new T[polynomialDegree];
+	T* result = ALLOC_ARRAY(T, polynomialDegree);
 	result[0] = x0;
 	
 	for (int i = 0; i < polynomialDegree - 1; i++)
@@ -39,7 +39,7 @@ T* AlgorithmHorner<T>::findRoots(T x0, T* polynomial, int polynomialDegree)
 			
 		result[i + 1] = result[i] - value / valueDerived;
 
-		delete[] dividedPolynomial;
+		ALLOC_RELEASE(dividedPolynomial);
 	}
 	
 	return result;

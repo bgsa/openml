@@ -99,7 +99,7 @@ Vec3<T>* Line3D<T>::findIntersection(const Line3D<T>& line2) const
 	T s = numerador / denominador;
 
 	if (s >= 0 && s <= 1)
-		return new Vec3<T>(da * s + point1);
+		return ALLOC_NEW(Vec3<T>)(da * s + point1);
 
 	return nullptr;
 }
@@ -163,7 +163,7 @@ Vec3<T>* Line3D<T>::findIntersectionOnSegment(const Plane3D<T>& plane) const
 	if (t >= T(0) && t <= T(1)) 
 	{
 		Vec3<T> intersectionPoint = point1 + t * lineDirection;
-		return new Vec3<T>(intersectionPoint);
+		return ALLOC_NEW(Vec3<T>)(intersectionPoint);
 	}
 
 	return nullptr;

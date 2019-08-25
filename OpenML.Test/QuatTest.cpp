@@ -23,7 +23,7 @@ namespace OpenMLTest
 		TEST_METHOD(Quat_ConstructorWithValues1_Test)
 		{
 			Quatf result(1.0f, 2.0f, 3.0f, 4.0f);
-			float* expected = new float[QUAT_SIZE] {1.0f, 2.0f, 3.0f, 4.0f};
+			float expected[4] = {1.0f, 2.0f, 3.0f, 4.0f};
 
 			for (size_t i = 0; i < QUAT_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"", LINE_INFO());
@@ -31,7 +31,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Quat_ConstructorWithValues2_Test)
 		{			
-			float* expected = new float[QUAT_SIZE] {1.0f, 2.0f, 3.0f, 4.0f};
+			float expected[4] = {1.0f, 2.0f, 3.0f, 4.0f};
 			Quatf result(expected);
 
 			for (size_t i = 0; i < QUAT_SIZE; i++)
@@ -42,7 +42,7 @@ namespace OpenMLTest
 		{
 			Vec3f vector(1.0f, 2.0f, 3.0f);
 			Quatf result(vector);
-			float* expected = new float[QUAT_SIZE] {1.0f, 2.0f, 3.0f, 0.0f};
+			float expected[QUAT_SIZE] = {1.0f, 2.0f, 3.0f, 0.0f};
 			
 			for (size_t i = 0; i < QUAT_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"", LINE_INFO());
@@ -50,7 +50,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Quat_getValues_Test)
 		{
-			float* expected = new float[QUAT_SIZE] {1.0f, 2.0f, 3.0f, 4.0f};
+			float expected[4] = {1.0f, 2.0f, 3.0f, 4.0f};
 			Quatf quat(expected);
 			float* result = quat.getValues();
 

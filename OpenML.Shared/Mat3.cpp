@@ -225,7 +225,7 @@ Vec3<T> Mat3<T>::multiply(const Vec3<T>& vector) const
 template <typename T>
 T Mat3<T>::determinantIJ(size_t i, size_t j) const
 {
-	T* matrixValues = new T[4];
+	T* matrixValues = ALLOC_ARRAY(T, 4);
 	size_t index = 0;
 
 	for (size_t row = 0; row < MAT3_ROWSIZE; row++)
@@ -503,7 +503,7 @@ Mat3<T>* Mat3<T>::decomposeLU() const
 {
 	Mat3<T> lowerMatrix = Mat3<T>::identity();
 	Mat3<T> upperMatrix = this->clone();
-	Mat3<T>* result = new Mat3<T>[2];
+	Mat3<T>* result = ALLOC_ARRAY(Mat3<T>, 2);
 
 	std::vector<Mat3<T>> elementarInverseMatrixes;
 	Mat3<T> elementarInverseMatrix;
@@ -589,7 +589,7 @@ template <typename T>
 Mat3<T>* Mat3<T>::decomposeLDU() const
 {
 	Mat3<T> diagonalMatrix = Mat3<T>::identity();
-	Mat3<T>* result = new Mat3<T>[3];
+	Mat3<T>* result = ALLOC_ARRAY(Mat3<T>, 3);
 
 	Mat3<T>* lowerAndUpperMatrixes = decomposeLU();
 
@@ -626,7 +626,7 @@ Mat3<T>* Mat3<T>::decomposeLDU() const
 	result[1] = diagonalMatrix;
 	result[2] = upperMatrix;
 
-	delete[] lowerAndUpperMatrixes;
+	ALLOC_RELEASE(lowerAndUpperMatrixes);
 
 	return result;
 }

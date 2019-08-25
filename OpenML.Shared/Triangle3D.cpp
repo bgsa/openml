@@ -24,7 +24,7 @@ Triangle3D<T>::Triangle3D(T* point1, T* point2, T* point3)
 template<typename T>
 Line3D<T>* Triangle3D<T>::getLines() const
 {
-	Line3D<T>* lines = new Line3D<T>[3];
+	Line3D<T>* lines = ALLOC_ARRAY(Line3D<T>, 3);
 
 	lines[0] = Line3D<T>(point1, point2);
 	lines[1] = Line3D<T>(point2, point3);

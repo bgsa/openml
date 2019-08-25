@@ -14,15 +14,15 @@ GpuDevice::GpuDevice(cl_device_id id)
 		
 	size_t valueSize;
 	clGetDeviceInfo(id, CL_DEVICE_NAME, 0, NULL, &valueSize);
-	name = (char*)std::malloc(valueSize);
+	name = (char*)ALLOC_SIZE(valueSize);
 	clGetDeviceInfo(id, CL_DEVICE_NAME, valueSize, name, NULL);
 
 	clGetDeviceInfo(id, CL_DEVICE_VERSION, 0, NULL, &valueSize);
-	version = (char*)std::malloc(valueSize);
+	version = (char*)ALLOC_SIZE(valueSize);
 	clGetDeviceInfo(id, CL_DEVICE_VERSION, valueSize, version, NULL);
 
 	clGetDeviceInfo(id, CL_DRIVER_VERSION, 0, NULL, &valueSize);
-	driverVersion = (char*)malloc(valueSize);
+	driverVersion = (char*)ALLOC_SIZE(valueSize);
 	clGetDeviceInfo(id, CL_DRIVER_VERSION, valueSize, driverVersion, NULL);
 	
 	//clGetDeviceInfo(id, CL_DEVICE_AVAILABLE, sizeof(isAvailable), &isAvailable, NULL);	
@@ -37,12 +37,12 @@ GpuDevice::GpuDevice(cl_device_id id)
 	clGetDeviceInfo(id, CL_DEVICE_LOCAL_MEM_SIZE, sizeof(cl_ulong), &localMemorySize, NULL);
 	
 	clGetDeviceInfo(id, CL_DEVICE_PROFILE, 0, NULL, &valueSize);
-	char* profileAsArray = (char*)malloc(valueSize);
+	char* profileAsArray = (char*)ALLOC_SIZE(valueSize);
 	clGetDeviceInfo(id, CL_DEVICE_PROFILE, valueSize, profileAsArray, NULL);
 	profile = std::string(profileAsArray);
 
 	clGetDeviceInfo(id, CL_DEVICE_EXTENSIONS, 0, NULL, &valueSize);
-	char* extensionsAsArray = (char*)malloc(valueSize);
+	char* extensionsAsArray = (char*)ALLOC_SIZE(valueSize);
 	clGetDeviceInfo(id, CL_DEVICE_EXTENSIONS, valueSize, extensionsAsArray, NULL);
 
 	std::string extensionName;
@@ -57,7 +57,7 @@ GpuDevice::GpuDevice(cl_device_id id)
 			extensionName += extensionsAsArray[i];
 	}
 
-	delete[] extensionsAsArray, profileAsArray;;
+	ALLOC_RELEASE(profileAsArray);;
 }
 
 bool GpuDevice::isGPU() 
@@ -80,9 +80,9 @@ GpuDevice::~GpuDevice()
 
 	clReleaseContext(deviceContext);
 
-	delete[] name;
-	delete[] version;
-	delete[] driverVersion;
+	ALLOC_RELEASE(driverVersion);
+	ALLOC_RELEASE(version);
+	ALLOC_RELEASE(name);
 }
 
 #endif

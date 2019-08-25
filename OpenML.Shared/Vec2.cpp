@@ -140,7 +140,7 @@ Vec2<T>* Vec2<T>::orthogonalProjection(const Vec2<T>& vector) const
 		vector.y - v1.y
 	};
 
-	Vec2<T>* result = new Vec2<T>[2];
+	Vec2<T>* result = ALLOC_ARRAY(Vec2<T>,2);
 	result[0] = v1;
 	result[1] = v2;
 

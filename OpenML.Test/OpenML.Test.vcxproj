@@ -364,6 +364,7 @@ copy /Y $(SolutionDir)resources\opencl\src\*.cl $(OutDir)</Command>
     <ClCompile Include="SphereTest.cpp" />
     <ClCompile Include="SweepAndPruneTest.cpp" />
     <ClCompile Include="SystemOfLinearEquationsTest.cpp" />
+    <ClCompile Include="TestManager.cpp" />
     <ClCompile Include="Triangle2DTest.cpp" />
     <ClCompile Include="Triangle3DTest.cpp" />
     <ClCompile Include="Vec2Test.cpp" />

@@ -54,6 +54,39 @@ GpuCommand* GpuCommand::setOutputParameter(size_t sizeOfValue)
 	return this;
 }
 
+GpuCommand* GpuCommand::updateInputParameter(size_t index, const void* value)
+{
+	HANDLE_OPENCL_ERROR(clEnqueueWriteBuffer(commandQueue, 
+		inputParameters[index], 
+		CL_TRUE, 
+		0, 
+		inputParametersSize[index],
+		value, 
+		0, NULL, NULL));
+
+	return this;
+}
+
+GpuCommand* GpuCommand::swapInputParameter(size_t index1, size_t index2)
+{
+	cl_mem temp1 = inputParameters[index1];
+	inputParameters[index1] = inputParameters[index2];
+	inputParameters[index2] = temp1;
+
+	size_t temp2 = inputParametersSize[index1];
+	inputParametersSize[index1] = inputParametersSize[index2];
+	inputParametersSize[index2] = temp2;
+
+	bool temp3 = inputParametersKeep[index1];
+	inputParametersKeep[index1] = inputParametersKeep[index2];
+	inputParametersKeep[index2] = temp3;
+
+	HANDLE_OPENCL_ERROR(clSetKernelArg(kernel, index1, sizeof(cl_mem), (void *)&inputParameters[index1]));
+	HANDLE_OPENCL_ERROR(clSetKernelArg(kernel, index2, sizeof(cl_mem), (void *)&inputParameters[index2]));
+
+	return this;
+}
+
 GpuCommand* GpuCommand::buildFromProgram(cl_program program, const char* kernelName)
 {
 	cl_int errorCode;

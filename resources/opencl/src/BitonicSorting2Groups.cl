@@ -1,8 +1,12 @@
 __kernel void sort(
     __global volatile float* input, 
-    __constant size_t* n)
+    __constant size_t* n,
+    __global volatile float*  output)
 {
     __private size_t groupId = get_group_id(0);
+
+    output[0] = get_group_id(0);
+    output[1] = get_num_groups(0);
 
 	if (groupId & 1)  // if group is odd, return
         return;

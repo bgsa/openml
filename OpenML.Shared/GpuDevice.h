@@ -39,6 +39,9 @@ namespace OpenML
 		bool isGPU();
 		bool isCPU();
 
+		cl_mem createBuffer(size_t sizeOfValue, cl_mem_flags memoryFlags);
+		void releaseBuffer(cl_mem memoryBuffer);
+
 		~GpuDevice();
 	};
 

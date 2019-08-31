@@ -70,6 +70,20 @@ bool GpuDevice::isCPU()
 	return (type & CL_DEVICE_TYPE_CPU) || (type & CL_DEVICE_TYPE_ALL);
 }
 
+cl_mem GpuDevice::createBuffer(size_t sizeOfValue, cl_mem_flags memoryFlags)
+{
+	cl_int errorCode;
+	cl_mem memoryBuffer = clCreateBuffer(deviceContext, memoryFlags, sizeOfValue, NULL, &errorCode);
+	HANDLE_OPENCL_ERROR(errorCode);
+
+	return memoryBuffer;
+}
+
+void GpuDevice::releaseBuffer(cl_mem memoryBuffer)
+{
+	HANDLE_OPENCL_ERROR(clReleaseMemObject(memoryBuffer));
+}
+
 GpuDevice::~GpuDevice()
 {
 	if (commandManager != nullptr)

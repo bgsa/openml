@@ -39,7 +39,11 @@ namespace OpenML
 		GpuCommand* setInputParameter(void* value, size_t sizeOfValue);
 		GpuCommand* setInputParameter(cl_mem buffer, size_t sizeOfValue);
 
+		GpuCommand* updateInputParameter(size_t index, const void* value);
+
 		GpuCommand* setOutputParameter(size_t sizeOfValue);
+
+		GpuCommand* swapInputParameter(size_t index1, size_t index2);
 		
 		GpuCommand* buildFromProgram(cl_program program, const char* kernelName);
 		GpuCommand* build(const char* source, size_t sourceSize, const char* kernelName);

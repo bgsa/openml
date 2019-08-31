@@ -360,10 +360,7 @@ void AlgorithmSorting::init(GpuDevice* gpu)
 {
 	IFileManager* fileManager = Factory::getFileManagerInstance();
 
-	std::string sourceRadixSort = fileManager->readTextFile("RadixSortingByGroup.cl");
-	std::string sourceBitonicSort = fileManager->readTextFile("BitonicSorting2Groups.cl");
-
-	bitonicSortProgramIndex = gpu->commandManager->cacheProgram(sourceBitonicSort.c_str(), sizeof(char) * sourceBitonicSort.length());
+	std::string sourceRadixSort = fileManager->readTextFile("RadixSorting.cl");
 	radixSortProgramIndex = gpu->commandManager->cacheProgram(sourceRadixSort.c_str(), sizeof(char) * sourceRadixSort.length());
 
 	delete fileManager;
@@ -383,59 +380,87 @@ void AlgorithmSorting::radixGPU(GpuDevice* gpu, float* input, size_t n)
 	size_t localWorkSize[3] = { elementsPerWorkItem, 0, 0 };
 	const size_t groupCount = threadsCount / elementsPerWorkItem;
 	size_t elementsPerGroup = elementsPerWorkItem * elementsPerWorkItem;
-	size_t iteraions = ((size_t) std::log(groupCount)) + 1;
-	const size_t inputBufferSize = sizeof(float) * n;
+	//size_t iteraions = ((size_t)std::log(groupCount)) + 1;
+	//size_t iteraions = ((size_t)std::log(elementsPerWorkItem)) + 1;
+	size_t iteraions = ((size_t)std::log(gpu->maxWorkGroupSize)) + 1;
 
+	const size_t inputBufferSize = sizeof(float) * n;
+	const size_t offsetTableSize = sizeof(size_t) * 10 * threadsCount;
+	size_t digitIndex = 3;
+	size_t offset = 10;
+
+	const cl_mem offsetTable1 = gpu->createBuffer(offsetTableSize, CL_MEM_READ_WRITE);
+	const cl_mem offsetTable2 = gpu->createBuffer(offsetTableSize, CL_MEM_READ_WRITE);
+	
 	GpuCommand* commandRadix = gpu->commandManager->createCommand();
 	commandRadix
 		->setInputParameter(input, inputBufferSize, CL_MEM_READ_WRITE, true)
-		->setInputParameter(&n, sizeof(size_t), CL_MEM_READ_ONLY, true)
-		->setInputParameter(&elementsPerWorkItem, sizeof(size_t))
-		->setOutputParameter(inputBufferSize)
-		->buildFromProgram(gpu->commandManager->cachedPrograms[radixSortProgramIndex], "sort")
+		->setInputParameter(&n, sizeof(size_t), CL_MEM_WRITE_ONLY, true)   //store on GPU
+		->setInputParameter(&elementsPerWorkItem, sizeof(size_t), CL_MEM_WRITE_ONLY, true)  //store on GPU
+		->setInputParameter(&digitIndex, sizeof(size_t))
+		->setInputParameter(offsetTable1, offsetTableSize)
+		->buildFromProgram(gpu->commandManager->cachedPrograms[radixSortProgramIndex], "count")
 		->execute(1, globalWorkSize, localWorkSize);
+	const cl_mem inputBuffer = commandRadix->getInputParameter(0);   //get buffer pointer from GPU
+	const cl_mem elementsCount = commandRadix->getInputParameter(1); 
+	const cl_mem elementsPerWorkItemBuffer = commandRadix->getInputParameter(2);
 
-	cl_mem inputBuffer = commandRadix->getInputParameter(0);
-	cl_mem inputMemBufferSize = commandRadix->getInputParameter(1);
+	GpuCommand* commandPrefixScan = gpu->commandManager->createCommand();
+	commandPrefixScan
+		->setInputParameter(offsetTable1, offsetTableSize)  //use buffer hosted GPU
+		->setInputParameter(offsetTable2, offsetTableSize)
+		->setInputParameter(elementsCount, sizeof(size_t))
+		->setInputParameter(&offset, sizeof(size_t), CL_MEM_WRITE_ONLY, true)
+		->buildFromProgram(gpu->commandManager->cachedPrograms[radixSortProgramIndex], "prefixScan")
+		->execute(1, globalWorkSize, localWorkSize);
+	const cl_mem offsetBuffer = commandPrefixScan->getInputParameter(3);
 
-	GpuCommand* commandBitonic = gpu->commandManager->createCommand();
-	commandBitonic
-		->setInputParameter(inputBuffer, inputBufferSize)
-		->setInputParameter(inputMemBufferSize, sizeof(float))
-		->buildFromProgram(gpu->commandManager->cachedPrograms[bitonicSortProgramIndex], "sort");
+	size_t* o1 = commandRadix->fetchInOutParameter<size_t>(4);
+	size_t* o2 = commandPrefixScan->fetchInOutParameter<size_t>(1);
 
 	do
 	{
-		localWorkSize[0] = elementsPerWorkItem;
+		//TEST PREFIX SCAN INTERATION
+		for (size_t i = 0; i < offset; i++)
+			assert(o1[i] == o2[i]);
+		for (size_t i = offset; i < threadsCount; i++)
+			assert(o1[i - offset] + o1[i] == o2[i]);
+		// */
 
-		commandBitonic->execute(1, globalWorkSize, localWorkSize);
+		offset <<= 1;
 
-		commandRadix->execute(1, globalWorkSize, localWorkSize);
+		commandPrefixScan
+			->swapInputParameter(0, 1)
+			->updateInputParameter(3, &offset)
+			->execute(1, globalWorkSize, localWorkSize);
 
-		/*
-		// check the command is correct ! (TEST)
-		for (size_t groups = 1; groups < n; groups += 2 * elementsPerGroup)
-			for (size_t i = groups; i < groups + 2 * elementsPerGroup - 1; i++)
-				assert(input[i - 1] <= input[i]);
-		*/
+		o1 = commandPrefixScan->fetchInOutParameter<size_t>(0);
+		o2 = commandPrefixScan->fetchInOutParameter<size_t>(1);
 
-		elementsPerWorkItem = elementsPerWorkItem << 1; // multiply by 2
-		elementsPerGroup = elementsPerGroup << 1;    // multiply by 2
-		--iteraions;
-	} while (iteraions > 0);
+	} while (offset < (threadsCount*10) >> 1);
 
+	GpuCommand* commandReorder = gpu->commandManager->createCommand();
+	commandReorder
+		->setInputParameter(inputBuffer, inputBufferSize)   //use buffer hosted GPU
+		->setInputParameter(offsetTable2, offsetTableSize)  
+		->buildFromProgram(gpu->commandManager->cachedPrograms[radixSortProgramIndex], "reorder")
+		->execute(1, globalWorkSize, localWorkSize);
+	float* result = commandReorder->fetchInOutParameter<float>(0);
 
-	/*
+	//gpu->commandManager->executeReadBuffer(inputBuffer, inputBufferSize, input, true);
+
+	/*//TEST ORDER
 	for (size_t i = 1; i < n; ++i)
-		assert(input[i - 1] <= input[i]);
+		assert(result[i - 1] <= result[i]);
 	*/
 
-	gpu->commandManager->executeReadBuffer(inputBuffer, inputBufferSize, input, true);
+	gpu->releaseBuffer(offsetTable2);
+	gpu->releaseBuffer(offsetTable1);
+	gpu->releaseBuffer(elementsCount);
 
-	HANDLE_OPENCL_ERROR(clReleaseMemObject(inputBuffer));
-	HANDLE_OPENCL_ERROR(clReleaseMemObject(inputMemBufferSize));
 	commandRadix->~GpuCommand();
-	commandBitonic->~GpuCommand();
+	commandPrefixScan->~GpuCommand();
+	//commandReorder->~GpuCommand();
 }
 
 #endif

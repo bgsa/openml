@@ -54,7 +54,7 @@ GpuCommand* GpuCommand::setOutputParameter(size_t sizeOfValue)
 	return this;
 }
 
-GpuCommand* GpuCommand::updateInputParameter(size_t index, const void* value)
+GpuCommand* GpuCommand::updateInputParameterValue(size_t index, const void* value)
 {
 	HANDLE_OPENCL_ERROR(clEnqueueWriteBuffer(commandQueue, 
 		inputParameters[index], 
@@ -63,6 +63,15 @@ GpuCommand* GpuCommand::updateInputParameter(size_t index, const void* value)
 		inputParametersSize[index],
 		value, 
 		0, NULL, NULL));
+
+	return this;
+}
+
+GpuCommand* GpuCommand::updateInputParameter(size_t index, cl_mem memoryBuffer)
+{
+	inputParameters[index] = memoryBuffer;
+
+	HANDLE_OPENCL_ERROR(clSetKernelArg(kernel, index, sizeof(cl_mem), &inputParameters[index]));
 
 	return this;
 }
@@ -81,8 +90,24 @@ GpuCommand* GpuCommand::swapInputParameter(size_t index1, size_t index2)
 	inputParametersKeep[index1] = inputParametersKeep[index2];
 	inputParametersKeep[index2] = temp3;
 
-	HANDLE_OPENCL_ERROR(clSetKernelArg(kernel, index1, sizeof(cl_mem), (void *)&inputParameters[index1]));
-	HANDLE_OPENCL_ERROR(clSetKernelArg(kernel, index2, sizeof(cl_mem), (void *)&inputParameters[index2]));
+	HANDLE_OPENCL_ERROR(clSetKernelArg(kernel, index1, sizeof(cl_mem), &inputParameters[index1]));
+	HANDLE_OPENCL_ERROR(clSetKernelArg(kernel, index2, sizeof(cl_mem), &inputParameters[index2]));
+
+	return this;
+}
+
+GpuCommand* GpuCommand::copyParameters(size_t targetParameterIndex, cl_mem source)
+{
+	HANDLE_OPENCL_ERROR(clEnqueueCopyBuffer(
+		commandQueue, 
+		source,
+		inputParameters[targetParameterIndex], 
+		0, 
+		0, 
+		inputParametersSize[targetParameterIndex],
+		0,
+		NULL, 
+		NULL));
 
 	return this;
 }
@@ -95,9 +120,10 @@ GpuCommand* GpuCommand::buildFromProgram(cl_program program, const char* kernelN
 	HANDLE_OPENCL_ERROR(errorCode);
 
 	for (size_t i = 0; i < inputParameters.size(); i++)
-		HANDLE_OPENCL_ERROR(clSetKernelArg(kernel, i, sizeof(cl_mem), (void *)&inputParameters[i]));
+		HANDLE_OPENCL_ERROR(clSetKernelArg(kernel, i, sizeof(cl_mem), &inputParameters[i]));
 
-	clSetKernelArg(kernel, inputParameters.size(), sizeof(cl_mem), (void *)&outputParameter);
+	if (outputParameter != NULL)
+		HANDLE_OPENCL_ERROR(clSetKernelArg(kernel, inputParameters.size(), sizeof(cl_mem), &outputParameter));
 
 	return this;
 }
@@ -114,7 +140,7 @@ GpuCommand* GpuCommand::build(const char* source, size_t sourceSize, const char*
 	return buildFromProgram(program, kernelName);
 }
 
-GpuCommand* GpuCommand::execute(size_t workDimnmsion, size_t* globalWorkSize, size_t* localWorkSize, const size_t* globalOffset)
+GpuCommand* GpuCommand::execute(size_t workDimnmsion, const size_t* globalWorkSize, const size_t* localWorkSize, const size_t* globalOffset)
 {
 	assert(isPowerOf2(*globalWorkSize));
 	//assert(isPowerOf2(*localWorkSize));

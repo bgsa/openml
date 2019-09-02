@@ -166,7 +166,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)..\apollo\src;.\..\$(SolutionName).Shared;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories);$(OPENCL_INC_PATH)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>OPENCL_ENABLED;MAJOR_COLUMN_ORDER;UNIT_TEST;WINDOWS;API_EXPORT;DEBUG;</PreprocessorDefinitions>
+      <PreprocessorDefinitions>OPENCL_ENABLED;MAJOR_COLUMN_ORDER;UNIT_TEST;WINDOWS;API_EXPORT;DEBUG;MS_TEST;</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
       <CallingConvention>Cdecl</CallingConvention>
     </ClCompile>
@@ -206,7 +206,7 @@ copy /Y $(SolutionDir)resources\opencl\src\*.cl $(OutDir)</Command>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.2\include;.\..\MathPP.Shared;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>OPENCL_ENABLED;MAJOR_COLUMN_ORDER;UNIT_TEST;WINDOWS;API_EXPORT;DEBUG;</PreprocessorDefinitions>
+      <PreprocessorDefinitions>OPENCL_ENABLED;MAJOR_COLUMN_ORDER;UNIT_TEST;WINDOWS;API_EXPORT;DEBUG;MS_TEST;</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
     </ClCompile>
     <Link>

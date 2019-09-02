@@ -4,6 +4,10 @@
 #include <OpenML.h>
 #include <MemoryAllocatorManager.h>
 
+#ifndef MS_TEST
+	#define MS_TEST
+#endif
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace OpenML;
 

@@ -39,16 +39,19 @@ namespace OpenML
 		GpuCommand* setInputParameter(void* value, size_t sizeOfValue);
 		GpuCommand* setInputParameter(cl_mem buffer, size_t sizeOfValue);
 
-		GpuCommand* updateInputParameter(size_t index, const void* value);
+		GpuCommand* updateInputParameterValue(size_t index, const void* value);
+		GpuCommand* updateInputParameter(size_t index, cl_mem memoryBuffer);
 
 		GpuCommand* setOutputParameter(size_t sizeOfValue);
 
 		GpuCommand* swapInputParameter(size_t index1, size_t index2);
+
+		GpuCommand* copyParameters(size_t targetParameterIndex, cl_mem destination);
 		
 		GpuCommand* buildFromProgram(cl_program program, const char* kernelName);
 		GpuCommand* build(const char* source, size_t sourceSize, const char* kernelName);
 
-		GpuCommand* execute(size_t workDimnmsion, size_t* globalWorkSize, size_t* localWorkSize, const size_t* globalOffset = NULL);
+		GpuCommand* execute(size_t workDimnmsion, const size_t* globalWorkSize, const size_t* localWorkSize, const size_t* globalOffset = NULL);
 
 		void fetch(void* buffer);
 

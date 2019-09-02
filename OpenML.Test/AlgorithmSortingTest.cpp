@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CppUnitTest.h"
+#include "TestHeader.h"
 #include <AlgorithmSorting.h>
 #include <chrono>
 #include "Randomizer.h"

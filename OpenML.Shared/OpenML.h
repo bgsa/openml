@@ -14,6 +14,19 @@ namespace OpenML
 #define PI_DIV_180 (0.017453292519943296)
 #define INV_PI_DIV_180 (57.2957795130823229)
 #define	PI_DIV_360 (0.008726646259971647)
+
+#define MAX_DIGITS_EXPOENT  (5)
+#define MAX_DIGITS_MANTISSA (4)
+
+#define SIZEOF_BOOL      (1)
+#define SIZEOF_CHAR      (1)
+#define SIZEOF_SHORT     (2)
+#define SIZEOF_UINT      (4)
+#define SIZEOF_INT       (4)
+#define SIZEOF_LONG      (4)
+#define SIZEOF_LONG_LONG (8)
+#define SIZEOF_FLOAT     (4)
+#define SIZEOF_DOUBLE    (8)
 	
 #define degreesToRadians(x)	((x) * PI_DIV_180)
 #define radiansToDegrees(x)	((x) * INV_PI_DIV_180)

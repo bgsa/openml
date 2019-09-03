@@ -74,11 +74,23 @@ namespace OpenML
 		///</summary>
 		API_INTERFACE static void init(GpuDevice* gpu);
 
-		///<summary>
-		///Fast sorting of numbers array using Bitonic method in GPU
-		///Complexity O(log n)
-		///</summary>
-		API_INTERFACE static void radixGPU(GpuDevice* gpu, float* vector, size_t count);
+		/// <summary>
+		/// Fast sorting of numbers array using Radix method in GPU
+		/// Complexity O(log n)
+		/// </summary>
+		/// <return>
+		/// Sorted array
+		/// </return>
+		API_INTERFACE static float* radixGPU(GpuDevice* gpu, float* input, size_t count);
+
+		/// <summary>
+		/// Fast sorting of numbers array using Radix method in GPU
+		/// Complexity O(log n)
+		/// </summary>
+		/// <return>
+		/// Memory Buffer from GPU where the sorted numbers are stored
+		/// </return>
+		API_INTERFACE static cl_mem radixGPUBuffer(GpuDevice* gpu, float* input, size_t n);
 		
 #endif
 

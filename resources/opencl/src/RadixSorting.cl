@@ -1,8 +1,5 @@
 #define OVERLOAD  __attribute__((overloadable))
 
-#define MAX_DIGIT_MANTISSA 4
-#define MAX_DIGIT_EXPOENT 4
-
 size_t OVERLOAD digit(float value, size_t index)
 {
     size_t mantissa = (size_t) (fabs(((float) ((size_t) value)) - value) * 10000);
@@ -19,6 +16,7 @@ __kernel void count(
     __global   float * input,
     __constant size_t* elementsPerWorkItem_global, 
     __constant size_t* digitIndex_global,
+    __constant bool  * useExpoent,
     __global   size_t* globalBucket
     )
 {
@@ -32,11 +30,19 @@ __kernel void count(
     for(size_t i = 0 ; i < 10; i++)
         bucket[i] = 0;
 
-    for (size_t i = 0 ; i < elementsPerWorkItem; i++) //make a histogram
-    {
-        currentDigit = digit((int) input[inputThreadIndex + i], digitIndex);
-        bucket[currentDigit]++;
-    }
+    if (*useExpoent)
+        for (size_t i = 0 ; i < elementsPerWorkItem; i++) //make a histogram
+        {
+            currentDigit = digit((int) input[inputThreadIndex + i], digitIndex);
+            bucket[currentDigit]++;
+        }
+    else
+        for (size_t i = 0 ; i < elementsPerWorkItem; i++) //make a histogram
+        {
+            currentDigit = digit(input[inputThreadIndex + i], digitIndex);
+            bucket[currentDigit]++;
+        }
+
 
     for (size_t i = 0 ; i < 10; i++) //write on global bucket in order to do prefix scan
         globalBucket[globalBucketOffset + i] = bucket[i];
@@ -64,9 +70,10 @@ __kernel void prefixScan(
 }
 
 __kernel void reorder(
-    __global   float * input,
+    __constant float * input,
     __constant size_t* elementsPerWorkItem_global,
     __constant size_t* digitIndex_global,
+    __constant bool  * useExpoent,
     __global   size_t* offsetTable,
     __global   float * output
     )
@@ -85,16 +92,20 @@ __kernel void reorder(
     for(size_t i = 1; i < 10; i++)
         startIndex[i] = startIndex[i-1] + offsetTable[offsetTable_LastBucketIndex + i-1];
 
-    for (int i = elementsPerWorkItem - 1; i >= 0; i--)
-    {
-        currentDigit = digit((int) input[inputThreadIndex + i], digitIndex);  // get the digit to process
-
-        globalAddress = startIndex[currentDigit] + offsetTable[offsetTable_Index + currentDigit] - 1; // get the global output address where the element is going to be stored
-
-        output[globalAddress] = input[inputThreadIndex + i];   // store the element in right gloal output address
-
-        offsetTable[offsetTable_Index + currentDigit]--;    // decrement the offset table to store the others elements before
-
-        //input[inputThreadIndex + i] = 0;    //just clear the input array to be used in another iteration
-    }
+    if (*useExpoent)
+        for (int i = elementsPerWorkItem - 1; i >= 0; i--)
+        {
+            currentDigit = digit((int) input[inputThreadIndex + i], digitIndex);  // get the digit to process
+            globalAddress = startIndex[currentDigit] + offsetTable[offsetTable_Index + currentDigit] - 1; // get the global output address where the element is going to be stored
+            output[globalAddress] = input[inputThreadIndex + i];   // store the element in right gloal output address
+            offsetTable[offsetTable_Index + currentDigit]--;    // decrement the offset table to store the others elements before
+        }
+    else
+        for (int i = elementsPerWorkItem - 1; i >= 0; i--)
+        {
+            currentDigit = digit(input[inputThreadIndex + i], digitIndex);  // get the digit to process
+            globalAddress = startIndex[currentDigit] + offsetTable[offsetTable_Index + currentDigit] - 1; // get the global output address where the element is going to be stored
+            output[globalAddress] = input[inputThreadIndex + i];   // store the element in right gloal output address
+            offsetTable[offsetTable_Index + currentDigit]--;    // decrement the offset table to store the others elements before
+        }
 }

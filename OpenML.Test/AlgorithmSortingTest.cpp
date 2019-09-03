@@ -184,7 +184,7 @@ namespace OpenMLTest
 
 			currentTime = std::chrono::high_resolution_clock::now();
 
-			AlgorithmSorting::radixGPU(gpu, result, count);
+			result = AlgorithmSorting::radixGPU(gpu, result, count);
 
 			currentTime2 = std::chrono::high_resolution_clock::now();
 			std::chrono::milliseconds ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
@@ -192,7 +192,6 @@ namespace OpenMLTest
 			for (size_t i = 0; i < count; i++)
 				Assert::AreEqual(vector[i], result[i], L"Wrong value.", LINE_INFO());
 
-			ALLOC_RELEASE(result);
 			ALLOC_RELEASE(vector);
 		}
 

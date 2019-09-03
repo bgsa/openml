@@ -216,6 +216,7 @@ template size_t* GpuCommand::fetchInOutParameter(size_t index);
 template long long* GpuCommand::fetchInOutParameter(size_t index);
 template float* GpuCommand::fetchInOutParameter(size_t index);
 template double* GpuCommand::fetchInOutParameter(size_t index);
+template bool* GpuCommand::fetchInOutParameter(size_t index);
 
 GpuCommand::~GpuCommand()
 {

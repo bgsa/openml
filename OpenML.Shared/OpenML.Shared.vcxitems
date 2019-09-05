@@ -36,6 +36,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)CollisionDetection.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GpuCommand.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GpuCommandManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GpuCommands.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GpuContext.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GpuDevice.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GpuLog.hpp" />
@@ -84,6 +85,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)CollisionDetection.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GpuCommand.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GpuCommandManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GpuCommands.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GpuContext.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GpuDevice.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)HashGrid.cpp" />

@@ -27,8 +27,15 @@
 	/// <summary>
 	/// Find maximum value from an array of elements
 	/// </summary>
-	API_INTERFACE float gpuCommands_findMaxGPU(GpuDevice* gpu, float* input, size_t n);
+	/// <returns>
+	/// GPU Buffer Memory
+	/// </returns>
+	API_INTERFACE cl_mem gpuCommands_findMaxGPUBuffer(GpuDevice* gpu, float* input, size_t n);
 
+	/// <summary>
+	/// Find maximum value from an array of elements
+	/// </summary>
+	API_INTERFACE float gpuCommands_findMaxGPU(GpuDevice* gpu, float* input, size_t n);
 
 #ifdef __cplusplus
 //}

@@ -105,5 +105,39 @@ namespace OpenMLTest
 			ALLOC_RELEASE(input);
 		}
 
+		TEST_METHOD(GpuCommands_findMaxGPUBuffer)
+		{
+			GpuContext* context = GpuContext::init();
+			GpuDevice* gpu = context->defaultDevice;
+			gpuCommands_init(gpu);
+
+			const size_t count = (size_t)std::pow(2.0, 17.0);
+			float* input = getRandom(count);
+
+			float max = std::numeric_limits<float>().min();
+
+			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
+
+			for (size_t i = 0; i < count; i++)
+				if (input[i] > max)
+					max = input[i];
+
+			std::chrono::high_resolution_clock::time_point currentTime2 = std::chrono::high_resolution_clock::now();
+			std::chrono::milliseconds ms1 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
+
+			currentTime = std::chrono::high_resolution_clock::now();
+
+			cl_mem buffer = gpuCommands_findMaxGPUBuffer(gpu, input, count);
+			float* result = ALLOC_ARRAY(float, 1);
+			gpu->commandManager->executeReadBuffer(buffer, SIZEOF_FLOAT, result, true);
+
+			currentTime2 = std::chrono::high_resolution_clock::now();
+			std::chrono::milliseconds ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
+
+			Assert::AreEqual(max, result[0], L"Wrong value.", LINE_INFO());
+
+			ALLOC_RELEASE(input);
+		}
+
 	};
 }

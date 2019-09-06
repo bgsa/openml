@@ -49,7 +49,7 @@ float* gpuCommands_findMinMaxGPU(GpuDevice* gpu, float* input, size_t n)
 	return output;
 }
 
-float gpuCommands_findMaxGPU(GpuDevice* gpu, float* input, size_t n)
+cl_mem gpuCommands_findMaxGPUBuffer(GpuDevice* gpu, float* input, size_t n)
 {
 	const size_t globalWorkSize[3] = { gpu->maxWorkGroupSize, 0 , 0 };
 	const size_t localWorkSize[3] = { nextPowOf2(n) / gpu->maxWorkGroupSize, 0, 0 };
@@ -69,12 +69,24 @@ float gpuCommands_findMaxGPU(GpuDevice* gpu, float* input, size_t n)
 
 	float output = FLT_MIN;
 	for (size_t i = 0; i < groupCount; i++)   // check the remaining itens provided from GPU
-		if (output > outputGPU[i])
+		if (output < outputGPU[i])
 			output = outputGPU[i];
 
 	commandFindMinMax->~GpuCommand();
+
+	return  outputBuffer;
+}
+
+float gpuCommands_findMaxGPU(GpuDevice* gpu, float* input, size_t n)
+{
+	float* output = ALLOC_ARRAY(float, 1);
+	cl_mem outputBuffer = gpuCommands_findMaxGPUBuffer(gpu, input, n);
+
+	gpu->commandManager->executeReadBuffer(outputBuffer, SIZEOF_FLOAT, output, true);
+
 	gpu->releaseBuffer(outputBuffer);
-	return output;
+
+	return output[0];
 }
 
 #endif // ! OPENCL_ENABLED

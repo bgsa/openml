@@ -8,8 +8,7 @@
 #include <AABB.h>
 
 #ifdef OPENCL_ENABLED
-	#include "GpuContext.h"
-	#include "GpuCommand.h"
+	#include "GpuCommands.h"
 	#include "IFileManager.h"
 	#include "Factory.h"
 	#undef max

@@ -2,10 +2,15 @@
 
 #include "GpuCommands.h"
 
-size_t findMinMaxProgramIndex;
+static size_t findMinMaxProgramIndex = UINT_MAX;
+
+#define IS_INITIALIZED findMinMaxProgramIndex != UINT_MAX 
 
 void gpuCommands_init(GpuDevice* gpu)
 {
+	if (IS_INITIALIZED)
+		return;
+
 	IFileManager* fileManager = Factory::getFileManagerInstance();
 
 	std::string sourceFindMinMax = fileManager->readTextFile("FindMinMax.cl");
@@ -66,11 +71,6 @@ cl_mem gpuCommands_findMaxGPUBuffer(GpuDevice* gpu, float* input, size_t n)
 		->buildFromProgram(gpu->commandManager->cachedPrograms[findMinMaxProgramIndex], "findMax")
 		->execute(1, globalWorkSize, localWorkSize)
 		->fetchInOutParameter<float>(2);
-
-	float output = FLT_MIN;
-	for (size_t i = 0; i < groupCount; i++)   // check the remaining itens provided from GPU
-		if (output < outputGPU[i])
-			output = outputGPU[i];
 
 	commandFindMinMax->~GpuCommand();
 

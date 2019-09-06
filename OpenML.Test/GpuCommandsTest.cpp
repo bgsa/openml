@@ -128,13 +128,18 @@ namespace OpenMLTest
 			currentTime = std::chrono::high_resolution_clock::now();
 
 			cl_mem buffer = gpuCommands_findMaxGPUBuffer(gpu, input, count);
-			float* result = ALLOC_ARRAY(float, 1);
-			gpu->commandManager->executeReadBuffer(buffer, SIZEOF_FLOAT, result, true);
+			float* output = ALLOC_ARRAY(float, 8);
+			gpu->commandManager->executeReadBuffer(buffer, SIZEOF_FLOAT, output, true);
+			float result = FLT_MIN;
+
+			for (size_t i = 0; i < 8; i++)
+				if (result < output[i])
+					result = output[i];
 
 			currentTime2 = std::chrono::high_resolution_clock::now();
 			std::chrono::milliseconds ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
 
-			Assert::AreEqual(max, result[0], L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(max, result, L"Wrong value.", LINE_INFO());
 
 			ALLOC_RELEASE(input);
 		}

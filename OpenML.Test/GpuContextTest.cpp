@@ -18,7 +18,7 @@ namespace OpenMLTest
 
 			GpuContext* gpu = GpuContext::init(platforms[0]);
 
-			delete gpu;
+			Assert::IsTrue(gpu != NULL, L"Wrong value.", LINE_INFO());
 		}
 
 		TEST_METHOD(GPUContext_getPlatforms_Test)

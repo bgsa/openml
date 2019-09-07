@@ -167,13 +167,13 @@ namespace OpenMLTest
 		
 		TEST_METHOD(AlgorithmSorting_radixGPU_Test1)
 		{
-			const size_t count = (size_t)std::pow(2.0, 17.0);
-			float* vector = getRandom(count);
-			float* result = ALLOC_COPY(vector, float, count);
-
 			GpuContext* context = GpuContext::init();
 			GpuDevice* gpu = context->defaultDevice;
 			AlgorithmSorting::init(gpu);
+
+			const size_t count = (size_t)std::pow(2.0, 17.0);
+			float* vector = getRandom(count);
+			float* result = ALLOC_COPY(vector, float, count);
 
 			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 
@@ -191,6 +191,35 @@ namespace OpenMLTest
 
 			for (size_t i = 0; i < count; i++)
 				Assert::AreEqual(vector[i], result[i], L"Wrong value.", LINE_INFO());
+
+			ALLOC_RELEASE(vector);
+		}
+
+		TEST_METHOD(AlgorithmSorting_radixGPUIndexes_Test1)
+		{
+			GpuContext* context = GpuContext::init();
+			GpuDevice* gpu = context->defaultDevice;
+			AlgorithmSorting::init(gpu);
+
+			const size_t count = (size_t)std::pow(2.0, 17.0);
+			float* vector = getRandom(count);
+
+			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
+
+			AlgorithmSorting::native(vector, count);
+
+			std::chrono::high_resolution_clock::time_point currentTime2 = std::chrono::high_resolution_clock::now();
+			std::chrono::milliseconds ms1 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
+
+			currentTime = std::chrono::high_resolution_clock::now();
+
+			size_t* indexes = AlgorithmSorting::radixGPUIndexes(gpu, vector, count);
+
+			currentTime2 = std::chrono::high_resolution_clock::now();
+			std::chrono::milliseconds ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
+
+			for (size_t i = 0; i < count; i++)
+				Assert::AreEqual(vector[i], vector[indexes[i]], L"Wrong value.", LINE_INFO());
 
 			ALLOC_RELEASE(vector);
 		}

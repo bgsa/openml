@@ -4,11 +4,9 @@
 
 static size_t findMinMaxProgramIndex = UINT_MAX;
 
-#define IS_INITIALIZED findMinMaxProgramIndex != UINT_MAX 
-
 void gpuCommands_init(GpuDevice* gpu)
 {
-	if (IS_INITIALIZED)
+	if (findMinMaxProgramIndex != UINT_MAX)
 		return;
 
 	IFileManager* fileManager = Factory::getFileManagerInstance();

@@ -12,6 +12,20 @@ size_t OVERLOAD digit(int value, size_t index)
     return ((int) (value  / pow(10.0, (double) index))) % 10;
 }
 
+/// Init the indexes array of elements
+__kernel void initIndexes(
+    __global   size_t* elementsPerWorkItem_global,
+    __global   size_t* indexes
+    )
+{
+    //__private size_t elementsPerWorkItem = *n / get_global_size(0);
+    __private size_t elementsPerWorkItem = *elementsPerWorkItem_global;
+    __private size_t inputThreadIndex = get_global_id(0) * elementsPerWorkItem;
+
+    for (size_t i = 0 ; i < elementsPerWorkItem ; i++)
+        indexes[inputThreadIndex + i] = inputThreadIndex + i;
+}
+
 __kernel void count(
     __global   float * input,
     __constant size_t* elementsPerWorkItem_global, 
@@ -78,6 +92,7 @@ __kernel void reorder(
     __constant bool  * useExpoent,
     __global   size_t* offsetTable,
     __constant float * minValue_global,
+    __global   size_t* indexes,
     __global   float * output
     )
 {
@@ -102,6 +117,7 @@ __kernel void reorder(
             currentDigit = digit((int) (input[inputThreadIndex + i] + minValue), digitIndex);  // get the digit to process
             globalAddress = startIndex[currentDigit] + offsetTable[offsetTable_Index + currentDigit] - 1; // get the global output address where the element is going to be stored
             output[globalAddress] = input[inputThreadIndex + i];   // store the element in right gloal output address
+            indexes[globalAddress] = inputThreadIndex + i;
             offsetTable[offsetTable_Index + currentDigit]--;    // decrement the offset table to store the others elements before
         }
     else
@@ -110,6 +126,7 @@ __kernel void reorder(
             currentDigit = digit(input[inputThreadIndex + i], digitIndex);  // get the digit to process
             globalAddress = startIndex[currentDigit] + offsetTable[offsetTable_Index + currentDigit] - 1; // get the global output address where the element is going to be stored
             output[globalAddress] = input[inputThreadIndex + i];   // store the element in right gloal output address
+            indexes[globalAddress] = inputThreadIndex + i;
             offsetTable[offsetTable_Index + currentDigit]--;    // decrement the offset table to store the others elements before
         }
 }

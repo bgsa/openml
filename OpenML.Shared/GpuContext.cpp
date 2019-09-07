@@ -28,10 +28,10 @@ GpuContext::GpuContext(cl_platform_id platformId)
 
 GpuContext* GpuContext::init(cl_platform_id platformId)
 {
-	if (gpu != nullptr)
-		return gpu;
-	
-	return new GpuContext(platformId);
+	if (gpu == nullptr)
+		gpu = new GpuContext(platformId);
+
+	return gpu;
 }
 
 GpuContext* GpuContext::init()

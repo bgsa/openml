@@ -1,7 +1,5 @@
 #include "SweepAndPrune.h"
 
-size_t sapProgramIndex;
-
 template <typename T>
 bool comparatorXAxisForNativeSort(int index1, int index2, AABB<T>* aabbs)
 {
@@ -93,8 +91,13 @@ template SweepAndPruneResult SweepAndPrune::findCollisions<double>(AABB<double>*
 
 #if OPENCL_ENABLED
 
+static size_t sapProgramIndex = UINT_MAX;
+
 void SweepAndPrune::init(GpuDevice* gpu)
 {
+	if (sapProgramIndex != UINT_MAX)
+		return;
+
 	IFileManager* fileManager = Factory::getFileManagerInstance();
 
 	std::string source = fileManager->readTextFile("SweepAndPrune.cl");

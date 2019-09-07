@@ -87,9 +87,18 @@ namespace OpenML
 		/// Complexity O(log n)
 		/// </summary>
 		/// <return>
-		/// Memory Buffer from GPU where the sorted numbers are stored
+		/// Indexes with sorted elements
 		/// </return>
-		API_INTERFACE static cl_mem radixGPUBuffer(GpuDevice* gpu, float* input, size_t n);
+		API_INTERFACE static size_t* radixGPUIndexes(GpuDevice* gpu, float* input, size_t n);
+
+		/// <summary>
+		/// Fast sorting of numbers array using Radix method in GPU
+		/// Complexity O(log n)
+		/// </summary>
+		/// <return>
+		/// Memory Buffer elements and indexes from GPU where the sorted numbers and its indexes are stored
+		/// </return>
+		API_INTERFACE static cl_mem* radixGPUBuffer(GpuDevice* gpu, float* input, size_t n);
 		
 #endif
 

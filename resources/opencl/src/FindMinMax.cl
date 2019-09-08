@@ -1,12 +1,17 @@
+#define OFFSET_GLOBAL (*offsetMultiplier) + *offsetSum
+
 __kernel void findMinMax(
     __global   float * input,
     __constant size_t* n,
-    __global   float * output
+    __global   float * output,
+    __constant size_t* offsetMultiplier,
+    __constant size_t* offsetSum
     )
 {
     __private size_t elementsPerWorkItem = *n / get_global_size(0);
     __private size_t threadIndex = get_global_id(0);
-    __private size_t inputIndex = elementsPerWorkItem * threadIndex;
+    //__private size_t inputIndex = (elementsPerWorkItem * threadIndex) * (*offsetMultiplier) + *offsetSum;
+    __private size_t inputIndex = (elementsPerWorkItem * threadIndex);
     __private size_t offset = elementsPerWorkItem;
 
     __private float min = FLT_MAX;
@@ -14,15 +19,15 @@ __kernel void findMinMax(
 
     for( size_t i = 0 ; i < elementsPerWorkItem ; i++ )
     {
-        if( min > input[inputIndex + i] )
-            min = input[inputIndex + i];
+        if( min > input[(inputIndex + i) * OFFSET_GLOBAL] )
+            min = input[(inputIndex + i) * OFFSET_GLOBAL];
 
-        if( max < input[inputIndex + i] )
-            max = input[inputIndex + i];
+        if( max < input[(inputIndex + i) * OFFSET_GLOBAL] )
+            max = input[(inputIndex + i) * OFFSET_GLOBAL];
     }
 
-    input[inputIndex] = min;
-    input[inputIndex + 1] = max;
+    input[inputIndex * OFFSET_GLOBAL] = min;
+    input[(inputIndex + 1) * OFFSET_GLOBAL] = max;
 
     barrier(CLK_GLOBAL_MEM_FENCE);
 
@@ -30,16 +35,16 @@ __kernel void findMinMax(
     {
         if (threadIndex % i == 0)
         {
-            if (min > input[inputIndex + offset]) 
+            if (min > input[(inputIndex + offset) * OFFSET_GLOBAL]) 
             {
-                min = input[inputIndex + offset];
-                input[inputIndex] = min;
+                min = input[(inputIndex + offset) * OFFSET_GLOBAL];
+                input[inputIndex * OFFSET_GLOBAL] = min;
             }
 
-            if (max < input[inputIndex + offset + 1]) 
+            if (max < input[(inputIndex + offset + 1) * OFFSET_GLOBAL]) 
             {
-                max = input[inputIndex + offset + 1];
-                input[inputIndex + 1] = max;
+                max = input[(inputIndex + offset + 1) * OFFSET_GLOBAL];
+                input[(inputIndex + 1) * OFFSET_GLOBAL] = max;
             }
 
             offset <<= 1;

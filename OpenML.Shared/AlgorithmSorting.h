@@ -89,7 +89,7 @@ namespace OpenML
 		/// <return>
 		/// Indexes with sorted elements
 		/// </return>
-		API_INTERFACE static size_t* radixGPUIndexes(GpuDevice* gpu, float* input, size_t n);
+		API_INTERFACE static size_t* radixGPUIndexes(GpuDevice* gpu, float* input, size_t n, size_t offsetMultiplier = 1, size_t offsetSum = 0);
 
 		/// <summary>
 		/// Fast sorting of numbers array using Radix method in GPU
@@ -98,7 +98,7 @@ namespace OpenML
 		/// <return>
 		/// Memory Buffer elements and indexes from GPU where the sorted numbers and its indexes are stored
 		/// </return>
-		API_INTERFACE static cl_mem* radixGPUBuffer(GpuDevice* gpu, float* input, size_t n);
+		API_INTERFACE static cl_mem* radixGPUBuffer(GpuDevice* gpu, float* input, size_t n, size_t offsetMultiplier = 1, size_t offsetSum = 0);
 		
 #endif
 

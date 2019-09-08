@@ -17,21 +17,18 @@ namespace OpenML
 	class SweepAndPruneResult
 	{
 	public:
-		size_t* aabbIndexes1;
-		size_t* aabbIndexes2;
+		size_t* aabbIndexes;
 		size_t count;
 
-		SweepAndPruneResult(size_t* aabbIndexes1, size_t* aabbIndexes2, size_t count)
+		SweepAndPruneResult(size_t* aabbIndexes,  size_t count)
 		{
-			this->aabbIndexes1 = aabbIndexes1;
-			this->aabbIndexes2 = aabbIndexes2;
+			this->aabbIndexes = aabbIndexes;
 			this->count = count;
 		}
 
 		~SweepAndPruneResult()
 		{
-			ALLOC_RELEASE(aabbIndexes2);
-			ALLOC_RELEASE(aabbIndexes1);
+			ALLOC_RELEASE(aabbIndexes);
 		}
 	};
 

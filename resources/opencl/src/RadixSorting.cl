@@ -32,7 +32,9 @@ __kernel void count(
     __constant size_t* digitIndex_global,
     __constant bool  * useExpoent,
     __constant float * minValue_global,
-    __global   size_t* globalBucket
+    __global   size_t* globalBucket,
+    __constant size_t* offsetMultiplier,
+    __constant size_t* offsetSum
     )
 {
     __private size_t bucket[10];
@@ -93,7 +95,9 @@ __kernel void reorder(
     __global   size_t* offsetTable,
     __constant float * minValue_global,
     __global   size_t* indexes,
-    __global   float * output
+    __global   float * output,
+    __constant size_t* offsetMultiplier,
+    __constant size_t* offsetSum
     )
 {
     __private size_t elementsPerWorkItem = *elementsPerWorkItem_global;

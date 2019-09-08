@@ -1117,19 +1117,24 @@ namespace OpenMLTest
 
 			GpuCommandManager* commandManager = context->defaultDevice->commandManager;
 			
-			const size_t count = 1000;
-			AABBf* aabbs = get1000();
-			//const size_t count = (size_t) std::pow(2.0, 17.0);
-			//AABBf* aabbs = getRandom(count, 1000);
+			//const size_t count = 1000;
+			//AABBf* aabbs = get1000();
+			const size_t count = (size_t) std::pow(2.0, 17.0);
+			AABBf* aabbs = getRandom(count, 1000);
 
-			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
-			
-			SweepAndPruneResult result = SweepAndPrune::findCollisionsGPU(gpu, aabbs, count);
-
+			std::chrono::high_resolution_clock::time_point currentTime1 = std::chrono::high_resolution_clock::now();
+			SweepAndPruneResult result1 = SweepAndPrune::findCollisions(aabbs, count);
 			std::chrono::high_resolution_clock::time_point currentTime2 = std::chrono::high_resolution_clock::now();
-			std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
+			std::chrono::milliseconds ms1 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime1);
 
-			Assert::AreEqual(size_t(9), result.count, L"wrong value", LINE_INFO());
+			currentTime1 = std::chrono::high_resolution_clock::now();
+			SweepAndPruneResult result2 = SweepAndPrune::findCollisionsGPU(gpu, aabbs, count);
+			currentTime2 = std::chrono::high_resolution_clock::now();
+			std::chrono::milliseconds ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime1);
+
+			//90-100 ms
+
+			Assert::AreEqual(result1.count, result2.count, L"wrong value", LINE_INFO());
 
 			ALLOC_RELEASE(aabbs);
 		}

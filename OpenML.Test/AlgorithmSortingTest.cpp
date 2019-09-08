@@ -23,6 +23,20 @@ int comparatorFloatTest(const void* param1, const void* param2)
 	return 0;
 }
 
+int comparatorAABBFirstAxisTest(const void* param1, const void* param2)
+{
+	const AABBf obj1 = *(AABBf*)param1;
+	const AABBf obj2 = *(AABBf*)param2;
+
+	if (obj1.minPoint.x == obj2.minPoint.x)
+		return 0;
+	
+	if (obj1.minPoint.x < obj2.minPoint.x)
+		return -1;
+
+	return 1;
+}
+
 namespace OpenMLTest
 {
 
@@ -40,6 +54,52 @@ namespace OpenMLTest
 				result[i] = randomizer.rand() / 100.0f;
 
 			return result;
+		}
+
+		AABBf* getRandomAABBs(size_t count, size_t spaceSize = 1000)
+		{
+			Randomizer<int> randomizerSize(0, 30);
+			Randomizer<int> randomizerLocation(0, spaceSize);
+
+			AABBf* aabbs = ALLOC_ARRAY(AABBf, count);
+
+			for (size_t i = 0; i < count; i++)
+			{
+				int xMin = randomizerSize.rand();
+				int yMin = randomizerSize.rand();
+				int zMin = randomizerSize.rand();
+
+				int xMax = randomizerSize.rand();
+				int yMax = randomizerSize.rand();
+				int zMax = randomizerSize.rand();
+
+				int locationX = randomizerLocation.rand();
+				int locationY = randomizerLocation.rand();
+				int locationZ = randomizerLocation.rand();
+
+				if (xMin == xMax)
+					xMax++;
+
+				if (yMin == yMax)
+					yMax++;
+
+				if (zMin == zMax)
+					zMax++;
+
+				if (xMin > xMax)
+					std::swap(xMin, xMax);
+
+				if (yMin > yMax)
+					std::swap(yMin, yMax);
+
+				if (zMin > zMax)
+					std::swap(zMin, zMax);
+
+				aabbs[i] = AABBf({ float(xMin + locationX), float(yMin + locationY), float(zMin + locationZ) }
+				, { float(xMax + locationX), float(yMax + locationY), float(zMax + locationZ) });
+			}
+
+			return aabbs;
 		}
 
 	public:
@@ -193,6 +253,36 @@ namespace OpenMLTest
 				Assert::AreEqual(vector[i], result[i], L"Wrong value.", LINE_INFO());
 
 			ALLOC_RELEASE(vector);
+		}
+
+		TEST_METHOD(AlgorithmSorting_radixGPU_Test2)
+		{
+			GpuContext* context = GpuContext::init();
+			GpuDevice* gpu = context->defaultDevice;
+			AlgorithmSorting::init(gpu);
+
+			const size_t count = (size_t)std::pow(2.0, 17.0);
+			AABBf* input1 = getRandomAABBs(count);
+			AABBf* input2 = ALLOC_COPY(input1, AABBf, count);
+			
+			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
+
+			AlgorithmSorting::quickSortNative(input1, count, sizeof(AABBf), comparatorAABBFirstAxisTest);
+
+			std::chrono::high_resolution_clock::time_point currentTime2 = std::chrono::high_resolution_clock::now();
+			std::chrono::milliseconds ms1 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
+
+			currentTime = std::chrono::high_resolution_clock::now();
+
+			size_t* result = AlgorithmSorting::radixGPUIndexes(gpu, (float*) input2, count, 7, 1);
+
+			currentTime2 = std::chrono::high_resolution_clock::now();
+			std::chrono::milliseconds ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
+
+			for (size_t i = 0; i < count; i++)
+				Assert::AreEqual(input1[i].minPoint.x, input2[result[i]].minPoint.x, L"Wrong value.", LINE_INFO());
+
+			ALLOC_RELEASE(input1);
 		}
 
 		TEST_METHOD(AlgorithmSorting_radixGPUIndexes_Test1)

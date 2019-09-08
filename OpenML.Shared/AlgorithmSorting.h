@@ -80,7 +80,7 @@ namespace OpenML
 		/// <return>
 		/// Sorted array
 		/// </return>
-		API_INTERFACE static float* radixGPU(GpuDevice* gpu, float* input, size_t count);
+		API_INTERFACE static float* radixGPU(GpuDevice* gpu, float* input, size_t count, size_t strider = 1, size_t offset = 0);
 
 		/// <summary>
 		/// Fast sorting of numbers array using Radix method in GPU
@@ -89,7 +89,7 @@ namespace OpenML
 		/// <return>
 		/// Indexes with sorted elements
 		/// </return>
-		API_INTERFACE static size_t* radixGPUIndexes(GpuDevice* gpu, float* input, size_t n, size_t offsetMultiplier = 1, size_t offsetSum = 0);
+		API_INTERFACE static size_t* radixGPUIndexes(GpuDevice* gpu, float* input, size_t n, size_t strider = 1, size_t offset = 0);
 
 		/// <summary>
 		/// Fast sorting of numbers array using Radix method in GPU
@@ -98,7 +98,7 @@ namespace OpenML
 		/// <return>
 		/// Memory Buffer elements and indexes from GPU where the sorted numbers and its indexes are stored
 		/// </return>
-		API_INTERFACE static cl_mem* radixGPUBuffer(GpuDevice* gpu, float* input, size_t n, size_t offsetMultiplier = 1, size_t offsetSum = 0);
+		API_INTERFACE static cl_mem* radixGPUBuffer(GpuDevice* gpu, float* input, size_t n, size_t strider = 1, size_t offset = 0);
 		
 #endif
 

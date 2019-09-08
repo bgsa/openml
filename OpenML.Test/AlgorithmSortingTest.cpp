@@ -292,27 +292,29 @@ namespace OpenMLTest
 			AlgorithmSorting::init(gpu);
 
 			const size_t count = (size_t)std::pow(2.0, 17.0);
-			float* vector = getRandom(count);
+			float* input1 = getRandom(count);
+			float* input2 = ALLOC_COPY(input1, float, count);
 
 			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 
-			AlgorithmSorting::native(vector, count);
+			AlgorithmSorting::native(input1, count);
 
 			std::chrono::high_resolution_clock::time_point currentTime2 = std::chrono::high_resolution_clock::now();
 			std::chrono::milliseconds ms1 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
 
 			currentTime = std::chrono::high_resolution_clock::now();
 
-			size_t* indexes = AlgorithmSorting::radixGPUIndexes(gpu, vector, count);
+			size_t* indexes = AlgorithmSorting::radixGPUIndexes(gpu, input2, count);
 
 			currentTime2 = std::chrono::high_resolution_clock::now();
 			std::chrono::milliseconds ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
 
 			for (size_t i = 0; i < count; i++)
-				Assert::AreEqual(vector[i], vector[indexes[i]], L"Wrong value.", LINE_INFO());
+				Assert::AreEqual(input1[i], input2[indexes[i]], L"Wrong value.", LINE_INFO());
 
-			ALLOC_RELEASE(vector);
+			ALLOC_RELEASE(input1);
 		}
+
 
 	};
 }

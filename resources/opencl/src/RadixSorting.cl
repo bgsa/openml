@@ -1,5 +1,8 @@
 #define OVERLOAD  __attribute__((overloadable))
 
+#define OFFSET_GLOBAL (*strider) + *offset
+
+
 size_t OVERLOAD digit(float value, size_t index)
 {
     size_t mantissa = (size_t) (fabs(((float) ((size_t) value)) - value) * 10000);
@@ -18,7 +21,6 @@ __kernel void initIndexes(
     __global   size_t* indexes
     )
 {
-    //__private size_t elementsPerWorkItem = *n / get_global_size(0);
     __private size_t elementsPerWorkItem = *elementsPerWorkItem_global;
     __private size_t inputThreadIndex = get_global_id(0) * elementsPerWorkItem;
 
@@ -28,47 +30,43 @@ __kernel void initIndexes(
 
 __kernel void count(
     __global   float * input,
-    __constant size_t* elementsPerWorkItem_global, 
-    __constant size_t* digitIndex_global,
+    __constant size_t* elementsPerWorkItem, 
+    __constant size_t* digitIndex,
     __constant bool  * useExpoent,
-    __constant float * minValue_global,
-    __global   size_t* globalBucket,
-    __constant size_t* offsetMultiplier,
-    __constant size_t* offsetSum
+    __constant float * minValue,
+    __global   size_t* offsetTable,
+    __constant size_t* strider,
+    __constant size_t* offset
     )
 {
     __private size_t bucket[10];
     __private size_t currentDigit = 0;
-    __private size_t digitIndex = *digitIndex_global;
-    __private float  minValue = *minValue_global;
     __private size_t globalBucketOffset = 10 * get_global_id(0);
-    __private size_t elementsPerWorkItem = *elementsPerWorkItem_global;    
-    __private size_t inputThreadIndex = get_global_id(0) * elementsPerWorkItem; // 1023 * 128
+    __private size_t inputThreadIndex = get_global_id(0) * *elementsPerWorkItem * *strider;
 
     for(size_t i = 0 ; i < 10; i++)
         bucket[i] = 0;
 
     if (*useExpoent)
-        for (size_t i = 0 ; i < elementsPerWorkItem; i++) //make a histogram
+        for (size_t i = 0 ; i < *elementsPerWorkItem; i++) //make a histogram for expoent of float
         {
-            currentDigit = digit((int) (input[inputThreadIndex + i] + minValue), digitIndex);
+            currentDigit = digit((int) (input[(inputThreadIndex + (i * OFFSET_GLOBAL))] + *minValue), *digitIndex);
             bucket[currentDigit]++;
         }
     else
-        for (size_t i = 0 ; i < elementsPerWorkItem; i++) //make a histogram
+        for (size_t i = 0 ; i < *elementsPerWorkItem ; i++) //make a histogram for mantissa of float
         {
-            currentDigit = digit(input[inputThreadIndex + i], digitIndex);
+            currentDigit = digit(input[inputThreadIndex + (i * OFFSET_GLOBAL)] + *minValue, *digitIndex);
             bucket[currentDigit]++;
         }
 
-
     for (size_t i = 0 ; i < 10; i++) //write on global bucket in order to do prefix scan
-        globalBucket[globalBucketOffset + i] = bucket[i];
+        offsetTable[globalBucketOffset + i] = bucket[i];
 }
 
 __kernel void prefixScan(
-    __constant size_t* previousBuffer,
-    __global   size_t* nextBuffer,
+    __constant size_t* previousOffsetTable,
+    __global   size_t* nextOffsetTable,
     __constant size_t* offset_global
     )
 {
@@ -78,12 +76,12 @@ __kernel void prefixScan(
     if (globalBufferIndex < offset)
     {
         for(size_t i = 0; i < 10; i++)
-            nextBuffer[globalBufferIndex + i] = previousBuffer[globalBufferIndex + i];
+            nextOffsetTable[globalBufferIndex + i] = previousOffsetTable[globalBufferIndex + i];
     }
     else 
     {
         for(size_t i = 0; i < 10; i++)
-            nextBuffer[globalBufferIndex + i] = previousBuffer[globalBufferIndex + i - offset] + previousBuffer[globalBufferIndex + i];
+            nextOffsetTable[globalBufferIndex + i] = previousOffsetTable[globalBufferIndex + i - offset] + previousOffsetTable[globalBufferIndex + i];
     }
 }
 
@@ -93,17 +91,18 @@ __kernel void reorder(
     __constant size_t* digitIndex_global,
     __constant bool  * useExpoent,
     __global   size_t* offsetTable,
-    __constant float * minValue_global,
-    __global   size_t* indexes,
+    __constant float * minValue,
+    __constant size_t* indexesInput,
+    __global   size_t* indexesOutput,
     __global   float * output,
-    __constant size_t* offsetMultiplier,
-    __constant size_t* offsetSum
+    __constant size_t* strider,
+    __constant size_t* offset
     )
 {
     __private size_t elementsPerWorkItem = *elementsPerWorkItem_global;
     __private size_t digitIndex = *digitIndex_global;
-    __private float  minValue = *minValue_global;
-    __private size_t inputThreadIndex = get_global_id(0) * elementsPerWorkItem; // 1023 * 128
+    __private size_t indexesInputBegin = get_global_id(0) * elementsPerWorkItem;
+    __private size_t inputThreadIndex = get_global_id(0) * elementsPerWorkItem * *strider; // 1023 * 128
     __private size_t offsetTable_Index = get_global_id(0) * 10;
     __private size_t offsetTable_LastBucketIndex = (get_global_size(0) * 10) - 10;
 
@@ -118,19 +117,31 @@ __kernel void reorder(
     if (*useExpoent)
         for (int i = elementsPerWorkItem - 1; i >= 0; i--)
         {
-            currentDigit = digit((int) (input[inputThreadIndex + i] + minValue), digitIndex);  // get the digit to process
+            currentDigit = digit((int) (input[inputThreadIndex + (i * OFFSET_GLOBAL)] + *minValue), digitIndex);  // get the digit to process
+            
             globalAddress = startIndex[currentDigit] + offsetTable[offsetTable_Index + currentDigit] - 1; // get the global output address where the element is going to be stored
-            output[globalAddress] = input[inputThreadIndex + i];   // store the element in right gloal output address
-            indexes[globalAddress] = inputThreadIndex + i;
+
+            //copy all elements of item to output
+            for (size_t j = 0 ; j < *strider ; j++)
+                output[(globalAddress * *strider) + j] = input[inputThreadIndex + (i * *strider) + j];   // store the element in the new gloal output address
+
+            indexesOutput[globalAddress] = indexesInput[indexesInputBegin + i];
+
             offsetTable[offsetTable_Index + currentDigit]--;    // decrement the offset table to store the others elements before
         }
     else
         for (int i = elementsPerWorkItem - 1; i >= 0; i--)
         {
-            currentDigit = digit(input[inputThreadIndex + i], digitIndex);  // get the digit to process
+            currentDigit = digit(input[inputThreadIndex + (i * OFFSET_GLOBAL)] + *minValue, digitIndex);  // get the digit to process
+
             globalAddress = startIndex[currentDigit] + offsetTable[offsetTable_Index + currentDigit] - 1; // get the global output address where the element is going to be stored
-            output[globalAddress] = input[inputThreadIndex + i];   // store the element in right gloal output address
-            indexes[globalAddress] = inputThreadIndex + i;
+
+            //copy all elements of item to output
+            for (size_t j = 0 ; j < *strider ; j++)
+                output[(globalAddress * *strider) + j] = input[inputThreadIndex + (i * *strider) + j];   // store the element in the new gloal output address
+
+            indexesOutput[globalAddress] = indexesInput[indexesInputBegin + i];
+
             offsetTable[offsetTable_Index + currentDigit]--;    // decrement the offset table to store the others elements before
         }
 }

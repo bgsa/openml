@@ -33,7 +33,7 @@ namespace OpenMLTest
 	{
 	private:
 
-		AABBf* getRandom(size_t count, size_t spaceSize = 1000)
+		AABBf* getRandomAABBs(size_t count, size_t spaceSize = 1000)
 		{
 			Randomizer<int> randomizerSize(0, 30);
 			Randomizer<int> randomizerLocation(0, spaceSize);
@@ -79,7 +79,7 @@ namespace OpenMLTest
 			return aabbs;
 		}
 
-		AABBf* get1000()
+		AABBf* get1000AABBs()
 		{
 			AABBf* aabbs = ALLOC_ARRAY(AABBf, 1000);
 			aabbs[0] = AABBf({ 272.0f, 544.0f, 360.0f }, { 273.0f, 545.0f, 362.0f });
@@ -1091,7 +1091,7 @@ namespace OpenMLTest
 		TEST_METHOD(SweepAndPrune_findCollisions_Test)
 		{
 			size_t count = 1000;
-			AABBf* aabbs = get1000();
+			AABBf* aabbs = get1000AABBs();
 			//size_t count = std::pow(2, 17);
 			//AABBf* aabbs = getRandom(count, 1000);
 
@@ -1118,17 +1118,17 @@ namespace OpenMLTest
 			GpuCommandManager* commandManager = context->defaultDevice->commandManager;
 			
 			//const size_t count = 1000;
-			//AABBf* aabbs = get1000();
 			const size_t count = (size_t) std::pow(2.0, 17.0);
-			AABBf* aabbs = getRandom(count, 1000);
+			AABBf* aabbs1 = getRandomAABBs(count, 1000);
+			AABBf* aabbs2 = ALLOC_COPY(aabbs1, AABBf, count);
 
 			std::chrono::high_resolution_clock::time_point currentTime1 = std::chrono::high_resolution_clock::now();
-			SweepAndPruneResult result1 = SweepAndPrune::findCollisions(aabbs, count);
+			SweepAndPruneResult result1 = SweepAndPrune::findCollisions(aabbs1, count);
 			std::chrono::high_resolution_clock::time_point currentTime2 = std::chrono::high_resolution_clock::now();
 			std::chrono::milliseconds ms1 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime1);
 
 			currentTime1 = std::chrono::high_resolution_clock::now();
-			SweepAndPruneResult result2 = SweepAndPrune::findCollisionsGPU(gpu, aabbs, count);
+			SweepAndPruneResult result2 = SweepAndPrune::findCollisionsGPU(gpu, aabbs2, count);
 			currentTime2 = std::chrono::high_resolution_clock::now();
 			std::chrono::milliseconds ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime1);
 
@@ -1136,7 +1136,7 @@ namespace OpenMLTest
 
 			Assert::AreEqual(result1.count, result2.count, L"wrong value", LINE_INFO());
 
-			ALLOC_RELEASE(aabbs);
+			ALLOC_RELEASE(aabbs1);
 		}
 
 #endif

@@ -1,38 +1,47 @@
 #define THREAD_ID get_global_id(0)
 
-#define ELEMENTS_IN_AABB 7
-#define offset 1
+#define strider 7
 
-#define MIN_POINT_X aabbs[index + offset]
-#define MIN_POINT_Y aabbs[index + offset + 1]
-#define MIN_POINT_Z aabbs[index + offset + 2]
-#define MAX_POINT_X aabbs[index + offset + 3]
-#define MAX_POINT_Y aabbs[index + offset + 4]
-#define MAX_POINT_Z aabbs[index + offset + 5]
+#define MIN_POINT_X aabbs[indexes[i] * strider + 1]
+#define MIN_POINT_Y aabbs[indexes[i] * strider + 2]
+#define MIN_POINT_Z aabbs[indexes[i] * strider + 3]
+#define MAX_POINT_X aabbs[indexes[i] * strider + 4]
+#define MAX_POINT_Y aabbs[indexes[i] * strider + 5]
+#define MAX_POINT_Z aabbs[indexes[i] * strider + 6]
 
-#define MIN_POINT_X_NEXT_AABB aabbs[(i*ELEMENTS_IN_AABB) + offset]
+#define MIN_POINT_X_NEXT_AABB aabbs[indexes[j] * strider + 1]
+#define MIN_POINT_Y_NEXT_AABB aabbs[indexes[j] * strider + 2]
+#define MIN_POINT_Z_NEXT_AABB aabbs[indexes[j] * strider + 3]
+#define MAX_POINT_X_NEXT_AABB aabbs[indexes[j] * strider + 4]
+#define MAX_POINT_Y_NEXT_AABB aabbs[indexes[j] * strider + 5]
+#define MAX_POINT_Z_NEXT_AABB aabbs[indexes[j] * strider + 6]
 
 __kernel void sweepAndPrune(
 	__global   float * aabbs, 
 	__constant size_t* aabbsCount, 
 	__global   size_t* globalIndex, 
+    __global   size_t* indexes, 
 	__global   size_t* output)
 {
-    __private size_t index = THREAD_ID * ELEMENTS_IN_AABB;
+    __private size_t elementsPerWorkItem = *aabbsCount / get_global_size(0);
+    __private size_t inputThreadIndex = THREAD_ID * elementsPerWorkItem;
     __private size_t outputIndex = 0;
 
-    for(size_t i = THREAD_ID + 1; i < *aabbsCount; i++)
+    for( size_t i = inputThreadIndex ; i < inputThreadIndex + elementsPerWorkItem ; i++ )  // compute each element for this thread
     {
-        if (MAX_POINT_X < MIN_POINT_X_NEXT_AABB)  // if maxPoint currernt AABB greater than minPoint of right AABB, they do not collides in X axis
-            break;
-
-        //check AABB collision
-        if (MAX_POINT_Y >= aabbs[(i*ELEMENTS_IN_AABB) + offset + 1] && MIN_POINT_Y <= aabbs[(i*ELEMENTS_IN_AABB) + offset + 4]
-         && MAX_POINT_Z >= aabbs[(i*ELEMENTS_IN_AABB) + offset + 2] && MIN_POINT_Z <= aabbs[(i*ELEMENTS_IN_AABB) + offset + 5])
+        for(size_t j = i + 1; j < *aabbsCount; j++) // compute one element
         {
-            outputIndex = atomic_add(globalIndex, 2);
-            output[outputIndex] = THREAD_ID;
-            output[outputIndex + 1] = i;
+            if (MAX_POINT_X < MIN_POINT_X_NEXT_AABB)  // if maxPoint currernt AABB greater than minPoint of right AABB, they do not collides in X axis
+                break;
+
+            if (MAX_POINT_Y >= MIN_POINT_Y_NEXT_AABB && MIN_POINT_Y <= MAX_POINT_Y_NEXT_AABB    //check AABB collision
+             && MAX_POINT_Z >= MIN_POINT_Z_NEXT_AABB && MIN_POINT_Z <= MAX_POINT_Z_NEXT_AABB)
+            {
+                outputIndex = atomic_add(globalIndex, 2);
+                output[outputIndex] = i;
+                output[outputIndex + 1] = j;
+            }
         }
     }
+
 }

@@ -110,19 +110,20 @@ void SweepAndPrune::init(GpuDevice* gpu)
 template <typename T>
 SweepAndPruneResult SweepAndPrune::findCollisionsGPU(GpuDevice* gpu, AABB<T>* aabbs, size_t count)
 {
-	const size_t globalWorkSize[3] = { nextPowOf2(count), 0, 0 };
-	const size_t localWorkSize[3] = { 64, 0, 0 };
-	const size_t outputCount = count * 3 * 2;
+	const size_t globalWorkSize[3] = { gpu->maxWorkGroupSize, 0, 0 };
+	const size_t localWorkSize[3] = { nextPowOf2(count) / gpu->maxWorkGroupSize, 0, 0 };
 	size_t globalIndex = 0;
 
-	AlgorithmSorting::quickSortNative(aabbs, count, sizeof(AABB<T>), comparatorXAxisForQuickSort);
-	//cl_mem indexes = AlgorithmSorting::radixGPUBuffer(gpu, aabbs, count);
+	cl_mem* buffers = AlgorithmSorting::radixGPUBuffer(gpu, (float*) aabbs, count, 7, 1);
+	cl_mem elementsBuffer = buffers[0];
+	cl_mem indexesBuffer = buffers[1];
 
 	GpuCommand* command = gpu->commandManager->createCommand();
 	size_t* aabbIndexes = command
-		->setInputParameter(aabbs, sizeof(AABB<T>) * count)
+		->setInputParameter((float*)aabbs, sizeof(AABB<T>) * count)
 		->setInputParameter(&count, SIZEOF_UINT)
 		->setInputParameter(&globalIndex, SIZEOF_UINT)
+		->setInputParameter(buffers[1], SIZEOF_UINT * count)
 		->setOutputParameter(SIZEOF_UINT * count * 2)
 		->buildFromProgram(gpu->commandManager->cachedPrograms[sapProgramIndex], "sweepAndPrune")
 		->execute(1, globalWorkSize, localWorkSize)
@@ -131,6 +132,8 @@ SweepAndPruneResult SweepAndPrune::findCollisionsGPU(GpuDevice* gpu, AABB<T>* aa
 	globalIndex = *command->fetchInOutParameter<size_t>(2) >> 1; //divide by 2
 
 	command->~GpuCommand();
+	gpu->releaseBuffer(indexesBuffer);
+	gpu->releaseBuffer(elementsBuffer);
 	return SweepAndPruneResult(aabbIndexes, globalIndex);
 }
 template SweepAndPruneResult SweepAndPrune::findCollisionsGPU<int>(GpuDevice* gpuCommandManager, AABB<int>*, size_t);

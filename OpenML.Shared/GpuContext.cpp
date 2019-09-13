@@ -7,7 +7,7 @@ GpuContext::GpuContext(cl_platform_id platformId)
 {
 	this->platformId = platformId;
 
-	size_t devicesCount;
+	cl_uint devicesCount;
 	clGetDeviceIDs(platformId, CL_DEVICE_TYPE_ALL, 0, NULL, &devicesCount);
 
 	cl_device_id* devicesAsArray = new cl_device_id[devicesCount];
@@ -44,7 +44,7 @@ std::vector<cl_platform_id> GpuContext::getPlatforms()
 	if (platforms.size() > 0)
 		return platforms;
 	
-	size_t platformCount;
+	cl_uint platformCount;
 	HANDLE_OPENCL_ERROR(clGetPlatformIDs(NULL, NULL, &platformCount));
 
 	cl_platform_id* platformsAsArray = new cl_platform_id[platformCount];

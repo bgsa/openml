@@ -1,3 +1,5 @@
+#ifdef OPENCL_ENABLED
+
 #include "GpuContext.h"
 
 static GpuContext* gpu = nullptr;
@@ -68,3 +70,5 @@ GpuContext::~GpuContext()
 	for (size_t i = 0; i < devices.size(); i++)
 		delete devices[i];
 }
+
+#endif

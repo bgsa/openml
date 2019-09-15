@@ -1,3 +1,5 @@
+#ifdef OPENCL_ENABLED
+
 #include "GpuCommandManager.h"
 
 GpuCommandManager::GpuCommandManager(cl_context deviceContext, cl_device_id deviceId, cl_command_queue_properties queueProperties)
@@ -57,3 +59,5 @@ GpuCommandManager::~GpuCommandManager()
 
 	HANDLE_OPENCL_ERROR(clReleaseCommandQueue(commandQueue));
 }
+
+#endif

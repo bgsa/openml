@@ -1,4 +1,4 @@
-#if OPENCL_ENABLED
+#ifdef OPENCL_ENABLED
 
 #pragma once
 

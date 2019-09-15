@@ -87,7 +87,7 @@ template SweepAndPruneResult SweepAndPrune::findCollisions<int>(AABB<int>*, size
 template SweepAndPruneResult SweepAndPrune::findCollisions<float>(AABB<float>*, size_t);
 template SweepAndPruneResult SweepAndPrune::findCollisions<double>(AABB<double>*, size_t);
 
-#if OPENCL_ENABLED
+#ifdef OPENCL_ENABLED
 
 static size_t sapProgramIndex = UINT_MAX;
 

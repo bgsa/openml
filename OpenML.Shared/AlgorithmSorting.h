@@ -5,7 +5,7 @@
 #include <functional>
 #include <numeric>
 
-#include <AABB.h>
+#include "AABB.h"
 
 #ifdef OPENCL_ENABLED
 	#include "GpuCommands.h"

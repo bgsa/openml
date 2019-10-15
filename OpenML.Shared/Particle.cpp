@@ -6,8 +6,8 @@ Particle::Particle(const Vec3f& position, const Vec3f& velocity, const float inv
 	this->velocity = velocity;
 	this->inverseMass = inverseMass;
 
-	aceleration = Vec3f(0);
-	force = Vec3f(0);
+	acceleration = Vec3f(0.0f);
+	force = Vec3f(0.0f);
 	lifeTime = FLT_MAX;
 }
 
@@ -20,13 +20,13 @@ void Particle::update(long long elapsedTime)
 {
 	assert(elapsedTime > 0);
 
-	Vec3f newAceleration = force * inverseMass;
+	Vec3f newAcceleration = force * inverseMass;
 
-	Vec3f newVelocity = velocity + velocity + ((newAceleration - aceleration) / elapsedTime);
+	Vec3f newVelocity = velocity + velocity + ((newAcceleration - acceleration) / elapsedTime);
 
 	Vec3f newPosition = position + ((velocity + newVelocity - velocity) / elapsedTime);
 
-	aceleration = newAceleration;
+	acceleration = newAcceleration;
 	velocity = newVelocity;
 	position = newPosition;
 

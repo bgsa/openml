@@ -12,7 +12,7 @@ namespace OpenML
 
 		Vec3f position;
 		Vec3f velocity;
-		Vec3f aceleration;
+		Vec3f acceleration;
 		Vec3f force;
 		float inverseMass;
 		float lifeTime;

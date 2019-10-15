@@ -19,9 +19,9 @@ namespace OpenMLTest
 
 			Assert::AreEqual(Vec3f(0), particle.position, L"Wrong value.", LINE_INFO());
 			Assert::AreEqual(Vec3f(0), particle.velocity, L"Wrong value.", LINE_INFO());
-			Assert::AreEqual(Vec3f(0), particle.aceleration, L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(Vec3f(0), particle.acceleration, L"Wrong value.", LINE_INFO());
 			Assert::AreEqual(Vec3f(0), particle.force, L"Wrong value.", LINE_INFO());
-			Assert::AreEqual(0.0f, particle.inverseMass, L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(0.8f, particle.inverseMass, L"Wrong value.", LINE_INFO());
 		}
 
 		TEST_METHOD(Particle_constructor_withParameters)
@@ -30,7 +30,7 @@ namespace OpenMLTest
 
 			Assert::AreEqual(Vec3f(1), particle.position, L"Wrong value.", LINE_INFO());
 			Assert::AreEqual(Vec3f(2), particle.velocity, L"Wrong value.", LINE_INFO());
-			Assert::AreEqual(Vec3f(0), particle.aceleration, L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(Vec3f(0), particle.acceleration, L"Wrong value.", LINE_INFO());
 			Assert::AreEqual(Vec3f(0), particle.force, L"Wrong value.", LINE_INFO());
 			Assert::AreEqual(2.5f, particle.inverseMass, L"Wrong value.", LINE_INFO());
 		}
@@ -58,7 +58,7 @@ namespace OpenMLTest
 
 			particle.update(33);
 			
-			Assert::AreEqual(Vec3f(0.0f, 1.6f, 0.0f), particle.aceleration, L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(Vec3f(0.0f, 1.6f, 0.0f), particle.acceleration, L"Wrong value.", LINE_INFO());
 			Assert::AreEqual(Vec3f(0.0f, 0.0484848507f, 0.0f), particle.velocity, L"Wrong value.", LINE_INFO());
 			Assert::AreEqual(Vec3f(0.0f, 0.00146923785f, 0.0f), particle.position, L"Wrong value.", LINE_INFO());
 			

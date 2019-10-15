@@ -49,6 +49,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Mat4.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Orientation.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Particle.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ParticleSystem.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Plane3D.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Quat.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Randomizer.h" />
@@ -97,6 +98,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Mat3.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mat4.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Particle.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ParticleSystem.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Plane3D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Quat.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Rectangle2D.cpp" />

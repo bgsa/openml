@@ -33,12 +33,12 @@ namespace OpenMLTest
 			return result;
 		}
 
-		AABBf* getRandomAABBs(size_t count, size_t spaceSize = 1000)
+		AABB* getRandomAABBs(size_t count, size_t spaceSize = 1000)
 		{
 			Randomizer<int> randomizerSize(0, 30);
 			Randomizer<int> randomizerLocation(0, spaceSize);
 
-			AABBf* aabbs = ALLOC_ARRAY(AABBf, count);
+			AABB* aabbs = ALLOC_NEW_ARRAY(AABB, count);
 
 			for (size_t i = 0; i < count; i++)
 			{
@@ -72,7 +72,7 @@ namespace OpenMLTest
 				if (zMin > zMax)
 					std::swap(zMin, zMax);
 
-				aabbs[i] = AABBf({ float(xMin + locationX), float(yMin + locationY), float(zMin + locationZ) }
+				aabbs[i] = AABB({ float(xMin + locationX), float(yMin + locationY), float(zMin + locationZ) }
 				, { float(xMax + locationX), float(yMax + locationY), float(zMax + locationZ) });
 			}
 
@@ -109,7 +109,7 @@ namespace OpenMLTest
 
 			currentTime = std::chrono::high_resolution_clock::now();
 
-			float* result = gpuCommands_findMinMaxGPU(gpu, input, count);
+			float* result = gpuCommands_findMinMaxGPU(gpu, input, count, 1, 0);
 
 			currentTime2 = std::chrono::high_resolution_clock::now();
 			std::chrono::milliseconds ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
@@ -126,21 +126,24 @@ namespace OpenMLTest
 			GpuDevice* gpu = context->defaultDevice;
 			gpuCommands_init(gpu);
 
-			const size_t offsetMultiplier = 7;
-			const size_t offsetSum = 1;
+			const size_t offsetMultiplier = 8;
+			const size_t offsetSum = 2;
 
 			const size_t count = (size_t)std::pow(2.0, 17.0);
-			AABBf* aabbs = getRandomAABBs(count);
+			AABB* aabbs = getRandomAABBs(count);
 
-			float min = std::numeric_limits<float>().max();
-			float max = std::numeric_limits<float>().min();
+			float min = FLT_MAX;
+			float max = -FLT_MAX;
 
 			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 
+			int aa = 0;
 			for (size_t i = 0; i < count; i++)
 			{
-				if (aabbs[i].minPoint.x > max)
+				if (aabbs[i].minPoint.x > max) {
 					max = aabbs[i].minPoint.x;
+					aa = i;
+				}
 
 				if (aabbs[i].minPoint.x < min)
 					min = aabbs[i].minPoint.x;
@@ -152,7 +155,7 @@ namespace OpenMLTest
 			currentTime = std::chrono::high_resolution_clock::now();
 
 			float* result = gpuCommands_findMinMaxGPU(gpu, (float*)aabbs, count, offsetMultiplier, offsetSum);
-
+			
 			currentTime2 = std::chrono::high_resolution_clock::now();
 			std::chrono::milliseconds ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
 
@@ -172,7 +175,7 @@ namespace OpenMLTest
 			const size_t count = (size_t)std::pow(2.0, 17.0);
 			float* input = getRandom(count);
 
-			float max = std::numeric_limits<float>().min();
+			float max = -FLT_MAX;
 
 			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 
@@ -185,7 +188,7 @@ namespace OpenMLTest
 
 			currentTime = std::chrono::high_resolution_clock::now();
 
-			float result = gpuCommands_findMaxGPU(gpu, input, count);
+			float result = gpuCommands_findMaxGPU(gpu, input, count, 1, 0);
 
 			currentTime2 = std::chrono::high_resolution_clock::now();
 			std::chrono::milliseconds ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
@@ -204,7 +207,7 @@ namespace OpenMLTest
 			const size_t count = (size_t)std::pow(2.0, 17.0);
 			float* input = getRandom(count);
 
-			float max = FLT_MIN;
+			float max = -FLT_MAX;
 
 			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 
@@ -217,10 +220,10 @@ namespace OpenMLTest
 
 			currentTime = std::chrono::high_resolution_clock::now();
 
-			cl_mem buffer = gpuCommands_findMaxGPUBuffer(gpu, input, count);
+			cl_mem buffer = gpuCommands_findMaxGPUBuffer(gpu, input, count, 1, 0);
 			float* output = ALLOC_ARRAY(float, 8);
 			gpu->commandManager->executeReadBuffer(buffer, SIZEOF_FLOAT*8, output, true);
-			float result = FLT_MIN;
+			float result = -FLT_MAX;
 
 			for (size_t i = 0; i < 8; i++)
 				if (result < output[i])

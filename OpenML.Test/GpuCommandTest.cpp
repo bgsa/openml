@@ -28,20 +28,23 @@ namespace OpenMLTest
 				param2[i] = (float) (LIST_SIZE - i);
 			}
 
-			IFileManager* fileManager = Factory::getFileManagerInstance();
-			std::string source = fileManager->readTextFile("sumVector.cl");
-
 			size_t globalWorkSize = LIST_SIZE;
 			size_t localWorkSize = 64;
 			
 			GpuContext* context = GpuContext::init();
-			GpuCommand* command = context->defaultDevice->commandManager->createCommand();
+			GpuDevice* gpu = context->defaultDevice;
+
+			IFileManager* fileManager = Factory::getFileManagerInstance();
+			std::string source = fileManager->readTextFile("sumVector.cl");
+			size_t sumProgram = gpu->commandManager->cacheProgram(source.c_str(), sizeof(char) * source.length());
+
+			GpuCommand* command = gpu->commandManager->createCommand();
 
 			float* result = command
 				->setInputParameter(param1, sizeof(float) * LIST_SIZE)
 				->setInputParameter(param2, sizeof(float) * LIST_SIZE)
 				->setOutputParameter(sizeof(float) * LIST_SIZE)
-				->build(source.c_str(), sizeof(char) * source.length(), "sum")
+				->buildFromProgram(gpu->commandManager->cachedPrograms[sumProgram], "sum")
 				->execute(1, &globalWorkSize, &localWorkSize)
 				->fetch<float>();
 

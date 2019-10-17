@@ -1,19 +1,14 @@
 #include "SweepAndPrune.h"
 
-template <typename T>
-bool comparatorXAxisForNativeSort(int index1, int index2, AABB<T>* aabbs)
+bool comparatorXAxisForNativeSort(int index1, int index2, AABB* aabbs)
 {
 	return aabbs[index1].minPoint[0] < aabbs[index2].minPoint[0];
 }
-template bool comparatorXAxisForNativeSort(int index1, int index2, AABB<int>* aabbs);
-template bool comparatorXAxisForNativeSort(int index1, int index2, AABB<float>* aabbs);
-template bool comparatorXAxisForNativeSort(int index1, int index2, AABB<double>* aabbs);
-
 
 int comparatorXAxisForQuickSort(const void* a, const void* b) 
 {
-	AABB<float>* obj1 = (AABB<float>*) a;
-	AABB<float>* obj2 = (AABB<float>*) b;
+	AABB* obj1 = (AABB*) a;
+	AABB* obj2 = (AABB*) b;
 
 	if (obj1->minPoint.x < obj2->minPoint.x)
 		return -1;
@@ -41,8 +36,7 @@ void erase_element(T* array, size_t count, size_t index)
 	std::memmove(array + index, array + index + 1, (count - index - 1) * sizeof(T));
 }
 
-template <typename T>
-SweepAndPruneResult SweepAndPrune::findCollisions(AABB<T>* aabbs, size_t count)
+SweepAndPruneResult SweepAndPrune::findCollisions(AABB* aabbs, size_t count)
 {
 	size_t* aabbIndexes = ALLOC_ARRAY(size_t, count*2);
 	size_t aabbIndex = 0;
@@ -51,7 +45,7 @@ SweepAndPruneResult SweepAndPrune::findCollisions(AABB<T>* aabbs, size_t count)
 	size_t activeListIndexCount = 0;
 	size_t activeListAABBIndex = 0;
 	
-	AlgorithmSorting::quickSortNative(aabbs, count, sizeof(AABB<T>), comparatorXAxisForQuickSort);
+	AlgorithmSorting::quickSortNative(aabbs, count, sizeof(AABB), comparatorXAxisForQuickSort);
 	
 	for (size_t i = 0; i < count; ++i)
 	{
@@ -83,9 +77,6 @@ SweepAndPruneResult SweepAndPrune::findCollisions(AABB<T>* aabbs, size_t count)
 	ALLOC_RELEASE(activeListIndex);
 	return SweepAndPruneResult(aabbIndexes, aabbIndex >> 1);
 }
-template SweepAndPruneResult SweepAndPrune::findCollisions<int>(AABB<int>*, size_t);
-template SweepAndPruneResult SweepAndPrune::findCollisions<float>(AABB<float>*, size_t);
-template SweepAndPruneResult SweepAndPrune::findCollisions<double>(AABB<double>*, size_t);
 
 #ifdef OPENCL_ENABLED
 
@@ -107,20 +98,19 @@ void SweepAndPrune::init(GpuDevice* gpu)
 	delete fileManager;
 }
 
-template <typename T>
-SweepAndPruneResult SweepAndPrune::findCollisionsGPU(GpuDevice* gpu, AABB<T>* aabbs, size_t count)
+SweepAndPruneResult SweepAndPrune::findCollisionsGPU(GpuDevice* gpu, AABB* aabbs, size_t count)
 {
 	const size_t globalWorkSize[3] = { gpu->maxWorkGroupSize, 0, 0 };
 	const size_t localWorkSize[3] = { nextPowOf2(count) / gpu->maxWorkGroupSize, 0, 0 };
 	size_t globalIndex = 0;
 
-	cl_mem* buffers = AlgorithmSorting::radixGPUBuffer(gpu, (float*) aabbs, count, 7, 1);
+	cl_mem* buffers = AlgorithmSorting::radixGPUBuffer(gpu, (float*) aabbs, count, 8, 2);
 	cl_mem elementsBuffer = buffers[0];
 	cl_mem indexesBuffer = buffers[1];
 
 	GpuCommand* command = gpu->commandManager->createCommand();
 	size_t* aabbIndexes = command
-		->setInputParameter((float*)aabbs, sizeof(AABB<T>) * count)
+		->setInputParameter((float*)aabbs, sizeof(AABB) * count)
 		->setInputParameter(&count, SIZEOF_UINT)
 		->setInputParameter(&globalIndex, SIZEOF_UINT)
 		->setInputParameter(buffers[1], SIZEOF_UINT * count)
@@ -136,8 +126,5 @@ SweepAndPruneResult SweepAndPrune::findCollisionsGPU(GpuDevice* gpu, AABB<T>* aa
 	gpu->releaseBuffer(elementsBuffer);
 	return SweepAndPruneResult(aabbIndexes, globalIndex);
 }
-template SweepAndPruneResult SweepAndPrune::findCollisionsGPU<int>(GpuDevice* gpuCommandManager, AABB<int>*, size_t);
-template SweepAndPruneResult SweepAndPrune::findCollisionsGPU<float>(GpuDevice* gpuCommandManager, AABB<float>*, size_t);
-template SweepAndPruneResult SweepAndPrune::findCollisionsGPU<double>(GpuDevice* gpuCommandManager, AABB<double>*, size_t);
 
 #endif

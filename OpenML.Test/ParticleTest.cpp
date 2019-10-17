@@ -61,6 +61,7 @@ namespace OpenMLTest
 			Assert::AreEqual(Vec3f(0.0f, 1.6f, 0.0f), particle.acceleration, L"Wrong value.", LINE_INFO());
 			Assert::AreEqual(Vec3f(0.0f, 0.0484848507f, 0.0f), particle.velocity, L"Wrong value.", LINE_INFO());
 			Assert::AreEqual(Vec3f(0.0f, 0.00146923785f, 0.0f), particle.position, L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(Vec3f(0.0f, 0.0f, 0.0f), particle.previousPosition, L"Wrong value.", LINE_INFO());
 			
 			Assert::AreEqual(Vec3f(0), particle.force, L"Wrong value.", LINE_INFO());
 		}

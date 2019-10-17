@@ -1,21 +1,20 @@
-#define OFFSET_GLOBAL (*offsetMultiplier) + *offsetSum
+#define OFFSET_GLOBAL (*strider) + (*offsetSum)
 
 __kernel void findMinMax(
     __global   float * input,
     __constant size_t* n,
     __global   float * output,
-    __constant size_t* offsetMultiplier,
+    __constant size_t* strider,
     __constant size_t* offsetSum
     )
 {
     __private size_t elementsPerWorkItem = *n / get_global_size(0);
     __private size_t threadIndex = get_global_id(0);
-    //__private size_t inputIndex = (elementsPerWorkItem * threadIndex) * (*offsetMultiplier) + *offsetSum;
     __private size_t inputIndex = (elementsPerWorkItem * threadIndex);
     __private size_t offset = elementsPerWorkItem;
 
     __private float min = FLT_MAX;
-    __private float max = FLT_MIN;
+    __private float max = -FLT_MAX;
 
     for( size_t i = 0 ; i < elementsPerWorkItem ; i++ )
     {
@@ -56,7 +55,7 @@ __kernel void findMinMax(
     if (get_local_id(0) == 0) 
     {
         output[get_group_id(0)] = min;
-        output[get_num_groups(0) + get_group_id(0)] = max;
+        output[get_group_id(0) + get_num_groups(0)] = max;
     }
 }
 
@@ -71,7 +70,7 @@ __kernel void findMax(
     __private size_t inputIndex = elementsPerWorkItem * threadIndex;
     __private size_t offset = elementsPerWorkItem;
 
-    __private float max = FLT_MIN;
+    __private float max = -FLT_MAX;
 
     for( size_t i = 0 ; i < elementsPerWorkItem ; i++ )
         if( max < input[inputIndex + i] )

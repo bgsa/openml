@@ -106,5 +106,5 @@ namespace OpenML
 	template class BinaryTree<int>;
 	template class BinaryTree<float>;
 	template class BinaryTree<double>;
-	template class BinaryTree<BoundingVolume<float>>;
+	//template class BinaryTree<BoundingVolume>;
 }

@@ -2,54 +2,48 @@
 
 #include "Plane3D.h"
 
-template <typename T>
-Plane3D<T>::Plane3D() {	};
+Plane3D::Plane3D() {	};
 
-template <typename T>
-Plane3D<T>::Plane3D(const Vec3<T>& point, const Vec3<T>& vector)
+Plane3D::Plane3D(const Vec3f& point, const Vec3f& vector)
 {
 	this->point = point;
 	this->normalVector = vector;
 }
 
-template <typename T>
-Plane3D<T>::Plane3D(const Vec3<T>& point1, const Vec3<T>& point2, const Vec3<T>& point3)
+Plane3D::Plane3D(const Vec3f& point1, const Vec3f& point2, const Vec3f& point3)
 {
-	Vec3<T> ab = point1 - point2;
-	Vec3<T> ac = point1 - point3;
+	Vec3f ab = point1 - point2;
+	Vec3f ac = point1 - point3;
 
 	point = point2;
 
-	normalVector = Vec3<T>{
+	normalVector = Vec3f{
 		ab[1] * ac[2] - (ab[2] * ac[1]),
 		ab[2] * ac[0] - (ab[0] * ac[2]),
 		ab[0] * ac[1] - (ab[1] * ac[0])
 	}.normalize();
 }
 
-template <typename T>
-Plane3D<T>::Plane3D(T a, T b, T c, T d)
+Plane3D::Plane3D(float a, float b, float c, float d)
 {
-	point = Vec3<T>(
-		T(0),
-		T(0),
+	point = Vec3f(
+		0.0f,
+		0.0f,
 		-d / c
 		);
 
-	normalVector = Vec3<T>(a, b, c).normalize();
+	normalVector = Vec3f(a, b, c).normalize();
 }
 
-template <typename T>
-T Plane3D<T>::getDcomponent() const
+float Plane3D::getDcomponent() const
 {
 	return -normalVector.dot(point);
 	//return normalVector.dot(point);
 }
 
-template <typename T>
-Vec4<T> Plane3D<T>::getEquation() const
+Vec4f Plane3D::getEquation() const
 {
-	return Vec4<T>(
+	return Vec4f(
 		normalVector[0],
 		normalVector[1],
 		normalVector[2],
@@ -57,24 +51,23 @@ Vec4<T> Plane3D<T>::getEquation() const
 		);
 }
 
-template <typename T>
-Vec3<T>* Plane3D<T>::findIntersection(const Line3D<T>& line) const
+Vec3f* Plane3D::findIntersection(const Line3D& line) const
 {
-	Vec3<T> lineAsVector = line.point2 - line.point1;
+	Vec3f lineAsVector = line.point2 - line.point1;
 
-	T angle = normalVector.dot(lineAsVector);
+	float angle = normalVector.dot(lineAsVector);
 
-	if (angle == T(0))
+	if (angle == 0.0f)
 		return nullptr;
 
-	Vec4<T> planeEquation = getEquation();
+	Vec4f planeEquation = getEquation();
 
-	T numerator = -(planeEquation[0] * line.point1[0] + planeEquation[1] * line.point1[1] + planeEquation[2] * line.point1[2] + planeEquation[3]);
-	T denominator = planeEquation[0] * lineAsVector[0] + planeEquation[1] * lineAsVector[1] + planeEquation[2] * lineAsVector[2];
+	float numerator = -(planeEquation[0] * line.point1[0] + planeEquation[1] * line.point1[1] + planeEquation[2] * line.point1[2] + planeEquation[3]);
+	float denominator = planeEquation[0] * lineAsVector[0] + planeEquation[1] * lineAsVector[1] + planeEquation[2] * lineAsVector[2];
 
-	T t = numerator / denominator;
+	float t = numerator / denominator;
 
-	Vec3<T>* intersection = ALLOC_NEW(Vec3<T>)(
+	Vec3f* intersection = ALLOC_NEW(Vec3f)(
 		line.point1[0] + lineAsVector[0] * t,
 		line.point1[1] + lineAsVector[1] * t,
 		line.point1[2] + lineAsVector[2] * t
@@ -83,87 +76,73 @@ Vec3<T>* Plane3D<T>::findIntersection(const Line3D<T>& line) const
 	return intersection;
 }
 
-template <typename T>
-Line3D<T>* Plane3D<T>::findIntersection(const Plane3D<T>& plane) const
+Line3D* Plane3D::findIntersection(const Plane3D& plane) const
 {
 	if (isParallel(plane))
 		return nullptr;
 
-	Vec3<T> lineDirection = normalVector.cross(plane.normalVector);
+	Vec3f lineDirection = normalVector.cross(plane.normalVector);
 	
-	T d1 = getDcomponent();
-	T d2 = plane.getDcomponent();
+	float d1 = getDcomponent();
+	float d2 = plane.getDcomponent();
 
 	// find a point on the line, which is also on both planes
-	T dot = lineDirection.dot(lineDirection);					// V dot V
-	Vec3<T> u1 = normalVector * d2;								// d2 * normalVector
-	Vec3<T> u2 = plane.normalVector * -d1;					    //-d1 * plane.normalVector
-	Vec3<T> point1 = (u1 + u2).cross(lineDirection) / dot;      // (d2*N1-d1*N2) X V / V dot V
+	float dot = lineDirection.dot(lineDirection);					// V dot V
+	Vec3f u1 = normalVector * d2;								// d2 * normalVector
+	Vec3f u2 = plane.normalVector * -d1;					    //-d1 * plane.normalVector
+	Vec3f point1 = (u1 + u2).cross(lineDirection) / dot;      // (d2*N1-d1*N2) X V / V dot V
 
 	// find another point on the line
-	Vec3<T> point2 = point1 + lineDirection;
+	Vec3f point2 = point1 + lineDirection;
 
-	return ALLOC_NEW(Line3D<T>)(point1, point2);
+	return ALLOC_NEW(Line3D)(point1, point2);
 }
 
-template <typename T>
-T Plane3D<T>::distance(const Vec3<T>& target) const
+float Plane3D::distance(const Vec3f& target) const
 {
-	Vec3<T> rayToTarget = target - point;
+	Vec3f rayToTarget = target - point;
 
-	T numerator = normalVector.dot(rayToTarget);
-	T length = normalVector.length();
+	float numerator = normalVector.dot(rayToTarget);
+	float length = normalVector.length();
 
 	return numerator / length;
 }
 
-template <typename T>
-Vec3<T> Plane3D<T>::closestPointOnThePlane(const Vec3<T> &target) const
+Vec3f Plane3D::closestPointOnThePlane(const Vec3f &target) const
 {
-	T d = getDcomponent();
+	float d = getDcomponent();
 
-	T t = (normalVector.dot(target) - d) / normalVector.dot(normalVector); //t = ((n . p) - d) / (n.n)
+	float t = (normalVector.dot(target) - d) / normalVector.dot(normalVector); //t = ((n . p) - d) / (n.n)
 
 	return target - (normalVector * t); //result = point - tn
 }
 
-template <typename T>
-T Plane3D<T>::angle(const Plane3D<T>& plane) const
+float Plane3D::angle(const Plane3D& plane) const
 {
-	T angle = normalVector.dot(plane.normalVector);
-	T length = normalVector.length() * plane.normalVector.length();
+	float angle = normalVector.dot(plane.normalVector);
+	float length = normalVector.length() * plane.normalVector.length();
 
 	return angle / length;
 }
 
-template <typename T>
-Orientation Plane3D<T>::orientation(const Vec3<T>& point) const
+Orientation Plane3D::orientation(const Vec3f& point) const
 {
-	T distanceToPoint =  distance(point);
+	float distanceToPoint =  distance(point);
 
-	if (distanceToPoint == T(0))
+	if (distanceToPoint == 0.0f)
 		return Orientation::NONE;
-	else if (distanceToPoint > T(0))
+	else if (distanceToPoint > 0.0f)
 		return Orientation::LEFT;
 	
 	return Orientation::RIGHT;
 }
 
-template <typename T>
-bool Plane3D<T>::isParallel(const Plane3D<T>& plane) const
+bool Plane3D::isParallel(const Plane3D& plane) const
 {
-	return normalVector.cross(plane.normalVector) == T(0);
+	return normalVector.cross(plane.normalVector) == 0.0f;
 }
 
-template <typename T>
-bool Plane3D<T>::isPerpendicular(const Plane3D<T>& plane) const
+bool Plane3D::isPerpendicular(const Plane3D& plane) const
 {
-	return normalVector.dot(plane.normalVector) == T(0);
-}
-
-namespace OpenML
-{
-	template class Plane3D<int>;
-	template class Plane3D<float>;
-	template class Plane3D<double>;
+	return normalVector.dot(plane.normalVector) == 0.0f;
 }

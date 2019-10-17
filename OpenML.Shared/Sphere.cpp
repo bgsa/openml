@@ -1,109 +1,145 @@
 #include "Sphere.h"
 
-template <typename T>
-Sphere<T>::Sphere()
+Sphere WelzlSphere(Vec3f* points, int numPts, Vec3f suportPoints[], int suportPointsCount)
 {
-	this->center = Vec3<T>(T(0));
-	this->ray = T(1);
+	// if no input points, the recursion has bottomed out. Now compute an 
+	// exact sphere based on points in set of support (zero through four points) 
+
+	if (numPts == 0)
+	{
+		switch (suportPointsCount)
+		{
+		case 0:
+			return Sphere();
+		case 1:
+			return Sphere(suportPoints[0]);
+		case 2:
+			return Sphere(suportPoints[0], suportPoints[1]);
+		case 3:
+			return Sphere(suportPoints[0], suportPoints[1], suportPoints[2]);
+		case 4:
+			return Sphere(suportPoints[0], suportPoints[1], suportPoints[2], suportPoints[3]);
+		}
+	}
+
+	// Pick a point at "random" (here just the last point of the input set) 	
+	int index = numPts - 1;
+
+	// Recursively compute the smallest bounding sphere of the remaining points 
+	Sphere smallestSphere = WelzlSphere(points, numPts - 1, suportPoints, suportPointsCount); // (*) 
+
+	bool isPointInsideTheSphere = smallestSphere.colisionStatus(points[index]) == ColisionStatus::INSIDE;
+	if (isPointInsideTheSphere)
+		return smallestSphere;
+
+	// Otherwise, update set of support to additionally contain the new point 
+	suportPoints[suportPointsCount] = points[index];
+
+	// Recursively compute the smallest sphere of remaining points with new s.o.s. 
+	return WelzlSphere(points, numPts - 1, suportPoints, suportPointsCount + 1);
 }
 
-template <typename T>
-Sphere<T>::Sphere(const Vec3<T> &center, T ray)
+Sphere::Sphere()
+{
+	this->center = Vec3f(0.0f);
+	this->ray = 1.0f;
+
+	particleSystem = ALLOC_NEW(ParticleSystem)(1);
+	particleSystem->particles[0].position = center;
+	particleSystem->particles[0].previousPosition = center;
+}
+
+Sphere::Sphere(const Vec3f &center, float ray)
 {
 	this->center = center;
 	this->ray = ray;
 }
 
-template <typename T>
-Sphere<T>::Sphere(const Vec3<T> &point1)
+Sphere::Sphere(const Vec3f &point1)
 {
 	this->center = point1;
-	this->ray = T(1);
+	this->ray = 1.0f;
 }
 
-template <typename T>
-Sphere<T>::Sphere(const Vec3<T> &point1, const Vec3<T> &point2)
+Sphere::Sphere(const Vec3f &point1, const Vec3f &point2)
 {
-	Line3D<T> line = Line3D<T>(point1, point2);
+	Line3D line = Line3D(point1, point2);
 	this->center = line.centerOfSegment();
-	this->ray = line.lengthOfSegment() / T(2);
+	this->ray = line.lengthOfSegment() / 2.0f;
 }
 
-template <typename T>
-Sphere<T>::Sphere(const Vec3<T> &point1, const Vec3<T> &point2, const Vec3<T> &point3)
+Sphere::Sphere(const Vec3f &point1, const Vec3f &point2, const Vec3f &point3)
 {
-	Vec3<T> ac = point3 - point1;
-	Vec3<T> ab = point2 - point1;
-	Vec3<T> abXac = ab.cross(ac);
+	Vec3f ac = point3 - point1;
+	Vec3f ab = point2 - point1;
+	Vec3f abXac = ab.cross(ac);
 
 	// this is the vector from a TO the circumsphere center
-	Vec3<T> toCircumsphereCenter = (abXac.cross(ab) * ac.squaredLength() + ac.cross(abXac) * ab.squaredLength()) / (T(2)*abXac.squaredLength());
+	Vec3f toCircumsphereCenter = (abXac.cross(ab) * ac.squaredLength() + ac.cross(abXac) * ab.squaredLength()) / (2.0f*abXac.squaredLength());
 	
 	// The 3 space coords of the circumsphere center then:
 	this->center = point1 + toCircumsphereCenter; // now this is the actual 3space location
 	this->ray = toCircumsphereCenter.length();
 }
 
-template <typename T>
-Sphere<T>::Sphere(const Vec3<T> &point1, const Vec3<T> &point2, const Vec3<T> &point3, const Vec3<T> &point4)
+Sphere::Sphere(const Vec3f &point1, const Vec3f &point2, const Vec3f &point3, const Vec3f &point4)
 {
-	Mat4<T> m = Mat4<T>(
-		Vec4<T>(point1, T(1)),
-		Vec4<T>(point2, T(1)),
-		Vec4<T>(point3, T(1)),
-		Vec4<T>(point4, T(1))
+	Mat4f m = Mat4f(
+		Vec4f(point1, 1.0f),
+		Vec4f(point2, 1.0f),
+		Vec4f(point3, 1.0f),
+		Vec4f(point4, 1.0f)
 		);
 
-	T invertedDeterminant = T(1) / m.determinant();
+	float invertedDeterminant = 1.0f / m.determinant();
 
-	T t1 = -(point1.dot(point1));
-	T t2 = -(point2.dot(point2));
-	T t3 = -(point3.dot(point3));
-	T t4 = -(point4.dot(point4));
+	float t1 = -(point1.dot(point1));
+	float t2 = -(point2.dot(point2));
+	float t3 = -(point3.dot(point3));
+	float t4 = -(point4.dot(point4));
 
-	m = Mat4<T>(
-		Vec4<T>(t1, point1[1], point1[2], T(1)),
-		Vec4<T>(t2, point2[1], point2[2], T(1)),
-		Vec4<T>(t3, point3[1], point3[2], T(1)),
-		Vec4<T>(t4, point4[1], point4[2], T(1))
+	m = Mat4f(
+		Vec4f(t1, point1[1], point1[2], 1.0f),
+		Vec4f(t2, point2[1], point2[2], 1.0f),
+		Vec4f(t3, point3[1], point3[2], 1.0f),
+		Vec4f(t4, point4[1], point4[2], 1.0f)
 		);
-	T a = m.determinant() * invertedDeterminant;
-	T x = a * T(-0.5);
+	float a = m.determinant() * invertedDeterminant;
+	float x = a * -0.5f;
 
-	m = Mat4<T>(
-		Vec4<T>(point1[0], t1, point1[2], T(1)),
-		Vec4<T>(point2[0], t2, point2[2], T(1)),
-		Vec4<T>(point3[0], t3, point3[2], T(1)),
-		Vec4<T>(point4[0], t4, point4[2], T(1))
+	m = Mat4f(
+		Vec4f(point1[0], t1, point1[2], 1.0f),
+		Vec4f(point2[0], t2, point2[2], 1.0f),
+		Vec4f(point3[0], t3, point3[2], 1.0f),
+		Vec4f(point4[0], t4, point4[2], 1.0f)
 		);
-	T b = m.determinant() * invertedDeterminant;
-	T y = b * T(-0.5);
+	float b = m.determinant() * invertedDeterminant;
+	float y = b * -0.5f;
 
-	m = Mat4<T>(
-		Vec4<T>(point1[0], point1[1], t1, T(1)),
-		Vec4<T>(point2[0], point2[1], t2, T(1)),
-		Vec4<T>(point3[0], point3[1], t3, T(1)),
-		Vec4<T>(point4[0], point4[1], t4, T(1))
+	m = Mat4f(
+		Vec4f(point1[0], point1[1], t1, 1.0f),
+		Vec4f(point2[0], point2[1], t2, 1.0f),
+		Vec4f(point3[0], point3[1], t3, 1.0f),
+		Vec4f(point4[0], point4[1], t4, 1.0f)
 		);
-	T c = m.determinant() * invertedDeterminant;
-	T z = c * T(-0.5);
+	float c = m.determinant() * invertedDeterminant;
+	float z = c * -0.5f;
 
-	m = Mat4<T>(
-		Vec4<T>(point1[0], point1[1], point1[2], t1),
-		Vec4<T>(point2[0], point2[1], point2[2], t2),
-		Vec4<T>(point3[0], point3[1], point3[2], t3),
-		Vec4<T>(point4[0], point4[1], point4[2], t4)
+	m = Mat4f(
+		Vec4f(point1[0], point1[1], point1[2], t1),
+		Vec4f(point2[0], point2[1], point2[2], t2),
+		Vec4f(point3[0], point3[1], point3[2], t3),
+		Vec4f(point4[0], point4[1], point4[2], t4)
 		);
-	T d = m.determinant() * invertedDeterminant;
+	float d = m.determinant() * invertedDeterminant;
 
 	center = { x, y, z };
-	ray = T(std::sqrt(a * a + b * b + c * c - 4 * d)) / T(2);
+	ray = std::sqrt(a * a + b * b + c * c - 4 * d) / 2.0f;
 }
 
-template <typename T>
-ColisionStatus Sphere<T>::colisionStatus(const Vec3<T> &point)  const
+ColisionStatus Sphere::colisionStatus(const Vec3f &point)  const
 {
-	T distanceToPoint = center.distance(point);
+	float distanceToPoint = center.distance(point);
 	
 	if (isCloseEnough(distanceToPoint, ray))
 		return ColisionStatus::INLINE;
@@ -114,15 +150,14 @@ ColisionStatus Sphere<T>::colisionStatus(const Vec3<T> &point)  const
 	return ColisionStatus::INSIDE;
 }
 
-template <typename T>
-ColisionStatus Sphere<T>::colisionStatus(const Sphere<T>& sphere)  const
+ColisionStatus Sphere::colisionStatus(const Sphere& sphere)  const
 {
-	Vec3<T> rayToSphere = center - sphere.center; 
-	T squaredDistance = rayToSphere.dot(rayToSphere);
+	Vec3f rayToSphere = center - sphere.center; 
+	float squaredDistance = rayToSphere.dot(rayToSphere);
 
 	// Spheres intersect if squared distance is less than squared sum of radius 
-	T diameter = ray + sphere.ray;
-	T squaredDiameter = diameter * diameter;
+	float diameter = ray + sphere.ray;
+	float squaredDiameter = diameter * diameter;
 
 	if (isCloseEnough(squaredDistance, squaredDiameter))
 		return ColisionStatus::INLINE;
@@ -133,8 +168,7 @@ ColisionStatus Sphere<T>::colisionStatus(const Sphere<T>& sphere)  const
 	return ColisionStatus::INSIDE;
 }
 
-template <typename T>
-ColisionStatus Sphere<T>::colisionStatus(const Plane3D<T> &plane)  const
+ColisionStatus Sphere::colisionStatus(const Plane3D& plane)  const
 {
 	/*
 	Implementation "1"
@@ -151,8 +185,8 @@ ColisionStatus Sphere<T>::colisionStatus(const Plane3D<T> &plane)  const
 
 	// optimized implementation
 
-	T d = plane.getDcomponent();
-	T distanceToPlane = center.dot(plane.normalVector) + d;
+	float d = plane.getDcomponent();
+	float distanceToPlane = center.dot(plane.normalVector) + d;
 
 	if (isCloseEnough(distanceToPlane, ray))
 		return ColisionStatus::INLINE;
@@ -163,39 +197,36 @@ ColisionStatus Sphere<T>::colisionStatus(const Plane3D<T> &plane)  const
 	return ColisionStatus::INSIDE;
 }
 
-template <typename T>
-Sphere<T> Sphere<T>::buildFrom(const AABB<T> &aabb)
+Sphere Sphere::buildFrom(const AABB &aabb)
 {
-	T maxDistance = aabb.maxPoint[0] - aabb.minPoint[0];
+	float maxDistance = aabb.maxPoint[0] - aabb.minPoint[0];
 
 	maxDistance = std::max(maxDistance, aabb.maxPoint[1] - aabb.minPoint[1]);
 
 	maxDistance = std::max(maxDistance, aabb.maxPoint[2] - aabb.minPoint[2]);
 
-	return Sphere<T>(
+	return Sphere(
 		aabb.center(),
-		maxDistance / T(2)
+		maxDistance / 2.0f
 		);
 }
 
-template <typename T>
-Sphere<T> Sphere<T>::buildFrom(const Vec3List<T>& pointList)
+Sphere Sphere::buildFrom(const Vec3List<float>& pointList)
 {
-	Vec3<T>* suportPoints = ALLOC_ARRAY(Vec3<T>, pointList.count);
+	Vec3f* suportPoints = ALLOC_ARRAY(Vec3f, pointList.count);
 
-	Sphere<T> result = WelzlSphere(pointList.points, pointList.count, suportPoints, 0);
+	Sphere result = WelzlSphere(pointList.points, pointList.count, suportPoints, 0);
 
 	ALLOC_RELEASE(suportPoints);
 	return result;
 }
 
-template <typename T>
-Sphere<T> Sphere<T>::enclose(const Sphere<T>& sphere)
+Sphere Sphere::enclose(const Sphere& sphere)
 {
-	Sphere<T> result;
+	Sphere result;
 
-	Vec3<T> d = sphere.center - center;
-	T squaredDistance = d.dot(d);  	// Compute the squared distance between the sphere centers 
+	Vec3f d = sphere.center - center;
+	float squaredDistance = d.dot(d);  	// Compute the squared distance between the sphere centers 
 
 	if (pow(double(sphere.ray - ray), 2) >= squaredDistance)
 	{
@@ -209,9 +240,9 @@ Sphere<T> Sphere<T>::enclose(const Sphere<T>& sphere)
 	else
 	{
 		// Spheres partially overlapping or disjoint 
-		T distance = T(std::sqrt(squaredDistance));
+		float distance = float(std::sqrt(squaredDistance));
 
-		result.ray = (distance + ray + sphere.ray) * T(0.5);
+		result.ray = (distance + ray + sphere.ray) * float(0.5);
 		result.center = center;
 
 		if (distance > DefaultErrorMargin)
@@ -221,58 +252,9 @@ Sphere<T> Sphere<T>::enclose(const Sphere<T>& sphere)
 	return result;
 }
 
-template <typename T>
-Sphere<T> Sphere<T>::enclose(const AABB<T>& aabb)
+Sphere Sphere::enclose(const AABB& aabb)
 {
-	Sphere<T> sphere = Sphere<T>::buildFrom(aabb);	
+	Sphere sphere = Sphere::buildFrom(aabb);	
 
 	return enclose(sphere);
-}
-
-template <typename T>
-Sphere<T> WelzlSphere(Vec3<T>* points, int numPts, Vec3<T> suportPoints[], int suportPointsCount)
-{
-	// if no input points, the recursion has bottomed out. Now compute an 
-	// exact sphere based on points in set of support (zero through four points) 
-
-	if (numPts == 0)
-	{
-		switch (suportPointsCount)
-		{
-		case 0:
-			return Sphere<T>();
-		case 1:
-			return Sphere<T>(suportPoints[0]);
-		case 2:
-			return Sphere<T>(suportPoints[0], suportPoints[1]);
-		case 3:
-			return Sphere<T>(suportPoints[0], suportPoints[1], suportPoints[2]);
-		case 4:
-			return Sphere<T>(suportPoints[0], suportPoints[1], suportPoints[2], suportPoints[3]);
-		}
-	}
-
-	// Pick a point at "random" (here just the last point of the input set) 	
-	int index = numPts - 1;
-
-	// Recursively compute the smallest bounding sphere of the remaining points 
-	Sphere<T> smallestSphere = WelzlSphere<T>(points, numPts - 1, suportPoints, suportPointsCount); // (*) 
-
-	bool isPointInsideTheSphere = smallestSphere.colisionStatus(points[index]) == ColisionStatus::INSIDE;
-	if (isPointInsideTheSphere)
-		return smallestSphere;
-
-	// Otherwise, update set of support to additionally contain the new point 
-	suportPoints[suportPointsCount] = points[index];
-
-	// Recursively compute the smallest sphere of remaining points with new s.o.s. 
-	return WelzlSphere(points, numPts - 1, suportPoints, suportPointsCount + 1);
-}
-
-
-namespace OpenML
-{
-	template class Sphere<int>;
-	template class Sphere<float>;
-	template class Sphere<double>;
 }

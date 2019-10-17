@@ -2,11 +2,9 @@
 
 #include "Line3D.h"
 
-template <typename T>
-Line3D<T>::Line3D() {	};
+Line3D::Line3D() {	};
 
-template <typename T>
-Line3D<T>::Line3D(const Vec3<T>& point1, const Vec3<T>& point2)
+Line3D::Line3D(const Vec3f& point1, const Vec3f& point2)
 {
 	assert(point1 != point2);
 
@@ -14,8 +12,7 @@ Line3D<T>::Line3D(const Vec3<T>& point1, const Vec3<T>& point2)
 	this->point2 = point2;
 }
 
-template <typename T>
-Line3D<T>::Line3D(Vec3<T>* points)
+Line3D::Line3D(Vec3f* points)
 {
 	assert(points[0] != points[1]);
 
@@ -23,218 +20,205 @@ Line3D<T>::Line3D(Vec3<T>* points)
 	this->point2 = points[1];
 }
 
-template <typename T>
-Line3D<T>::Line3D(T* point1, T* point2)
+Line3D::Line3D(float* point1, float* point2)
 {
 	assert(point1 != point2);
 
-	this->point1 = Vec3<T>(point1[0], point1[1], point1[2]);
-	this->point2 = Vec3<T>(point2[0], point2[1], point2[2]);
+	this->point1 = Vec3f(point1[0], point1[1], point1[2]);
+	this->point2 = Vec3f(point2[0], point2[1], point2[2]);
 }
 
-template <typename T>
-Vec3<T> Line3D<T>::direction() const
+Vec3f Line3D::direction() const
 {
 	return (point2 - point1).normalize();
 }
 
-template <typename T>
-Vec3<T> Line3D<T>::centerOfSegment() const
+Vec3f Line3D::centerOfSegment() const
 {
-	return (point1 + point2) / T(2);
+	return (point1 + point2) * 0.5f;
 }
 
-template <typename T>
-T Line3D<T>::lengthOfSegment() const
+float Line3D::lengthOfSegment() const
 {
 	return point1.distance(point2);
 }
 
-template <typename T>
-bool Line3D<T>::isOnLine(const Vec3<T>& point) const
+bool Line3D::isOnLine(const Vec3f& point) const
 {
-	Vec3<T> lineDirection = point2 - point1;
+	Vec3f lineDirection = point2 - point1;
 
-	bool isOnTheLine = lineDirection.cross(point) == T(0);
+	bool isOnTheLine = lineDirection.cross(point) == 0.0f;
 
 	return isOnTheLine;
 }
 
-template <typename T>
-bool Line3D<T>::isOnSegment(const Vec3<T>& point) const
+bool Line3D::isOnSegment(const Vec3f& point) const
 {
-	Vec3<T> lineDirection = point2 - point1;
+	Vec3f lineDirection = point2 - point1;
 
-	bool isOnTheLine = lineDirection.cross(point) == T(0);
+	bool isOnTheLine = lineDirection.cross(point) == 0.0f;
 
 	if (!isOnTheLine)
 		return false;
 	
-	T ab = lineDirection.dot(lineDirection);
-	T ac = lineDirection.dot(point - point1);
+	float ab = lineDirection.dot(lineDirection);
+	float ac = lineDirection.dot(point - point1);
 	
-	if (ac < T(0) || ac > ab)
+	if (ac < 0.0f || ac > ab)
 		return false;
 
-	return (T(0) <= ac && ac <= ab);
+	return (0.0f <= ac && ac <= ab);
 }
 
-template <typename T>
-Vec3<T>* Line3D<T>::findIntersection(const Line3D<T>& line2) const
+Vec3f* Line3D::findIntersection(const Line3D& line2) const
 {
-	Vec3<T> da = point2 - point1;
-	Vec3<T> db = line2.point2 - line2.point1;
-	Vec3<T> dc = line2.point1 - point1;
+	Vec3f da = point2 - point1;
+	Vec3f db = line2.point2 - line2.point1;
+	Vec3f dc = line2.point1 - point1;
 
-	Vec3<T> dAcrossB = da.cross(db);
+	Vec3f dAcrossB = da.cross(db);
 
-	T value = dc.dot(dAcrossB);
+	float value = dc.dot(dAcrossB);
 
-	if (value != T(0))
+	if (value != 0.0f)
 		return nullptr;
 
-	T numerador = dc.cross(db).dot(dAcrossB);
-	T denominador = dAcrossB.squaredLength();
+	float numerador = dc.cross(db).dot(dAcrossB);
+	float denominador = dAcrossB.squaredLength();
 
-	T s = numerador / denominador;
+	float s = numerador / denominador;
 
 	if (s >= 0 && s <= 1)
-		return ALLOC_NEW(Vec3<T>)(da * s + point1);
+		return ALLOC_NEW(Vec3f)(da * s + point1);
 
 	return nullptr;
 }
 
-template <typename T>
-Vec3<T> Line3D<T>::closestPointOnTheLine(const Vec3<T>& target) const
+Vec3f Line3D::closestPointOnTheLine(const Vec3f& target) const
 {
-	Vec3<T> lineDirection = point2 - point1;
+	Vec3f lineDirection = point2 - point1;
 	
 	// Project target onto lineDirection, computing parameterized position closestPoint(t) = point1 + t*(point2 – point1) 
-	T t = (target - point1).dot(lineDirection) / lineDirection.dot(lineDirection);
+	float t = (target - point1).dot(lineDirection) / lineDirection.dot(lineDirection);
 
 	// If outside segment, clamp t (and therefore d) to the closest endpoint 
-	t = clamp(t, T(0), T(1)); // clamp t from 0.0 to 1.0
+	t = clamp(t, 0.0f, 1.0f); // clamp t from 0.0 to 1.0
 	
 	//closestPoint(t) = point1 + t * (point2 – point1)
-	Vec3<T> closestPoint = point1 + t*lineDirection;
+	Vec3f closestPoint = point1 + t*lineDirection;
 
 	return closestPoint;
 }
 
-template <typename T>
-bool Line3D<T>::hasIntersectionOnRay(const Sphere<T>& sphere) const
+bool Line3D::hasIntersectionOnRay(const Sphere& sphere) const
 {	
-	Vec3<T> m = point1 - sphere.center; 
-	T c = m.dot(m) - sphere.ray * sphere.ray;
+	Vec3f m = point1 - sphere.center; 
+	float c = m.dot(m) - sphere.ray * sphere.ray;
 	
 	// If there is definitely at least one real root, there must be an intersection 
-	if (c <= T(0)) 
+	if (c <= 0.0f) 
 		return true; 
 	
-	Vec3<T> d = point2 - point1;
+	Vec3f d = point2 - point1;
 
-	T b = m.dot(d); 
+	float b = m.dot(d);
 	
 	// Early exit if ray origin outside sphere and ray pointing away from sphere 
-	if (b > T(0)) 
+	if (b > 0.0f) 
 		return false; 
 	
-	T disc = b*b - c; 
+	float disc = b*b - c;
 	
 	// A negative discriminant corresponds to ray missing sphere 
-	if (disc < T(0)) 
+	if (disc < 0.0f) 
 		return false; // Now ray must hit sphere 
 	
 	return true;
 }
 
-template <typename T>
-Vec3<T>* Line3D<T>::findIntersectionOnSegment(const Plane3D<T>& plane) const 
+Vec3f* Line3D::findIntersectionOnSegment(const Plane3D& plane) const
 {
-	Vec3<T> lineDirection = point2 - point1;
-	T d = plane.getDcomponent();
+	Vec3f lineDirection = point2 - point1;
+	float d = plane.getDcomponent();
 
 	// Segment = Poin1 + t . (Point2 - Point1)
 	// Plane: (n . X) = d
 	// put the line on the plane, Compute the t value for the directed line ab intersecting the plane.
-	T t = (d - plane.normalVector.dot(point1)) / plane.normalVector.dot(lineDirection);
+	float t = (d - plane.normalVector.dot(point1)) / plane.normalVector.dot(lineDirection);
 	
 	// If t in [0..1] compute and return intersection point 
-	if (t >= T(0) && t <= T(1)) 
+	if (t >= 0.0f && t <= 1.0f) 
 	{
-		Vec3<T> intersectionPoint = point1 + t * lineDirection;
-		return ALLOC_NEW(Vec3<T>)(intersectionPoint);
+		Vec3f intersectionPoint = point1 + t * lineDirection;
+		return ALLOC_NEW(Vec3f)(intersectionPoint);
 	}
 
 	return nullptr;
 }
 
-template <typename T>
-DetailedColisionStatus<T> Line3D<T>::findIntersectionOnRay(const Sphere<T>& sphere) const
+DetailedColisionStatus<float> Line3D::findIntersectionOnRay(const Sphere& sphere) const
 {
-	Vec3<T> lineDirection = direction();
-	Vec3<T> point1ToSphere = point1 - sphere.center;
+	Vec3f lineDirection = direction();
+	Vec3f point1ToSphere = point1 - sphere.center;
 
-	T b = point1ToSphere.dot(lineDirection);
-	T c = point1ToSphere.dot(point1ToSphere) - (sphere.ray * sphere.ray);
+	float b = point1ToSphere.dot(lineDirection);
+	float c = point1ToSphere.dot(point1ToSphere) - (sphere.ray * sphere.ray);
 	
 	// Exit if r’s origin outside sphere (c > 0) and ray pointing away from sphere (b > 0) 
-	if (c > T(0) && b > T(0))
-		return DetailedColisionStatus<T>(ColisionStatus::OUTSIDE); 
+	if (c > 0.0f && b > 0.0f)
+		return DetailedColisionStatus<float>(ColisionStatus::OUTSIDE);
 	
-	T discriminant = b * b - c;    // d = b^2 - c
+	float discriminant = b * b - c;    // d = b^2 - c
 	
 	// A negative discriminant corresponds to ray missing sphere 
-	if (discriminant < T(0)) // the quadratic equation has not real root
-		return DetailedColisionStatus<T>(ColisionStatus::OUTSIDE);
+	if (discriminant < 0.0f) // the quadratic equation has not real root
+		return DetailedColisionStatus<float>(ColisionStatus::OUTSIDE);
 
-	T sqrtDisctiminant = T(std::sqrt(discriminant));
+	float sqrtDisctiminant = std::sqrtf(discriminant);
 
 	// Ray now found to intersect sphere, compute smallest t value of intersection 
-	T t1 = -b - sqrtDisctiminant;   // -b - sqrt(b^2 - c)
+	float t1 = -b - sqrtDisctiminant;   // -b - sqrt(b^2 - c)
 
 	// If t is negative, ray started inside sphere so clamp t to zero 	
-	if (t1 < T(0))
-		t1 = T(0);
+	if (t1 < 0.0f)
+		t1 = 0.0f;
 
-	Vec3<T> intersectionPoint1 = point1 + t1 * lineDirection;
+	Vec3f intersectionPoint1 = point1 + t1 * lineDirection;
 	
-	if (isCloseEnough(discriminant, T(0))) 
-		return DetailedColisionStatus<T>(ColisionStatus::INLINE, intersectionPoint1);
+	if (isCloseEnough(discriminant, 0.0f)) 
+		return DetailedColisionStatus<float>(ColisionStatus::INLINE, intersectionPoint1);
 
 	// discriminant > T(0)  =>  the quadratic equation has 2 real root, then the ray intersect in 2 points
 
 	// Ray now found to intersect sphere in 2 points, compute bigger t value of intersection 
-	T t2 = -b + sqrtDisctiminant;   // -b + sqrt(b^2 - c)
+	float t2 = -b + sqrtDisctiminant;   // -b + sqrt(b^2 - c)
 	
-	Vec3<T> intersectionPoint2 = point1 + t2 * lineDirection;
+	Vec3f intersectionPoint2 = point1 + t2 * lineDirection;
 
-	return DetailedColisionStatus<T>(ColisionStatus::INSIDE, intersectionPoint1, intersectionPoint2);
+	return DetailedColisionStatus<float>(ColisionStatus::INSIDE, intersectionPoint1, intersectionPoint2);
 }
 
-template <typename T>
-DetailedColisionStatus<T> Line3D<T>::findIntersectionOnSegment(const Sphere<T>& sphere) const
+DetailedColisionStatus<float> Line3D::findIntersectionOnSegment(const Sphere& sphere) const
 {
-	DetailedColisionStatus<T> colision = findIntersectionOnRay(sphere);
+	DetailedColisionStatus<float> colision = findIntersectionOnRay(sphere);
 
 	if (colision.status == ColisionStatus::OUTSIDE)
 		return colision;
 
 	if (!isOnSegment(colision.points[0]))
-		return DetailedColisionStatus<T>(ColisionStatus::OUTSIDE);
+		return DetailedColisionStatus<float>(ColisionStatus::OUTSIDE);
 
 	if (!isOnSegment(colision.points[1]))
-		return DetailedColisionStatus<T>(ColisionStatus::INSIDE, colision.points[0]);
+		return DetailedColisionStatus<float>(ColisionStatus::INSIDE, colision.points[0]);
 
 	return colision;
 }
 
-template <typename T>
-DetailedColisionStatus<T> Line3D<T>::findIntersectionOnRay(const AABB<T>& aabb) const
+DetailedColisionStatus<float> Line3D::findIntersectionOnRay(const AABB& aabb) const
 {
-	T tmin = T(0);
-	T tmax = std::numeric_limits<T>().max();
-	Vec3<T> lineDirection = direction();
+	float tmin = 0.0f;
+	float tmax = std::numeric_limits<float>().max();
+	Vec3f lineDirection = direction();
 
 	// For all three slabs (planes on AABB)
 	for (int i = 0; i < 3; i++) 
@@ -243,14 +227,14 @@ DetailedColisionStatus<T> Line3D<T>::findIntersectionOnRay(const AABB<T>& aabb) 
 		{ 
 			// Ray is parallel to slab! No hit if origin not within slab 
 			if (point1[i] < aabb.minPoint[i] || point1[i] > aabb.maxPoint[i])
-				return DetailedColisionStatus<T>(ColisionStatus::OUTSIDE);
+				return DetailedColisionStatus<float>(ColisionStatus::OUTSIDE);
 		} 
 		else 
 		{ 
 			// Compute intersection t value of ray with near and far plane of slab 
-			T ood = T(1) / lineDirection[i];
-			T t1 = (aabb.minPoint[i] - point1[i]) * ood;
-			T t2 = (aabb.maxPoint[i] - point1[i]) * ood;
+			float ood = 1.0f / lineDirection[i];
+			float t1 = (aabb.minPoint[i] - point1[i]) * ood;
+			float t2 = (aabb.maxPoint[i] - point1[i]) * ood;
 			
 			// Make t1 be intersection with near plane, t2 with far plane 
 			if (t1 > t2) 
@@ -262,18 +246,17 @@ DetailedColisionStatus<T> Line3D<T>::findIntersectionOnRay(const AABB<T>& aabb) 
 			
 			// Exit with no collision as soon as slab intersection becomes empty 
 			if (tmin > tmax) 
-				return DetailedColisionStatus<T>(ColisionStatus::OUTSIDE); 
+				return DetailedColisionStatus<float>(ColisionStatus::OUTSIDE);
 		} 	
 	} 
 	
 	// Ray intersects all 3 slabs. Return point (q) and intersection t value (tmin) 
-	return DetailedColisionStatus<T>(ColisionStatus::INSIDE, point1 + tmin * lineDirection, point1 + tmax * lineDirection);
+	return DetailedColisionStatus<float>(ColisionStatus::INSIDE, point1 + tmin * lineDirection, point1 + tmax * lineDirection);
 }
 
-template <typename T>
-ColisionStatus Line3D<T>::hasIntersectionOnSegment(const AABB<T>& aabb) const
+ColisionStatus Line3D::hasIntersectionOnSegment(const AABB& aabb) const
 {
-	T epsilon = std::numeric_limits<T>().epsilon();
+	float epsilon = std::numeric_limits<float>().epsilon();
 
 	/*
 	Vec3<T> c = (aabb.minPoint + aabb.maxPoint) * T(0.5);	// Box center-point
@@ -283,22 +266,22 @@ ColisionStatus Line3D<T>::hasIntersectionOnSegment(const AABB<T>& aabb) const
 	m = m - c; 
 	*/
 	
-	Vec3<T> halfLengthExtends = aabb.maxPoint - aabb.minPoint;
-	Vec3<T> halfLengthVector = point2 - point1;
-	Vec3<T> lineCenterPoint = point1 + point2 - aabb.minPoint - aabb.maxPoint;
+	Vec3f halfLengthExtends = aabb.maxPoint - aabb.minPoint;
+	Vec3f halfLengthVector = point2 - point1;
+	Vec3f lineCenterPoint = point1 + point2 - aabb.minPoint - aabb.maxPoint;
 
-	
+
 	// Translate box and segment to origin 	
 	// Try world coordinate axes as separating axes 
-	T adx = std::abs(halfLengthVector[0]);
+	float adx = std::abs(halfLengthVector[0]);
 	if (std::abs(lineCenterPoint[0]) > halfLengthExtends[0] + adx)
 		return ColisionStatus::OUTSIDE;
 	
-	T ady = std::abs(halfLengthVector[1]);
+	float ady = std::abs(halfLengthVector[1]);
 	if (std::abs(lineCenterPoint[1]) > halfLengthExtends[1] + ady)
 		return ColisionStatus::OUTSIDE;
 	
-	T adz = std::abs(halfLengthVector[2]);
+	float adz = std::abs(halfLengthVector[2]);
 	if (std::abs(lineCenterPoint[2]) > halfLengthExtends[2] + adz)
 		return ColisionStatus::OUTSIDE;
 	
@@ -322,21 +305,20 @@ ColisionStatus Line3D<T>::hasIntersectionOnSegment(const AABB<T>& aabb) const
 	return ColisionStatus::INSIDE;
 }
 
-template <typename T>
-T Line3D<T>::squaredDistance(const Vec3<T>& target) const
+float Line3D::squaredDistance(const Vec3f& target) const
 {
 	//Returns the squared distance between point and segment point1-point2
 
-	Vec3<T> ab = point2 - point1;
-	Vec3<T> ac = target - point1;
-	Vec3<T> bc = target - point2;
+	Vec3f ab = point2 - point1;
+	Vec3f ac = target - point1;
+	Vec3f bc = target - point2;
 	
-	T e = ac.dot(ab); // Handle cases where point projects outside the line segment
+	float e = ac.dot(ab); // Handle cases where point projects outside the line segment
 	
-	if (e <= T(0)) 
+	if (e <= 0.0f) 
 		return ac.dot(ac); 
 	
-	T f = ab.dot(ab); 
+	float f = ab.dot(ab);
 
 	if (e >= f) 		
 		return bc.dot(bc); // Handle cases where point projects onto line segment
@@ -344,15 +326,7 @@ T Line3D<T>::squaredDistance(const Vec3<T>& target) const
 	return ac.dot(ac) - e * e / f;
 }
 
-template <typename T>
-T Line3D<T>::distance(const Vec3<T>& target) const
+float Line3D::distance(const Vec3f& target) const
 {
-	return T(sqrt(squaredDistance(target)));
-}
-
-namespace OpenML
-{
-	template class Line3D<int>;
-	template class Line3D<float>;
-	template class Line3D<double>;
+	return std::sqrtf(squaredDistance(target));
 }

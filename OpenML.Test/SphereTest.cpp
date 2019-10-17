@@ -14,7 +14,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Sphere_constructor_Test)
 		{
-			Spheref sphere = Spheref();
+			Sphere sphere = Sphere();
 
 			Assert::AreEqual(sphere.center[0], 0.0f, L"Wrong value.", LINE_INFO());
 			Assert::AreEqual(sphere.center[1], 0.0f, L"Wrong value.", LINE_INFO());
@@ -24,7 +24,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Sphere_constructor_center_ray_Test)
 		{
-			Spheref sphere = Spheref({ 1.0f, 2.0f ,3.0f }, 4.0f);
+			Sphere sphere = Sphere({ 1.0f, 2.0f ,3.0f }, 4.0f);
 			
 			Assert::AreEqual(sphere.center[0], 1.0f, L"Wrong value.", LINE_INFO());
 			Assert::AreEqual(sphere.center[1], 2.0f, L"Wrong value.", LINE_INFO());
@@ -34,7 +34,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Sphere_constructor_2points_Test)
 		{
-			Spheref sphere = Spheref(Vec3f(2.0f, 2.0f, 2.0f), Vec3f(6.0f, 6.0f, 6.0f));
+			Sphere sphere = Sphere(Vec3f(2.0f, 2.0f, 2.0f), Vec3f(6.0f, 6.0f, 6.0f));
 
 			Assert::AreEqual(sphere.center[0], 4.0f, L"Wrong value.", LINE_INFO());
 			Assert::AreEqual(sphere.center[1], 4.0f, L"Wrong value.", LINE_INFO());
@@ -44,7 +44,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Sphere_constructor_3points_Test1)
 		{
-			Spheref sphere = Spheref(
+			Sphere sphere = Sphere(
 				Vec3f(0.0f, 0.0f, 0.0f), 
 				Vec3f(2.0f, 0.0f, 0.0f),
 				Vec3f(1.0f, 2.0f, 0.0f)
@@ -60,7 +60,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Sphere_constructor_3points_Test2)
 		{
-			Spheref sphere = Spheref(
+			Sphere sphere = Sphere(
 				Vec3f(2.0f, 2.0f, 0.0f),
 				Vec3f(10.0f, 0.0f, 0.0f),
 				Vec3f(12.0f, 30.0f, 10.0f)
@@ -76,7 +76,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Sphere_constructor_4points_Test)
 		{
-			Spheref sphere = Spheref(
+			Sphere sphere = Sphere(
 				Vec3f(3.0f, 2.0f, 1.0f),
 				Vec3f(1.0f, -2.0f, -3.0f),
 				Vec3f(2.0f, 1.0f, 3.0f),
@@ -94,7 +94,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Sphere_colisionStatus_point_Test)
 		{
-			Spheref sphere = Spheref({ 0.0f, 0.0f, 0.0f }, 10.0f);
+			Sphere sphere = Sphere({ 0.0f, 0.0f, 0.0f }, 10.0f);
 			Vec3f point = Vec3f(7.071f, 5.0f, 5.0f);
 			ColisionStatus expected = ColisionStatus::INLINE;
 			ColisionStatus result = sphere.colisionStatus(point);
@@ -113,18 +113,18 @@ namespace OpenMLTest
 
 		TEST_METHOD(Sphere_colisionStatus_sphere_Test)
 		{
-			Spheref sphere1 = Spheref({ 10.0f, 0.0f, 0.0f }, 10.0f);
-			Spheref sphere2 = Spheref({ -10.0f, 0.0f, 0.0f }, 10.0f);
+			Sphere sphere1 = Sphere({ 10.0f, 0.0f, 0.0f }, 10.0f);
+			Sphere sphere2 = Sphere({ -10.0f, 0.0f, 0.0f }, 10.0f);
 			ColisionStatus expected = ColisionStatus::INLINE;
 			ColisionStatus result = sphere1.colisionStatus(sphere2);
 			Assert::IsTrue(result == expected, L"The point should lie on sphere boundary", LINE_INFO());
 
-			sphere2 = Spheref({ -9.0f, 0.0f, 0.0f }, 10.0f);
+			sphere2 = Sphere({ -9.0f, 0.0f, 0.0f }, 10.0f);
 			expected = ColisionStatus::INSIDE;
 			result = sphere1.colisionStatus(sphere2);
 			Assert::IsTrue(result == expected, L"The point should lie inside the sphere", LINE_INFO());
 
-			sphere2 = Spheref({ -11.0f, 0.0f, 0.0f }, 10.0f);
+			sphere2 = Sphere({ -11.0f, 0.0f, 0.0f }, 10.0f);
 			expected = ColisionStatus::OUTSIDE;
 			result = sphere1.colisionStatus(sphere2);
 			Assert::IsTrue(result == expected, L"The point should be outside the sphere", LINE_INFO());
@@ -132,18 +132,18 @@ namespace OpenMLTest
 
 		TEST_METHOD(Sphere_colisionStatus_plane_Test)
 		{
-			Spheref sphere = Spheref({ 10.0f, 0.0f, 0.0f }, 10.0f);
-			Plane3Df plane = Plane3Df(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(1.0f, 0.0f, 0.0f));
+			Sphere sphere = Sphere({ 10.0f, 0.0f, 0.0f }, 10.0f);
+			Plane3D plane = Plane3D(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(1.0f, 0.0f, 0.0f));
 			ColisionStatus expected = ColisionStatus::INLINE;
 			ColisionStatus result = sphere.colisionStatus(plane);
 			Assert::IsTrue(result == expected, L"The plane should lie/support on sphere boundary", LINE_INFO());
 
-			plane = Plane3Df(Vec3f(3.0f, 0.0f, 0.0f), Vec3f(1.0f, 0.0f, 0.0f));
+			plane = Plane3D(Vec3f(3.0f, 0.0f, 0.0f), Vec3f(1.0f, 0.0f, 0.0f));
 			expected = ColisionStatus::INSIDE;
 			result = sphere.colisionStatus(plane);
 			Assert::IsTrue(result == expected, L"The point should lie inside the sphere", LINE_INFO());
 
-			plane = Plane3Df(Vec3f(-3.0f, 0.0f, 0.0f), Vec3f(1.0f, 0.0f, 0.0f));
+			plane = Plane3D(Vec3f(-3.0f, 0.0f, 0.0f), Vec3f(1.0f, 0.0f, 0.0f));
 			expected = ColisionStatus::OUTSIDE;
 			result = sphere.colisionStatus(plane);
 			Assert::IsTrue(result == expected, L"The point should be outside the sphere", LINE_INFO());
@@ -151,9 +151,9 @@ namespace OpenMLTest
 
 		TEST_METHOD(Sphere_buildFrom_AABB_Test)
 		{
-			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			AABB aabb = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
 			
-			Spheref sphere = Spheref::buildFrom(aabb);
+			Sphere sphere = Sphere::buildFrom(aabb);
 
 			Vec3f expectedCenterPoint = Vec3f(5.0f, 5.0f, 5.0f);
 
@@ -175,7 +175,7 @@ namespace OpenMLTest
 			points[5] = { 8.0f, 1.0f, 1.0f };
 			Vec3List<float> list = Vec3List<float>(points, pointsCont);
 
-			Spheref sphere = Spheref::buildFrom(list);
+			Sphere sphere = Sphere::buildFrom(list);
 			
 			Vec3f expectedCenterPoint = Vec3f(6.0f, 5.0f, 5.15f);
 
@@ -187,10 +187,10 @@ namespace OpenMLTest
 
 		TEST_METHOD(Sphere_enclose_sphere_Test1)
 		{
-			Spheref sphere1 = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 2.0f);
-			Spheref sphere2 = Spheref(Vec3f(4.0f, 0.0f, 0.0f), 1.0f);
+			Sphere sphere1 = Sphere(Vec3f(0.0f, 0.0f, 0.0f), 2.0f);
+			Sphere sphere2 = Sphere(Vec3f(4.0f, 0.0f, 0.0f), 1.0f);
 
-			Spheref result = sphere1.enclose(sphere2);
+			Sphere result = sphere1.enclose(sphere2);
 
 			Vec3f expectedCenter = Vec3f(1.5f, 0.0f, 0.0f);
 			float expectedRay = 3.5f;
@@ -203,10 +203,10 @@ namespace OpenMLTest
 
 		TEST_METHOD(Sphere_enclose_sphere_Test2)
 		{
-			Spheref sphere1 = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
-			Spheref sphere2 = Spheref(Vec3f(1.0f, 1.0f, 1.0f), 3.0f);
+			Sphere sphere1 = Sphere(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
+			Sphere sphere2 = Sphere(Vec3f(1.0f, 1.0f, 1.0f), 3.0f);
 
-			Spheref result = sphere1.enclose(sphere2);
+			Sphere result = sphere1.enclose(sphere2);
 
 			Vec3f expectedCenter = Vec3f(0.0f, 0.0f, 0.0f);
 			float expectedRay = 10.0f;
@@ -219,10 +219,10 @@ namespace OpenMLTest
 
 		TEST_METHOD(Sphere_enclose_sphere_Test3)
 		{
-			Spheref sphere1 = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
-			Spheref sphere2 = Spheref(Vec3f(1.0f, 1.0f, 1.0f), 3.0f);
+			Sphere sphere1 = Sphere(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
+			Sphere sphere2 = Sphere(Vec3f(1.0f, 1.0f, 1.0f), 3.0f);
 
-			Spheref result = sphere2.enclose(sphere1); //swapped
+			Sphere result = sphere2.enclose(sphere1); //swapped
 
 			Vec3f expectedCenter = Vec3f(0.0f, 0.0f, 0.0f);
 			float expectedRay = 10.0f;

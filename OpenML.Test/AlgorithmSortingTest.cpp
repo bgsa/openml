@@ -23,10 +23,10 @@ int comparatorFloatTest(const void* param1, const void* param2)
 	return 0;
 }
 
-int comparatorAABBFirstAxisTest(const void* param1, const void* param2)
+int comparatorAABBirstAxisTest(const void* param1, const void* param2)
 {
-	const AABBf obj1 = *(AABBf*)param1;
-	const AABBf obj2 = *(AABBf*)param2;
+	const AABB obj1 = *(AABB*)param1;
+	const AABB obj2 = *(AABB*)param2;
 
 	if (obj1.minPoint.x == obj2.minPoint.x)
 		return 0;
@@ -56,12 +56,12 @@ namespace OpenMLTest
 			return result;
 		}
 
-		AABBf* getRandomAABBs(size_t count, size_t spaceSize = 1000)
+		AABB* getRandomAABBs(size_t count, size_t spaceSize = 1000)
 		{
 			Randomizer<int> randomizerSize(0, 30);
 			Randomizer<int> randomizerLocation(0, spaceSize);
 
-			AABBf* aabbs = ALLOC_ARRAY(AABBf, count);
+			AABB* aabbs = ALLOC_ARRAY(AABB, count);
 
 			for (size_t i = 0; i < count; i++)
 			{
@@ -95,7 +95,7 @@ namespace OpenMLTest
 				if (zMin > zMax)
 					std::swap(zMin, zMax);
 
-				aabbs[i] = AABBf({ float(xMin + locationX), float(yMin + locationY), float(zMin + locationZ) }
+				aabbs[i] = AABB({ float(xMin + locationX), float(yMin + locationY), float(zMin + locationZ) }
 				, { float(xMax + locationX), float(yMax + locationY), float(zMax + locationZ) });
 			}
 
@@ -261,20 +261,23 @@ namespace OpenMLTest
 			GpuDevice* gpu = context->defaultDevice;
 			AlgorithmSorting::init(gpu);
 
+			const size_t strider = 8;
+			const size_t offset = 2;
+
 			const size_t count = (size_t)std::pow(2.0, 17.0);
-			AABBf* input1 = getRandomAABBs(count);
-			AABBf* input2 = ALLOC_COPY(input1, AABBf, count);
+			AABB* input1 = getRandomAABBs(count);
+			AABB* input2 = ALLOC_COPY(input1, AABB, count);
 			
 			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 
-			AlgorithmSorting::quickSortNative(input1, count, sizeof(AABBf), comparatorAABBFirstAxisTest);
+			AlgorithmSorting::quickSortNative(input1, count, sizeof(AABB), comparatorAABBirstAxisTest);
 
 			std::chrono::high_resolution_clock::time_point currentTime2 = std::chrono::high_resolution_clock::now();
 			std::chrono::milliseconds ms1 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
 
 			currentTime = std::chrono::high_resolution_clock::now();
 
-			size_t* result = AlgorithmSorting::radixGPUIndexes(gpu, (float*) input2, count, 7, 1);
+			size_t* result = AlgorithmSorting::radixGPUIndexes(gpu, (float*) input2, count, strider, offset);
 
 			currentTime2 = std::chrono::high_resolution_clock::now();
 			std::chrono::milliseconds ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);

@@ -8,7 +8,6 @@
 namespace OpenML
 {
 
-	template <typename T>
 	class HashGrid
 	{
 	private:
@@ -22,15 +21,15 @@ namespace OpenML
 		API_INTERFACE void setCellSize(size_t cellSize);
 		API_INTERFACE size_t getCellSize();
 
-		API_INTERFACE Vec3<T> findCell(const Vec3<T>& point);
+		API_INTERFACE Vec3f findCell(const Vec3f& point);
 
-		API_INTERFACE int findCellIndex(const Vec3<T>& point);
+		API_INTERFACE int findCellIndex(const Vec3f& point);
 
-		API_INTERFACE Vec3List<T>* findRangeCell(const AABB<T>& aabb);
+		API_INTERFACE Vec3List<float>* findRangeCell(const AABB& aabb);
 
-		API_INTERFACE std::vector<int> findRangeCellIndex(const AABB<T>& aabb);
+		API_INTERFACE std::vector<int> findRangeCellIndex(const AABB& aabb);
 
-		API_INTERFACE std::unordered_multimap<AABB<T>, AABB<T>, AABB<T>, AABB<T>> findCollisions(AABB<T>* aabbs, size_t aabbCount);
+		API_INTERFACE std::unordered_multimap<AABB, AABB, AABB, AABB> findCollisions(AABB* aabbs, size_t aabbCount);
 
 	};
 

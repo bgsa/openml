@@ -1,7 +1,6 @@
 #include "HashGrid.h"
 
-template <typename T>
-int findCellIndexByCellId(const Vec3<T>& cell)
+int findCellIndexByCellId(const Vec3f& cell)
 {
 	const int h1 = 0x8da6b343; // Large multiplicative constants; 
 	const int h2 = 0xd8163841; // here arbitrarily chosen primes 
@@ -10,97 +9,89 @@ int findCellIndexByCellId(const Vec3<T>& cell)
 	return h1 * int(cell.x) + h2 * int(cell.y) + h3 * int(cell.z);
 }
 
-template <typename T>
-HashGrid<T>::HashGrid()
+HashGrid::HashGrid()
 {
 	setCellSize(10);
 }
 
-template <typename T>
-HashGrid<T>::HashGrid(size_t cellSize)
+HashGrid::HashGrid(size_t cellSize)
 {
 	setCellSize(cellSize);
 }
 
-template <typename T>
-void HashGrid<T>::setCellSize(size_t cellSize)
+void HashGrid::setCellSize(size_t cellSize)
 {
 	this->cellSize = cellSize;
 	this->cellSizeInverted = 1.0f / cellSize;
 }
 
-template <typename T>
-size_t HashGrid<T>::getCellSize()
+size_t HashGrid::getCellSize()
 {
 	return cellSize;
 }
 
-template <typename T>
-Vec3<T> HashGrid<T>::findCell(const Vec3<T>& point) 
+Vec3f HashGrid::findCell(const Vec3f& point) 
 {
 	int negativeCellX = 0;
 	int negativeCellY = 0;
 	int negativeCellZ = 0;
 
-	if (point.x < T(0))
+	if (point.x < 0.0f)
 		negativeCellX = -1;
 
-	if (point.y < T(0))
+	if (point.y < 0.0f)
 		negativeCellY = -1;
 
-	if (point.z < T(0))
+	if (point.z < 0.0f)
 		negativeCellZ = -1;
 
-	Vec3<T> cell = {
-		T(int(point.x * cellSizeInverted) + negativeCellX),
-		T(int(point.y * cellSizeInverted) + negativeCellY),
-		T(int(point.z * cellSizeInverted) + negativeCellZ)
+	Vec3f cell = {
+		float(int(point.x * cellSizeInverted) + negativeCellX),
+		float(int(point.y * cellSizeInverted) + negativeCellY),
+		float(int(point.z * cellSizeInverted) + negativeCellZ)
 	};
 	
 	return cell;
 }
 
-template <typename T>
-int HashGrid<T>::findCellIndex(const Vec3<T>& point)
+int HashGrid::findCellIndex(const Vec3f& point)
 {
-	Vec3<T> cell = findCell(point);
+	Vec3f cell = findCell(point);
 
 	return findCellIndexByCellId(cell);
 }
 
-template <typename T>
-Vec3List<T>* HashGrid<T>::findRangeCell(const AABB<T>& aabb) 
+Vec3List<float>* HashGrid::findRangeCell(const AABB& aabb)
 {	
-	Vec3List<T>* list = ALLOC(Vec3List<T>);
-	Vec3<T> minCell = findCell(aabb.minPoint);
-	Vec3<T> maxCell = findCell(aabb.maxPoint);
+	Vec3List<float>* list = ALLOC(Vec3List<float>);
+	Vec3f minCell = findCell(aabb.minPoint);
+	Vec3f maxCell = findCell(aabb.maxPoint);
 
-	Vec3<T> deltaPoints = (maxCell - minCell) + T(1);
+	Vec3f deltaPoints = (maxCell - minCell) + 1.0f;
 		
 	list->count = int(std::abs(
-			(deltaPoints.x == T(0) ? T(1) : deltaPoints.x)
-		* (deltaPoints.y == T(0) ? T(1) : deltaPoints.y) 
-		* (deltaPoints.z == T(0) ? T(1) : deltaPoints.z)));
+			(deltaPoints.x == 0.0f ? 1.0f : deltaPoints.x)
+		* (deltaPoints.y == 0.0f ? 1.0f : deltaPoints.y)
+		* (deltaPoints.z == 0.0f ? 1.0f : deltaPoints.z)));
 
-	list->points = ALLOC_ARRAY(Vec3<T>, list->count);
+	list->points = ALLOC_ARRAY(Vec3f, list->count);
 
 	size_t index = 0;
 	
-	for (T x = minCell.x; x <= maxCell.x; x++)
-		for (T y = minCell.y; y <= maxCell.y; y++)
-			for (T z = minCell.z; z <= maxCell.z; z++)
+	for (float x = minCell.x; x <= maxCell.x; x++)
+		for (float y = minCell.y; y <= maxCell.y; y++)
+			for (float z = minCell.z; z <= maxCell.z; z++)
 			{
-				list->points[index] = Vec3<T>(x, y, z);
+				list->points[index] = Vec3f(x, y, z);
 				index++;
 			}
 
 	return list;
 }
 
-template <typename T>
-std::vector<int> HashGrid<T>::findRangeCellIndex(const AABB<T>& aabb)
+std::vector<int> HashGrid::findRangeCellIndex(const AABB& aabb)
 {
-	Vec3List<T>* cells = findRangeCell(aabb);
+	Vec3List<float>* cells = findRangeCell(aabb);
 
 	std::vector<int> hashes = std::vector<int>(cells->count);
 
@@ -112,10 +103,9 @@ std::vector<int> HashGrid<T>::findRangeCellIndex(const AABB<T>& aabb)
 	return hashes;
 }
 
-template <typename T>
-bool findValue(const std::unordered_multimap<AABB<T>, AABB<T>, AABB<T>, AABB<T>>& map, const AABB<T>& key, const AABB<T>& value)
+bool findValue(const std::unordered_multimap<AABB, AABB, AABB, AABB>& map, const AABB& key, const AABB& value)
 {
-	std::pair<AABB<T>, AABB<T>> pair = std::make_pair(key, value);
+	std::pair<AABB, AABB> pair = std::make_pair(key, value);
 	auto its = map.equal_range(key);
 	
 	for (auto it = its.first; it != its.second; ++it) 
@@ -125,10 +115,9 @@ bool findValue(const std::unordered_multimap<AABB<T>, AABB<T>, AABB<T>, AABB<T>>
 	return false;
 }
 
-template <typename T>
-bool findValue2(const std::unordered_multimap<AABB<T>, AABB<T>, AABB<T>, AABB<T>>& map, const AABB<T>& key, const AABB<T>& value)
+bool findValue2(const std::unordered_multimap<AABB, AABB, AABB, AABB>& map, const AABB& key, const AABB& value)
 {
-	std::pair<AABB<T>, AABB<T>> pair = std::make_pair(key, value);
+	std::pair<AABB, AABB> pair = std::make_pair(key, value);
 	auto its = map.equal_range(key);
 
 	for (auto it = its.first; it != its.second; ++it)
@@ -138,15 +127,14 @@ bool findValue2(const std::unordered_multimap<AABB<T>, AABB<T>, AABB<T>, AABB<T>
 	return false;
 }
 
-template <typename T>
-std::unordered_multimap<AABB<T>, AABB<T>, AABB<T>, AABB<T>> HashGrid<T>::findCollisions(AABB<T>* aabbs, size_t aabbCount)
+std::unordered_multimap<AABB, AABB, AABB, AABB> HashGrid::findCollisions(AABB* aabbs, size_t aabbCount)
 {
-	std::unordered_multimap<AABB<T>, AABB<T>, AABB<T>, AABB<T>> pairs;
-	std::multimap<int, AABB<T>> spatialVolume;
+	std::unordered_multimap<AABB, AABB, AABB, AABB> pairs;
+	std::multimap<int, AABB> spatialVolume;
 		
 	for (size_t aabbIndex = 0; aabbIndex < aabbCount; aabbIndex++)
 	{
-		AABB<T> aabb = aabbs[aabbIndex];
+		AABB aabb = aabbs[aabbIndex];
 		std::vector<int> hashes = findRangeCellIndex(aabb);
 		
 		for each (int hash in hashes)
@@ -166,12 +154,4 @@ std::unordered_multimap<AABB<T>, AABB<T>, AABB<T>, AABB<T>> HashGrid<T>::findCol
 	}
 
 	return pairs;
-}
-
-
-namespace OpenML
-{
-	template class HashGrid<int>;
-	template class HashGrid<float>;
-	template class HashGrid<double>;
 }

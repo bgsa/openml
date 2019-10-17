@@ -5,25 +5,22 @@
 
 namespace OpenML
 {
-	template <typename T>
+
 	class Triangle3D
 	{
 	public:
-		Vec3<T> point1;
-		Vec3<T> point2;
-		Vec3<T> point3;
+		Vec3f point1;
+		Vec3f point2;
+		Vec3f point3;
 
 		API_INTERFACE inline Triangle3D();
-		API_INTERFACE inline Triangle3D(const Vec3<T>& point1, const Vec3<T>& point2, const Vec3<T>& point3);
-		API_INTERFACE inline Triangle3D(T* point1, T* point2, T* point3);
+		API_INTERFACE inline Triangle3D(const Vec3f& point1, const Vec3f& point2, const Vec3f& point3);
+		API_INTERFACE inline Triangle3D(float* point1, float* point2, float* point3);
 
-		API_INTERFACE Line3D<T>* getLines() const;
+		API_INTERFACE Line3D* getLines() const;
 
-		API_INTERFACE Vec3<T> barycentric(const Vec3<T>& point) const;
+		API_INTERFACE Vec3f barycentric(const Vec3f& point) const;
 
 	};
 
-	typedef Triangle3D<int> Triangle3Di;
-	typedef Triangle3D<float> Triangle3Df;
-	typedef Triangle3D<double> Triangle3Dd;
 }

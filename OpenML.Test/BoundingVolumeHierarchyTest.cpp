@@ -14,7 +14,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(BoundingVolumeHierarchy_constructor_empty_Test)
 		{
-			BoundingVolumeHierarchy bvh = BoundingVolumeHierarchy();
+			//BoundingVolumeHierarchy bvh = BoundingVolumeHierarchy();
 		}
 
 	};

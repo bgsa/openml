@@ -165,7 +165,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\apollo\src;.\..\$(SolutionName).Shared;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories);$(OPENCL_INC_PATH)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\$(SolutionName).Shared;$(SolutionDir)..\apollo\src;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories);$(OPENCL_INC_PATH)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>OPENCL_ENABLED;MAJOR_COLUMN_ORDER;UNIT_TEST;WINDOWS;API_EXPORT;DEBUG;MS_TEST;</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
       <CallingConvention>Cdecl</CallingConvention>
@@ -186,7 +186,7 @@ copy /Y $(SolutionDir)resources\opencl\src\*.cl $(OutDir)</Command>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\apollo\src;.\..\$(SolutionName).Shared;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories);$(OPENCL_INC_PATH)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\$(SolutionName).Shared;$(SolutionDir)..\apollo\src;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories);$(OPENCL_INC_PATH)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>MAJOR_ROW_ORDER;_WIN32;API_EXPORT;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
     </ClCompile>
@@ -246,7 +246,7 @@ copy /Y $(SolutionDir)resources\opencl\src\*.cl $(OutDir)</Command>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\apollo\src;.\..\$(SolutionName).Shared;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories);$(OPENCL_INC_PATH)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\$(SolutionName).Shared;$(SolutionDir)..\apollo\src;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories);$(OPENCL_INC_PATH)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>OPENCL_ENABLED;MAJOR_COLUMN_ORDER;_WIN32;API_EXPORT;NDEBUG;</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
     </ClCompile>
@@ -269,7 +269,7 @@ copy /Y $(SolutionDir)resources\opencl\src\*.cl $(OutDir)</Command>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\apollo\src;.\..\$(SolutionName).Shared;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories);$(OPENCL_INC_PATH)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\$(SolutionName).Shared;$(SolutionDir)..\apollo\src;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories);$(OPENCL_INC_PATH)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>MAJOR_ROW_ORDER;_WIN32;API_EXPORT;NDEBUG;</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
     </ClCompile>

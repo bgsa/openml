@@ -3,6 +3,7 @@
 Particle::Particle(const Vec3f& position, const Vec3f& velocity, const float inverseMass)
 {
 	this->position = position;
+	this->previousPosition = position;
 	this->velocity = velocity;
 	this->inverseMass = inverseMass;
 
@@ -28,7 +29,7 @@ void Particle::update(long long elapsedTime)
 
 	acceleration = newAcceleration;
 	velocity = newVelocity;
+	previousPosition = position;
 	position = newPosition;
-
 	force = 0.0f;
 }

@@ -1,20 +1,21 @@
 #define THREAD_ID get_global_id(0)
 
-#define strider 7
+#define strider 8
+#define offset  1
 
-#define MIN_POINT_X aabbs[indexes[i] * strider + 1]
-#define MIN_POINT_Y aabbs[indexes[i] * strider + 2]
-#define MIN_POINT_Z aabbs[indexes[i] * strider + 3]
-#define MAX_POINT_X aabbs[indexes[i] * strider + 4]
-#define MAX_POINT_Y aabbs[indexes[i] * strider + 5]
-#define MAX_POINT_Z aabbs[indexes[i] * strider + 6]
+#define MIN_POINT_X aabbs[indexes[i] * strider + offset + 1]
+#define MIN_POINT_Y aabbs[indexes[i] * strider + offset + 2]
+#define MIN_POINT_Z aabbs[indexes[i] * strider + offset + 3]
+#define MAX_POINT_X aabbs[indexes[i] * strider + offset + 4]
+#define MAX_POINT_Y aabbs[indexes[i] * strider + offset + 5]
+#define MAX_POINT_Z aabbs[indexes[i] * strider + offset + 6]
 
-#define MIN_POINT_X_NEXT_AABB aabbs[indexes[j] * strider + 1]
-#define MIN_POINT_Y_NEXT_AABB aabbs[indexes[j] * strider + 2]
-#define MIN_POINT_Z_NEXT_AABB aabbs[indexes[j] * strider + 3]
-#define MAX_POINT_X_NEXT_AABB aabbs[indexes[j] * strider + 4]
-#define MAX_POINT_Y_NEXT_AABB aabbs[indexes[j] * strider + 5]
-#define MAX_POINT_Z_NEXT_AABB aabbs[indexes[j] * strider + 6]
+#define MIN_POINT_X_NEXT_AABB aabbs[indexes[j] * strider + offset + 1]
+#define MIN_POINT_Y_NEXT_AABB aabbs[indexes[j] * strider + offset + 2]
+#define MIN_POINT_Z_NEXT_AABB aabbs[indexes[j] * strider + offset + 3]
+#define MAX_POINT_X_NEXT_AABB aabbs[indexes[j] * strider + offset + 4]
+#define MAX_POINT_Y_NEXT_AABB aabbs[indexes[j] * strider + offset + 5]
+#define MAX_POINT_Z_NEXT_AABB aabbs[indexes[j] * strider + offset + 6]
 
 __kernel void sweepAndPrune(
 	__global   float * aabbs, 

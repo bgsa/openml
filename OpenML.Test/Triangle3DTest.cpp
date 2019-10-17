@@ -15,7 +15,7 @@ namespace OpenMLTest
 		TEST_METHOD(Triangle3D_barycentric_Test)
 		{
 			Vec3f point = Vec3f(4.0f, 2.0f, 0.0f);
-			Triangle3Df triangle = Triangle3Df(
+			Triangle3D triangle = Triangle3D(
 				{ 0.0f, 0.0f, 0.0f },
 				{ 10.0f, 0.0f, 0.0f },
 				{ 5.0f, 10.0f, 0.0f }

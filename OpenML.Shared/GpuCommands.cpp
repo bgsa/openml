@@ -17,7 +17,7 @@ void gpuCommands_init(GpuDevice* gpu)
 	delete fileManager;
 }
 
-cl_mem gpuCommands_findMaxGPUBuffer(GpuDevice* gpu, float* input, size_t n, size_t offsetMultiplier, size_t offsetSum)
+cl_mem gpuCommands_findMaxGPUBuffer(GpuDevice* gpu, float* input, size_t n, size_t strider, size_t offset)
 {
 	const size_t globalWorkSize[3] = { gpu->maxWorkGroupSize, 0 , 0 };
 	const size_t localWorkSize[3] = { nextPowOf2(n) / gpu->maxWorkGroupSize, 0, 0 };
@@ -40,7 +40,7 @@ cl_mem gpuCommands_findMaxGPUBuffer(GpuDevice* gpu, float* input, size_t n, size
 	return  outputBuffer;
 }
 
-float* gpuCommands_findMinMaxGPU(GpuDevice* gpu, float* input, size_t n, size_t offsetMultiplier, size_t offsetSum)
+float* gpuCommands_findMinMaxGPU(GpuDevice* gpu, float* input, size_t n, size_t strider, size_t offset)
 {
 	float* output = ALLOC_ARRAY(float, 2);
 	const size_t globalWorkSize[3] = { gpu->maxWorkGroupSize, 0 , 0 };
@@ -52,17 +52,17 @@ float* gpuCommands_findMinMaxGPU(GpuDevice* gpu, float* input, size_t n, size_t 
 	GpuCommand* commandFindMinMax = gpu->commandManager->createCommand();
 
 	float* outputGPU = commandFindMinMax
-		->setInputParameter(input, SIZEOF_FLOAT * n * offsetMultiplier, CL_MEM_READ_ONLY, false)
-		->setInputParameter(&n, SIZEOF_UINT * offsetMultiplier)
+		->setInputParameter(input, SIZEOF_FLOAT * n * strider, CL_MEM_READ_ONLY, false)
+		->setInputParameter(&n, SIZEOF_UINT * strider)
 		->setInputParameter(outputBuffer, SIZEOF_FLOAT * groupCount * 2)
-		->setInputParameter(&offsetMultiplier, SIZEOF_UINT)
-		->setInputParameter(&offsetSum, SIZEOF_UINT)
+		->setInputParameter(&strider, SIZEOF_UINT)
+		->setInputParameter(&offset, SIZEOF_UINT)
 		->buildFromProgram(gpu->commandManager->cachedPrograms[findMinMaxProgramIndex], "findMinMax")
 		->execute(1, globalWorkSize, localWorkSize)
 		->fetchInOutParameter<float>(2);
 
 	output[0] = FLT_MAX;
-	output[1] = FLT_MIN;
+	output[1] = -FLT_MAX;
 	for (size_t i = 0; i < groupCount; i++)   // check the remaining itens provided from GPU
 	{
 		if (output[0] > outputGPU[i])
@@ -77,10 +77,10 @@ float* gpuCommands_findMinMaxGPU(GpuDevice* gpu, float* input, size_t n, size_t 
 	return output;
 }
 
-float gpuCommands_findMaxGPU(GpuDevice* gpu, float* input, size_t n, size_t offsetMultiplier, size_t offsetSum)
+float gpuCommands_findMaxGPU(GpuDevice* gpu, float* input, size_t n, size_t strider, size_t offset)
 {
 	float* output = ALLOC_ARRAY(float, 1);
-	cl_mem outputBuffer = gpuCommands_findMaxGPUBuffer(gpu, input, n, offsetMultiplier, offsetSum);
+	cl_mem outputBuffer = gpuCommands_findMaxGPUBuffer(gpu, input, n, strider, offset);
 
 	gpu->commandManager->executeReadBuffer(outputBuffer, SIZEOF_FLOAT, output, true);
 

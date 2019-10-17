@@ -1,20 +1,26 @@
-#pragma once
+#ifndef BOUNDING_VOLUME
+#define BOUNDING_VOLUME
 
+#include "OpenML.h"
 #include "Vec3.h"
+#include "ParticleSystem.h"
 
 namespace OpenML
 {
 
-	template <typename T>
 	class BoundingVolume
 	{
 	public:
+
+		ParticleSystem* particleSystem = NULL;
 		
-		API_INTERFACE virtual Vec3<T> centerOfBoundingVolume() const
+		API_INTERFACE virtual Vec3f centerOfBoundingVolume() const
 		{
-			return Vec3<T>();
+			return Vec3f(0.0f);
 		};
 
 	};
 
 }
+
+#endif // !BOUNDING_VOLUME

@@ -23,7 +23,7 @@ namespace OpenMLTest
 			
 			Vec3f normalVectorExpected = Vec3f(0.824163377f, -0.137360558f, 0.549442232f);
 
-			Plane3Df plane = Plane3Df(point1, point2, point3);
+			Plane3D plane = Plane3D(point1, point2, point3);
 
 			Asserts::isCloseEnough(plane.normalVector[0], normalVectorExpected[0], 0.0009f, "Wrong value", LINE_INFO());
 			Asserts::isCloseEnough(plane.normalVector[1], normalVectorExpected[1], 0.0009f, "Wrong value", LINE_INFO());
@@ -42,7 +42,7 @@ namespace OpenMLTest
 
 			Vec4f expected = Vec4f(0.824163377f, -0.137360558f, 0.549442232f, -0.961523890f);
 
-			Plane3Df plane = Plane3Df(point1, point2, point3);
+			Plane3D plane = Plane3D(point1, point2, point3);
 			Vec4f components = plane.getEquation();
 
 			for (size_t i = 0; i < 4; i++)
@@ -56,7 +56,7 @@ namespace OpenMLTest
 
 			Vec4f expected = Vec4f(1.0f, -2.0f, 3.0f, 3.0f);
 
-			Plane3Df plane = Plane3Df(point, vector);
+			Plane3D plane = Plane3D(point, vector);
 			Vec4f components = plane.getEquation();
 
 			for (size_t i = 0; i < 4; i++)
@@ -71,7 +71,7 @@ namespace OpenMLTest
 
 			Vec4f expected = Vec4f(-0.894427180f, -0.447213590f, 0.0f, 1.78885436f);
 
-			Plane3Df plane = Plane3Df(point1, point2, point3);
+			Plane3D plane = Plane3D(point1, point2, point3);
 			Vec4f components = plane.getEquation();
 
 			for (size_t i = 0; i < 4; i++)
@@ -80,8 +80,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Plane3D_findIntersection_Test)
 		{
-			Line3Df line = Line3Df(Vec3f{ 2.0f, 4.0f, 6.0f }, Vec3f{ 11.0f, 10.0f, 7.0f });
-			Plane3Df plane = Plane3Df(Vec3f(1.0f, 10.0f, 5.0f), Vec3f(2.0f, 2.0f, 1.0f), Vec3f(4.0f, 4.0f, 1.0f));
+			Line3D line = Line3D(Vec3f{ 2.0f, 4.0f, 6.0f }, Vec3f{ 11.0f, 10.0f, 7.0f });
+			Plane3D plane = Plane3D(Vec3f(1.0f, 10.0f, 5.0f), Vec3f(2.0f, 2.0f, 1.0f), Vec3f(4.0f, 4.0f, 1.0f));
 
 			Vec3f  expected = Vec3f(-13.8571415f, -6.57142735f, 4.23809528f);
 
@@ -96,8 +96,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Plane3D_angle_Test1)
 		{
-			Plane3Df plane1 = Plane3Df(Vec3f(1.0f, 1.0f, 1.0f), Vec3f(1.0f, 1.0f, 1.0f).normalize());
-			Plane3Df plane2 = Plane3Df(Vec3f(1.0f, 1.0f, 1.0f), Vec3f(1.0f, -2.0f, 3.0f).normalize());
+			Plane3D plane1 = Plane3D(Vec3f(1.0f, 1.0f, 1.0f), Vec3f(1.0f, 1.0f, 1.0f).normalize());
+			Plane3D plane2 = Plane3D(Vec3f(1.0f, 1.0f, 1.0f), Vec3f(1.0f, -2.0f, 3.0f).normalize());
 
 			Vec4f a = plane1.getEquation();
 			Vec4f b = plane2.getEquation();
@@ -110,8 +110,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Plane3D_angle_Test2)
 		{
-			Plane3Df plane1 = Plane3Df(2.0f, 4.0f, 1.0f, 3.0f);
-			Plane3Df plane2 = Plane3Df(-1.0f, 3.0f, 2.0f, 1.0f);
+			Plane3D plane1 = Plane3D(2.0f, 4.0f, 1.0f, 3.0f);
+			Plane3D plane2 = Plane3D(-1.0f, 3.0f, 2.0f, 1.0f);
 
 			float expected = 0.6998542122f;
 			float result = plane1.angle(plane2);
@@ -121,7 +121,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Plane3D_distance_point_Test1)
 		{
-			Plane3Df plane = Plane3Df(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(0.0f, 0.0f, 1.0f));
+			Plane3D plane = Plane3D(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(0.0f, 0.0f, 1.0f));
 			Vec3f point = Vec3f(0.0f, 0.0f, 10.0f);
 
 			float expected = 10.0f;
@@ -132,7 +132,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Plane3D_distance_point_Test2)
 		{
-			Plane3Df plane = Plane3Df(Vec3f(0.0f, 0.0f, 8.0f), Vec3f(0.0f, 0.0f, 1.0f));
+			Plane3D plane = Plane3D(Vec3f(0.0f, 0.0f, 8.0f), Vec3f(0.0f, 0.0f, 1.0f));
 			Vec3f point = Vec3f(0.0f, 0.0f, 10.0f);
 
 			float expected = 2.0f;
@@ -143,7 +143,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Plane3D_distance_point_Test3)
 		{
-			Plane3Df plane = Plane3Df(Vec3f(0.0f, 0.0f, -4.0f), Vec3f(0.0f, 0.0f, 1.0f));
+			Plane3D plane = Plane3D(Vec3f(0.0f, 0.0f, -4.0f), Vec3f(0.0f, 0.0f, 1.0f));
 			Vec3f point = Vec3f(0.0f, 0.0f, 10.0f);
 
 			float expected = 14.0f;
@@ -154,7 +154,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Plane3D_distance_point_Test4)
 		{
-			Plane3Df plane = Plane3Df(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(0.0f, 1.0f, 1.0f));
+			Plane3D plane = Plane3D(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(0.0f, 1.0f, 1.0f));
 			Vec3f point = Vec3f(0.0f, 0.0f, 10.0f);
 
 			float expected = 7.07106781f;
@@ -165,7 +165,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Plane3D_closestPointOnThePlane_point_Test1)
 		{
-			Plane3Df plane = Plane3Df(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(0.0f, 0.0f, 1.0f));
+			Plane3D plane = Plane3D(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(0.0f, 0.0f, 1.0f));
 			Vec3f point = Vec3f(10.0f, 5.0f, -10.0f);
 
 			Vec3f expected = Vec3f(10.0f, 5.0f, 0.0f);;
@@ -178,32 +178,32 @@ namespace OpenMLTest
 
 		TEST_METHOD(Plane3D_constructor_equation_Test)
 		{
-			Plane3Df plane = Plane3Df(1.0f, 5.0f, 3.0f, 13.0f);
+			Plane3D plane = Plane3D(1.0f, 5.0f, 3.0f, 13.0f);
 			Vec3f point = Vec3f(2.0f, 4.0f, 1.0f);
 
 			float expected = 6.42317247f;
 			float result = plane.distance(point);
 			Assert::AreEqual(expected, result, L"Wrong value", LINE_INFO());
 
-			plane = Plane3Df(2.0f, -2.0f, 5.0f, 8.0f);
+			plane = Plane3D(2.0f, -2.0f, 5.0f, 8.0f);
 			point = Vec3f(4.0f, -4.0f, 3.0f);
 			expected = 6.78902864f;
 			result = plane.distance(point);
 			Assert::AreEqual(expected, result, L"Wrong value", LINE_INFO());
 			
-			plane = Plane3Df(2.0f, -2.0f, -1.0f, 3.0f);
+			plane = Plane3D(2.0f, -2.0f, -1.0f, 3.0f);
 			point = Vec3f(2.0f, -1.0f, 2.0f);			
 			expected = 2.33333325f;
 			result = plane.distance(point);
 			Assert::AreEqual(expected, result, L"Wrong value", LINE_INFO());
 
-			plane = Plane3Df(1.0f, 1.0f, 1.0f, 0.0f);
+			plane = Plane3D(1.0f, 1.0f, 1.0f, 0.0f);
 			point = Vec3f(3.0f, -1.0f, 4.0f);
 			expected = 3.46410179f;
 			result = plane.distance(point);
 			Assert::AreEqual(expected, result, L"Wrong value", LINE_INFO());
 
-			plane = Plane3Df(4.0f, -1.0f, 1.0f, 5.0f);
+			plane = Plane3D(4.0f, -1.0f, 1.0f, 5.0f);
 			point = Vec3f(1.0f, 3.0f, -6.0f);
 			expected = 0.0f;
 			result = plane.distance(point);
@@ -216,7 +216,7 @@ namespace OpenMLTest
 			Vec3f point2 = Vec3f(1.0f, 0.0f, 0.0f);
 			Vec3f point3 = Vec3f(1.0f, 1.0f, 0.0f);
 
-			Plane3Df plane = Plane3Df(point1, point2, point3);
+			Plane3D plane = Plane3D(point1, point2, point3);
 			Vec3f targetPoint = Vec3f(0.0f, 0.0f, 10.0f);
 
 			Orientation result = plane.orientation(targetPoint);
@@ -230,7 +230,7 @@ namespace OpenMLTest
 			Vec3f point2 = Vec3f(1.0f, 0.0f, 0.0f);
 			Vec3f point3 = Vec3f(1.0f, 1.0f, 0.0f);
 
-			Plane3Df plane = Plane3Df(point1, point2, point3);
+			Plane3D plane = Plane3D(point1, point2, point3);
 			Vec3f targetPoint = Vec3f(0.0f, 0.0f, -10.0f);
 
 			Orientation result = plane.orientation(targetPoint);
@@ -244,7 +244,7 @@ namespace OpenMLTest
 			Vec3f point2 = Vec3f(1.0f, 0.0f, 0.0f);
 			Vec3f point3 = Vec3f(1.0f, 1.0f, 0.0f);
 
-			Plane3Df plane = Plane3Df(point1, point2, point3);
+			Plane3D plane = Plane3D(point1, point2, point3);
 			Vec3f targetPoint = Vec3f(-10.0f, 10.0f, 0.0f);
 
 			Orientation result = plane.orientation(targetPoint);
@@ -258,13 +258,13 @@ namespace OpenMLTest
 			Vec3f point2 = Vec3f(1.0f, 0.0f, 0.0f);
 			Vec3f point3 = Vec3f(1.0f, 1.0f, 0.0f);
 
-			Plane3Df plane1 = Plane3Df(point1, point2, point3);
+			Plane3D plane1 = Plane3D(point1, point2, point3);
 
 			point1 = Vec3f(0.0f, 0.0f, 10.0f);
 			point2 = Vec3f(1.0f, 0.0f, 10.0f);
 			point3 = Vec3f(1.0f, 1.0f, 10.0f);
 
-			Plane3Df plane2 = Plane3Df(point1, point2, point3);
+			Plane3D plane2 = Plane3D(point1, point2, point3);
 
 			bool result = plane1.isParallel(plane2);
 
@@ -277,13 +277,13 @@ namespace OpenMLTest
 			Vec3f point2 = Vec3f(1.0f, 0.0f, 0.0f);
 			Vec3f point3 = Vec3f(1.0f, 1.0f, 0.0f);
 
-			Plane3Df plane1 = Plane3Df(point1, point2, point3);
+			Plane3D plane1 = Plane3D(point1, point2, point3);
 
 			point1 = Vec3f(0.0f, 0.0f, -10.0f);
 			point2 = Vec3f(3.0f, 10.0f, -10.0f);
 			point3 = Vec3f(-4.0f, -1.0f, -10.0f);
 
-			Plane3Df plane2 = Plane3Df(point1, point2, point3);
+			Plane3D plane2 = Plane3D(point1, point2, point3);
 
 			bool result = plane1.isParallel(plane2);
 
@@ -296,13 +296,13 @@ namespace OpenMLTest
 			Vec3f point2 = Vec3f(1.0f, 0.0f, 0.0f);
 			Vec3f point3 = Vec3f(1.0f, 1.0f, 0.0f);
 
-			Plane3Df plane1 = Plane3Df(point1, point2, point3);
+			Plane3D plane1 = Plane3D(point1, point2, point3);
 
 			point1 = Vec3f(0.0f, 0.0f, -10.0f);
 			point2 = Vec3f(3.0f, 10.0f, 5.0f);
 			point3 = Vec3f(-4.0f, -1.0f, 10.0f);
 
-			Plane3Df plane2 = Plane3Df(point1, point2, point3);
+			Plane3D plane2 = Plane3D(point1, point2, point3);
 
 			bool result = plane1.isParallel(plane2);
 
@@ -315,13 +315,13 @@ namespace OpenMLTest
 			Vec3f point2 = Vec3f(1.0f, 0.0f, 0.0f);
 			Vec3f point3 = Vec3f(1.0f, 1.0f, 0.0f);
 
-			Plane3Df plane1 = Plane3Df(point1, point2, point3);
+			Plane3D plane1 = Plane3D(point1, point2, point3);
 
 			point1 = Vec3f(0.0f, 0.0f, 0.0f);
 			point2 = Vec3f(1.0f, 0.0f, 0.0f);
 			point3 = Vec3f(1.0f, 0.0f, 1.0f);
 
-			Plane3Df plane2 = Plane3Df(point1, point2, point3);
+			Plane3D plane2 = Plane3D(point1, point2, point3);
 
 			bool result = plane1.isPerpendicular(plane2);
 
@@ -334,13 +334,13 @@ namespace OpenMLTest
 			Vec3f point2 = Vec3f(1.0f, 0.0f, 0.0f);
 			Vec3f point3 = Vec3f(1.0f, 1.0f, 0.0f);
 
-			Plane3Df plane1 = Plane3Df(point1, point2, point3);
+			Plane3D plane1 = Plane3D(point1, point2, point3);
 
 			point1 = Vec3f(0.0f, 0.0f, 0.0f);
 			point2 = Vec3f(1.0f, 1.0f, 0.0f);
 			point3 = Vec3f(1.0f, 0.0f, 1.0f);
 
-			Plane3Df plane2 = Plane3Df(point1, point2, point3);
+			Plane3D plane2 = Plane3D(point1, point2, point3);
 
 			bool result = plane1.isPerpendicular(plane2);
 
@@ -349,10 +349,10 @@ namespace OpenMLTest
 
 		TEST_METHOD(Plane3D_findIntersection_plane_Test1)
 		{
-			Plane3Df plane1 = Plane3Df(2.0f, 3.0f, 1.0f, 3.0f);
-			Plane3Df plane2 = Plane3Df(-1.0f, 1.0f, 1.0f, 2.0f);
+			Plane3D plane1 = Plane3D(2.0f, 3.0f, 1.0f, 3.0f);
+			Plane3D plane2 = Plane3D(-1.0f, 1.0f, 1.0f, 2.0f);
 
-			Line3Df* result = plane1.findIntersection(plane2);
+			Line3D* result = plane1.findIntersection(plane2);
 
 			Assert::IsNotNull(result, L"Line should not be null!", LINE_INFO());
 

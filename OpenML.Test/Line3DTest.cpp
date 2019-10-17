@@ -16,7 +16,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_centerOfSegment_Test1)
 		{
-			Line3Df line = Line3Df(Vec3f{ 2.0f, 2.0f, 2.0f }, Vec3f{ 4.0f, 4.0f, 2.0f });
+			Line3D line = Line3D(Vec3f{ 2.0f, 2.0f, 2.0f }, Vec3f{ 4.0f, 4.0f, 2.0f });
 
 			Vec3f center = line.centerOfSegment();
 			Vec3f expected = Vec3f(3.0f, 3.0f, 2.0f);
@@ -27,7 +27,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_lengthOfSegment_Test1)
 		{
-			Line3Df line = Line3Df(Vec3f{ 2.0f, 2.0f, 2.0f }, Vec3f{ 4.0f, 4.0f, 4.0f });
+			Line3D line = Line3D(Vec3f{ 2.0f, 2.0f, 2.0f }, Vec3f{ 4.0f, 4.0f, 4.0f });
 
 			float result = line.lengthOfSegment();
 			float expected = 3.46410f;
@@ -37,8 +37,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_hasIntersectionOnSegment_AABB_Test1)
 		{
-			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
-			Line3Df line = Line3Df(Vec3f{ -5.0f, 5.0f, 6.0f }, Vec3f{ 20.0f, 5.0f, 6.0f });
+			AABB aabb = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			Line3D line = Line3D(Vec3f{ -5.0f, 5.0f, 6.0f }, Vec3f{ 20.0f, 5.0f, 6.0f });
 
 			ColisionStatus result = line.hasIntersectionOnSegment(aabb);
 
@@ -47,8 +47,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_hasIntersectionOnSegment_AABB_Test2)
 		{
-			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
-			Line3Df line = Line3Df(Vec3f{ -5.0f, 5.0f, 6.0f }, Vec3f{ -1.0f, 5.0f, 6.0f });
+			AABB aabb = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			Line3D line = Line3D(Vec3f{ -5.0f, 5.0f, 6.0f }, Vec3f{ -1.0f, 5.0f, 6.0f });
 
 			ColisionStatus result = line.hasIntersectionOnSegment(aabb);
 
@@ -57,8 +57,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_hasIntersectionOnSegment_AABB_Test3)
 		{
-			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
-			Line3Df line = Line3Df(Vec3f{ 5.0f, 5.0f, 6.0f }, Vec3f{ 2.0f, 5.0f, 6.0f });
+			AABB aabb = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			Line3D line = Line3D(Vec3f{ 5.0f, 5.0f, 6.0f }, Vec3f{ 2.0f, 5.0f, 6.0f });
 
 			ColisionStatus result = line.hasIntersectionOnSegment(aabb);
 
@@ -67,8 +67,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_hasIntersectionOnSegment_AABB_Test4)
 		{
-			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
-			Line3Df line = Line3Df(Vec3f{ 11.0f, 5.0f, 6.0f }, Vec3f{ 20.0f, 5.0f, 6.0f });
+			AABB aabb = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			Line3D line = Line3D(Vec3f{ 11.0f, 5.0f, 6.0f }, Vec3f{ 20.0f, 5.0f, 6.0f });
 
 			ColisionStatus result = line.hasIntersectionOnSegment(aabb);
 
@@ -77,8 +77,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_hasIntersectionOnSegment_AABB_Test5)
 		{
-			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
-			Line3Df line = Line3Df(Vec3f{ -1.0f, 0.0f, 0.0f }, Vec3f{ -1.0f, 30.0f, 0.0f });
+			AABB aabb = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			Line3D line = Line3D(Vec3f{ -1.0f, 0.0f, 0.0f }, Vec3f{ -1.0f, 30.0f, 0.0f });
 
 			ColisionStatus result = line.hasIntersectionOnSegment(aabb);
 
@@ -87,8 +87,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_findIntersectionOnRay_AABB_Test1)
 		{
-			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
-			Line3Df line = Line3Df(Vec3f{ -5.0f, 5.0f, 6.0f }, Vec3f{ 20.0f, 5.0f, 6.0f });
+			AABB aabb = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			Line3D line = Line3D(Vec3f{ -5.0f, 5.0f, 6.0f }, Vec3f{ 20.0f, 5.0f, 6.0f });
 
 			DetailedColisionStatus<float> result = line.findIntersectionOnRay(aabb);
 
@@ -107,8 +107,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_findIntersectionOnRay_AABB_Test2)
 		{
-			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
-			Line3Df line = Line3Df(Vec3f{ -5.0f, 15.0f, 6.0f }, Vec3f{ 20.0f, 15.0f, 6.0f });
+			AABB aabb = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			Line3D line = Line3D(Vec3f{ -5.0f, 15.0f, 6.0f }, Vec3f{ 20.0f, 15.0f, 6.0f });
 
 			DetailedColisionStatus<float> result = line.findIntersectionOnRay(aabb);
 			
@@ -117,8 +117,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_findIntersectionOnRay_AABB_Test3)
 		{
-			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
-			Line3Df line = Line3Df(Vec3f{ -5.0f, 5.0f, 6.0f }, Vec3f{ 10.0f, 25.0f, 6.0f });
+			AABB aabb = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			Line3D line = Line3D(Vec3f{ -5.0f, 5.0f, 6.0f }, Vec3f{ 10.0f, 25.0f, 6.0f });
 
 			DetailedColisionStatus<float> result = line.findIntersectionOnRay(aabb);
 
@@ -127,8 +127,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_findIntersectionOnRay_AABB_Test4)
 		{
-			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
-			Line3Df line = Line3Df(Vec3f{ 20.0f, 5.0f, 6.0f }, Vec3f{ 30.0f, 5.0f, 6.0f });
+			AABB aabb = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			Line3D line = Line3D(Vec3f{ 20.0f, 5.0f, 6.0f }, Vec3f{ 30.0f, 5.0f, 6.0f });
 
 			DetailedColisionStatus<float> result = line.findIntersectionOnRay(aabb);
 
@@ -137,8 +137,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_findIntersectionOnRay_AABB_Test5)
 		{
-			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
-			Line3Df line = Line3Df(Vec3f{ 20.0f, 5.0f, 6.0f }, Vec3f{ -5.0f, 5.0f, 6.0f });
+			AABB aabb = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			Line3D line = Line3D(Vec3f{ 20.0f, 5.0f, 6.0f }, Vec3f{ -5.0f, 5.0f, 6.0f });
 
 			DetailedColisionStatus<float> result = line.findIntersectionOnRay(aabb);
 
@@ -153,8 +153,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_findIntersectionOnRay_AABB_Test6)
 		{
-			AABBf aabb = AABBf(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
-			Line3Df line = Line3Df(Vec3f{ 3.0f, 3.0f, 6.0f }, Vec3f{ 15.0f, 3.0f, 6.0f });
+			AABB aabb = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
+			Line3D line = Line3D(Vec3f{ 3.0f, 3.0f, 6.0f }, Vec3f{ 15.0f, 3.0f, 6.0f });
 
 			DetailedColisionStatus<float> result = line.findIntersectionOnRay(aabb);
 
@@ -172,8 +172,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_hasIntersectionOnRay_sphere_Test1)
 		{
-			Spheref sphere = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
-			Line3Df line = Line3Df(Vec3f{ -20.0f, 0.0f, 0.0f }, Vec3f{ 20.0f, 0.0f, 0.0f });
+			Sphere sphere = Sphere(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
+			Line3D line = Line3D(Vec3f{ -20.0f, 0.0f, 0.0f }, Vec3f{ 20.0f, 0.0f, 0.0f });
 			
 			bool result = line.hasIntersectionOnRay(sphere);
 
@@ -182,8 +182,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_hasIntersectionOnRay_sphere_Test2)
 		{
-			Spheref sphere = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
-			Line3Df line = Line3Df(Vec3f{ 15.0f, 0.0f, 0.0f }, Vec3f{ 20.0f, 0.0f, 0.0f });
+			Sphere sphere = Sphere(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
+			Line3D line = Line3D(Vec3f{ 15.0f, 0.0f, 0.0f }, Vec3f{ 20.0f, 0.0f, 0.0f });
 
 			bool result = line.hasIntersectionOnRay(sphere);
 
@@ -192,8 +192,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_hasIntersectionOnRay_sphere_Test3)
 		{
-			Spheref sphere = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
-			Line3Df line = Line3Df(Vec3f{ -15.0f, 0.0f, 0.0f }, Vec3f{ -11.0f, 0.0f, 0.0f });
+			Sphere sphere = Sphere(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
+			Line3D line = Line3D(Vec3f{ -15.0f, 0.0f, 0.0f }, Vec3f{ -11.0f, 0.0f, 0.0f });
 
 			bool result = line.hasIntersectionOnRay(sphere);
 
@@ -202,7 +202,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_isOnSegment_point_Test1)
 		{
-			Line3Df line = Line3Df(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 10.0f, 0.0f, 0.0f });
+			Line3D line = Line3D(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 10.0f, 0.0f, 0.0f });
 			Vec3f point = Vec3f(5.0f, 0.0f, 0.0f);
 
 			bool result = line.isOnSegment(point);
@@ -212,7 +212,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_isOnSegment_point_Test2)
 		{
-			Line3Df line = Line3Df(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 10.0f, 0.0f, 0.0f });
+			Line3D line = Line3D(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 10.0f, 0.0f, 0.0f });
 			Vec3f point = Vec3f(-1.0f, 0.0f, 0.0f);
 
 			bool result = line.isOnSegment(point);
@@ -222,7 +222,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_isOnSegment_point_Test3)
 		{
-			Line3Df line = Line3Df(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 10.0f, 0.0f, 0.0f });
+			Line3D line = Line3D(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 10.0f, 0.0f, 0.0f });
 			Vec3f point = Vec3f(11.0f, 0.0f, 0.0f);
 
 			bool result = line.isOnSegment(point);
@@ -232,8 +232,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_findIntersectionOnSegment_sphere_Test1)
 		{
-			Spheref sphere = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
-			Line3Df line = Line3Df(Vec3f{ -20.0f, 0.0f, 0.0f }, Vec3f{ 20.0f, 0.0f, 0.0f });
+			Sphere sphere = Sphere(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
+			Line3D line = Line3D(Vec3f{ -20.0f, 0.0f, 0.0f }, Vec3f{ 20.0f, 0.0f, 0.0f });
 
 			Vec3f expectedPoint1 = { -10.0f, 0.0f, 0.0f };
 			Vec3f expectedPoint2 = { 10.0f, 0.0f, 0.0f };
@@ -252,8 +252,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_findIntersectionOnSegment_sphere_Test2)
 		{
-			Spheref sphere = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
-			Line3Df line = Line3Df(Vec3f{ -20.0f, 0.0f, 0.0f }, Vec3f{ 0.0f, 0.0f, 0.0f });
+			Sphere sphere = Sphere(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
+			Line3D line = Line3D(Vec3f{ -20.0f, 0.0f, 0.0f }, Vec3f{ 0.0f, 0.0f, 0.0f });
 
 			Vec3f expectedPoint1 = { -10.0f, 0.0f, 0.0f };
 
@@ -268,8 +268,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_findIntersectionOnSegment_sphere_Test3)
 		{
-			Spheref sphere = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
-			Line3Df line = Line3Df(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 20.0f, 0.0f, 0.0f });
+			Sphere sphere = Sphere(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
+			Line3D line = Line3D(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 20.0f, 0.0f, 0.0f });
 
 			Vec3f expectedPoint1 = { 0.0f, 0.0f, 0.0f };
 			Vec3f expectedPoint2 = { 10.0f, 0.0f, 0.0f };
@@ -288,8 +288,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_findIntersectionOnSegment_sphere_Test4)
 		{
-			Spheref sphere = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
-			Line3Df line = Line3Df(Vec3f{ -20.0f, 0.0f, 0.0f }, Vec3f{ -12.0f, 0.0f, 0.0f });
+			Sphere sphere = Sphere(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
+			Line3D line = Line3D(Vec3f{ -20.0f, 0.0f, 0.0f }, Vec3f{ -12.0f, 0.0f, 0.0f });
 
 			DetailedColisionStatus<float> result = line.findIntersectionOnSegment(sphere);
 
@@ -300,8 +300,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_findIntersectionOnRay_sphere_Test1)
 		{
-			Spheref sphere = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
-			Line3Df line = Line3Df(Vec3f{ -20.0f, 0.0f, 0.0f }, Vec3f{ -12.0f, 0.0f, 0.0f });
+			Sphere sphere = Sphere(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
+			Line3D line = Line3D(Vec3f{ -20.0f, 0.0f, 0.0f }, Vec3f{ -12.0f, 0.0f, 0.0f });
 
 			Vec3f expectedPoint1 = { -10.0f, 0.0f, 0.0f };
 			Vec3f expectedPoint2 = {  10.0f, 0.0f, 0.0f };
@@ -320,8 +320,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_findIntersectionOnRay_sphere_Test2)
 		{
-			Spheref sphere = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
-			Line3Df line = Line3Df(Vec3f{ -20.0f, 10.0f, 0.0f }, Vec3f{ -12.0f, 10.0f, 0.0f });
+			Sphere sphere = Sphere(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
+			Line3D line = Line3D(Vec3f{ -20.0f, 10.0f, 0.0f }, Vec3f{ -12.0f, 10.0f, 0.0f });
 
 			Vec3f expectedPoint1 = { 0.0f, 10.0f, 0.0f };
 
@@ -336,8 +336,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_findIntersectionOnRay_sphere_Test3)
 		{
-			Spheref sphere = Spheref(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
-			Line3Df line = Line3Df(Vec3f{ -20.0f, 11.0f, 0.0f }, Vec3f{ -12.0f, 11.0f, 0.0f });
+			Sphere sphere = Sphere(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
+			Line3D line = Line3D(Vec3f{ -20.0f, 11.0f, 0.0f }, Vec3f{ -12.0f, 11.0f, 0.0f });
 			
 			DetailedColisionStatus<float> result = line.findIntersectionOnRay(sphere);
 
@@ -348,8 +348,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_findIntersectionOnSegment_plane_Test1)
 		{
-			Plane3Df plane = Plane3Df(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(-1.0f, 0.0f, 0.0f));
-			Line3Df line = Line3Df(Vec3f{ -2.0f, 2.0f, 0.0f }, Vec3f{ 2.0f, 2.0f, 0.0f });
+			Plane3D plane = Plane3D(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(-1.0f, 0.0f, 0.0f));
+			Line3D line = Line3D(Vec3f{ -2.0f, 2.0f, 0.0f }, Vec3f{ 2.0f, 2.0f, 0.0f });
 
 			Vec3f expected = { 0.0f, 2.0f, 0.0f };
 
@@ -363,8 +363,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_findIntersectionOnSegment_plane_Test2)
 		{
-			Plane3Df plane = Plane3Df(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(-1.0f, 0.0f, 0.0f));
-			Line3Df line = Line3Df(Vec3f{ -2.0f, 2.0f, 0.0f }, Vec3f{ -4.0f, 2.0f, 0.0f });
+			Plane3D plane = Plane3D(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(-1.0f, 0.0f, 0.0f));
+			Line3D line = Line3D(Vec3f{ -2.0f, 2.0f, 0.0f }, Vec3f{ -4.0f, 2.0f, 0.0f });
 			
 			Vec3f* result = line.findIntersectionOnSegment(plane);
 
@@ -373,8 +373,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_findIntersectionOnSegment_plane_Test3)
 		{
-			Plane3Df plane = Plane3Df(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(-1.0f, 0.0f, 0.0f));
-			Line3Df line = Line3Df(Vec3f{ -2.0f, 2.0f, 0.0f }, Vec3f{ -1.0f, 2.0f, 0.0f });
+			Plane3D plane = Plane3D(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(-1.0f, 0.0f, 0.0f));
+			Line3D line = Line3D(Vec3f{ -2.0f, 2.0f, 0.0f }, Vec3f{ -1.0f, 2.0f, 0.0f });
 
 			Vec3f* result = line.findIntersectionOnSegment(plane);
 
@@ -383,8 +383,8 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_findIntersection_Test)
 		{
-			Line3Df line1 = Line3Df( Vec3f{ 6.0f, 8.0f, 4.0f }, Vec3f{ 12.0f, 15.0f, 4.0f });
-			Line3Df line2 = Line3Df(Vec3f{ 6.0f, 8.0f, 2.0f }, Vec3f{ 12.0f, 15.0f, 6.0f });
+			Line3D line1 = Line3D( Vec3f{ 6.0f, 8.0f, 4.0f }, Vec3f{ 12.0f, 15.0f, 4.0f });
+			Line3D line2 = Line3D(Vec3f{ 6.0f, 8.0f, 2.0f }, Vec3f{ 12.0f, 15.0f, 6.0f });
 			
 			Vec3f expected = { 9.0f, 11.5f, 4.0f };
 
@@ -399,7 +399,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_closestPointOnTheLine_point_Test1)
 		{
-			Line3Df line = Line3Df(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 10.0f, 0.0f, 0.0f });
+			Line3D line = Line3D(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 10.0f, 0.0f, 0.0f });
 			Vec3f point = Vec3f(7.0f, 10.0f, 0.0f);
 
 			Vec3f expected = { 7.0f, 0.0f, 0.0f };
@@ -413,7 +413,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_closestPointOnTheLine_point_Test2)
 		{
-			Line3Df line = Line3Df(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 10.0f, 0.0f, 0.0f });
+			Line3D line = Line3D(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 10.0f, 0.0f, 0.0f });
 			Vec3f point = Vec3f(-3.0f, 10.0f, 0.0f);
 
 			Vec3f expected = { 0.0f, 0.0f, 0.0f };
@@ -427,7 +427,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_closestPointOnTheLine_point_Test3)
 		{
-			Line3Df line = Line3Df(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 10.0f, 0.0f, 0.0f });
+			Line3D line = Line3D(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 10.0f, 0.0f, 0.0f });
 			Vec3f point = Vec3f(11.0f, 10.0f, 0.0f);
 
 			Vec3f expected = { 10.0f, 0.0f, 0.0f };
@@ -441,7 +441,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_squaredDistance_point_Test1)
 		{
-			Line3Df line = Line3Df(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 10.0f, 0.0f, 0.0f });
+			Line3D line = Line3D(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 10.0f, 0.0f, 0.0f });
 			Vec3f point = Vec3f(5.0f, 10.0f, 0.0f);
 
 			float expected = 100.0f;
@@ -453,7 +453,7 @@ namespace OpenMLTest
 
 		TEST_METHOD(Line3D_distance_point_Test1)
 		{
-			Line3Df line = Line3Df(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 10.0f, 0.0f, 0.0f });
+			Line3D line = Line3D(Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 10.0f, 0.0f, 0.0f });
 			Vec3f point = Vec3f(5.0f, 10.0f, 0.0f);
 
 			float expected = 10.0f;

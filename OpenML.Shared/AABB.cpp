@@ -1,52 +1,46 @@
 #include "AABB.h"
 
-template <typename T>
-AABB<T>::AABB()
+AABB::AABB()
 {
-	this->minPoint = Vec3<T>(T(-0.5f));
+	this->minPoint = Vec3f(-0.5f);
 	this->maxPoint = -this->minPoint;
 }
 
-template <typename T>
-AABB<T>::AABB(Vec3<T> minPoint, Vec3<T> maxPoint)
+AABB::AABB(Vec3f minPoint, Vec3f maxPoint)
 {
 	this->minPoint = minPoint;
 	this->maxPoint = maxPoint;
 }
 
-template <typename T>
-AABB<T>::AABB(Vec3<T> minPoint, T width, T height, T depth) 
+AABB::AABB(Vec3f minPoint, float width, float height, float depth)
 {
 	this->minPoint = minPoint;
 
-	maxPoint = Vec3<T>(
+	maxPoint = Vec3f(
 		minPoint.x + width,
 		minPoint.y + height,
 		minPoint.z + depth
 		);
 }
 
-template <typename T>
-Vec3<T> AABB<T>::center() const
+Vec3f AABB::center() const
 {
-	return (maxPoint + minPoint) * T(0.5);
+	return (maxPoint + minPoint) * 0.5f;
 }
 
-template <typename T>
-Vec3<T> AABB<T>::centerOfBoundingVolume() const
+Vec3f AABB::centerOfBoundingVolume() const
 {
 	return center();
 }
 
-template <typename T>
-T AABB<T>::squaredDistance(const Vec3<T>& target)
+float AABB::squaredDistance(const Vec3f& target)
 {
-	T result = T(0);
+	float result = 0.0f;
 
 	// For each axis count any excess distance outside box extents 
 	for (int axis = 0; axis < 3; axis++)
 	{
-		T v = target[axis];
+		float v = target[axis];
 
 		if (v < minPoint[axis])
 			result += (minPoint[axis] - v) * (minPoint[axis] - v);
@@ -58,14 +52,12 @@ T AABB<T>::squaredDistance(const Vec3<T>& target)
 	return result;
 }
 
-template <typename T>
-T AABB<T>::distance(const Vec3<T>& target)
+float AABB::distance(const Vec3f& target)
 {
-	return T(sqrt(squaredDistance(target)));
+	return float(sqrt(squaredDistance(target)));
 }
 
-template <typename T>
-ColisionStatus AABB<T>::colisionStatus(const AABB<T>& aabb) 
+ColisionStatus AABB::colisionStatus(const AABB& aabb) 
 {
 	if (maxPoint.x < aabb.minPoint.x || minPoint.x > aabb.maxPoint.x)
 		return ColisionStatus::OUTSIDE;
@@ -79,12 +71,11 @@ ColisionStatus AABB<T>::colisionStatus(const AABB<T>& aabb)
 	return ColisionStatus::INSIDE;
 }
 
-template <typename T>
-ColisionStatus AABB<T>::colisionStatus(const Plane3D<T>& plane)
+ColisionStatus AABB::colisionStatus(const Plane3D& plane)
 {
-	Vec3<T> centerPoint = center(); 
-	T d = plane.getDcomponent();	
-	Vec3<T> halfDistanceFromCenter = maxPoint - centerPoint;
+	Vec3f centerPoint = center(); 
+	float d = plane.getDcomponent();
+	Vec3f halfDistanceFromCenter = maxPoint - centerPoint;
 
 	// Compute the projection interval radius of AABB onto L(t) = center + t * normalPlane
 	double r = 
@@ -105,11 +96,10 @@ ColisionStatus AABB<T>::colisionStatus(const Plane3D<T>& plane)
 	return ColisionStatus::OUTSIDE;
 }
 
-template <typename T>
-ColisionStatus AABB<T>::colisionStatus(const Sphere<T>& sphere)
+ColisionStatus AABB::colisionStatus(const Sphere& sphere)
 {
-	T distanceToSphere = squaredDistance(sphere.center);
-	T squaredRay = sphere.ray * sphere.ray;
+	float distanceToSphere = squaredDistance(sphere.center);
+	float squaredRay = sphere.ray * sphere.ray;
 	
 	if (isCloseEnough(distanceToSphere, squaredRay))
 		return ColisionStatus::INLINE;
@@ -120,14 +110,13 @@ ColisionStatus AABB<T>::colisionStatus(const Sphere<T>& sphere)
 	return ColisionStatus::OUTSIDE;
 }
 
-template <typename T>
-Vec3<T> AABB<T>::closestPointInAABB(const Vec3<T>& target)
+Vec3f AABB::closestPointInAABB(const Vec3f& target)
 {
-	Vec3<T> result;
+	Vec3f result;
 
 	for (int axis = 0; axis < 3; axis++)
 	{
-		T v = target[axis];
+		float v = target[axis];
 				
 		v = std::max(v, minPoint[axis]);
 		v = std::min(v, maxPoint[axis]);
@@ -138,24 +127,22 @@ Vec3<T> AABB<T>::closestPointInAABB(const Vec3<T>& target)
 	return result;
 }
 
-template <typename T>
-Vec3<T> AABB<T>::closestPointInAABB(const Sphere<T>& sphere)
+Vec3f AABB::closestPointInAABB(const Sphere& sphere)
 {
 	return closestPointInAABB(sphere.center);
 }
 
-template <typename T>
-AABB<T> AABB<T>::buildFrom(const Vec3List<T>& pointList)
+AABB AABB::buildFrom(const Vec3List<float>& pointList)
 {
 	int* indexes = pointList.findExtremePointsAlongAxisXYZ();
 
-	return AABB<T>(
-		Vec3<T>(
+	return AABB(
+		Vec3f(
 			pointList.points[indexes[0]].x,
 			pointList.points[indexes[2]].y,
 			pointList.points[indexes[4]].z
 			), 
-		Vec3<T>(
+		Vec3f(
 			pointList.points[indexes[1]].x,
 			pointList.points[indexes[3]].y,
 			pointList.points[indexes[5]].z
@@ -163,16 +150,15 @@ AABB<T> AABB<T>::buildFrom(const Vec3List<T>& pointList)
 	);
 }
 
-template <typename T>
-AABB<T> AABB<T>::buildFrom(const Sphere<T>& sphere)
+AABB AABB::buildFrom(const Sphere& sphere)
 {	
-	return AABB<T>(
-		Vec3<T>(
+	return AABB(
+		Vec3f(
 			sphere.center.x - sphere.ray,
 			sphere.center.y - sphere.ray,
 			sphere.center.z - sphere.ray
 			),
-		Vec3<T>(
+		Vec3f(
 			sphere.center.x + sphere.ray,
 			sphere.center.y + sphere.ray,
 			sphere.center.z + sphere.ray
@@ -180,16 +166,15 @@ AABB<T> AABB<T>::buildFrom(const Sphere<T>& sphere)
 		);
 }
 
-template <typename T>
-AABB<T> AABB<T>::enclose(const AABB<T>& aabb)
+AABB AABB::enclose(const AABB& aabb)
 {
-	return AABB<T>(
-		Vec3<T>(
+	return AABB(
+		Vec3f(
 			std::min(this->minPoint.x, aabb.minPoint.x),
 			std::min(this->minPoint.y, aabb.minPoint.y),
 			std::min(this->minPoint[2], aabb.minPoint.z)
 		),
-		Vec3<T>(
+		Vec3f(
 			std::max(this->maxPoint.x, aabb.maxPoint.x),
 			std::max(this->maxPoint.y, aabb.maxPoint.y),
 			std::max(this->maxPoint.z, aabb.maxPoint.z)
@@ -197,27 +182,23 @@ AABB<T> AABB<T>::enclose(const AABB<T>& aabb)
 	);
 }
 
-template <typename T>
-AABB<T> AABB<T>::enclose(const Sphere<T>& sphere)
+AABB AABB::enclose(const Sphere& sphere)
 {
-	return enclose(AABB<T>::buildFrom(sphere));
+	return enclose(AABB::buildFrom(sphere));
 }
 
-template <typename T>
-bool AABB<T>::operator==(const AABB<T>& aabb) const
+bool AABB::operator==(const AABB& aabb) const
 {
 	return this->minPoint == aabb.minPoint 
 		&& this->maxPoint == aabb.maxPoint;
 }
 
-template <typename T>
-bool AABB<T>::operator!=(const AABB<T>& aabb) const
+bool AABB::operator!=(const AABB& aabb) const
 {
 	return ! (*this == aabb);
 }
 
-template <typename T>
-bool AABB<T>::operator<(const AABB<T>& aabb) const
+bool AABB::operator<(const AABB& aabb) const
 {
 	if (this->minPoint.x < aabb.minPoint.x)
 		return true;
@@ -231,8 +212,7 @@ bool AABB<T>::operator<(const AABB<T>& aabb) const
 	return false;
 }
 
-template <typename T>
-bool AABB<T>::operator>(const AABB<T>& aabb) const
+bool AABB::operator>(const AABB& aabb) const
 {
 	if (this->maxPoint.x > aabb.maxPoint.x)
 		return true;
@@ -246,11 +226,10 @@ bool AABB<T>::operator>(const AABB<T>& aabb) const
 	return false;
 }
 
-template <typename T>
-size_t AABB<T>::operator()(const AABB<T>& aabb) const
+size_t AABB::operator()(const AABB& aabb) const
 {
-	T hash = T(1);
-	const T constant = T(3);
+	float hash = 1.0f;
+	const float constant = 3.0f;
 
 	hash = constant * hash + aabb.minPoint.x;
 	hash = constant * hash + aabb.minPoint.y;
@@ -262,15 +241,7 @@ size_t AABB<T>::operator()(const AABB<T>& aabb) const
 	return size_t(hash);
 }
 
-template <typename T>
-bool AABB<T>::operator()(const AABB<T>& aabb1, const AABB<T>& aabb2) const
+bool AABB::operator()(const AABB& aabb1, const AABB& aabb2) const
 {
 	return aabb1 == aabb2;
-}
-
-namespace OpenML
-{
-	template class AABB<int>;
-	template class AABB<float>;
-	template class AABB<double>;
 }

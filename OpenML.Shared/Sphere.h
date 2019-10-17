@@ -10,13 +10,12 @@
 namespace OpenML
 {
 
-	template <typename T>
 	class Sphere
-		: public BoundingVolume<T>
+		: public BoundingVolume
 	{
 	public:
-		Vec3<T> center;
-		T ray;
+		Vec3f center;
+		float ray;
 
 		/// <summary>
 		/// Default construct - unit sphere with the center in origin
@@ -26,74 +25,70 @@ namespace OpenML
 		/// <summary>
 		/// Construct with the center point and a ray
 		/// </summary>
-		API_INTERFACE inline Sphere(const Vec3<T> &center, T ray);
+		API_INTERFACE inline Sphere(const Vec3f &center, float ray);
 
 		/// <summary>
 		/// Build the sphere from 1 point (center) and ray = 1
 		/// </summary>
-		API_INTERFACE Sphere(const Vec3<T> &point1);
+		API_INTERFACE Sphere(const Vec3f &point1);
 
 		/// <summary>
 		/// Build the sphere from 2 (support) points
 		/// </summary>
-		API_INTERFACE Sphere(const Vec3<T> &point1, const Vec3<T> &point2);
+		API_INTERFACE Sphere(const Vec3f &point1, const Vec3f &point2);
 
 		/// <summary>
 		/// Build the sphere from 3 (support) points
 		/// </summary>
-		API_INTERFACE Sphere(const Vec3<T> &point1, const Vec3<T> &point2, const Vec3<T> &point3);
+		API_INTERFACE Sphere(const Vec3f &point1, const Vec3f &point2, const Vec3f &point3);
 
 		/// <summary>
 		/// Build the sphere from 4 points
 		/// </summary>
-		API_INTERFACE Sphere(const Vec3<T> &point1, const Vec3<T> &point2, const Vec3<T> &point3, const Vec3<T> &point4);
+		API_INTERFACE Sphere(const Vec3f &point1, const Vec3f &point2, const Vec3f &point3, const Vec3f &point4);
 
 		/// <summary>
 		/// Get the center of sphere
 		/// </summary>
-		API_INTERFACE inline Vec3<T> centerOfBoundingVolume() const override {
+		API_INTERFACE inline Vec3f centerOfBoundingVolume() const override {
 			return center;
 		}
 
 		/// <summary>
 		/// Check the status of colision against the point
 		/// </summary>
-		API_INTERFACE inline ColisionStatus colisionStatus(const Vec3<T> &point) const;
+		API_INTERFACE inline ColisionStatus colisionStatus(const Vec3f &point) const;
 
 		/// <summary>
 		/// Check the status of colision against the plane
 		/// </summary>
-		API_INTERFACE inline ColisionStatus colisionStatus(const Plane3D<T> &plane) const;
+		API_INTERFACE inline ColisionStatus colisionStatus(const Plane3D &plane) const;
 
 		/// <summary>
 		/// Check the status of colision against the plane
 		/// </summary>
-		API_INTERFACE inline ColisionStatus colisionStatus(const Sphere<T> &sphere) const;
+		API_INTERFACE inline ColisionStatus colisionStatus(const Sphere& sphere) const;
 
 		/// <summary>
 		/// Build a enclosing sphere from an AABB
 		/// </summary>
-		API_INTERFACE static Sphere<T> buildFrom(const AABB<T> &aabb);
+		API_INTERFACE static Sphere buildFrom(const AABB &aabb);
 
 		/// <summary>
 		/// Build a enclosing sphere from an AABB
 		/// </summary>
-		API_INTERFACE static Sphere<T> buildFrom(const Vec3List<T>& pointList);
+		API_INTERFACE static Sphere buildFrom(const Vec3List<float>& pointList);
 
 		/// <summary>
 		/// Enclose/add the sphere in another one
 		/// </summary>
-		API_INTERFACE Sphere<T> enclose(const Sphere<T>& sphere);
+		API_INTERFACE Sphere enclose(const Sphere& sphere);
 
 		/// <summary>
 		/// Enclose/add the sphere in AABB
 		/// </summary>
-		API_INTERFACE Sphere<T> enclose(const AABB<T>& aabb);
-
+		API_INTERFACE Sphere enclose(const AABB& aabb);
 
 	};
 
-	typedef Sphere<int> Spherei;
-	typedef Sphere<float> Spheref;
-	typedef Sphere<double> Sphered;
 }

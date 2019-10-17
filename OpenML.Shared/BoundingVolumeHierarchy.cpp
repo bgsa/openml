@@ -1,6 +1,7 @@
 #include "BoundingVolumeHierarchy.h"
 
-void findClosestBoundingVolume(BinaryTreeNode<BoundingVolume<float>>* node, const BoundingVolume<float>& boundingVolume, BinaryTreeNode<BoundingVolume<float>>* result)
+/*
+void findClosestBoundingVolume(BinaryTreeNode<BoundingVolume>* node, const BoundingVolume& boundingVolume, BinaryTreeNode<BoundingVolume>* result)
 {
 	if (node == nullptr)
 		result = nullptr;
@@ -11,23 +12,24 @@ void findClosestBoundingVolume(BinaryTreeNode<BoundingVolume<float>>* node, cons
 	//Vec3<T> a = node->leftNode()->value.center();
 }
 
-void BoundingVolumeHierarchy::insert(const BoundingVolume<float>& boundingVolume)
+void BoundingVolumeHierarchy::insert(const BoundingVolume& boundingVolume)
 {
 	if (isEmpty()) 
 	{
-		root = ALLOC_NEW(BinaryTreeNode<BoundingVolume<float>>)(boundingVolume);
+		root = ALLOC_NEW(BinaryTreeNode<BoundingVolume>)(boundingVolume);
 		return;
 	}
 
-	BinaryTreeNode<BoundingVolume<float>> closestNode = closestBoundingVolume(boundingVolume);
+	BinaryTreeNode<BoundingVolume> closestNode = closestBoundingVolume(boundingVolume);
 }
 
-BinaryTreeNode<BoundingVolume<float>> BoundingVolumeHierarchy::closestBoundingVolume(const BoundingVolume<float>& boundingVolume)
+BinaryTreeNode<BoundingVolume> BoundingVolumeHierarchy::closestBoundingVolume(const BoundingVolume& boundingVolume)
 {
-	BinaryTreeNode<BoundingVolume<float>> node;
+	BinaryTreeNode<BoundingVolume> node;
 
 	findClosestBoundingVolume(root, boundingVolume, &node);
 
 	return node;
 }
 
+*/

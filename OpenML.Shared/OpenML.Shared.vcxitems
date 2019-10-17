@@ -34,6 +34,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Circle2D.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ColisionStatus.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)CollisionDetection.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)CollisionResponse.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GpuCommand.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GpuCommandManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GpuCommands.h" />
@@ -85,6 +86,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)BoundingVolumeHierarchy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Circle2D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)CollisionDetection.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)CollisionResponse.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GpuCommand.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GpuCommandManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GpuCommands.cpp" />

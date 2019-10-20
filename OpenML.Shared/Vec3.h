@@ -32,6 +32,11 @@ namespace OpenML
 		API_INTERFACE inline T* getValues();
 
 		/// <summary>
+		/// Get the absolute value from each component
+		/// </summary>
+		API_INTERFACE inline Vec3<T> abs() const;
+
+		/// <summary>
 		/// Get the squared of the vector. It means the Vector Pow2 -> x^2 + y^2 + z^2
 		/// </summary>
 		API_INTERFACE inline T squaredLength() const;

@@ -62,6 +62,16 @@ namespace OpenMLTest
 			Assert::AreEqual(expected, result, L"Length value wrong.", LINE_INFO());
 		}	
 
+		TEST_METHOD(Vec3_abs_Test)
+		{
+			Vec3f vector = { -2.0f, -5.0f, -9.0f };
+			Vec3f result = vector.abs();
+			Vec3f expected = { 2.0f, 5.0f, 9.0f };
+
+			for (size_t i = 0; i < VEC3_SIZE; i++)
+				Assert::AreEqual(expected[i], result[i], L"Length value wrong.", LINE_INFO());
+		}
+
 		TEST_METHOD(Vec3_squared_Test)
 		{
 			Vec3f vector = { 2.0f, 5.0f, -9.0f };

@@ -30,6 +30,16 @@ T* Vec3<T>::getValues()
 }
 
 template <typename T>
+Vec3<T> Vec3<T>::abs() const
+{
+	return Vec3<T>(
+		(T)std::abs(x),
+		(T)std::abs(y),
+		(T)std::abs(z)
+	);
+}
+
+template <typename T>
 T Vec3<T>::squaredLength() const
 {
 	return (x * x) + (y * y) + (z * z);

@@ -419,6 +419,16 @@ void Vec3<T>::operator-=(const Vec3<T>& vector)
 }
 
 template <typename T>
+Vec3<T> Vec3<T>::operator-=(const Vec3<T>& vector) const
+{
+	return Vec3<T>(
+		x - vector.x,
+		y - vector.y,
+		z - vector.z
+	);
+}
+
+template <typename T>
 Vec3<T> Vec3<T>::operator-(T value)
 {
 	return Vec3<T>(

@@ -35,12 +35,17 @@ namespace OpenML
 		///<summary>
 		///Get the center of AABB
 		///</summary>
+		API_INTERFACE inline Vec3f center();
+
+		///<summary>
+		///Get the center of AABB
+		///</summary>
 		API_INTERFACE inline Vec3f center() const;
 
 		///<summary>
 		///Get the center of bounding volumne (AABB)
 		///</summary>
-		API_INTERFACE inline Vec3f centerOfBoundingVolume() const override;
+		API_INTERFACE inline Vec3f centerOfBoundingVolume() override;
 
 		///<summary>
 		///Get the SQUARED distance from a point and AABB

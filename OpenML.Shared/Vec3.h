@@ -20,6 +20,10 @@ namespace OpenML
 		/// Construct with args
 		/// </summary>
 		API_INTERFACE inline Vec3(T x, T y, T z);
+		/// <summary>
+		/// Default construct
+		/// </summary>
+		API_INTERFACE inline Vec3(const Vec3<T>& value);
 		
 		/// <summary>
 		/// Construct with args
@@ -166,9 +170,14 @@ namespace OpenML
 		API_INTERFACE inline Vec3<T> clone() const;
 
 		/// <summary>
-		/// Set new value to the vector
+		/// Sum the value to vector
 		/// </summary>
-		API_INTERFACE inline void operator=(const Vec3<T>& value);
+		API_INTERFACE inline Vec3<T> operator+=(T value);
+		
+		/// <summary>
+		/// Subtract the value to vector
+		/// </summary>
+		API_INTERFACE inline Vec3<T> operator-=(T value) const;
 
 		/// <summary>
 		/// Multiply the vector to a scalar
@@ -206,12 +215,27 @@ namespace OpenML
 		/// <summary>
 		/// Sum this vector to another one
 		/// </summary>
+		API_INTERFACE inline Vec3<T> operator+(const Vec3<T>& vector);
+
+		/// <summary>
+		/// Sum this vector to another one
+		/// </summary>
 		API_INTERFACE inline Vec3<T> operator+(const Vec3<T>& vector) const;
 
 		/// <summary>
 		/// Sum this vector to another one
 		/// </summary>
-		API_INTERFACE inline void operator+=(const Vec3<T>& vector);
+		API_INTERFACE inline Vec3<T> operator+=(const Vec3<T>& vector);
+
+		/// <summary>
+		/// Sum this vector to another one
+		/// </summary>
+		API_INTERFACE inline Vec3<T> operator+=(const Vec3<T>& vector) const;
+
+		/// <summary>
+		/// Sum a scalar to this vector
+		/// </summary>
+		API_INTERFACE inline Vec3<T> operator+(T value);
 
 		/// <summary>
 		/// Sum a scalar to this vector
@@ -221,7 +245,17 @@ namespace OpenML
 		/// <summary>
 		/// Subtract this vector to another one
 		/// </summary>
+		API_INTERFACE inline Vec3<T> operator-(const Vec3<T>& vector);
+
+		/// <summary>
+		/// Subtract this vector to another one
+		/// </summary>
 		API_INTERFACE inline Vec3<T> operator-(const Vec3<T>& vector) const;
+
+		/// <summary>
+		/// Get the negative vector
+		/// </summary>
+		API_INTERFACE inline Vec3<T> operator-();
 
 		/// <summary>
 		/// Get the negative vector
@@ -236,7 +270,12 @@ namespace OpenML
 		/// <summary>
 		/// Subtract a scalar from this vector
 		/// </summary>
-		API_INTERFACE inline Vec3<T> operator-(T value) const;
+		API_INTERFACE inline Vec3<T> operator-(T value);
+
+		/// <summary>
+		/// Assign operator
+		/// </summary>
+		API_INTERFACE inline void operator=(const Vec3<T>& vector);
 
 		/// <summary>
 		/// Compare this vector to another one. Compare each component.

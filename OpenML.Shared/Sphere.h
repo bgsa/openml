@@ -13,6 +13,9 @@ namespace OpenML
 	class Sphere
 		: public BoundingVolume
 	{
+	private:
+		void initParticleSystem();
+
 	public:
 		Vec3f center;
 		float ray;
@@ -50,7 +53,7 @@ namespace OpenML
 		/// <summary>
 		/// Get the center of sphere
 		/// </summary>
-		API_INTERFACE inline Vec3f centerOfBoundingVolume() const override {
+		API_INTERFACE inline Vec3f centerOfBoundingVolume() override {
 			return center;
 		}
 

@@ -14,7 +14,7 @@ namespace OpenML
 
 		ParticleSystem* particleSystem = NULL;
 		
-		API_INTERFACE virtual Vec3f centerOfBoundingVolume() const
+		API_INTERFACE virtual Vec3f centerOfBoundingVolume()
 		{
 			return Vec3f(0.0f);
 		};

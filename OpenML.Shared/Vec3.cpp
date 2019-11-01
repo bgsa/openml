@@ -17,6 +17,14 @@ Vec3<T>::Vec3(T x, T y, T z) {
 }
 
 template <typename T>
+Vec3<T>::Vec3(const Vec3<T>& value)
+{
+	x = value.x;
+	y = value.y;
+	z = value.z;
+}
+
+template <typename T>
 Vec3<T>::Vec3(Vec2<T> vector2D, T z) {
 	x = vector2D[0];
 	y = vector2D[1];
@@ -279,14 +287,6 @@ Vec3<T> Vec3<T>::clone() const
 }
 
 template <typename T>
-void Vec3<T>::operator=(const Vec3<T>& value)
-{
-	x = value.x;
-	y = value.y;
-	z = value.z;
-}
-
-template <typename T>
 Vec3<T> Vec3<T>::operator/(T value) const
 {
 	return Vec3<T>(
@@ -331,6 +331,16 @@ Vec3<T> Vec3<T>::operator*(const Vec3<T>& vector) const
 }
 
 template <typename T>
+Vec3<T> Vec3<T>::operator+(const Vec3<T>& vector)
+{
+	return Vec3<T>(
+		x + vector.x,
+		y + vector.y,
+		z + vector.z
+		);
+}
+
+template <typename T>
 Vec3<T> Vec3<T>::operator+(const Vec3<T>& vector) const
 {
 	return Vec3<T>(
@@ -341,11 +351,33 @@ Vec3<T> Vec3<T>::operator+(const Vec3<T>& vector) const
 }
 
 template <typename T>
-void Vec3<T>::operator+=(const Vec3<T>& vector)
+Vec3<T> Vec3<T>::operator+=(const Vec3<T>& vector)
 {
 	x += vector.x;
 	y += vector.y;
 	z += vector.z;
+
+	return *this;
+}
+
+template <typename T>
+Vec3<T> Vec3<T>::operator+=(const Vec3<T>& vector) const
+{
+	return Vec3<T>(
+		x + vector.x,
+		y + vector.y,
+		z + vector.z
+	);
+}
+
+template <typename T>
+Vec3<T> Vec3<T>::operator+(T value)
+{
+	return Vec3<T>(
+		x + value,
+		y + value,
+		z + value
+		);
 }
 
 template <typename T>
@@ -355,6 +387,16 @@ Vec3<T> Vec3<T>::operator+(T value) const
 		x + value,
 		y + value,
 		z + value
+		);
+}
+
+template <typename T>
+Vec3<T> Vec3<T>::operator-(const Vec3<T>& vector)
+{
+	return Vec3<T>(
+		x - vector.x,
+		y - vector.y,
+		z - vector.z
 		);
 }
 
@@ -377,12 +419,22 @@ void Vec3<T>::operator-=(const Vec3<T>& vector)
 }
 
 template <typename T>
-Vec3<T> Vec3<T>::operator-(T value) const
+Vec3<T> Vec3<T>::operator-(T value)
 {
 	return Vec3<T>(
 		x - value,
 		y - value,
 		z - value
+		);
+}
+
+template <typename T>
+Vec3<T> Vec3<T>::operator-()
+{
+	return Vec3<T>(
+		-x,
+		-y,
+		-z
 		);
 }
 
@@ -460,6 +512,34 @@ template <typename T>
 Vec3<T>::operator T*()
 {
 	return reinterpret_cast<T*>(this);
+}
+
+template <typename T>
+Vec3<T> Vec3<T>::operator+=(T value) 
+{
+	return Vec3<T>(
+		x + value,
+		y + value,
+		z + value
+		);
+}
+
+template <typename T>
+Vec3<T> Vec3<T>::operator-=(T value)  const
+{
+	return Vec3<T>(
+		x - value,
+		y - value,
+		z - value
+		);
+}
+
+template <typename T>
+void Vec3<T>::operator=(const Vec3<T>& vector)
+{
+	x = vector.x;
+	y = vector.y;
+	z = vector.z;
 }
 
 namespace OpenML

@@ -44,21 +44,23 @@ Sphere::Sphere()
 	this->center = Vec3f(0.0f);
 	this->ray = 1.0f;
 
-	particleSystem = ALLOC_NEW(ParticleSystem)(1);
-	particleSystem->particles[0].position = center;
-	particleSystem->particles[0].previousPosition = center;
+	initParticleSystem();
 }
 
 Sphere::Sphere(const Vec3f &center, float ray)
 {
 	this->center = center;
 	this->ray = ray;
+
+	initParticleSystem();
 }
 
 Sphere::Sphere(const Vec3f &point1)
 {
 	this->center = point1;
 	this->ray = 1.0f;
+
+	initParticleSystem();
 }
 
 Sphere::Sphere(const Vec3f &point1, const Vec3f &point2)
@@ -66,6 +68,8 @@ Sphere::Sphere(const Vec3f &point1, const Vec3f &point2)
 	Line3D line = Line3D(point1, point2);
 	this->center = line.centerOfSegment();
 	this->ray = line.lengthOfSegment() / 2.0f;
+
+	initParticleSystem();
 }
 
 Sphere::Sphere(const Vec3f &point1, const Vec3f &point2, const Vec3f &point3)
@@ -80,6 +84,8 @@ Sphere::Sphere(const Vec3f &point1, const Vec3f &point2, const Vec3f &point3)
 	// The 3 space coords of the circumsphere center then:
 	this->center = point1 + toCircumsphereCenter; // now this is the actual 3space location
 	this->ray = toCircumsphereCenter.length();
+
+	initParticleSystem();
 }
 
 Sphere::Sphere(const Vec3f &point1, const Vec3f &point2, const Vec3f &point3, const Vec3f &point4)
@@ -135,6 +141,8 @@ Sphere::Sphere(const Vec3f &point1, const Vec3f &point2, const Vec3f &point3, co
 
 	center = { x, y, z };
 	ray = std::sqrt(a * a + b * b + c * c - 4 * d) / 2.0f;
+
+	initParticleSystem();
 }
 
 ColisionStatus Sphere::colisionStatus(const Vec3f &point)  const
@@ -228,7 +236,7 @@ Sphere Sphere::enclose(const Sphere& sphere)
 	Vec3f d = sphere.center - center;
 	float squaredDistance = d.dot(d);  	// Compute the squared distance between the sphere centers 
 
-	if (pow(double(sphere.ray - ray), 2) >= squaredDistance)
+	if (std::pow(double(sphere.ray - ray), 2) >= squaredDistance)
 	{
 		// The sphere with the larger radius encloses the other; 
 		// just set s to be the larger of the two spheres
@@ -240,9 +248,9 @@ Sphere Sphere::enclose(const Sphere& sphere)
 	else
 	{
 		// Spheres partially overlapping or disjoint 
-		float distance = float(std::sqrt(squaredDistance));
+		float distance = std::sqrtf(squaredDistance);
 
-		result.ray = (distance + ray + sphere.ray) * float(0.5);
+		result.ray = (distance + ray + sphere.ray) * 0.5f;
 		result.center = center;
 
 		if (distance > DefaultErrorMargin)
@@ -257,4 +265,11 @@ Sphere Sphere::enclose(const AABB& aabb)
 	Sphere sphere = Sphere::buildFrom(aabb);	
 
 	return enclose(sphere);
+}
+
+void Sphere::initParticleSystem()
+{
+	particleSystem = ALLOC_NEW(ParticleSystem)(1);
+	particleSystem->particles[0].position = center;
+	particleSystem->particles[0].previousPosition = center;
 }

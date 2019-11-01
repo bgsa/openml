@@ -351,23 +351,13 @@ Vec3<T> Vec3<T>::operator+(const Vec3<T>& vector) const
 }
 
 template <typename T>
-Vec3<T> Vec3<T>::operator+=(const Vec3<T>& vector)
+Vec3<T> Vec3<T>::operator+=(Vec3<T>& vector)
 {
 	x += vector.x;
 	y += vector.y;
 	z += vector.z;
 
 	return *this;
-}
-
-template <typename T>
-Vec3<T> Vec3<T>::operator+=(const Vec3<T>& vector) const
-{
-	return Vec3<T>(
-		x + vector.x,
-		y + vector.y,
-		z + vector.z
-	);
 }
 
 template <typename T>
@@ -545,11 +535,13 @@ Vec3<T> Vec3<T>::operator-=(T value)  const
 }
 
 template <typename T>
-void Vec3<T>::operator=(const Vec3<T>& vector)
+Vec3<T>& Vec3<T>::operator=(const Vec3<T>& vector)
 {
 	x = vector.x;
 	y = vector.y;
 	z = vector.z;
+
+	return *this;
 }
 
 namespace OpenML

@@ -225,12 +225,7 @@ namespace OpenML
 		/// <summary>
 		/// Sum this vector to another one
 		/// </summary>
-		API_INTERFACE inline Vec3<T> operator+=(const Vec3<T>& vector);
-
-		/// <summary>
-		/// Sum this vector to another one
-		/// </summary>
-		API_INTERFACE inline Vec3<T> operator+=(const Vec3<T>& vector) const;
+		API_INTERFACE inline Vec3<T> operator+=(Vec3<T>& vector);
 
 		/// <summary>
 		/// Sum a scalar to this vector
@@ -280,7 +275,7 @@ namespace OpenML
 		/// <summary>
 		/// Assign operator
 		/// </summary>
-		API_INTERFACE inline void operator=(const Vec3<T>& vector);
+		API_INTERFACE inline Vec3<T>& operator=(const Vec3<T>& vector);
 
 		/// <summary>
 		/// Compare this vector to another one. Compare each component.

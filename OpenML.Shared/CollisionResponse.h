@@ -13,8 +13,8 @@ namespace OpenML
 		CollisionResponse(const Vec3f& contactPoint);
 
 	public:
-		Vec3f object1Force;
-		Vec3f object2Force;
+		Vec3f object1Impulse;
+		Vec3f object2Impulse;
 		Vec3f contactPoint;
 
 		CollisionResponse();

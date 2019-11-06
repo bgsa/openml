@@ -55,8 +55,8 @@ CollisionResponse* CollisionResponse::handle(Sphere* sphere1, Sphere* sphere2)
 
 	float j = (-(1.0f + particle1.coeficientOfRestitution) * (relativeVelocity.dot(normalContact))) / denominator;
 
-	particle1.velocity += (j * normalContact) * particle1.inverseMass;
-	particle2.velocity -= (j * normalContact) * particle2.inverseMass;
+	response->object1Impulse = (j * normalContact) * particle1.inverseMass;
+	response->object2Impulse = -((j * normalContact) * particle2.inverseMass);
 
 	return response;
 }

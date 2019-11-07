@@ -732,6 +732,12 @@ Mat4<T>::operator T*()
 }
 
 template <typename T>
+Mat4<T>::operator T*() const
+{
+	return (T*) values;
+}
+
+template <typename T>
 Mat3<T> Mat4<T>::toMat3() const
 {
 	return Mat3<T> {

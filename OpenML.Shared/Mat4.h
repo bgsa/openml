@@ -267,6 +267,12 @@ namespace OpenML
 		API_INTERFACE operator T*();
 
 		/// <summary>
+		/// Auto convertion to T *
+		/// It is the same of convertion to float* or int* or double*, whatever T is.
+		/// </summary>
+		API_INTERFACE operator T*() const;
+
+		/// <summary>
 		/// Convert the matrix to Matrix 3x3
 		/// Returns the first 3 components of x-Axis, y-Axis, z-Axis
 		/// </summary>

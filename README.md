@@ -6,9 +6,11 @@
 
 Main Features:
 
-* Made with high legibility - clean code;
-* Refactor friendly - covered by unit tests;
-* Built with Microsoft Studio or VSCode or whatver tools with CMake support;
+* Math and Physics engine - C\C++;
+* Algorithms in GPU to boost performance with huge amount of data - OpenCL;
+* Made with high legibility - Clean Code;
+* Refactor friendly - covered by Unit Tests;
+* Built with Microsoft Studio, and can be used with VSCode or whatver tools with CMake support;
 * Take advantage with C++11 features;
 
 ![](header.png)

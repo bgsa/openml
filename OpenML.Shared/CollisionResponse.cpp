@@ -37,8 +37,6 @@ CollisionResponse* CollisionResponse::handle(Sphere* sphere1, Sphere* sphere2)
 	
 	CollisionResponse::separeteSpheres(sphere1, sphere2);
 	
-	Vec3f contactPoint = particle1.position + ((particle2.position - particle1.position) * 0.5f);
-	
 	Vec3f normalContact = (particle1.position - particle2.position).normalize();
 
 	Vec3f relativeVelocity = particle1.relativeVelocity(particle2);
@@ -46,17 +44,26 @@ CollisionResponse* CollisionResponse::handle(Sphere* sphere1, Sphere* sphere2)
 	float velocityNormal = relativeVelocity.dot(normalContact);
 
 	if (velocityNormal > 0.0f)  // the spheres are getting away from each other
-		return nullptr;
+		return NULL;
+
+	Vec3f contactPoint = particle1.position + ((particle2.position - particle1.position) * 0.5f);
 
 	CollisionResponse* response = ALLOC_NEW(CollisionResponse)(contactPoint);
 
 
 	float denominator = (normalContact.dot(normalContact)) * (particle1.inverseMass + particle2.inverseMass);
 
-	float j = (-(1.0f + particle1.coeficientOfRestitution) * (relativeVelocity.dot(normalContact))) / denominator;
+	//float j = (-(1.0f + particle1.coeficientOfRestitution) * (relativeVelocity.dot(normalContact))) / denominator;
+	//response->object1Impulse = (j * normalContact) * particle1.inverseMass;
+	//response->object2Impulse = -((j * normalContact) * particle2.inverseMass);
 
-	response->object1Impulse = (j * normalContact) * particle1.inverseMass;
-	response->object2Impulse = -((j * normalContact) * particle2.inverseMass);
+	float j = (-particle1.coeficientOfRestitution * relativeVelocity.dot(normalContact)) / denominator;
+
+	Vec3f nr1 = ((particle1.position - particle1.previousPosition) + (particle1.position - contactPoint)).normalize();
+	Vec3f nr2 = ((particle2.position - particle2.previousPosition) + (particle2.position - contactPoint)).normalize();
+
+	response->object1Impulse = (j * nr1) * particle1.inverseMass;
+	response->object2Impulse = (j * nr2) * particle2.inverseMass;
 
 	return response;
 }

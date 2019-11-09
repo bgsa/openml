@@ -136,6 +136,11 @@ namespace OpenML
 		API_INTERFACE static Mat3<T> createTranslate(T x, T y, T z);
 
 		/// <summary>
+		/// Craete a translation matrix
+		/// </summary>
+		API_INTERFACE static Mat3<T> createTranslate(const Vec3<T>& position);
+
+		/// <summary>
 		/// Get the determinant of the matrix
 		/// </summary>
 		API_INTERFACE inline T determinant() const;

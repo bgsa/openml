@@ -344,6 +344,24 @@ Mat3<T> Mat3<T>::createTranslate(T x, T y, T z)
 }
 
 template <typename T>
+Mat3<T> Mat3<T>::createTranslate(const Vec3<T>& position)
+{
+	Mat3<T> result = Mat3<T>::identity();
+
+#if MAJOR_COLUMN_ORDER
+	result[6] = position.x;
+	result[7] = position.y;
+	result[8] = position.z;
+#else
+	result[2] = position.x;
+	result[5] = position.y;
+	result[8] = position.z;
+#endif
+
+	return result;
+}
+
+template <typename T>
 T Mat3<T>::determinant() const
 {
 	return

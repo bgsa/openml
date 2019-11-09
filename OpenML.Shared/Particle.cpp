@@ -26,9 +26,9 @@ void Particle::update(long long elapsedTime)
 
 	Vec3f newAcceleration = force * inverseMass;
 
-	Vec3f newVelocity = (velocity * velocityDamping) + velocity + ((newAcceleration - acceleration) / elapsedTime);
+	Vec3f newVelocity = (velocity * velocityDamping) + ((newAcceleration - acceleration) / elapsedTime);
 
-	Vec3f newPosition = position + ((velocity + newVelocity - velocity) / elapsedTime);
+	Vec3f newPosition = position + (newVelocity / elapsedTime);
 
 	acceleration = newAcceleration;
 

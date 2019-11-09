@@ -132,7 +132,14 @@ T Vec4<T>::angle(const Vec4<T>& vectorB) const
 template <typename T>
 Vec4<T> Vec4<T>::normalize() const
 {
-	T vectorLengthInverted = T(1) / length();
+	//assert(length() != T(0));  // avoid division by zero
+
+	T len = length();
+
+	if (len == T(0))
+		return Vec4<T>(T(0));
+
+	T vectorLengthInverted = T(1) / len;
 
 	return Vec4<T> {
 		x * vectorLengthInverted,

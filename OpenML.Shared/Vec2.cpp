@@ -97,11 +97,16 @@ T Vec2<T>::angle(const Vec2<T>& vectorB) const
 template <typename T>
 Vec2<T> Vec2<T>::normalize() const
 {
-	T vectorLength = length();
+	//assert(length() != T(0));  // avoid division by zero
+
+	T len = length();
+
+	if (len == T(0))
+		return Vec2<T>(T(0));
 
 	return Vec2<T> {
-		x / vectorLength,
-			y / vectorLength
+		x / len,
+		y / len
 	};
 }
 

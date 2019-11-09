@@ -224,7 +224,13 @@ T Vec3<T>::angle(const Vec3<T>& vectorB) const
 template <typename T>
 Vec3<T> Vec3<T>::normalize() const
 {
-	T vectorLengthInverted = T(1) / length();
+	//assert(length() != T(0));   // avoid division by zero
+	T len = length();
+
+	if (len == T(0))
+		return Vec3<T>(T(0));
+
+	T vectorLengthInverted = T(1) / len;
 
 	return Vec3<T> {
 		x * vectorLengthInverted,

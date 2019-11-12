@@ -225,6 +225,16 @@ namespace OpenML
 		API_INTERFACE inline void operator/=(T value);
 
 		/// <summary>
+		/// Check the matrix is equal the other
+		/// </summary>
+		API_INTERFACE inline bool operator==(const Mat3<T>& matrix);
+
+		/// <summary>
+		/// Check the matrix is different the other
+		/// </summary>
+		API_INTERFACE inline bool operator!=(const Mat3<T>& matrix);
+
+		/// <summary>
 		/// Get the matrix content as string
 		/// </summary>
 		API_INTERFACE inline std::string toString();

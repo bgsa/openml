@@ -739,5 +739,47 @@ namespace OpenMLTest
 				Assert::AreEqual(expected[i], matrixA[i], L"Wrong number", LINE_INFO());
 		}
 
+		TEST_METHOD(Mat3_operatorEqual_Test)
+		{
+			Mat3f matrixA = {
+				1.0f, 2.0f, 3.0f,
+				4.0f, 5.0f, 6.0f,
+				7.0f, 8.0f, -9.0f
+			};
+			Mat3f matrixB = {
+				1.0f, 2.0f, 3.0f,
+				4.0f, 5.0f, 6.0f,
+				7.0f, 8.0f, -9.0f
+			};
+
+			bool result = matrixA == matrixB;
+			Assert::IsTrue(result, L"Wrong number", LINE_INFO());
+
+			matrixB[6] = 6.5f;
+			result = matrixA == matrixB;
+			Assert::IsFalse(result, L"Wrong number", LINE_INFO());
+		}
+
+		TEST_METHOD(Mat3_operatorNotEqual_Test)
+		{
+			Mat3f matrixA = {
+				1.0f, 2.0f, 3.0f,
+				4.0f, 5.0f, 6.0f,
+				7.0f, 8.0f, -9.0f
+			};
+			Mat3f matrixB = {
+				1.0f, 2.0f, 3.0f,
+				4.0f, 5.0f, 6.0f,
+				7.0f, 8.0f, -9.0f
+			};
+
+			bool result = matrixA != matrixB;
+			Assert::IsFalse(result, L"Wrong number", LINE_INFO());
+
+			matrixB[6] = 6.5f;
+			result = matrixA != matrixB;
+			Assert::IsTrue(result, L"Wrong number", LINE_INFO());
+		}
+
 	};
 }

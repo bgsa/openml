@@ -519,6 +519,26 @@ void Mat3<T>::operator/=(T value)
 }
 
 template <typename T>
+bool Mat3<T>::operator==(const Mat3<T>& matrix)
+{
+	for (size_t i = 0; i < MAT3_SIZE; i++)
+		if (values[i] != matrix[i])
+			return false;
+
+	return true;
+}
+
+template <typename T>
+bool Mat3<T>::operator!=(const Mat3<T>& matrix)
+{
+	for (size_t i = 0; i < MAT3_SIZE; i++)
+		if (values[i] != matrix[i])
+			return true;
+
+	return false;
+}
+
+template <typename T>
 std::string Mat3<T>::toString()
 {
 	return Mat<T>::toString(values, MAT3_SIZE);

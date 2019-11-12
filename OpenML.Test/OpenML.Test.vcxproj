@@ -358,6 +358,7 @@ copy /Y $(SolutionDir)resources\opencl\src\*.cl $(OutDir)</Command>
     <ClCompile Include="Mat2Test.cpp" />
     <ClCompile Include="Mat3Test.cpp" />
     <ClCompile Include="Mat4Test.cpp" />
+    <ClCompile Include="OBBTest.cpp" />
     <ClCompile Include="OpenMLTest.cpp" />
     <ClCompile Include="ParticleSystemTest.cpp" />
     <ClCompile Include="ParticleTest.cpp" />

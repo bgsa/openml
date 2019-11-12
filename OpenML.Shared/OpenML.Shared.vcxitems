@@ -48,6 +48,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Mat2.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Mat3.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Mat4.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)OBB.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Orientation.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Particle.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ParticleSystem.h" />
@@ -99,6 +100,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Mat2.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mat3.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mat4.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)OBB.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Particle.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ParticleSystem.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Plane3D.cpp" />

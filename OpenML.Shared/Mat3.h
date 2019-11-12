@@ -154,9 +154,14 @@ namespace OpenML
 		API_INTERFACE Mat3<T> invert();
 
 		/// <summary>
+		/// Check if the matrix is identity
+		/// </summary>
+		API_INTERFACE inline bool isIdentity() const;
+
+		/// <summary>
 		/// Get the size in Bytes of Mat3
 		/// </summary>
-		inline API_INTERFACE size_t sizeInBytes() const;
+		API_INTERFACE inline size_t sizeInBytes() const;
 
 		/// <summary>
 		/// Clone this matrix
@@ -228,6 +233,11 @@ namespace OpenML
 		/// Check the matrix is equal the other
 		/// </summary>
 		API_INTERFACE inline bool operator==(const Mat3<T>& matrix);
+
+		/// <summary>
+		/// Check the matrix is equal the other
+		/// </summary>
+		API_INTERFACE inline bool operator==(T value);
 
 		/// <summary>
 		/// Check the matrix is different the other

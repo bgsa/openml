@@ -781,5 +781,33 @@ namespace OpenMLTest
 			Assert::IsTrue(result, L"Wrong number", LINE_INFO());
 		}
 
+		TEST_METHOD(Mat3_operatorEqual_Value_Test)
+		{
+			Mat3f matrixA = {
+				3.0f, 3.0f, 3.0f,
+				3.0f, 3.0f, 3.0f,
+				3.0f, 3.0f, 3.0f
+			};
+
+			bool result = matrixA == 3.0f;
+			Assert::IsTrue(result, L"Wrong number", LINE_INFO());
+
+			matrixA[6] = 6.5f;
+			result = matrixA == 3.0f;
+			Assert::IsFalse(result, L"Wrong number", LINE_INFO());
+		}
+
+		TEST_METHOD(Mat3_isIdentity_Test)
+		{
+			Mat3f matrixA = Mat3f::identity();
+
+			bool result = matrixA.isIdentity();
+			Assert::IsTrue(result, L"Wrong number", LINE_INFO());
+
+			matrixA[6] = 1.0f;
+			result = matrixA.isIdentity();
+			Assert::IsFalse(result, L"Wrong number", LINE_INFO());
+		}
+
 	};
 }

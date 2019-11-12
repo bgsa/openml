@@ -52,69 +52,77 @@ T Mat3<T>::getValue(int x, int y)
 }
 
 template <typename T>
+Vec3<T> Mat3<T>::getAxis(int index) const
+{
+#if MAJOR_COLUMN_ORDER
+
+	return Vec3<T>(
+		values[index],
+		values[index + MAT3_ROWSIZE],
+		values[index + MAT3_ROWSIZE + MAT3_ROWSIZE]
+	);
+#else
+
+	return Vec3<T>(
+		values[index * MAT3_ROWSIZE],
+		values[index * MAT3_ROWSIZE + 1],
+		values[index * MAT3_ROWSIZE + 2]
+	);
+#endif
+}
+
+template <typename T>
 Vec3<T> Mat3<T>::xAxis() const
 {
-	Vec3<T> result;
-
 #if MAJOR_COLUMN_ORDER
-	result = Vec3<T>{
+	return Vec3<T>{
 		values[0],
 		values[3],
 		values[6]
 	};
 #else
-	result = Vec3<T>{
+	return Vec3<T>{
 		values[0],
 		values[1],
 		values[2]
 	};
 #endif
-
-	return result;
 }
 
 template <typename T>
 Vec3<T> Mat3<T>::yAxis() const
 {
-	Vec3<T> result;
-
 #if MAJOR_COLUMN_ORDER
-	result = Vec3<T>{
+	return Vec3<T>{
 		values[1],
 		values[4],
 		values[7]
 	};
 #else
-	result = Vec3<T>{
+	return Vec3<T>{
 		values[3],
 		values[4],
 		values[5]
 	};
 #endif
-
-	return result;
 }
 
 template <typename T>
 Vec3<T> Mat3<T>::zAxis() const
 {
-	Vec3<T> result;
-
 #if MAJOR_COLUMN_ORDER
-	result = Vec3<T>{
+	return Vec3<T>{
 		values[2],
 		values[5],
 		values[8]
 	};
 #else
-	result = Vec3<T>{
+	return Vec3<T>{
 		values[6],
 		values[7],
 		values[8]
 	};
 #endif
-
-	return result;
 }
 
 template <typename T>
@@ -127,7 +135,7 @@ Mat3<T> Mat3<T>::identity()
 	};
 
 	Mat3<T> result;
-	memcpy(&result, identityMatrix, sizeof(values));
+	std::memcpy(&result, identityMatrix, sizeof(values));
 
 	return result;
 }
@@ -186,13 +194,13 @@ Mat3<T> Mat3<T>::multiply(const Mat3<T>& matrixB) const
 #if MAJOR_COLUMN_ORDER
 	for (int line = 0; line < MAT3_ROWSIZE; line++)
 	{
-		T ai0 = values[(0 * MAT3_ROWSIZE) + line];
-		T ai1 = values[(1 * MAT3_ROWSIZE) + line];
-		T ai2 = values[(2 * MAT3_ROWSIZE) + line];
+		T ai0 = values[line];
+		T ai1 = values[MAT3_ROWSIZE + line];
+		T ai2 = values[TWO_MAT3_ROWSIZE + line];
 
-		result[(0 * MAT3_ROWSIZE) + line] = ai0 * matrixB[(0 * MAT3_ROWSIZE) + 0] + ai1 * matrixB[(0 * MAT3_ROWSIZE) + 1] + ai2 * matrixB[(0 * MAT3_ROWSIZE) + 2];
-		result[(1 * MAT3_ROWSIZE) + line] = ai0 * matrixB[(1 * MAT3_ROWSIZE) + 0] + ai1 * matrixB[(1 * MAT3_ROWSIZE) + 1] + ai2 * matrixB[(1 * MAT3_ROWSIZE) + 2];
-		result[(2 * MAT3_ROWSIZE) + line] = ai0 * matrixB[(2 * MAT3_ROWSIZE) + 0] + ai1 * matrixB[(2 * MAT3_ROWSIZE) + 1] + ai2 * matrixB[(2 * MAT3_ROWSIZE) + 2];
+		result[line] = ai0 * matrixB[0] + ai1 * matrixB[1] + ai2 * matrixB[2];
+		result[MAT3_ROWSIZE + line] = ai0 * matrixB[MAT3_ROWSIZE] + ai1 * matrixB[MAT3_ROWSIZE + 1] + ai2 * matrixB[MAT3_ROWSIZE + 2];
+		result[TWO_MAT3_ROWSIZE + line] = ai0 * matrixB[TWO_MAT3_ROWSIZE] + ai1 * matrixB[TWO_MAT3_ROWSIZE + 1] + ai2 * matrixB[TWO_MAT3_ROWSIZE + 2];
 	}
 #else
 	for (int column = 0; column < MAT3_ROWSIZE; column++)

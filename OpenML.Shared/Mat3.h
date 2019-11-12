@@ -8,6 +8,7 @@ namespace OpenML
 {
 #define MAT3_SIZE 9
 #define MAT3_ROWSIZE 3
+#define TWO_MAT3_ROWSIZE 6
 
 	template <typename T>
 	struct AutovalueAutovector3 {
@@ -55,20 +56,22 @@ namespace OpenML
 		API_INTERFACE inline T getValue(int x, int y);
 
 		/// <summary>
+		/// Get the axis
+		/// </summary>
+		API_INTERFACE inline Vec3<T> getAxis(int index) const;
+
+		/// <summary>
 		/// Get the X axis
-		/// COLUMN MAJOR ORDER
 		/// </summary>
 		API_INTERFACE inline Vec3<T> xAxis() const;
 
 		/// <summary>
 		/// Get the Y axis
-		/// COLUMN MAJOR ORDER
 		/// </summary>
 		API_INTERFACE inline Vec3<T> yAxis() const;
 
 		/// <summary>
 		/// Get the Z axis
-		/// COLUMN MAJOR ORDER
 		/// </summary>
 		API_INTERFACE inline Vec3<T> zAxis() const;
 

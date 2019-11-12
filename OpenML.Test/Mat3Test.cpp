@@ -68,6 +68,57 @@ namespace OpenMLTest
 		}
 
 #if MAJOR_COLUMN_ORDER
+		TEST_METHOD(Mat3_getAxisX_ColumnMajorOrder_Test)
+		{
+			Mat3f matrix = {
+				1.0f, 2.0f, 3.0f,
+				4.0f, 5.0f, 6.0f,
+				7.0f, 8.0f, 9.0f
+			};
+
+			Vec3f axis = matrix.getAxis(0);
+
+			Assert::AreEqual(1.0f, axis[0], L"Wrong value", LINE_INFO());
+			Assert::AreEqual(4.0f, axis[1], L"Wrong value", LINE_INFO());
+			Assert::AreEqual(7.0f, axis[2], L"Wrong value", LINE_INFO());
+		}
+#endif
+
+#if MAJOR_COLUMN_ORDER
+		TEST_METHOD(Mat3_getAxisY_ColumnMajorOrder_Test)
+		{
+			Mat3f matrix = {
+				1.0f, 2.0f, 3.0f,
+				4.0f, 5.0f, 6.0f,
+				7.0f, 8.0f, 9.0f
+			};
+
+			Vec3f axis = matrix.getAxis(1);
+
+			Assert::AreEqual(2.0f, axis[0], L"Wrong value", LINE_INFO());
+			Assert::AreEqual(5.0f, axis[1], L"Wrong value", LINE_INFO());
+			Assert::AreEqual(8.0f, axis[2], L"Wrong value", LINE_INFO());
+		}
+#endif
+
+#if MAJOR_COLUMN_ORDER
+		TEST_METHOD(Mat3_getAxisZ_ColumnMajorOrder_Test)
+		{
+			Mat3f matrix = {
+				1.0f, 2.0f, 3.0f,
+				4.0f, 5.0f, 6.0f,
+				7.0f, 8.0f, 9.0f
+			};
+
+			Vec3f axis = matrix.getAxis(2);
+
+			Assert::AreEqual(3.0f, axis[0], L"Wrong value", LINE_INFO());
+			Assert::AreEqual(6.0f, axis[1], L"Wrong value", LINE_INFO());
+			Assert::AreEqual(9.0f, axis[2], L"Wrong value", LINE_INFO());
+		}
+#endif
+
+#if MAJOR_COLUMN_ORDER
 		TEST_METHOD(Mat3_xAxis_ColumnMajorOrder_Test)
 		{
 			Mat3f matrix = {

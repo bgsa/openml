@@ -16,6 +16,8 @@ namespace OpenML
 	public:
 		Particle* particles;
 		size_t particlesCount;
+		Mat3f orientation;
+		Vec3f angularVelocity;
 
 		API_INTERFACE ParticleSystem(size_t particlesCount);
 		API_INTERFACE ParticleSystem(Particle* particles, size_t particlesCount);

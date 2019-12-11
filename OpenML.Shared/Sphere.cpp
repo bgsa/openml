@@ -145,6 +145,21 @@ Sphere::Sphere(const Vec3f &point1, const Vec3f &point2, const Vec3f &point3, co
 	initParticleSystem();
 }
 
+void Sphere::translate(float xAxis, float yAxis, float zAxis)
+{
+	center = Mat3f::createTranslate(xAxis, yAxis, zAxis) * center;
+}
+
+void Sphere::scale(float xAxis, float yAxis, float zAxis)
+{
+	ray *= xAxis;
+}
+
+void Sphere::rotate(float angleInRadians, float xAxis, float yAxis, float zAxis)
+{
+	;
+}
+
 ColisionStatus Sphere::colisionStatus(const Vec3f &point)  const
 {
 	float distanceToPoint = center.distance(point);

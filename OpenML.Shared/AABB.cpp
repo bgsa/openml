@@ -62,6 +62,34 @@ float AABB::distance(const Vec3f& target)
 	return float(sqrt(squaredDistance(target)));
 }
 
+void AABB::translate(float xAxis, float yAxis, float zAxis)
+{
+	Mat3f translation = Mat3f::createTranslate(xAxis, yAxis, zAxis);
+
+	minPoint = translation * minPoint;
+	maxPoint = translation * maxPoint;
+}
+
+void AABB::scale(float xAxis, float yAxis, float zAxis)
+{
+	minPoint = Vec3f(
+		minPoint.x * (xAxis * 0.5f),
+		minPoint.y * (yAxis * 0.5f),
+		minPoint.z * (zAxis * 0.5f)
+	);
+
+	maxPoint = Vec3f(
+		maxPoint.x * (xAxis * 0.5f),
+		maxPoint.y * (yAxis * 0.5f),
+		maxPoint.z * (zAxis * 0.5f)
+	);
+}
+
+void AABB::rotate(float angleInRadians, float xAxis, float yAxis, float zAxis)
+{
+	;
+}
+
 ColisionStatus AABB::colisionStatus(const AABB& aabb) 
 {
 	if (maxPoint.x < aabb.minPoint.x || minPoint.x > aabb.maxPoint.x)

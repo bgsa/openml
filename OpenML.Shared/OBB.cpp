@@ -7,6 +7,25 @@ OBB::OBB(const Vec3f& center, const Vec3f& halfWidth)
 	this->orientation = Mat3f::identity();
 }
 
+void OBB::translate(float xAxis, float yAxis, float zAxis)
+{
+	this->center = Mat3f::createTranslate(xAxis, yAxis, zAxis) * this->center;
+}
+
+void OBB::scale(float xAxis, float yAxis, float zAxis)
+{
+	this->halfWidth = Vec3f(
+							xAxis * this->halfWidth.x,
+							yAxis * this->halfWidth.y,
+							zAxis * this->halfWidth.z
+						);
+}
+
+void OBB::rotate(float angleInRadians, float xAxis, float yAxis, float zAxis)
+{
+	this->orientation *= Mat3f::createRotate(angleInRadians, xAxis, yAxis, zAxis);
+}
+
 ColisionStatus OBB::colisionStatus(const OBB& obb)
 {
 	float ra, rb; 

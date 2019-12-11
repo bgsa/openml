@@ -6,6 +6,8 @@ ParticleSystem::ParticleSystem(size_t particlesCount)
 
 	this->particles = ALLOC_NEW_ARRAY(Particle, particlesCount);
 	this->particlesCount = particlesCount;
+	this->orientation = Mat3f::identity();
+	this->angularVelocity = Vec3f(0.0f);
 }
 
 ParticleSystem::ParticleSystem(Particle* particles, size_t particlesCount)

@@ -58,6 +58,21 @@ namespace OpenML
 		}
 
 		/// <summary>
+		/// Translate the sphere
+		/// </summary>
+		API_INTERFACE void translate(float xAxis, float yAxis, float zAxis) override;
+
+		/// <summary>
+		/// Bounding volume of Sphere do not rotate.
+		/// </summary>
+		API_INTERFACE void rotate(float angleInRadians, float xAxis, float yAxis, float zAxis) override;
+
+		/// <summary>
+		/// Scale the sphere
+		/// </summary>
+		API_INTERFACE void scale(float xAxis, float yAxis, float zAxis) override;
+
+		/// <summary>
 		/// Check the status of colision against the point
 		/// </summary>
 		API_INTERFACE inline ColisionStatus colisionStatus(const Vec3f &point) const;

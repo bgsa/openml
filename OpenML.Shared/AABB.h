@@ -57,6 +57,21 @@ namespace OpenML
 		///</summary>
 		API_INTERFACE inline float distance(const Vec3f& target);
 
+		/// <summary>
+		/// Translate the AABB
+		/// </summary>
+		API_INTERFACE void translate(float xAxis, float yAxis, float zAxis) override;
+
+		/// <summary>
+		/// AABB is never rotated! Use OBB instead.
+		/// </summary>
+		API_INTERFACE void rotate(float angleInRadians, float xAxis, float yAxis, float zAxis) override;
+
+		/// <summary>
+		/// Scale the AABB
+		/// </summary>
+		API_INTERFACE void scale(float xAxis, float yAxis, float zAxis) override;
+
 		///<summary>
 		///Check whether the AABBs are in contact each other
 		///</summary>

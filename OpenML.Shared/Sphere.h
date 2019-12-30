@@ -11,7 +11,7 @@ namespace OpenML
 {
 
 	class Sphere
-		: public BoundingVolume
+		: public BoundingVolumeSphere
 	{
 	private:
 		void initParticleSystem();
@@ -60,17 +60,22 @@ namespace OpenML
 		/// <summary>
 		/// Translate the sphere
 		/// </summary>
-		API_INTERFACE void translate(float xAxis, float yAxis, float zAxis) override;
+		API_INTERFACE Sphere* translate(float xAxis, float yAxis, float zAxis) override;
 
 		/// <summary>
 		/// Bounding volume of Sphere do not rotate.
 		/// </summary>
-		API_INTERFACE void rotate(float angleInRadians, float xAxis, float yAxis, float zAxis) override;
+		API_INTERFACE Sphere* rotate(float angleInRadians, float xAxis, float yAxis, float zAxis) override;
+
+		/// <summary>
+		/// Get model view of Sphere
+		/// </summary>
+		API_INTERFACE Mat3f modelView() override;
 
 		/// <summary>
 		/// Scale the sphere
 		/// </summary>
-		API_INTERFACE void scale(float xAxis, float yAxis, float zAxis) override;
+		API_INTERFACE Sphere* scale(float xAxis, float yAxis, float zAxis) override;
 
 		/// <summary>
 		/// Check the status of colision against the point

@@ -31,15 +31,5 @@ namespace OpenMLTest
 			Assert::AreEqual(center, obb.center, L"Wrong value.", LINE_INFO());
 		}
 
-		TEST_METHOD(OBB_constructor_withHalfWidth_Test)
-		{
-			Vec3f center(1.0f, 2.0f, 3.0f);
-			Vec3f halfWidth(1.0f, 2.0f, 3.0f);
-
-			OBB obb = OBB(center, halfWidth);
-
-			Assert::AreEqual(halfWidth, obb.halfWidth, L"Wrong value.", LINE_INFO());
-		}
-
 	};
 }

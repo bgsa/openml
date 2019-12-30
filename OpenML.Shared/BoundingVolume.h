@@ -8,22 +8,26 @@
 namespace OpenML
 {
 
+	template <typename T>
 	class BoundingVolume
 	{
 	public:
 
 		ParticleSystem* particleSystem = NULL;
 		
-		API_INTERFACE virtual Vec3f centerOfBoundingVolume()
-		{
-			return Vec3f(0.0f);
-		};
+		API_INTERFACE virtual Vec3f centerOfBoundingVolume();
 
-		API_INTERFACE virtual void translate(float xAxis, float yAxis, float zAxis) = 0;
-		API_INTERFACE virtual void rotate(float angleInRadians, float xAxis, float yAxis, float zAxis) = 0;
-		API_INTERFACE virtual void scale(float xAxis, float yAxis, float zAxis) = 0;
+		API_INTERFACE virtual T* translate(float xAxis, float yAxis, float zAxis) = 0;
+		API_INTERFACE virtual T* rotate(float angleInRadians, float xAxis, float yAxis, float zAxis) = 0;
+		API_INTERFACE virtual T* scale(float xAxis, float yAxis, float zAxis) = 0;
+
+		API_INTERFACE virtual Mat3f modelView() = 0;
 
 	};
+
+	typedef BoundingVolume<Sphere> BoundingVolumeSphere;
+	typedef BoundingVolume<AABB> BoundingVolumeAABB;
+	typedef BoundingVolume<OBB> BoundingVolumeOBB;
 
 }
 

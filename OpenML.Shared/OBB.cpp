@@ -1,29 +1,42 @@
 #include "OBB.h"
 
-OBB::OBB(const Vec3f& center, const Vec3f& halfWidth)
+OBB::OBB(const Vec3f& center)
 {
 	this->center = center;
-	this->halfWidth = halfWidth;
+	this->halfWidth = Vec3f(0.5f);
 	this->orientation = Mat3f::identity();
 }
 
-void OBB::translate(float xAxis, float yAxis, float zAxis)
+OBB* OBB::translate(float xAxis, float yAxis, float zAxis)
 {
-	this->center = Mat3f::createTranslate(xAxis, yAxis, zAxis) * this->center;
+	Vec3f scaled = this->halfWidth / 0.5f;
+
+	this->center += Vec3f(xAxis * scaled.x, yAxis * scaled.y, zAxis * scaled.z);
+
+	return this;
 }
 
-void OBB::scale(float xAxis, float yAxis, float zAxis)
+OBB* OBB::scale(float xAxis, float yAxis, float zAxis)
 {
 	this->halfWidth = Vec3f(
 							xAxis * this->halfWidth.x,
 							yAxis * this->halfWidth.y,
 							zAxis * this->halfWidth.z
 						);
+	return this;
 }
 
-void OBB::rotate(float angleInRadians, float xAxis, float yAxis, float zAxis)
+OBB* OBB::rotate(float angleInRadians, float xAxis, float yAxis, float zAxis)
 {
 	this->orientation *= Mat3f::createRotate(angleInRadians, xAxis, yAxis, zAxis);
+	return this;
+}
+
+Mat3f OBB::modelView()
+{
+	return Mat3f::createTranslate(center.x, center.y, center.z)
+		* Mat3f::createScale(halfWidth.x * 2.0f, halfWidth.y * 2.0f, halfWidth.z * 2.0f)
+		* orientation;
 }
 
 ColisionStatus OBB::colisionStatus(const OBB& obb)
@@ -41,7 +54,6 @@ ColisionStatus OBB::colisionStatus(const OBB& obb)
 
 	// Bring translation into a’s coordinate frame 
 	t = Vec3f(t.dot(orientation.xAxis()), t.dot(orientation.yAxis()), t.dot(orientation.zAxis()));
-
 
 	// Compute common subexpressions. Add in an epsilon term to 
 	// counteract arithmetic errors when two edges are parallel and 

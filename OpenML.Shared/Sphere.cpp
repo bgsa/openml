@@ -145,19 +145,27 @@ Sphere::Sphere(const Vec3f &point1, const Vec3f &point2, const Vec3f &point3, co
 	initParticleSystem();
 }
 
-void Sphere::translate(float xAxis, float yAxis, float zAxis)
+Sphere* Sphere::translate(float xAxis, float yAxis, float zAxis)
 {
-	center = Mat3f::createTranslate(xAxis, yAxis, zAxis) * center;
+	center += Vec3f(xAxis, yAxis, zAxis);
+	return this;
 }
 
-void Sphere::scale(float xAxis, float yAxis, float zAxis)
+Sphere* Sphere::scale(float xAxis, float yAxis, float zAxis)
 {
 	ray *= xAxis;
+	return this;
 }
 
-void Sphere::rotate(float angleInRadians, float xAxis, float yAxis, float zAxis)
+Sphere* Sphere::rotate(float angleInRadians, float xAxis, float yAxis, float zAxis)
 {
-	;
+	return this;
+}
+
+Mat3f Sphere::modelView() 
+{
+	return Mat3f::createTranslate(center.x, center.y, center.z)
+		* Mat3f::createScale(ray, ray, ray);
 }
 
 ColisionStatus Sphere::colisionStatus(const Vec3f &point)  const

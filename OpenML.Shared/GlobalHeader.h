@@ -54,6 +54,7 @@ namespace OpenML
 	template <typename T>
 	class Quat;
 
+	template <class T>
 	class BoundingVolume;
 
 	template <typename T>
@@ -71,6 +72,7 @@ namespace OpenML
 	class Circle2D;
 
 	class AABB;
+	class OBB;
 	class Sphere;
 
 	template <typename T>

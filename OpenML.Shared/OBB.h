@@ -7,7 +7,7 @@
 namespace OpenML
 {
 	class OBB
-		: public BoundingVolume
+		: public BoundingVolumeOBB
 	{
 	public:
 		Vec3f center;
@@ -17,22 +17,27 @@ namespace OpenML
 		/// <summary>
 		/// Build a new unit OBB with width, height and depth 1.0 and orientation aligned to axis located on coordinates (0,0,0) 
 		/// </summary>
-		OBB(const Vec3f& center = Vec3f(0.0f), const Vec3f& halfWidth = Vec3f(0.5f));
+		OBB(const Vec3f& center = Vec3f(0.0f));
 
 		/// <summary>
-		/// Translate the OOBB
+		/// Translate the OBB
 		/// </summary>
-		API_INTERFACE void translate(float xAxis, float yAxis, float zAxis) override;
+		API_INTERFACE OBB* translate(float xAxis, float yAxis, float zAxis) override;
 
 		/// <summary>
-		/// Rotate the OOBB
+		/// Rotate the OBB
 		/// </summary>
-		API_INTERFACE void rotate(float angleInRadians, float xAxis, float yAxis, float zAxis) override;
+		API_INTERFACE OBB* rotate(float angleInRadians, float xAxis, float yAxis, float zAxis) override;
 
 		/// <summary>
-		/// Scale the OOBB
+		/// Scale the OBB
 		/// </summary>
-		API_INTERFACE void scale(float xAxis, float yAxis, float zAxis) override;
+		API_INTERFACE OBB* scale(float xAxis, float yAxis, float zAxis) override;
+
+		/// <summary>
+		/// Get the model view matrix of OBB
+		/// </summary>
+		API_INTERFACE Mat3f modelView() override;
 
 		///<summary>
 		/// Check whether the OBBs are in contact each other

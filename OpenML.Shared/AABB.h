@@ -11,7 +11,7 @@ namespace OpenML
 {
 
 	class AABB
-		: public BoundingVolume
+		: public BoundingVolumeAABB
 	{
 	public:
 		Vec3f minPoint;
@@ -60,17 +60,22 @@ namespace OpenML
 		/// <summary>
 		/// Translate the AABB
 		/// </summary>
-		API_INTERFACE void translate(float xAxis, float yAxis, float zAxis) override;
+		API_INTERFACE AABB* translate(float xAxis, float yAxis, float zAxis) override;
 
 		/// <summary>
 		/// AABB is never rotated! Use OBB instead.
 		/// </summary>
-		API_INTERFACE void rotate(float angleInRadians, float xAxis, float yAxis, float zAxis) override;
+		API_INTERFACE AABB* rotate(float angleInRadians, float xAxis, float yAxis, float zAxis) override;
 
 		/// <summary>
 		/// Scale the AABB
 		/// </summary>
-		API_INTERFACE void scale(float xAxis, float yAxis, float zAxis) override;
+		API_INTERFACE AABB* scale(float xAxis, float yAxis, float zAxis) override;
+
+		/// <summary>
+		/// Get model view of AABB
+		/// </summary>
+		API_INTERFACE Mat3f modelView() override;
 
 		///<summary>
 		///Check whether the AABBs are in contact each other

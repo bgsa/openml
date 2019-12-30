@@ -62,15 +62,18 @@ float AABB::distance(const Vec3f& target)
 	return float(sqrt(squaredDistance(target)));
 }
 
-void AABB::translate(float xAxis, float yAxis, float zAxis)
+AABB* AABB::translate(float xAxis, float yAxis, float zAxis)
 {
-	Mat3f translation = Mat3f::createTranslate(xAxis, yAxis, zAxis);
+	//Mat3f translation = Mat3f::createTranslate(xAxis, yAxis, zAxis);
+	Vec3f translation = Vec3f(xAxis, yAxis, zAxis);
 
-	minPoint = translation * minPoint;
-	maxPoint = translation * maxPoint;
+	minPoint += translation;
+	maxPoint += translation;
+
+	return this;
 }
 
-void AABB::scale(float xAxis, float yAxis, float zAxis)
+AABB* AABB::scale(float xAxis, float yAxis, float zAxis)
 {
 	minPoint = Vec3f(
 		minPoint.x * (xAxis * 0.5f),
@@ -83,11 +86,22 @@ void AABB::scale(float xAxis, float yAxis, float zAxis)
 		maxPoint.y * (yAxis * 0.5f),
 		maxPoint.z * (zAxis * 0.5f)
 	);
+
+	return this;
 }
 
-void AABB::rotate(float angleInRadians, float xAxis, float yAxis, float zAxis)
+AABB* AABB::rotate(float angleInRadians, float xAxis, float yAxis, float zAxis)
 {
-	;
+	return this;
+}
+
+Mat3f AABB::modelView()
+{
+	Vec3f midPoint = center();
+	Vec3f halfWidth = maxPoint - midPoint;
+
+	return Mat3f::createTranslate(midPoint.x, midPoint.y, midPoint.z)
+		* Mat3f::createScale(halfWidth.x, halfWidth.y, halfWidth.z);
 }
 
 ColisionStatus AABB::colisionStatus(const AABB& aabb) 

@@ -84,6 +84,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)BinaryTree.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BinaryTreeNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)AlgorithmBisection.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)BoundingVolume.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BoundingVolumeHierarchy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Circle2D.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)CollisionDetection.cpp" />

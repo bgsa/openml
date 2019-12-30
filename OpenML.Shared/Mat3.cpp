@@ -223,9 +223,9 @@ Vec3<T> Mat3<T>::multiply(const Vec3<T>& vector) const
 {
 	Vec3<T> result;
 
-	result[0] = values[0 * MAT3_ROWSIZE + 0] * vector[0] + values[0 * MAT3_ROWSIZE + 1] * vector[1] + values[0 * MAT3_ROWSIZE + 2] * vector[2];
-	result[1] = values[1 * MAT3_ROWSIZE + 0] * vector[0] + values[1 * MAT3_ROWSIZE + 1] * vector[1] + values[1 * MAT3_ROWSIZE + 2] * vector[2];
-	result[2] = values[2 * MAT3_ROWSIZE + 0] * vector[0] + values[2 * MAT3_ROWSIZE + 1] * vector[1] + values[2 * MAT3_ROWSIZE + 2] * vector[2];
+	result[0] = values[0] * vector[0] + values[1] * vector[1] + values[2] * vector[2];
+	result[1] = values[MAT3_ROWSIZE] * vector[0] + values[MAT3_ROWSIZE + 1] * vector[1] + values[MAT3_ROWSIZE + 2] * vector[2];
+	result[2] = values[TWO_MAT3_ROWSIZE] * vector[0] + values[TWO_MAT3_ROWSIZE + 1] * vector[1] + values[TWO_MAT3_ROWSIZE + 2] * vector[2];
 
 	return result;
 }
@@ -510,7 +510,7 @@ Vec3<T> Mat3<T>::operator*(const Vec3<T>& matrix) const
 template <typename T>
 void Mat3<T>::operator*=(const Mat3<T>& matrix)
 {
-	memcpy(&this->values, multiply(matrix).values, sizeof(this->values));
+	std::memcpy(&this->values, multiply(matrix).values, sizeof(this->values));
 }
 
 template <typename T>

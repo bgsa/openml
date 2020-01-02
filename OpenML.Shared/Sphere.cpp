@@ -28,7 +28,7 @@ Sphere WelzlSphere(Vec3f* points, int numPts, Vec3f suportPoints[], int suportPo
 	// Recursively compute the smallest bounding sphere of the remaining points 
 	Sphere smallestSphere = WelzlSphere(points, numPts - 1, suportPoints, suportPointsCount); // (*) 
 
-	bool isPointInsideTheSphere = smallestSphere.colisionStatus(points[index]) == ColisionStatus::INSIDE;
+	bool isPointInsideTheSphere = smallestSphere.collisionStatus(points[index]) == CollisionStatus::INSIDE;
 	if (isPointInsideTheSphere)
 		return smallestSphere;
 
@@ -168,20 +168,20 @@ Mat3f Sphere::modelView()
 		* Mat3f::createScale(ray, ray, ray);
 }
 
-ColisionStatus Sphere::colisionStatus(const Vec3f &point)  const
+CollisionStatus Sphere::collisionStatus(const Vec3f &point)  const
 {
 	float distanceToPoint = center.distance(point);
 	
 	if (isCloseEnough(distanceToPoint, ray))
-		return ColisionStatus::INLINE;
+		return CollisionStatus::INLINE;
 
 	if (distanceToPoint > ray)
-		return ColisionStatus::OUTSIDE;
+		return CollisionStatus::OUTSIDE;
 
-	return ColisionStatus::INSIDE;
+	return CollisionStatus::INSIDE;
 }
 
-ColisionStatus Sphere::colisionStatus(const Sphere& sphere)  const
+CollisionStatus Sphere::collisionStatus(const Sphere& sphere)  const
 {
 	Vec3f rayToSphere = center - sphere.center; 
 	float squaredDistance = rayToSphere.dot(rayToSphere);
@@ -191,27 +191,27 @@ ColisionStatus Sphere::colisionStatus(const Sphere& sphere)  const
 	float squaredDiameter = diameter * diameter;
 
 	if (isCloseEnough(squaredDistance, squaredDiameter))
-		return ColisionStatus::INLINE;
+		return CollisionStatus::INLINE;
 
 	if (squaredDistance > squaredDiameter)
-		return ColisionStatus::OUTSIDE;
+		return CollisionStatus::OUTSIDE;
 
-	return ColisionStatus::INSIDE;
+	return CollisionStatus::INSIDE;
 }
 
-ColisionStatus Sphere::colisionStatus(const Plane3D& plane)  const
+CollisionStatus Sphere::collisionStatus(const Plane3D& plane)  const
 {
 	/*
 	Implementation "1"
 	T distanceToPlane = plane.distance(center);
 
 	if (isCloseEnough(distanceToPlane, ray))
-		return ColisionStatus::INLINE;
+		return CollisionStatus::INLINE;
 
 	if (distanceToPlane > ray)
-		return ColisionStatus::OUTSIDE;
+		return CollisionStatus::OUTSIDE;
 
-	return ColisionStatus::INSIDE;
+	return CollisionStatus::INSIDE;
 	*/
 
 	// optimized implementation
@@ -220,12 +220,12 @@ ColisionStatus Sphere::colisionStatus(const Plane3D& plane)  const
 	float distanceToPlane = center.dot(plane.normalVector) + d;
 
 	if (isCloseEnough(distanceToPlane, ray))
-		return ColisionStatus::INLINE;
+		return CollisionStatus::INLINE;
 
 	if (distanceToPlane > ray)
-		return ColisionStatus::OUTSIDE;
+		return CollisionStatus::OUTSIDE;
 
-	return ColisionStatus::INSIDE;
+	return CollisionStatus::INSIDE;
 }
 
 Sphere Sphere::buildFrom(const AABB &aabb)

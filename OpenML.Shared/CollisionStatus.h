@@ -2,7 +2,7 @@
 
 namespace OpenML
 {
-	enum class ColisionStatus
+	enum class CollisionStatus
 	{
 		OUTSIDE = -1,
 		INLINE = 0,
@@ -10,16 +10,16 @@ namespace OpenML
 	};
 
 	template <typename T>
-	class DetailedColisionStatus 
+	class DetailedCollisionStatus 
 	{
 	public:
 
-		DetailedColisionStatus(ColisionStatus status) 
+		DetailedCollisionStatus(CollisionStatus status) 
 		{
 			this->status = status;
 		}
 
-		DetailedColisionStatus(ColisionStatus status, Vec3<T> point1)
+		DetailedCollisionStatus(CollisionStatus status, Vec3<T> point1)
 		{
 			this->status = status;
 
@@ -29,7 +29,7 @@ namespace OpenML
 			pointsCount = 1;
 		}
 
-		DetailedColisionStatus(ColisionStatus status, Vec3<T> point1, Vec3<T> point2)
+		DetailedCollisionStatus(CollisionStatus status, Vec3<T> point1, Vec3<T> point2)
 		{
 			this->status = status;
 
@@ -40,14 +40,14 @@ namespace OpenML
 			pointsCount = 2;
 		}
 
-		DetailedColisionStatus(ColisionStatus status, Vec3<T>* points, int pointsCount)
+		DetailedCollisionStatus(CollisionStatus status, Vec3<T>* points, int pointsCount)
 		{
 			this->status = status;
 			this->points = points;
 			this->pointsCount = pointsCount;
 		}
 
-		ColisionStatus status;
+		CollisionStatus status;
 		Vec3<T>* points = nullptr;
 		int pointsCount = 0;
 	};

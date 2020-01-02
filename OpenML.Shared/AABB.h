@@ -80,17 +80,17 @@ namespace OpenML
 		///<summary>
 		///Check whether the AABBs are in contact each other
 		///</summary>
-		API_INTERFACE inline ColisionStatus colisionStatus(const AABB& aabb);
+		API_INTERFACE inline CollisionStatus collisionStatus(const AABB& aabb);
 
 		///<summary>
 		///Check whether the AABB intersect the plane
 		///</summary>
-		API_INTERFACE inline ColisionStatus colisionStatus(const Plane3D& plane);
+		API_INTERFACE inline CollisionStatus collisionStatus(const Plane3D& plane);
 
 		///<summary>
 		///Check whether the AABB intersect the sphere
 		///</summary>
-		API_INTERFACE inline ColisionStatus colisionStatus(const Sphere& sphere);
+		API_INTERFACE inline CollisionStatus collisionStatus(const Sphere& sphere);
 		
 		///<summary>
 		///Given a point, find the closest point in AABB

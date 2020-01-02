@@ -71,7 +71,7 @@ namespace OpenML
 		/// <summary>
 		/// Check collision with another k-DOP
 		/// </summary>
-		API_INTERFACE ColisionStatus colisionStatus(const DOP18& kDop);
+		API_INTERFACE CollisionStatus collisionStatus(const DOP18& kDop);
 
 	};
 

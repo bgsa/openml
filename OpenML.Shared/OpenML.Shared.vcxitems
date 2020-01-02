@@ -32,7 +32,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)BoundingVolume.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BoundingVolumeHierarchy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Circle2D.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ColisionStatus.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)CollisionStatus.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)CollisionDetection.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)CollisionResponse.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DOP18.h" />

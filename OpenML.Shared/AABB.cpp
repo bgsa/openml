@@ -104,21 +104,21 @@ Mat3f AABB::modelView()
 		* Mat3f::createScale(halfWidth.x, halfWidth.y, halfWidth.z);
 }
 
-ColisionStatus AABB::colisionStatus(const AABB& aabb) 
+CollisionStatus AABB::collisionStatus(const AABB& aabb) 
 {
 	if (maxPoint.x < aabb.minPoint.x || minPoint.x > aabb.maxPoint.x)
-		return ColisionStatus::OUTSIDE;
+		return CollisionStatus::OUTSIDE;
 
 	if (maxPoint.y < aabb.minPoint.y || minPoint.y > aabb.maxPoint.y)
-		return ColisionStatus::OUTSIDE;
+		return CollisionStatus::OUTSIDE;
 
 	if (maxPoint.z < aabb.minPoint.z || minPoint.z > aabb.maxPoint.z)
-		return ColisionStatus::OUTSIDE;
+		return CollisionStatus::OUTSIDE;
 
-	return ColisionStatus::INSIDE;
+	return CollisionStatus::INSIDE;
 }
 
-ColisionStatus AABB::colisionStatus(const Plane3D& plane)
+CollisionStatus AABB::collisionStatus(const Plane3D& plane)
 {
 	Vec3f centerPoint = center(); 
 	float d = plane.getDcomponent();
@@ -133,28 +133,28 @@ ColisionStatus AABB::colisionStatus(const Plane3D& plane)
 	double distanceFromAABB2Plane = std::abs(plane.normalVector.dot(centerPoint) + d);
 	
 	if (isCloseEnough(distanceFromAABB2Plane, r))
-		return ColisionStatus::INLINE;
+		return CollisionStatus::INLINE;
 
 	// it has intersection when distance falls within [-r,+r] interval 	
 
 	if (distanceFromAABB2Plane <= r)  
-		return ColisionStatus::INSIDE;
+		return CollisionStatus::INSIDE;
 
-	return ColisionStatus::OUTSIDE;
+	return CollisionStatus::OUTSIDE;
 }
 
-ColisionStatus AABB::colisionStatus(const Sphere& sphere)
+CollisionStatus AABB::collisionStatus(const Sphere& sphere)
 {
 	float distanceToSphere = squaredDistance(sphere.center);
 	float squaredRay = sphere.ray * sphere.ray;
 	
 	if (isCloseEnough(distanceToSphere, squaredRay))
-		return ColisionStatus::INLINE;
+		return CollisionStatus::INLINE;
 
 	if (distanceToSphere < squaredRay)
-		return ColisionStatus::INSIDE;
+		return CollisionStatus::INSIDE;
 
-	return ColisionStatus::OUTSIDE;
+	return CollisionStatus::OUTSIDE;
 }
 
 Vec3f AABB::closestPointInAABB(const Vec3f& target)

@@ -40,9 +40,9 @@ namespace OpenMLTest
 			AABB aabb = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
 			Line3D line = Line3D(Vec3f{ -5.0f, 5.0f, 6.0f }, Vec3f{ 20.0f, 5.0f, 6.0f });
 
-			ColisionStatus result = line.hasIntersectionOnSegment(aabb);
+			CollisionStatus result = line.hasIntersectionOnSegment(aabb);
 
-			Assert::IsTrue(result == ColisionStatus::INSIDE, L"Ther should have a intersection.", LINE_INFO());			
+			Assert::IsTrue(result == CollisionStatus::INSIDE, L"Ther should have a intersection.", LINE_INFO());			
 		}
 
 		TEST_METHOD(Line3D_hasIntersectionOnSegment_AABB_Test2)
@@ -50,9 +50,9 @@ namespace OpenMLTest
 			AABB aabb = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
 			Line3D line = Line3D(Vec3f{ -5.0f, 5.0f, 6.0f }, Vec3f{ -1.0f, 5.0f, 6.0f });
 
-			ColisionStatus result = line.hasIntersectionOnSegment(aabb);
+			CollisionStatus result = line.hasIntersectionOnSegment(aabb);
 
-			Assert::IsTrue(result == ColisionStatus::OUTSIDE, L"Ther should have a intersection.", LINE_INFO());
+			Assert::IsTrue(result == CollisionStatus::OUTSIDE, L"Ther should have a intersection.", LINE_INFO());
 		}
 
 		TEST_METHOD(Line3D_hasIntersectionOnSegment_AABB_Test3)
@@ -60,9 +60,9 @@ namespace OpenMLTest
 			AABB aabb = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
 			Line3D line = Line3D(Vec3f{ 5.0f, 5.0f, 6.0f }, Vec3f{ 2.0f, 5.0f, 6.0f });
 
-			ColisionStatus result = line.hasIntersectionOnSegment(aabb);
+			CollisionStatus result = line.hasIntersectionOnSegment(aabb);
 
-			Assert::IsTrue(result == ColisionStatus::INSIDE, L"Ther should have a intersection.", LINE_INFO());
+			Assert::IsTrue(result == CollisionStatus::INSIDE, L"Ther should have a intersection.", LINE_INFO());
 		}
 
 		TEST_METHOD(Line3D_hasIntersectionOnSegment_AABB_Test4)
@@ -70,9 +70,9 @@ namespace OpenMLTest
 			AABB aabb = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
 			Line3D line = Line3D(Vec3f{ 11.0f, 5.0f, 6.0f }, Vec3f{ 20.0f, 5.0f, 6.0f });
 
-			ColisionStatus result = line.hasIntersectionOnSegment(aabb);
+			CollisionStatus result = line.hasIntersectionOnSegment(aabb);
 
-			Assert::IsTrue(result == ColisionStatus::OUTSIDE, L"Ther should have a intersection.", LINE_INFO());
+			Assert::IsTrue(result == CollisionStatus::OUTSIDE, L"Ther should have a intersection.", LINE_INFO());
 		}
 
 		TEST_METHOD(Line3D_hasIntersectionOnSegment_AABB_Test5)
@@ -80,9 +80,9 @@ namespace OpenMLTest
 			AABB aabb = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
 			Line3D line = Line3D(Vec3f{ -1.0f, 0.0f, 0.0f }, Vec3f{ -1.0f, 30.0f, 0.0f });
 
-			ColisionStatus result = line.hasIntersectionOnSegment(aabb);
+			CollisionStatus result = line.hasIntersectionOnSegment(aabb);
 
-			Assert::IsTrue(result == ColisionStatus::OUTSIDE, L"Ther should have a intersection.", LINE_INFO());
+			Assert::IsTrue(result == CollisionStatus::OUTSIDE, L"Ther should have a intersection.", LINE_INFO());
 		}
 
 		TEST_METHOD(Line3D_findIntersectionOnRay_AABB_Test1)
@@ -90,12 +90,12 @@ namespace OpenMLTest
 			AABB aabb = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
 			Line3D line = Line3D(Vec3f{ -5.0f, 5.0f, 6.0f }, Vec3f{ 20.0f, 5.0f, 6.0f });
 
-			DetailedColisionStatus<float> result = line.findIntersectionOnRay(aabb);
+			DetailedCollisionStatus<float> result = line.findIntersectionOnRay(aabb);
 
 			Vec3f expectedPoint1 = Vec3f(0.0f, 5.0f, 6.0f);
 			Vec3f expectedPoint2 = Vec3f(10.0f, 5.0f, 6.0f);
 
-			Assert::IsTrue(result.status == ColisionStatus::INSIDE, L"Ther should have a intersection.", LINE_INFO());
+			Assert::IsTrue(result.status == CollisionStatus::INSIDE, L"Ther should have a intersection.", LINE_INFO());
 			Assert::AreEqual(2, result.pointsCount, L"Ther should have a intersection.", LINE_INFO());
 			
 			for (size_t i = 0; i < 3; i++) 
@@ -110,9 +110,9 @@ namespace OpenMLTest
 			AABB aabb = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
 			Line3D line = Line3D(Vec3f{ -5.0f, 15.0f, 6.0f }, Vec3f{ 20.0f, 15.0f, 6.0f });
 
-			DetailedColisionStatus<float> result = line.findIntersectionOnRay(aabb);
+			DetailedCollisionStatus<float> result = line.findIntersectionOnRay(aabb);
 			
-			Assert::IsTrue(result.status == ColisionStatus::OUTSIDE, L"Ther should NOT have a intersection.", LINE_INFO());
+			Assert::IsTrue(result.status == CollisionStatus::OUTSIDE, L"Ther should NOT have a intersection.", LINE_INFO());
 		}
 
 		TEST_METHOD(Line3D_findIntersectionOnRay_AABB_Test3)
@@ -120,9 +120,9 @@ namespace OpenMLTest
 			AABB aabb = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
 			Line3D line = Line3D(Vec3f{ -5.0f, 5.0f, 6.0f }, Vec3f{ 10.0f, 25.0f, 6.0f });
 
-			DetailedColisionStatus<float> result = line.findIntersectionOnRay(aabb);
+			DetailedCollisionStatus<float> result = line.findIntersectionOnRay(aabb);
 
-			Assert::IsTrue(result.status == ColisionStatus::OUTSIDE, L"Ther should NOT have a intersection.", LINE_INFO());
+			Assert::IsTrue(result.status == CollisionStatus::OUTSIDE, L"Ther should NOT have a intersection.", LINE_INFO());
 		}
 
 		TEST_METHOD(Line3D_findIntersectionOnRay_AABB_Test4)
@@ -130,9 +130,9 @@ namespace OpenMLTest
 			AABB aabb = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
 			Line3D line = Line3D(Vec3f{ 20.0f, 5.0f, 6.0f }, Vec3f{ 30.0f, 5.0f, 6.0f });
 
-			DetailedColisionStatus<float> result = line.findIntersectionOnRay(aabb);
+			DetailedCollisionStatus<float> result = line.findIntersectionOnRay(aabb);
 
-			Assert::IsTrue(result.status == ColisionStatus::OUTSIDE, L"Ther should NOT have a intersection.", LINE_INFO());
+			Assert::IsTrue(result.status == CollisionStatus::OUTSIDE, L"Ther should NOT have a intersection.", LINE_INFO());
 		}
 
 		TEST_METHOD(Line3D_findIntersectionOnRay_AABB_Test5)
@@ -140,11 +140,11 @@ namespace OpenMLTest
 			AABB aabb = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
 			Line3D line = Line3D(Vec3f{ 20.0f, 5.0f, 6.0f }, Vec3f{ -5.0f, 5.0f, 6.0f });
 
-			DetailedColisionStatus<float> result = line.findIntersectionOnRay(aabb);
+			DetailedCollisionStatus<float> result = line.findIntersectionOnRay(aabb);
 
 			Vec3f expectedPoint1 = Vec3f(10.0f, 5.0f, 6.0f);
 
-			Assert::IsTrue(result.status == ColisionStatus::INSIDE, L"Ther should have a intersection.", LINE_INFO());
+			Assert::IsTrue(result.status == CollisionStatus::INSIDE, L"Ther should have a intersection.", LINE_INFO());
 			Assert::AreEqual(2, result.pointsCount, L"Ther should have a intersection.", LINE_INFO());
 
 			for (size_t i = 0; i < 3; i++)
@@ -156,12 +156,12 @@ namespace OpenMLTest
 			AABB aabb = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
 			Line3D line = Line3D(Vec3f{ 3.0f, 3.0f, 6.0f }, Vec3f{ 15.0f, 3.0f, 6.0f });
 
-			DetailedColisionStatus<float> result = line.findIntersectionOnRay(aabb);
+			DetailedCollisionStatus<float> result = line.findIntersectionOnRay(aabb);
 
 			Vec3f expectedPoint1 = Vec3f(3.0f, 3.0f, 6.0f);
 			Vec3f expectedPoint2 = Vec3f(10.0f, 3.0f, 6.0f);
 
-			Assert::IsTrue(result.status == ColisionStatus::INSIDE, L"Ther should have a intersection.", LINE_INFO());
+			Assert::IsTrue(result.status == CollisionStatus::INSIDE, L"Ther should have a intersection.", LINE_INFO());
 			Assert::AreEqual(2, result.pointsCount, L"Ther should have a intersection.", LINE_INFO());
 
 			for (size_t i = 0; i < 3; i++) {
@@ -238,9 +238,9 @@ namespace OpenMLTest
 			Vec3f expectedPoint1 = { -10.0f, 0.0f, 0.0f };
 			Vec3f expectedPoint2 = { 10.0f, 0.0f, 0.0f };
 
-			DetailedColisionStatus<float> result = line.findIntersectionOnSegment(sphere);
+			DetailedCollisionStatus<float> result = line.findIntersectionOnSegment(sphere);
 
-			Assert::IsTrue(result.status == ColisionStatus::INSIDE, L"There should be 2 intersection points.", LINE_INFO());
+			Assert::IsTrue(result.status == CollisionStatus::INSIDE, L"There should be 2 intersection points.", LINE_INFO());
 			Assert::AreEqual(result.pointsCount, 2, L"There should be 2 intersection points.", LINE_INFO());
 
 			for (size_t i = 0; i < 3; i++)
@@ -257,9 +257,9 @@ namespace OpenMLTest
 
 			Vec3f expectedPoint1 = { -10.0f, 0.0f, 0.0f };
 
-			DetailedColisionStatus<float> result = line.findIntersectionOnSegment(sphere);
+			DetailedCollisionStatus<float> result = line.findIntersectionOnSegment(sphere);
 
-			Assert::IsTrue(result.status == ColisionStatus::INSIDE, L"There should be 1 intersection points.", LINE_INFO());
+			Assert::IsTrue(result.status == CollisionStatus::INSIDE, L"There should be 1 intersection points.", LINE_INFO());
 			Assert::AreEqual(result.pointsCount, 1, L"There should be 1 intersection points.", LINE_INFO());
 
 			for (size_t i = 0; i < 3; i++)
@@ -274,9 +274,9 @@ namespace OpenMLTest
 			Vec3f expectedPoint1 = { 0.0f, 0.0f, 0.0f };
 			Vec3f expectedPoint2 = { 10.0f, 0.0f, 0.0f };
 
-			DetailedColisionStatus<float> result = line.findIntersectionOnSegment(sphere);
+			DetailedCollisionStatus<float> result = line.findIntersectionOnSegment(sphere);
 
-			Assert::IsTrue(result.status == ColisionStatus::INSIDE, L"There should be 2 intersection points.", LINE_INFO());
+			Assert::IsTrue(result.status == CollisionStatus::INSIDE, L"There should be 2 intersection points.", LINE_INFO());
 			Assert::AreEqual(result.pointsCount, 2, L"There should be 2 intersection points.", LINE_INFO());
 
 			for (size_t i = 0; i < 3; i++)
@@ -291,9 +291,9 @@ namespace OpenMLTest
 			Sphere sphere = Sphere(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
 			Line3D line = Line3D(Vec3f{ -20.0f, 0.0f, 0.0f }, Vec3f{ -12.0f, 0.0f, 0.0f });
 
-			DetailedColisionStatus<float> result = line.findIntersectionOnSegment(sphere);
+			DetailedCollisionStatus<float> result = line.findIntersectionOnSegment(sphere);
 
-			Assert::IsTrue(result.status == ColisionStatus::OUTSIDE, L"There should be 0 intersection points.", LINE_INFO());
+			Assert::IsTrue(result.status == CollisionStatus::OUTSIDE, L"There should be 0 intersection points.", LINE_INFO());
 			Assert::AreEqual(result.pointsCount, 0, L"There should be 0 intersection points.", LINE_INFO());
 			Assert::IsNull(result.points, L"There should be 0 intersection points.", LINE_INFO());
 		}
@@ -306,9 +306,9 @@ namespace OpenMLTest
 			Vec3f expectedPoint1 = { -10.0f, 0.0f, 0.0f };
 			Vec3f expectedPoint2 = {  10.0f, 0.0f, 0.0f };
 
-			DetailedColisionStatus<float> result = line.findIntersectionOnRay(sphere);
+			DetailedCollisionStatus<float> result = line.findIntersectionOnRay(sphere);
 
-			Assert::IsTrue(result.status == ColisionStatus::INSIDE, L"There should be 2 intersection points.", LINE_INFO());
+			Assert::IsTrue(result.status == CollisionStatus::INSIDE, L"There should be 2 intersection points.", LINE_INFO());
 			Assert::AreEqual(result.pointsCount, 2, L"There should be 2 intersection points.", LINE_INFO());
 
 			for (size_t i = 0; i < 3; i++) 
@@ -325,9 +325,9 @@ namespace OpenMLTest
 
 			Vec3f expectedPoint1 = { 0.0f, 10.0f, 0.0f };
 
-			DetailedColisionStatus<float> result = line.findIntersectionOnRay(sphere);
+			DetailedCollisionStatus<float> result = line.findIntersectionOnRay(sphere);
 
-			Assert::IsTrue(result.status == ColisionStatus::INLINE, L"There should be 1 intersection points (tangent).", LINE_INFO());
+			Assert::IsTrue(result.status == CollisionStatus::INLINE, L"There should be 1 intersection points (tangent).", LINE_INFO());
 			Assert::AreEqual(result.pointsCount, 1, L"There should be 2 intersection points.", LINE_INFO());
 
 			for (size_t i = 0; i < 3; i++)
@@ -339,9 +339,9 @@ namespace OpenMLTest
 			Sphere sphere = Sphere(Vec3f(0.0f, 0.0f, 0.0f), 10.0f);
 			Line3D line = Line3D(Vec3f{ -20.0f, 11.0f, 0.0f }, Vec3f{ -12.0f, 11.0f, 0.0f });
 			
-			DetailedColisionStatus<float> result = line.findIntersectionOnRay(sphere);
+			DetailedCollisionStatus<float> result = line.findIntersectionOnRay(sphere);
 
-			Assert::IsTrue(result.status == ColisionStatus::OUTSIDE, L"There should be 0 intersection.", LINE_INFO());
+			Assert::IsTrue(result.status == CollisionStatus::OUTSIDE, L"There should be 0 intersection.", LINE_INFO());
 			Assert::AreEqual(result.pointsCount, 0, L"There should be 0 intersection points.", LINE_INFO());
 			Assert::IsNull(result.points, L"There should be 0 intersection points.", LINE_INFO());
 		}

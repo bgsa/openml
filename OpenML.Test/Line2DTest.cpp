@@ -155,9 +155,9 @@ namespace OpenMLTest
 			Line2Df line1 = Line2Df({ 0.0f, 10.0f }, { 10.0f, 10.0f });
 			Circle2Df circle = Circle2Df(Vec2f(10.0f, 10.0f), 10.0f);
 
-			ColisionStatus colision = line1.hasIntersections(circle);
+			CollisionStatus collision = line1.hasIntersections(circle);
 
-			if (colision != ColisionStatus::INSIDE)
+			if (collision != CollisionStatus::INSIDE)
 				Assert::Fail(L"There should be an inline intersection.", LINE_INFO());
 		}
 
@@ -166,9 +166,9 @@ namespace OpenMLTest
 			Line2Df line1 = Line2Df({ 90.0f, 0.0f }, { 90.0f, 200.0f });
 			Circle2Df circle = Circle2Df(Vec2f(100.0f, 100.0f), 10.0f);
 
-			ColisionStatus colision = line1.hasIntersections(circle);
+			CollisionStatus collision = line1.hasIntersections(circle);
 
-			if (colision != ColisionStatus::INLINE)
+			if (collision != CollisionStatus::INLINE)
 				Assert::Fail(L"There should be an INLINE intersection.", LINE_INFO());
 		}
 
@@ -177,9 +177,9 @@ namespace OpenMLTest
 			Line2Df line1 = Line2Df({ 80.0f, 0.0f }, { 80.0f, 50.0f });
 			Circle2Df circle = Circle2Df(Vec2f(100.0f, 100.0f), 10.0f);
 
-			ColisionStatus colision = line1.hasIntersections(circle);
+			CollisionStatus collision = line1.hasIntersections(circle);
 
-			if (colision != ColisionStatus::OUTSIDE)
+			if (collision != CollisionStatus::OUTSIDE)
 				Assert::Fail(L"There should be an INLINE intersection.", LINE_INFO());
 		}
 

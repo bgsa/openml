@@ -8,7 +8,7 @@ std::vector<std::pair<AABB, AABB>> CollisionDetection::bruteForce(AABB* bounding
 	{
 		for (size_t j = i + 1; j < count; j++)
 		{
-			if (boundingVolumes[i].colisionStatus(boundingVolumes[j]) == ColisionStatus::INSIDE)
+			if (boundingVolumes[i].collisionStatus(boundingVolumes[j]) == CollisionStatus::INSIDE)
 				result.push_back({ boundingVolumes[i] , boundingVolumes[j] });
 		}
 	}

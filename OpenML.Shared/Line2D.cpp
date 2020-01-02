@@ -172,18 +172,18 @@ Vec2<T>* Line2D<T>::findIntersection(const Line2D<T>& otherLine) const
 }
 
 template <typename T>
-ColisionStatus Line2D<T>::hasIntersections(const Circle2D<T>& circle) const
+CollisionStatus Line2D<T>::hasIntersections(const Circle2D<T>& circle) const
 {
 	double distanceCenterToLine = ceil(getDistance(circle.center));
 	double ray = ceil(circle.ray);
 
 	if (distanceCenterToLine > ray)
-		return ColisionStatus::OUTSIDE;
+		return CollisionStatus::OUTSIDE;
 
 	if (distanceCenterToLine < ray)
-		return ColisionStatus::INSIDE;
+		return CollisionStatus::INSIDE;
 
-	return ColisionStatus::INLINE;
+	return CollisionStatus::INLINE;
 }
 
 template <typename T>

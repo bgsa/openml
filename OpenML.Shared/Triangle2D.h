@@ -30,7 +30,7 @@ namespace OpenML
 		///<summary>
 		///Chech the point is outside, inside or on the line of the triangle
 		///</summary>
-		API_INTERFACE ColisionStatus getColisionStatus(const Vec2<T>& point) const;
+		API_INTERFACE CollisionStatus getCollisionStatus(const Vec2<T>& point) const;
 
 		///<summary>
 		///Chech the line has intersection with the triangle

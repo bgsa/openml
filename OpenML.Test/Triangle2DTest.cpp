@@ -51,7 +51,7 @@ namespace OpenMLTest
 			Assert::AreEqual(6.41016722f, result, L"Wrong value.", LINE_INFO());
 		}
 		
-		TEST_METHOD(Rectangle2D_getColisionStatus_Point_Inline_Test)
+		TEST_METHOD(Rectangle2D_getCollisionStatus_Point_Inline_Test)
 		{
 			Vec2f point = Vec2f(10.0f, 10.0f);
 			Triangle2Df triangle = Triangle2Df(
@@ -60,13 +60,13 @@ namespace OpenMLTest
 				{ 0.0f, 100.0f }
 			);
 
-			ColisionStatus result = triangle.getColisionStatus(point);
+			CollisionStatus result = triangle.getCollisionStatus(point);
 
-			if (result != ColisionStatus::INLINE)
+			if (result != CollisionStatus::INLINE)
 				Assert::Fail(L"Point should be inline the triangle.", LINE_INFO());
 		}
 
-		TEST_METHOD(Rectangle2D_getColisionStatus_Point_Inside_Test)
+		TEST_METHOD(Rectangle2D_getCollisionStatus_Point_Inside_Test)
 		{
 			Vec2f point = Vec2f(10.0f, 20.0f);
 			Triangle2Df triangle = Triangle2Df(
@@ -75,13 +75,13 @@ namespace OpenMLTest
 				{ 0.0f, 100.0f }
 			);
 
-			ColisionStatus result = triangle.getColisionStatus(point);
+			CollisionStatus result = triangle.getCollisionStatus(point);
 
-			if (result != ColisionStatus::INSIDE)
+			if (result != CollisionStatus::INSIDE)
 				Assert::Fail(L"Point should be inside the triangle.", LINE_INFO());
 		}
 
-		TEST_METHOD(Rectangle2D_getColisionStatus_Point_Outside_Test)
+		TEST_METHOD(Rectangle2D_getCollisionStatus_Point_Outside_Test)
 		{
 			Vec2f point = Vec2f(10.0f, 5.0f);
 			Triangle2Df triangle = Triangle2Df(
@@ -90,9 +90,9 @@ namespace OpenMLTest
 				{ 0.0f, 100.0f }
 			);
 
-			ColisionStatus result = triangle.getColisionStatus(point);
+			CollisionStatus result = triangle.getCollisionStatus(point);
 
-			if (result != ColisionStatus::OUTSIDE)
+			if (result != CollisionStatus::OUTSIDE)
 				Assert::Fail(L"Point should be outside the triangle.", LINE_INFO());
 		}
 

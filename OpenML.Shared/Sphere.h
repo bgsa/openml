@@ -4,7 +4,7 @@
 #include "Vec3.h"
 #include "Mat4.h"
 #include "Plane3D.h"
-#include "ColisionStatus.h"
+#include "CollisionStatus.h"
 #include "BoundingVolume.h"
 
 namespace OpenML
@@ -78,19 +78,19 @@ namespace OpenML
 		API_INTERFACE Sphere* scale(float xAxis, float yAxis, float zAxis) override;
 
 		/// <summary>
-		/// Check the status of colision against the point
+		/// Check the status of collision against the point
 		/// </summary>
-		API_INTERFACE inline ColisionStatus colisionStatus(const Vec3f &point) const;
+		API_INTERFACE inline CollisionStatus collisionStatus(const Vec3f &point) const;
 
 		/// <summary>
-		/// Check the status of colision against the plane
+		/// Check the status of collision against the plane
 		/// </summary>
-		API_INTERFACE inline ColisionStatus colisionStatus(const Plane3D &plane) const;
+		API_INTERFACE inline CollisionStatus collisionStatus(const Plane3D &plane) const;
 
 		/// <summary>
-		/// Check the status of colision against the plane
+		/// Check the status of collision against the plane
 		/// </summary>
-		API_INTERFACE inline ColisionStatus colisionStatus(const Sphere& sphere) const;
+		API_INTERFACE inline CollisionStatus collisionStatus(const Sphere& sphere) const;
 
 		/// <summary>
 		/// Build a enclosing sphere from an AABB

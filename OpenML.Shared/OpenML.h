@@ -335,7 +335,7 @@ namespace OpenML
 
 }
 
-#include "ColisionStatus.h"
+#include "CollisionStatus.h"
 
 #include "Vec2.h"
 #include "Vec3.h"

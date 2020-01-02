@@ -81,22 +81,22 @@ namespace OpenML
 		///<summary>
 		/// Find intersection of line against a phere
 		///</summary>
-		API_INTERFACE DetailedColisionStatus<float> findIntersectionOnRay(const Sphere& sphere) const;
+		API_INTERFACE DetailedCollisionStatus<float> findIntersectionOnRay(const Sphere& sphere) const;
 
 		///<summary>
 		/// Find intersection of SEGMENT of line against a phere
 		///</summary>
-		API_INTERFACE DetailedColisionStatus<float> findIntersectionOnSegment(const Sphere& sphere) const;
+		API_INTERFACE DetailedCollisionStatus<float> findIntersectionOnSegment(const Sphere& sphere) const;
 
 		///<summary>
 		/// Find intersection of ray against a AABB
 		///</summary>
-		API_INTERFACE DetailedColisionStatus<float> findIntersectionOnRay(const AABB& aabb) const;
+		API_INTERFACE DetailedCollisionStatus<float> findIntersectionOnRay(const AABB& aabb) const;
 
 		///<summary>
 		/// Find intersection of SEGMENT of line against a AABB
 		///</summary>
-		API_INTERFACE ColisionStatus hasIntersectionOnSegment(const AABB& aabb) const;
+		API_INTERFACE CollisionStatus hasIntersectionOnSegment(const AABB& aabb) const;
 
 		///<summary>
 		/// Find intersection SEGMENT of line against a plane

@@ -62,82 +62,82 @@ namespace OpenMLTest
 				Assert::AreEqual(expected[i], result[i], L"wrong value!.", LINE_INFO());
 		}
 
-		TEST_METHOD(AABB_colisionStatus_AABB_Test)
+		TEST_METHOD(AABB_collisionStatus_AABB_Test)
 		{
 			//Check on X axis
 			AABB aabb1 = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
 			AABB aabb2 = AABB(Vec3f(10.0f, 10.0f, 10.0f), Vec3f(20.0f, 20.0f, 20.0f));
-			ColisionStatus result = aabb1.colisionStatus(aabb2);
-			Assert::IsTrue(result == ColisionStatus::INSIDE, L"Mistake!.", LINE_INFO());
+			CollisionStatus result = aabb1.collisionStatus(aabb2);
+			Assert::IsTrue(result == CollisionStatus::INSIDE, L"Mistake!.", LINE_INFO());
 
 			aabb1 = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
 			aabb2 = AABB(Vec3f(9.0f, 10.0f, 10.0f), Vec3f(20.0f, 20.0f, 20.0f));
-			result = aabb1.colisionStatus(aabb2);
-			Assert::IsTrue(result == ColisionStatus::INSIDE, L"Mistake!.", LINE_INFO());
+			result = aabb1.collisionStatus(aabb2);
+			Assert::IsTrue(result == CollisionStatus::INSIDE, L"Mistake!.", LINE_INFO());
 
 			aabb1 = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
 			aabb2 = AABB(Vec3f(11.0f, 10.0f, 10.0f), Vec3f(20.0f, 20.0f, 20.0f));
-			result = aabb1.colisionStatus(aabb2);
-			Assert::IsTrue(result == ColisionStatus::OUTSIDE, L"Mistake!.", LINE_INFO());
+			result = aabb1.collisionStatus(aabb2);
+			Assert::IsTrue(result == CollisionStatus::OUTSIDE, L"Mistake!.", LINE_INFO());
 
 			//Check on Y axis
 			aabb1 = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
 			aabb2 = AABB(Vec3f(0.0f, 10.0f, 10.0f), Vec3f(20.0f, 20.0f, 20.0f));
-			result = aabb1.colisionStatus(aabb2);
-			Assert::IsTrue(result == ColisionStatus::INSIDE, L"Mistake!.", LINE_INFO());
+			result = aabb1.collisionStatus(aabb2);
+			Assert::IsTrue(result == CollisionStatus::INSIDE, L"Mistake!.", LINE_INFO());
 
 			aabb1 = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
 			aabb2 = AABB(Vec3f(0.0f, 11.0f, 10.0f), Vec3f(20.0f, 20.0f, 20.0f));
-			result = aabb1.colisionStatus(aabb2);
-			Assert::IsTrue(result == ColisionStatus::OUTSIDE, L"Mistake!.", LINE_INFO());
+			result = aabb1.collisionStatus(aabb2);
+			Assert::IsTrue(result == CollisionStatus::OUTSIDE, L"Mistake!.", LINE_INFO());
 
 			//Check on z axis
 			aabb1 = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
 			aabb2 = AABB(Vec3f(0.0f, 0.0f, 10.0f), Vec3f(20.0f, 20.0f, 20.0f));
-			result = aabb1.colisionStatus(aabb2);
-			Assert::IsTrue(result == ColisionStatus::INSIDE, L"Mistake!.", LINE_INFO());
+			result = aabb1.collisionStatus(aabb2);
+			Assert::IsTrue(result == CollisionStatus::INSIDE, L"Mistake!.", LINE_INFO());
 
 			aabb1 = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
 			aabb2 = AABB(Vec3f(0.0f, 0.0f, 11.0f), Vec3f(20.0f, 20.0f, 20.0f));
-			result = aabb1.colisionStatus(aabb2);
-			Assert::IsTrue(result == ColisionStatus::OUTSIDE, L"Mistake!.", LINE_INFO());
+			result = aabb1.collisionStatus(aabb2);
+			Assert::IsTrue(result == CollisionStatus::OUTSIDE, L"Mistake!.", LINE_INFO());
 		}
 
-		TEST_METHOD(AABB_colisionStatus_Plane_Test)
+		TEST_METHOD(AABB_collisionStatus_Plane_Test)
 		{
 			Plane3D plane = Plane3D(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(0.0f, 1.0f, 0.0f));
 			AABB aabb = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
-			ColisionStatus result = aabb.colisionStatus(plane);
-			ColisionStatus expected = ColisionStatus::INLINE;
+			CollisionStatus result = aabb.collisionStatus(plane);
+			CollisionStatus expected = CollisionStatus::INLINE;
 			Assert::IsTrue(result == expected, L"Mistake!.", LINE_INFO());
 
 			aabb = AABB(Vec3f(0.0f, 1.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
-			result = aabb.colisionStatus(plane);
-			expected = ColisionStatus::OUTSIDE;
+			result = aabb.collisionStatus(plane);
+			expected = CollisionStatus::OUTSIDE;
 			Assert::IsTrue(result == expected, L"Mistake!.", LINE_INFO());
 
 			aabb = AABB(Vec3f(0.0f, -1.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
-			result = aabb.colisionStatus(plane);
-			expected = ColisionStatus::INSIDE;
+			result = aabb.collisionStatus(plane);
+			expected = CollisionStatus::INSIDE;
 			Assert::IsTrue(result == expected, L"Mistake!.", LINE_INFO());
 		}
 
-		TEST_METHOD(AABB_colisionStatus_Sphere_Test)
+		TEST_METHOD(AABB_collisionStatus_Sphere_Test)
 		{
 			Sphere sphere = Sphere(Vec3f(0.0f, 20.0f, 0.0f), 10.0f);
 			AABB aabb = AABB(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(10.0f, 10.0f, 10.0f));
-			ColisionStatus result = aabb.colisionStatus(sphere);
-			ColisionStatus expected = ColisionStatus::INLINE;
+			CollisionStatus result = aabb.collisionStatus(sphere);
+			CollisionStatus expected = CollisionStatus::INLINE;
 			Assert::IsTrue(result == expected, L"Mistake!.", LINE_INFO());
 
 			sphere = Sphere(Vec3f(0.0f, 18.0f, 0.0f), 10.0f);
-			result = aabb.colisionStatus(sphere);
-			expected = ColisionStatus::INSIDE;
+			result = aabb.collisionStatus(sphere);
+			expected = CollisionStatus::INSIDE;
 			Assert::IsTrue(result == expected, L"Mistake!.", LINE_INFO());
 
 			sphere = Sphere(Vec3f(0.0f, 22.0f, 0.0f), 10.0f);
-			result = aabb.colisionStatus(sphere);
-			expected = ColisionStatus::OUTSIDE;
+			result = aabb.collisionStatus(sphere);
+			expected = CollisionStatus::OUTSIDE;
 			Assert::IsTrue(result == expected, L"Mistake!.", LINE_INFO());
 		}
 

@@ -102,13 +102,13 @@ namespace OpenMLTest
 			DOP18 kdop2 = DOP18();
 
 			kdop2.translate(10.0f, 3.0f, 1.0f);
-			ColisionStatus result = kdop1.colisionStatus(kdop2);
-			Assert::AreEqual(ColisionStatus::OUTSIDE, result, L"Wrong value.", LINE_INFO());
+			CollisionStatus result = kdop1.collisionStatus(kdop2);
+			Assert::AreEqual(CollisionStatus::OUTSIDE, result, L"Wrong value.", LINE_INFO());
 
 			kdop2 = DOP18();
 			kdop2.translate(1.0f, 1.0f, 1.0f);
-			result = kdop1.colisionStatus(kdop2);
-			Assert::AreEqual(ColisionStatus::OUTSIDE, result, L"Wrong value.", LINE_INFO());
+			result = kdop1.collisionStatus(kdop2);
+			Assert::AreEqual(CollisionStatus::OUTSIDE, result, L"Wrong value.", LINE_INFO());
 		}
 
 		TEST_METHOD(DOP18_collisionStatus_inside)
@@ -116,15 +116,14 @@ namespace OpenMLTest
 			DOP18 kdop1 = DOP18();
 			DOP18 kdop2 = DOP18();
 
-			ColisionStatus result = kdop1.colisionStatus(kdop2);
-			Assert::AreEqual(ColisionStatus::INSIDE, result, L"Wrong value.", LINE_INFO());
+			CollisionStatus result = kdop1.collisionStatus(kdop2);
+			Assert::AreEqual(CollisionStatus::INSIDE, result, L"Wrong value.", LINE_INFO());
 
 			kdop2 = DOP18();
 			kdop2.translate(0.5f, 0.0f, 0.0f);
-			result = kdop1.colisionStatus(kdop2);
-			Assert::AreEqual(ColisionStatus::INSIDE, result, L"Wrong value.", LINE_INFO());
+			result = kdop1.collisionStatus(kdop2);
+			Assert::AreEqual(CollisionStatus::INSIDE, result, L"Wrong value.", LINE_INFO());
 		}
 		
-
 	};
 }

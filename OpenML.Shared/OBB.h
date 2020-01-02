@@ -42,7 +42,7 @@ namespace OpenML
 		///<summary>
 		/// Check whether the OBBs are in contact each other
 		///</summary>
-		API_INTERFACE ColisionStatus colisionStatus(const OBB& aabb);
+		API_INTERFACE CollisionStatus collisionStatus(const OBB& aabb);
 
 		// TODO: verificar colisao com AABB
 

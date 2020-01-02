@@ -92,60 +92,60 @@ namespace OpenMLTest
 			Assert::IsTrue(isCloseEnough(expectedRay, sphere.ray), L"Wrong value.", LINE_INFO());
 		}
 
-		TEST_METHOD(Sphere_colisionStatus_point_Test)
+		TEST_METHOD(Sphere_collisionStatus_point_Test)
 		{
 			Sphere sphere = Sphere({ 0.0f, 0.0f, 0.0f }, 10.0f);
 			Vec3f point = Vec3f(7.071f, 5.0f, 5.0f);
-			ColisionStatus expected = ColisionStatus::INLINE;
-			ColisionStatus result = sphere.colisionStatus(point);
+			CollisionStatus expected = CollisionStatus::INLINE;
+			CollisionStatus result = sphere.collisionStatus(point);
 			Assert::IsTrue(result == expected, L"The point should lie on sphere boundary", LINE_INFO());
 
 			point = Vec3f(1.0f, 1.0f, 1.0f);
-			expected = ColisionStatus::INSIDE;
-			result = sphere.colisionStatus(point);
+			expected = CollisionStatus::INSIDE;
+			result = sphere.collisionStatus(point);
 			Assert::IsTrue(result == expected, L"The point should lie inside the sphere", LINE_INFO());
 
 			point = Vec3f(11.0f, 10.0f, 10.0f);
-			expected = ColisionStatus::OUTSIDE;
-			result = sphere.colisionStatus(point);
+			expected = CollisionStatus::OUTSIDE;
+			result = sphere.collisionStatus(point);
 			Assert::IsTrue(result == expected, L"The point should be outside the sphere", LINE_INFO());
 		}
 
-		TEST_METHOD(Sphere_colisionStatus_sphere_Test)
+		TEST_METHOD(Sphere_collisionStatus_sphere_Test)
 		{
 			Sphere sphere1 = Sphere({ 10.0f, 0.0f, 0.0f }, 10.0f);
 			Sphere sphere2 = Sphere({ -10.0f, 0.0f, 0.0f }, 10.0f);
-			ColisionStatus expected = ColisionStatus::INLINE;
-			ColisionStatus result = sphere1.colisionStatus(sphere2);
+			CollisionStatus expected = CollisionStatus::INLINE;
+			CollisionStatus result = sphere1.collisionStatus(sphere2);
 			Assert::IsTrue(result == expected, L"The point should lie on sphere boundary", LINE_INFO());
 
 			sphere2 = Sphere({ -9.0f, 0.0f, 0.0f }, 10.0f);
-			expected = ColisionStatus::INSIDE;
-			result = sphere1.colisionStatus(sphere2);
+			expected = CollisionStatus::INSIDE;
+			result = sphere1.collisionStatus(sphere2);
 			Assert::IsTrue(result == expected, L"The point should lie inside the sphere", LINE_INFO());
 
 			sphere2 = Sphere({ -11.0f, 0.0f, 0.0f }, 10.0f);
-			expected = ColisionStatus::OUTSIDE;
-			result = sphere1.colisionStatus(sphere2);
+			expected = CollisionStatus::OUTSIDE;
+			result = sphere1.collisionStatus(sphere2);
 			Assert::IsTrue(result == expected, L"The point should be outside the sphere", LINE_INFO());
 		}
 
-		TEST_METHOD(Sphere_colisionStatus_plane_Test)
+		TEST_METHOD(Sphere_collisionStatus_plane_Test)
 		{
 			Sphere sphere = Sphere({ 10.0f, 0.0f, 0.0f }, 10.0f);
 			Plane3D plane = Plane3D(Vec3f(0.0f, 0.0f, 0.0f), Vec3f(1.0f, 0.0f, 0.0f));
-			ColisionStatus expected = ColisionStatus::INLINE;
-			ColisionStatus result = sphere.colisionStatus(plane);
+			CollisionStatus expected = CollisionStatus::INLINE;
+			CollisionStatus result = sphere.collisionStatus(plane);
 			Assert::IsTrue(result == expected, L"The plane should lie/support on sphere boundary", LINE_INFO());
 
 			plane = Plane3D(Vec3f(3.0f, 0.0f, 0.0f), Vec3f(1.0f, 0.0f, 0.0f));
-			expected = ColisionStatus::INSIDE;
-			result = sphere.colisionStatus(plane);
+			expected = CollisionStatus::INSIDE;
+			result = sphere.collisionStatus(plane);
 			Assert::IsTrue(result == expected, L"The point should lie inside the sphere", LINE_INFO());
 
 			plane = Plane3D(Vec3f(-3.0f, 0.0f, 0.0f), Vec3f(1.0f, 0.0f, 0.0f));
-			expected = ColisionStatus::OUTSIDE;
-			result = sphere.colisionStatus(plane);
+			expected = CollisionStatus::OUTSIDE;
+			result = sphere.collisionStatus(plane);
 			Assert::IsTrue(result == expected, L"The point should be outside the sphere", LINE_INFO());
 		}
 

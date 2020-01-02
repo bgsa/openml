@@ -143,7 +143,7 @@ std::unordered_multimap<AABB, AABB, AABB, AABB> HashGrid::findCollisions(AABB* a
 
 			for (auto it = its.first; it != its.second; ++it) 
 			{
-				bool hasCollisionAABB = aabb.colisionStatus(it->second) == ColisionStatus::INSIDE;
+				bool hasCollisionAABB = aabb.collisionStatus(it->second) == CollisionStatus::INSIDE;
 
 				if (hasCollisionAABB && !findValue(pairs, aabb, it->second))   //check if exists on map
 					pairs.emplace(aabb, it->second);

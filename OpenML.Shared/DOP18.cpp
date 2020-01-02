@@ -69,13 +69,13 @@ DOP18* DOP18::rotate(float angleInRadians, float xAxis, float yAxis, float zAxis
 	return this;
 }
 
-ColisionStatus DOP18::colisionStatus(const DOP18& kDop)
+CollisionStatus DOP18::collisionStatus(const DOP18& kDop)
 {
 	for (int i = 0; i < DOP18_ORIENTATIONS; i++) 
 		if (this->min[i] > kDop.max[i] || this->max[i] < kDop.min[i])
-			return ColisionStatus::OUTSIDE;
+			return CollisionStatus::OUTSIDE;
 
-	return ColisionStatus::INSIDE;
+	return CollisionStatus::INSIDE;
 }
 
 DOP18* DOP18::scale(float xAxis, float yAxis, float zAxis)

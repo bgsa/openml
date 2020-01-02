@@ -23,7 +23,7 @@ namespace OpenML
 
 		API_INTERFACE T distance(const Vec2<T>& point) const;
 
-		API_INTERFACE ColisionStatus colisionStatus(const Vec2<T> &point) const;
+		API_INTERFACE CollisionStatus collisionStatus(const Vec2<T> &point) const;
 
 		API_INTERFACE bool hasIntersection(const Circle2D<T>& circle2) const;
 

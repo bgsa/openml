@@ -79,7 +79,7 @@ namespace OpenMLTest
 			Assert::AreEqual(101.980392f, result, L"Wrong value.", LINE_INFO());
 		}
 
-		TEST_METHOD(Rectangle2D_getColisionStatus_Inside1_Test)
+		TEST_METHOD(Rectangle2D_getCollisionStatus_Inside1_Test)
 		{
 			Vec2f point = Vec2f(10.0f, 10.0f);
 			Rectangle2Df square = Rectangle2Df(
@@ -89,13 +89,13 @@ namespace OpenMLTest
 				{ 100.0f, 0.0f }
 			);
 
-			ColisionStatus result = square.getSatusColision(point);
+			CollisionStatus result = square.getSatusCollision(point);
 
-			if (result != ColisionStatus::INSIDE)
+			if (result != CollisionStatus::INSIDE)
 				Assert::Fail(L"Point should be inside the square.", LINE_INFO());
 		}
 
-		TEST_METHOD(Rectangle2D_getColisionStatus_Inside2_Test)
+		TEST_METHOD(Rectangle2D_getCollisionStatus_Inside2_Test)
 		{
 			Vec2f point = Vec2f(100.0f, 60.0f);
 			Rectangle2Df square = Rectangle2Df(
@@ -105,13 +105,13 @@ namespace OpenMLTest
 				{ 10.0f, 110.0f }
 			);
 
-			ColisionStatus result = square.getSatusColision(point);
+			CollisionStatus result = square.getSatusCollision(point);
 
-			if (result != ColisionStatus::INSIDE)
+			if (result != CollisionStatus::INSIDE)
 				Assert::Fail(L"Point should be inside the square.", LINE_INFO());
 		}
 
-		TEST_METHOD(Rectangle2D_getColisionStatus_Outside_Test)
+		TEST_METHOD(Rectangle2D_getCollisionStatus_Outside_Test)
 		{
 			Vec2f point = Vec2f(200.0f, 200.0f);
 			Rectangle2Df rect = Rectangle2Df(
@@ -121,9 +121,9 @@ namespace OpenMLTest
 				{ 100.0f, 0.0f }
 			);
 
-			ColisionStatus result = rect.getSatusColision(point);
+			CollisionStatus result = rect.getSatusCollision(point);
 
-			if (result != ColisionStatus::OUTSIDE)
+			if (result != CollisionStatus::OUTSIDE)
 				Assert::Fail(L"Point should be inside the square.", LINE_INFO());
 		}
 

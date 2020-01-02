@@ -61,7 +61,7 @@ namespace Microsoft
 			}
 
 			template<>
-			static std::wstring ToString<ColisionStatus>(const ColisionStatus& status)
+			static std::wstring ToString<CollisionStatus>(const CollisionStatus& status)
 			{
 				return L"Some string representing CollisionStatus.";
 			}

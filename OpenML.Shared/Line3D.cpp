@@ -156,7 +156,7 @@ Vec3f* Line3D::findIntersectionOnSegment(const Plane3D& plane) const
 	return nullptr;
 }
 
-DetailedColisionStatus<float> Line3D::findIntersectionOnRay(const Sphere& sphere) const
+DetailedCollisionStatus<float> Line3D::findIntersectionOnRay(const Sphere& sphere) const
 {
 	Vec3f lineDirection = direction();
 	Vec3f point1ToSphere = point1 - sphere.center;
@@ -166,13 +166,13 @@ DetailedColisionStatus<float> Line3D::findIntersectionOnRay(const Sphere& sphere
 	
 	// Exit if r’s origin outside sphere (c > 0) and ray pointing away from sphere (b > 0) 
 	if (c > 0.0f && b > 0.0f)
-		return DetailedColisionStatus<float>(ColisionStatus::OUTSIDE);
+		return DetailedCollisionStatus<float>(CollisionStatus::OUTSIDE);
 	
 	float discriminant = b * b - c;    // d = b^2 - c
 	
 	// A negative discriminant corresponds to ray missing sphere 
 	if (discriminant < 0.0f) // the quadratic equation has not real root
-		return DetailedColisionStatus<float>(ColisionStatus::OUTSIDE);
+		return DetailedCollisionStatus<float>(CollisionStatus::OUTSIDE);
 
 	float sqrtDisctiminant = std::sqrtf(discriminant);
 
@@ -186,7 +186,7 @@ DetailedColisionStatus<float> Line3D::findIntersectionOnRay(const Sphere& sphere
 	Vec3f intersectionPoint1 = point1 + t1 * lineDirection;
 	
 	if (isCloseEnough(discriminant, 0.0f)) 
-		return DetailedColisionStatus<float>(ColisionStatus::INLINE, intersectionPoint1);
+		return DetailedCollisionStatus<float>(CollisionStatus::INLINE, intersectionPoint1);
 
 	// discriminant > T(0)  =>  the quadratic equation has 2 real root, then the ray intersect in 2 points
 
@@ -195,26 +195,26 @@ DetailedColisionStatus<float> Line3D::findIntersectionOnRay(const Sphere& sphere
 	
 	Vec3f intersectionPoint2 = point1 + t2 * lineDirection;
 
-	return DetailedColisionStatus<float>(ColisionStatus::INSIDE, intersectionPoint1, intersectionPoint2);
+	return DetailedCollisionStatus<float>(CollisionStatus::INSIDE, intersectionPoint1, intersectionPoint2);
 }
 
-DetailedColisionStatus<float> Line3D::findIntersectionOnSegment(const Sphere& sphere) const
+DetailedCollisionStatus<float> Line3D::findIntersectionOnSegment(const Sphere& sphere) const
 {
-	DetailedColisionStatus<float> colision = findIntersectionOnRay(sphere);
+	DetailedCollisionStatus<float> collision = findIntersectionOnRay(sphere);
 
-	if (colision.status == ColisionStatus::OUTSIDE)
-		return colision;
+	if (collision.status == CollisionStatus::OUTSIDE)
+		return collision;
 
-	if (!isOnSegment(colision.points[0]))
-		return DetailedColisionStatus<float>(ColisionStatus::OUTSIDE);
+	if (!isOnSegment(collision.points[0]))
+		return DetailedCollisionStatus<float>(CollisionStatus::OUTSIDE);
 
-	if (!isOnSegment(colision.points[1]))
-		return DetailedColisionStatus<float>(ColisionStatus::INSIDE, colision.points[0]);
+	if (!isOnSegment(collision.points[1]))
+		return DetailedCollisionStatus<float>(CollisionStatus::INSIDE, collision.points[0]);
 
-	return colision;
+	return collision;
 }
 
-DetailedColisionStatus<float> Line3D::findIntersectionOnRay(const AABB& aabb) const
+DetailedCollisionStatus<float> Line3D::findIntersectionOnRay(const AABB& aabb) const
 {
 	float tmin = 0.0f;
 	float tmax = std::numeric_limits<float>().max();
@@ -227,7 +227,7 @@ DetailedColisionStatus<float> Line3D::findIntersectionOnRay(const AABB& aabb) co
 		{ 
 			// Ray is parallel to slab! No hit if origin not within slab 
 			if (point1[i] < aabb.minPoint[i] || point1[i] > aabb.maxPoint[i])
-				return DetailedColisionStatus<float>(ColisionStatus::OUTSIDE);
+				return DetailedCollisionStatus<float>(CollisionStatus::OUTSIDE);
 		} 
 		else 
 		{ 
@@ -246,15 +246,15 @@ DetailedColisionStatus<float> Line3D::findIntersectionOnRay(const AABB& aabb) co
 			
 			// Exit with no collision as soon as slab intersection becomes empty 
 			if (tmin > tmax) 
-				return DetailedColisionStatus<float>(ColisionStatus::OUTSIDE);
+				return DetailedCollisionStatus<float>(CollisionStatus::OUTSIDE);
 		} 	
 	} 
 	
 	// Ray intersects all 3 slabs. Return point (q) and intersection t value (tmin) 
-	return DetailedColisionStatus<float>(ColisionStatus::INSIDE, point1 + tmin * lineDirection, point1 + tmax * lineDirection);
+	return DetailedCollisionStatus<float>(CollisionStatus::INSIDE, point1 + tmin * lineDirection, point1 + tmax * lineDirection);
 }
 
-ColisionStatus Line3D::hasIntersectionOnSegment(const AABB& aabb) const
+CollisionStatus Line3D::hasIntersectionOnSegment(const AABB& aabb) const
 {
 	float epsilon = std::numeric_limits<float>().epsilon();
 
@@ -275,15 +275,15 @@ ColisionStatus Line3D::hasIntersectionOnSegment(const AABB& aabb) const
 	// Try world coordinate axes as separating axes 
 	float adx = std::abs(halfLengthVector[0]);
 	if (std::abs(lineCenterPoint[0]) > halfLengthExtends[0] + adx)
-		return ColisionStatus::OUTSIDE;
+		return CollisionStatus::OUTSIDE;
 	
 	float ady = std::abs(halfLengthVector[1]);
 	if (std::abs(lineCenterPoint[1]) > halfLengthExtends[1] + ady)
-		return ColisionStatus::OUTSIDE;
+		return CollisionStatus::OUTSIDE;
 	
 	float adz = std::abs(halfLengthVector[2]);
 	if (std::abs(lineCenterPoint[2]) > halfLengthExtends[2] + adz)
-		return ColisionStatus::OUTSIDE;
+		return CollisionStatus::OUTSIDE;
 	
 	// Add in an epsilon term to counteract arithmetic errors when segment is 
 	// (near) parallel to a coordinate axis (see text for detail) 
@@ -293,16 +293,16 @@ ColisionStatus Line3D::hasIntersectionOnSegment(const AABB& aabb) const
 
 	// Try cross products of segment direction vector with coordinate axes 
 	if (std::abs(lineCenterPoint[1] * halfLengthVector[2] - lineCenterPoint[2] * halfLengthVector[1]) > halfLengthExtends[1] * adz + halfLengthExtends[2] * ady)
-		return ColisionStatus::OUTSIDE;
+		return CollisionStatus::OUTSIDE;
 	
 	if (std::abs(lineCenterPoint[2] * halfLengthVector[0] - lineCenterPoint[0] * halfLengthVector[2]) > halfLengthExtends[0] * adz + halfLengthExtends[2] * adx)
-		return ColisionStatus::OUTSIDE;
+		return CollisionStatus::OUTSIDE;
 	
 	if (std::abs(lineCenterPoint[0] * halfLengthVector[1] - lineCenterPoint[1] * halfLengthVector[0]) > halfLengthExtends[0] * ady + halfLengthExtends[1] * adx)
-		return ColisionStatus::OUTSIDE;
+		return CollisionStatus::OUTSIDE;
 	
 	// No separating axis found; segment must be overlapping AABB 
-	return ColisionStatus::INSIDE;
+	return CollisionStatus::INSIDE;
 }
 
 float Line3D::squaredDistance(const Vec3f& target) const

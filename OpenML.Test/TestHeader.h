@@ -60,6 +60,11 @@ namespace Microsoft
 				return L"Some string representing Rectangle2D.";
 			}
 
+			template<>
+			static std::wstring ToString<ColisionStatus>(const ColisionStatus& status)
+			{
+				return L"Some string representing CollisionStatus.";
+			}
 		}
 	}
 }

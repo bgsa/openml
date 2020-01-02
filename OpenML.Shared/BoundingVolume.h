@@ -1,5 +1,5 @@
-#ifndef BOUNDING_VOLUME
-#define BOUNDING_VOLUME
+#ifndef BOUNDING_VOLUME_HEADER
+#define BOUNDING_VOLUME_HEADER
 
 #include "OpenML.h"
 #include "Vec3.h"
@@ -28,7 +28,8 @@ namespace OpenML
 	typedef BoundingVolume<Sphere> BoundingVolumeSphere;
 	typedef BoundingVolume<AABB> BoundingVolumeAABB;
 	typedef BoundingVolume<OBB> BoundingVolumeOBB;
+	typedef BoundingVolume<DOP18> BoundingVolumeDOP18;
 
 }
 
-#endif // !BOUNDING_VOLUME
+#endif // !BOUNDING_VOLUME_HEADER

@@ -74,6 +74,7 @@ namespace OpenML
 	class AABB;
 	class OBB;
 	class Sphere;
+	class DOP18;
 
 	template <typename T>
 	class Rectangle2D;

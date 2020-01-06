@@ -16,7 +16,7 @@ namespace OpenMLTest
 		{
 			Quatf result;
 
-			for (size_t i = 0; i < QUAT_SIZE; i++)
+			for (int i = 0; i < QUAT_SIZE; i++)
 				Assert::AreEqual(0.0f, result[i], L"", LINE_INFO());
 		}
 
@@ -25,7 +25,7 @@ namespace OpenMLTest
 			Quatf result(1.0f, 2.0f, 3.0f, 4.0f);
 			float expected[4] = {1.0f, 2.0f, 3.0f, 4.0f};
 
-			for (size_t i = 0; i < QUAT_SIZE; i++)
+			for (int i = 0; i < QUAT_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"", LINE_INFO());
 		}
 
@@ -34,7 +34,7 @@ namespace OpenMLTest
 			float expected[4] = {1.0f, 2.0f, 3.0f, 4.0f};
 			Quatf result(expected);
 
-			for (size_t i = 0; i < QUAT_SIZE; i++)
+			for (int i = 0; i < QUAT_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"", LINE_INFO());
 		}
 
@@ -44,7 +44,7 @@ namespace OpenMLTest
 			Quatf result(vector);
 			float expected[QUAT_SIZE] = {1.0f, 2.0f, 3.0f, 0.0f};
 			
-			for (size_t i = 0; i < QUAT_SIZE; i++)
+			for (int i = 0; i < QUAT_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"", LINE_INFO());
 		}
 
@@ -54,7 +54,7 @@ namespace OpenMLTest
 			Quatf quat(expected);
 			float* result = quat.getValues();
 
-			for (size_t i = 0; i < QUAT_SIZE; i++)
+			for (int i = 0; i < QUAT_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"", LINE_INFO());
 		}
 
@@ -257,7 +257,7 @@ namespace OpenMLTest
 
 			Vec3f expected(2.0f, 5.0f, 1.0f);
 
-			for (size_t i = 0; i < 3; i++) {
+			for (int i = 0; i < 3; i++) {
 				Assert::AreEqual(expected[i], result1[i], L"Wrong value", LINE_INFO());
 				Assert::AreEqual(expected[i], result2[i], L"Wrong value", LINE_INFO());
 			}			
@@ -271,7 +271,7 @@ namespace OpenMLTest
 			Quatf result = Quatf::createRotate(angle, vector);
 			Quatf expected(0.162221417f, 0.405553550f, 0.243332133f, 0.866025388f);
 
-			for (size_t i = 0; i < 4; i++)
+			for (int i = 0; i < 4; i++)
 				Assert::IsTrue(isCloseEnough(expected[i], result[i], 0.000001f), L"Wrong value", LINE_INFO());
 		}
 
@@ -284,7 +284,7 @@ namespace OpenMLTest
 			Quatf result = quaternion.rotate(angle, vector);
 			Quatf expected(-10.0f, 0.0f, 0.0f, 0.0f);
 
-			for (size_t i = 0; i < 4; i++)
+			for (int i = 0; i < 4; i++)
 				Assert::AreEqual(expected[i] + 1, result[i] + 1, L"Wrong value", LINE_INFO());
 		}
 	};

@@ -68,7 +68,7 @@ namespace OpenMLTest
 
 			Vec3f expectedCenter = Vec3f(9.53111458f, 15.1244574f, 4.92040539f);
 
-			for (size_t i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++)
 				Assert::IsTrue(isCloseEnough(expectedCenter[i], sphere.center[i]), L"Wrong value.", LINE_INFO());
 			
 			Assert::IsTrue(isCloseEnough(sphere.ray, 15.9116144f), L"Wrong value.", LINE_INFO());
@@ -86,7 +86,7 @@ namespace OpenMLTest
 			Vec3f expectedCenterPoint = Vec3f(1.263157f, -0.842105f, 0.210526f);
 			float expectedRay = 3.423076f;
 
-			for (size_t i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++)
 				Assert::IsTrue(isCloseEnough(expectedCenterPoint[i], sphere.center[i]), L"Wrong value.", LINE_INFO());
 
 			Assert::IsTrue(isCloseEnough(expectedRay, sphere.ray), L"Wrong value.", LINE_INFO());
@@ -159,7 +159,7 @@ namespace OpenMLTest
 
 			Assert::AreEqual(5.0f, sphere.ray, L"wring value", LINE_INFO());
 
-			for (size_t i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++)
 				Assert::AreEqual(expectedCenterPoint[i], sphere.center[i], L"wring value", LINE_INFO());
 		}
 
@@ -181,7 +181,7 @@ namespace OpenMLTest
 
 			Assert::IsTrue( isCloseEnough(9.193612f, sphere.ray), L"wring value", LINE_INFO());
 
-			for (size_t i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++)
 				Assert::IsTrue(isCloseEnough(expectedCenterPoint[i], sphere.center[i]), L"wring value", LINE_INFO());
 		}
 
@@ -195,7 +195,7 @@ namespace OpenMLTest
 			Vec3f expectedCenter = Vec3f(1.5f, 0.0f, 0.0f);
 			float expectedRay = 3.5f;
 
-			for (size_t i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++)
 				Assert::AreEqual(expectedCenter[i], result.center[i], L"Wrong value.", LINE_INFO());
 
 			Assert::AreEqual(expectedRay, result.ray, L"Wrong value.", LINE_INFO());
@@ -211,7 +211,7 @@ namespace OpenMLTest
 			Vec3f expectedCenter = Vec3f(0.0f, 0.0f, 0.0f);
 			float expectedRay = 10.0f;
 
-			for (size_t i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++)
 				Assert::AreEqual(expectedCenter[i], result.center[i], L"Wrong value.", LINE_INFO());
 
 			Assert::AreEqual(expectedRay, result.ray, L"Wrong value.", LINE_INFO());
@@ -227,7 +227,7 @@ namespace OpenMLTest
 			Vec3f expectedCenter = Vec3f(0.0f, 0.0f, 0.0f);
 			float expectedRay = 10.0f;
 
-			for (size_t i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++)
 				Assert::AreEqual(expectedCenter[i], result.center[i], L"Wrong value.", LINE_INFO());
 
 			Assert::AreEqual(expectedRay, result.ray, L"Wrong value.", LINE_INFO());

@@ -172,7 +172,7 @@ namespace OpenMLTest
 
 			Vec3f result = plane.closestPointOnThePlane(point);
 
-			for (size_t i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong value", LINE_INFO());
 		}
 
@@ -359,7 +359,7 @@ namespace OpenMLTest
 			Vec3f expectedPoint1 = Vec3f(0.315789491f, -0.973684311f, -0.710526347f);
 			Vec3f expectedPoint2 = Vec3f(0.624396205f, -1.43659437f, 0.0609903336f);
 			
-			for (size_t i = 0; i < 3; i++) 
+			for (int i = 0; i < 3; i++)
 			{
 				Assert::AreEqual(result->point1[i], expectedPoint1[i], L"Wrong value", LINE_INFO());
 				Assert::AreEqual(result->point2[i], expectedPoint2[i], L"Wrong value", LINE_INFO());

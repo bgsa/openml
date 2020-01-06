@@ -56,7 +56,7 @@ namespace OpenMLTest
 
 			float* result = vector.getValues();
 
-			for (size_t i = 0; i < VEC4_SIZE; i++)
+			for (int i = 0; i < VEC4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
 		}
 
@@ -88,7 +88,7 @@ namespace OpenMLTest
 
 			vector.add(vector2);
 
-			for (size_t i = 0; i < VEC4_SIZE; i++)
+			for (int i = 0; i < VEC4_SIZE; i++)
 				Assert::AreEqual(expected[i], vector[i], L"Length Wrong value", LINE_INFO());
 		}
 
@@ -100,7 +100,7 @@ namespace OpenMLTest
 
 			vector.subtract(vector2);
 
-			for (size_t i = 0; i < VEC4_SIZE; i++)
+			for (int i = 0; i < VEC4_SIZE; i++)
 				Assert::AreEqual(expected[i], vector[i], L"Length Wrong value", LINE_INFO());
 		}
 
@@ -111,7 +111,7 @@ namespace OpenMLTest
 
 			vector.scale(3.0f);
 
-			for (size_t i = 0; i < VEC4_SIZE; i++)
+			for (int i = 0; i < VEC4_SIZE; i++)
 				Assert::AreEqual(expected[i], vector[i], L"Length Wrong value", LINE_INFO());
 		}
 
@@ -146,7 +146,7 @@ namespace OpenMLTest
 
 			Vec4f result = vector.normalize();
 
-			for (size_t i = 0; i < VEC4_SIZE; i++)
+			for (int i = 0; i < VEC4_SIZE; i++)
 				Assert::IsTrue(isCloseEnough(expected[i], result[i], 0.000001f), L"Wrong value", LINE_INFO());
 		}
 
@@ -167,7 +167,7 @@ namespace OpenMLTest
 
 			Vec4f result = vector.clone();
 
-			for (size_t i = 0; i < VEC4_SIZE; i++)
+			for (int i = 0; i < VEC4_SIZE; i++)
 				Assert::AreEqual(vector[i], result[i], L"Wrong value", LINE_INFO());
 		}
 
@@ -179,7 +179,7 @@ namespace OpenMLTest
 
 			Vec4f result = vector * 2;
 
-			for (size_t i = 0; i < VEC4_SIZE; i++)
+			for (int i = 0; i < VEC4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong value", LINE_INFO());
 		}
 		
@@ -191,7 +191,7 @@ namespace OpenMLTest
 
 			Vec4f result = vector + vector2;
 
-			for (size_t i = 0; i < VEC4_SIZE; i++)
+			for (int i = 0; i < VEC4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
 		}
 
@@ -202,7 +202,7 @@ namespace OpenMLTest
 
 			Vec4f result = vector + 2.0f;
 
-			for (size_t i = 0; i < VEC4_SIZE; i++)
+			for (int i = 0; i < VEC4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
 		}
 
@@ -214,7 +214,7 @@ namespace OpenMLTest
 
 			Vec4f result = vector - vector2;
 
-			for (size_t i = 0; i < VEC4_SIZE; i++)
+			for (int i = 0; i < VEC4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
 		}
 
@@ -225,7 +225,7 @@ namespace OpenMLTest
 
 			Vec4f result = vector - 2.0f;
 
-			for (size_t i = 0; i < VEC4_SIZE; i++)
+			for (int i = 0; i < VEC4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
 		}
 
@@ -236,7 +236,7 @@ namespace OpenMLTest
 
 			Vec4f result = -vector;
 
-			for (size_t i = 0; i < VEC4_SIZE; i++)
+			for (int i = 0; i < VEC4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
 		}
 
@@ -353,7 +353,7 @@ namespace OpenMLTest
 
 			Vec3f result = vector.toVec3();
 
-			for (size_t i = 0; i < VEC3_SIZE; i++)
+			for (int i = 0; i < VEC3_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Length Wrong value", LINE_INFO());
 		}
 

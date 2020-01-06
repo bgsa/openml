@@ -16,7 +16,7 @@ namespace OpenMLTest
 		{
 			Mat4f result;
 
-			for (size_t i = 0; i < MAT4_SIZE; i++)
+			for (int i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(0.0f, result[i], L"Value shoud be 0", LINE_INFO());
 		}
 
@@ -31,7 +31,7 @@ namespace OpenMLTest
 
 			Mat4f result = Mat4f(emptyMatrix);
 
-			for (size_t i = 0; i < MAT4_SIZE; i++)
+			for (int i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(emptyMatrix[i], result[i], L"Value shoud be 0", LINE_INFO());
 		}
 
@@ -52,19 +52,19 @@ namespace OpenMLTest
 				4.0f, 8.0f, 12.0f, 16.0f
 			);
 
-			for (size_t i = 0; i < MAT4_SIZE; i++)
+			for (int i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], matrix[i], L"Value shoud be 0", LINE_INFO());
 #else
-			for (size_t i = 0; i < 4; i++)
+			for (int i = 0; i < 4; i++)
 				Assert::AreEqual(vector1[i], matrix[i], L"Value shoud be 0", LINE_INFO());
 
-			for (size_t i = 4; i < 8; i++)
+			for (int i = 4; i < 8; i++)
 				Assert::AreEqual(vector2[i], matrix[i], L"Value shoud be 0", LINE_INFO());
 
-			for (size_t i = 8; i < 12; i++)
+			for (int i = 8; i < 12; i++)
 				Assert::AreEqual(vector3[i], matrix[i], L"Value shoud be 0", LINE_INFO());
 
-			for (size_t i = 12; i < 16; i++)
+			for (int i = 12; i < 16; i++)
 				Assert::AreEqual(vector4[i], matrix[i], L"Value shoud be 0", LINE_INFO());
 #endif
 		}
@@ -80,7 +80,7 @@ namespace OpenMLTest
 
 			float* result = matrix.getValues();
 
-			for (size_t i = 0; i < MAT4_SIZE; i++)
+			for (int i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(matrix[i], result[i], L"Value shoud be 0", LINE_INFO());
 		}
 
@@ -304,7 +304,7 @@ namespace OpenMLTest
 		{
 			Mat4f result = Mat4f::identity();
 
-			for (size_t i = 0; i < MAT4_SIZE; i++)
+			for (int i = 0; i < MAT4_SIZE; i++)
 				if (i % (MAT4_ROWSIZE+1) == 0)
 					Assert::AreEqual(1.0f, result[i], L"Value shoud be 0", LINE_INFO());
 				else
@@ -394,7 +394,7 @@ namespace OpenMLTest
 				4.0f, 8.0f, 12.0f, 16.0f
 			};
 
-			for (size_t i = 0; i < MAT4_SIZE; i++)
+			for (int i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong value", LINE_INFO());
 		}
 
@@ -422,7 +422,7 @@ namespace OpenMLTest
 
 			Mat4f result = matrixA * matrixB;
 
-			for (size_t i = 0; i < MAT4_SIZE; i++)
+			for (int i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 
@@ -449,7 +449,7 @@ namespace OpenMLTest
 
 			Mat4f result = matrixA.multiply(matrixB);
 
-			for (size_t i = 0; i < MAT4_SIZE; i++)
+			for (int i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 #endif
@@ -478,7 +478,7 @@ namespace OpenMLTest
 
 			Mat4f result = matrixA.multiply(matrixB);
 
-			for (size_t i = 0; i < MAT4_SIZE; i++)
+			for (int i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 
@@ -507,7 +507,7 @@ namespace OpenMLTest
 
 			Mat4f result = matrixA * matrixB;
 
-			for (size_t i = 0; i < MAT4_SIZE; i++)
+			for (int i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 #endif
@@ -523,7 +523,7 @@ namespace OpenMLTest
 
 			Mat4f result = Mat4f::createScale(2.0f, 4.0f, -3.0f);
 
-			for (size_t i = 0; i < MAT4_SIZE; i++)
+			for (int i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 
@@ -544,7 +544,7 @@ namespace OpenMLTest
 
 			matrixA.scale(2.0f, 4.0f, -3.0f);
 
-			for (size_t i = 0; i < MAT4_SIZE; i++)
+			for (int i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], matrixA[i], L"Wrong number", LINE_INFO());
 		}
 
@@ -561,7 +561,7 @@ namespace OpenMLTest
 			
 			Mat4f result = Mat4f::createRotate(angle, 1.0f, 0.0f, 0.0f);
 
-			for (size_t i = 0; i < MAT4_SIZE; i++)
+			for (int i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 
@@ -577,7 +577,7 @@ namespace OpenMLTest
 
 			Mat4f result = Mat4f::createTranslate(0.0f, 2.0f, -3.0f);
 
-			for (size_t i = 0; i < MAT4_SIZE; i++)
+			for (int i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 #endif
@@ -618,7 +618,7 @@ namespace OpenMLTest
 
 			Mat4f result = matrix.clone();
 
-			for (size_t i = 0; i < MAT4_SIZE; i++)
+			for (int i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(matrix[i], result[i], L"Wrong number", LINE_INFO());
 		}
 		
@@ -638,7 +638,7 @@ namespace OpenMLTest
 
 			Mat3f result = matrix.toMat3();
 
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 		
@@ -660,7 +660,7 @@ namespace OpenMLTest
 
 			Mat4f result = matrixA * 2.0f;
 
-			for (size_t i = 0; i < MAT4_SIZE; i++)
+			for (int i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 #endif
@@ -682,7 +682,7 @@ namespace OpenMLTest
 
 			Mat4f result = matrixA + 2.0f;
 
-			for (size_t i = 0; i < MAT4_SIZE; i++)
+			for (int i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 
@@ -709,7 +709,7 @@ namespace OpenMLTest
 
 			Mat4f result = matrixA + matrixB;
 
-			for (size_t i = 0; i < MAT4_SIZE; i++)
+			for (int i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 
@@ -736,7 +736,7 @@ namespace OpenMLTest
 
 			Mat4f result = matrixA - matrixB;
 
-			for (size_t i = 0; i < MAT4_SIZE; i++)
+			for (int i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 
@@ -757,7 +757,7 @@ namespace OpenMLTest
 
 			Mat4f result = -matrixA;
 
-			for (size_t i = 0; i < MAT4_SIZE; i++)
+			for (int i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 
@@ -778,7 +778,7 @@ namespace OpenMLTest
 
 			Mat4f result = matrixA - 2.0f;
 
-			for (size_t i = 0; i < MAT4_SIZE; i++)
+			for (int i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 
@@ -862,7 +862,7 @@ namespace OpenMLTest
 				1.0f, 4.0f,  0.0f, 0.0f
 			};
 
-			for (size_t i = 0; i < MAT4_SIZE; i++)
+			for (int i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], matrixA[i], L"Wrong number", LINE_INFO());
 		}
 
@@ -974,7 +974,7 @@ namespace OpenMLTest
 
 			Mat4f result = matrixA / 2.0f;
 
-			for (size_t i = 0; i < MAT4_SIZE; i++)
+			for (int i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 
@@ -995,7 +995,7 @@ namespace OpenMLTest
 
 			matrixA /= 2.0f;
 
-			for (size_t i = 0; i < MAT4_SIZE; i++)
+			for (int i = 0; i < MAT4_SIZE; i++)
 				Assert::AreEqual(expected[i], matrixA[i], L"Wrong number", LINE_INFO());
 		}
 

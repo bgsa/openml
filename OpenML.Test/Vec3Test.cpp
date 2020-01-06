@@ -68,7 +68,7 @@ namespace OpenMLTest
 			Vec3f result = vector.abs();
 			Vec3f expected = { 2.0f, 5.0f, 9.0f };
 
-			for (size_t i = 0; i < VEC3_SIZE; i++)
+			for (int i = 0; i < VEC3_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Length value wrong.", LINE_INFO());
 		}
 
@@ -90,7 +90,7 @@ namespace OpenMLTest
 
 			vector.add(vector2);
 
-			for (size_t i = 0; i < VEC3_SIZE; i++)
+			for (int i = 0; i < VEC3_SIZE; i++)
 				Assert::AreEqual(expected[i], vector[i], L"Length value wrong.", LINE_INFO());
 		}
 
@@ -102,7 +102,7 @@ namespace OpenMLTest
 
 			vector.subtract(vector2);
 
-			for (size_t i = 0; i < VEC3_SIZE; i++)
+			for (int i = 0; i < VEC3_SIZE; i++)
 				Assert::AreEqual(expected[i], vector[i], L"Length value wrong.", LINE_INFO());
 		}
 
@@ -114,7 +114,7 @@ namespace OpenMLTest
 
 			Vec3f result = vector.multiply(vector2);
 
-			for (size_t i = 0; i < VEC3_SIZE; i++)
+			for (int i = 0; i < VEC3_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
 		}
 
@@ -125,7 +125,7 @@ namespace OpenMLTest
 
 			vector.scale(3.0f);
 
-			for (size_t i = 0; i < VEC3_SIZE; i++)
+			for (int i = 0; i < VEC3_SIZE; i++)
 				Assert::AreEqual(expected[i], vector[i], L"Length value wrong.", LINE_INFO());
 		}
 
@@ -137,7 +137,7 @@ namespace OpenMLTest
 
 			Vec3f result = vector.cross(vector2);
 
-			for (size_t i = 0; i < VEC3_SIZE; i++)
+			for (int i = 0; i < VEC3_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
 		}
 
@@ -183,7 +183,7 @@ namespace OpenMLTest
 			
 			Vec3f result = vector.normalize();
 
-			for (size_t i = 0; i < VEC3_SIZE; i++)
+			for (int i = 0; i < VEC3_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Value wrong.", LINE_INFO());
 		}
 
@@ -194,7 +194,7 @@ namespace OpenMLTest
 
 			vector.transformToUnit();
 
-			for (size_t i = 0; i < VEC3_SIZE; i++)
+			for (int i = 0; i < VEC3_SIZE; i++)
 				Assert::AreEqual(expected[i], vector[i], L"Value wrong.", LINE_INFO());
 		}
 
@@ -215,7 +215,7 @@ namespace OpenMLTest
 
 			Vec3f result = vector.clone();
 
-			for (size_t i = 0; i < VEC3_SIZE; i++)
+			for (int i = 0; i < VEC3_SIZE; i++)
 				Assert::AreEqual(vector[i], result[i], L"Wrong value", LINE_INFO());
 		}
 
@@ -227,7 +227,7 @@ namespace OpenMLTest
 
 			Vec3f result = vector * 2;
 
-			for (size_t i = 0; i < VEC3_SIZE; i++)
+			for (int i = 0; i < VEC3_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong value", LINE_INFO());
 		}
 
@@ -239,7 +239,7 @@ namespace OpenMLTest
 
 			Vec3f result = vector * vector2;
 
-			for (size_t i = 0; i < VEC3_SIZE; i++)
+			for (int i = 0; i < VEC3_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
 		}
 
@@ -251,7 +251,7 @@ namespace OpenMLTest
 
 			Vec3f result = vector + vector2;
 
-			for (size_t i = 0; i < VEC3_SIZE; i++)
+			for (int i = 0; i < VEC3_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
 		}
 
@@ -262,7 +262,7 @@ namespace OpenMLTest
 
 			Vec3f result = vector + 2.0f;
 
-			for (size_t i = 0; i < VEC3_SIZE; i++)
+			for (int i = 0; i < VEC3_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
 		}
 
@@ -274,7 +274,7 @@ namespace OpenMLTest
 
 			Vec3f result = vector - vector2;
 
-			for (size_t i = 0; i < VEC3_SIZE; i++)
+			for (int i = 0; i < VEC3_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
 		}
 
@@ -285,7 +285,7 @@ namespace OpenMLTest
 
 			Vec3f result = -vector;
 
-			for (size_t i = 0; i < VEC3_SIZE; i++)
+			for (int i = 0; i < VEC3_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
 		}
 
@@ -296,7 +296,7 @@ namespace OpenMLTest
 
 			Vec3f result = vector - 2.0f;
 
-			for (size_t i = 0; i < VEC3_SIZE; i++)
+			for (int i = 0; i < VEC3_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong value.", LINE_INFO());
 		}
 

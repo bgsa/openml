@@ -23,8 +23,8 @@ namespace OpenMLTest
 
 			Assert::AreEqual(2, list.count, L"Wrong value.", LINE_INFO());
 
-			for (size_t i = 0; i < 2; i++)
-				for (size_t j = 0; j < 3; j++)
+			for (int i = 0; i < 2; i++)
+				for (int j = 0; j < 3; j++)
 					Assert::AreEqual(points[i][j], list.points[i][j], L"Wrong value.", LINE_INFO());
 		}
 
@@ -148,7 +148,7 @@ namespace OpenMLTest
 				-10.2222f, 5.2222f, 29.5556f
 			);
 			
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::IsTrue(isCloseEnough(expected[i], result[i]), L"Wrong value.", LINE_INFO());
 		}
 

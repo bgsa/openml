@@ -21,7 +21,7 @@ namespace OpenMLTest
 			Vec3f center = line.centerOfSegment();
 			Vec3f expected = Vec3f(3.0f, 3.0f, 2.0f);
 
-			for (size_t i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++)
 				Assert::AreEqual(expected[i], center[i], L"wrong value.", LINE_INFO());
 		}
 
@@ -98,7 +98,7 @@ namespace OpenMLTest
 			Assert::IsTrue(result.status == CollisionStatus::INSIDE, L"Ther should have a intersection.", LINE_INFO());
 			Assert::AreEqual(2, result.pointsCount, L"Ther should have a intersection.", LINE_INFO());
 			
-			for (size_t i = 0; i < 3; i++) 
+			for (int i = 0; i < 3; i++)
 			{
 				Assert::AreEqual(expectedPoint1[i], result.points[0][i], L"Wrong value.", LINE_INFO());
 				Assert::AreEqual(expectedPoint2[i], result.points[1][i], L"Wrong value.", LINE_INFO());
@@ -147,7 +147,7 @@ namespace OpenMLTest
 			Assert::IsTrue(result.status == CollisionStatus::INSIDE, L"Ther should have a intersection.", LINE_INFO());
 			Assert::AreEqual(2, result.pointsCount, L"Ther should have a intersection.", LINE_INFO());
 
-			for (size_t i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++)
 				Assert::AreEqual(expectedPoint1[i], result.points[0][i], L"Wrong value.", LINE_INFO());
 		}
 
@@ -164,7 +164,7 @@ namespace OpenMLTest
 			Assert::IsTrue(result.status == CollisionStatus::INSIDE, L"Ther should have a intersection.", LINE_INFO());
 			Assert::AreEqual(2, result.pointsCount, L"Ther should have a intersection.", LINE_INFO());
 
-			for (size_t i = 0; i < 3; i++) {
+			for (int i = 0; i < 3; i++) {
 				Assert::AreEqual(expectedPoint1[i], result.points[0][i], L"Wrong value.", LINE_INFO());
 				Assert::AreEqual(expectedPoint2[i], result.points[1][i], L"Wrong value.", LINE_INFO());
 			}
@@ -243,7 +243,7 @@ namespace OpenMLTest
 			Assert::IsTrue(result.status == CollisionStatus::INSIDE, L"There should be 2 intersection points.", LINE_INFO());
 			Assert::AreEqual(result.pointsCount, 2, L"There should be 2 intersection points.", LINE_INFO());
 
-			for (size_t i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++)
 			{
 				Assert::AreEqual(expectedPoint1[i], result.points[0][i], L"Wrong value.", LINE_INFO());
 				Assert::AreEqual(expectedPoint2[i], result.points[1][i], L"Wrong value.", LINE_INFO());
@@ -262,7 +262,7 @@ namespace OpenMLTest
 			Assert::IsTrue(result.status == CollisionStatus::INSIDE, L"There should be 1 intersection points.", LINE_INFO());
 			Assert::AreEqual(result.pointsCount, 1, L"There should be 1 intersection points.", LINE_INFO());
 
-			for (size_t i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++)
 				Assert::AreEqual(expectedPoint1[i], result.points[0][i], L"Wrong value.", LINE_INFO());
 		}
 
@@ -279,7 +279,7 @@ namespace OpenMLTest
 			Assert::IsTrue(result.status == CollisionStatus::INSIDE, L"There should be 2 intersection points.", LINE_INFO());
 			Assert::AreEqual(result.pointsCount, 2, L"There should be 2 intersection points.", LINE_INFO());
 
-			for (size_t i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++)
 			{
 				Assert::AreEqual(expectedPoint1[i], result.points[0][i], L"Wrong value.", LINE_INFO());
 				Assert::AreEqual(expectedPoint2[i], result.points[1][i], L"Wrong value.", LINE_INFO());
@@ -311,7 +311,7 @@ namespace OpenMLTest
 			Assert::IsTrue(result.status == CollisionStatus::INSIDE, L"There should be 2 intersection points.", LINE_INFO());
 			Assert::AreEqual(result.pointsCount, 2, L"There should be 2 intersection points.", LINE_INFO());
 
-			for (size_t i = 0; i < 3; i++) 
+			for (int i = 0; i < 3; i++)
 			{
 				Assert::AreEqual(expectedPoint1[i], result.points[0][i], L"Wrong value.", LINE_INFO());
 				Assert::AreEqual(expectedPoint2[i], result.points[1][i], L"Wrong value.", LINE_INFO());
@@ -330,7 +330,7 @@ namespace OpenMLTest
 			Assert::IsTrue(result.status == CollisionStatus::INLINE, L"There should be 1 intersection points (tangent).", LINE_INFO());
 			Assert::AreEqual(result.pointsCount, 1, L"There should be 2 intersection points.", LINE_INFO());
 
-			for (size_t i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++)
 				Assert::AreEqual(expectedPoint1[i], result.points[0][i], L"Wrong value.", LINE_INFO());
 		}
 
@@ -357,7 +357,7 @@ namespace OpenMLTest
 
 			Assert::IsNotNull(result, L"Point should not be null.", LINE_INFO());
 
-			for (size_t i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++)
 				Assert::IsTrue(expected[i] == result[0][i], L"Wrong value.", LINE_INFO());
 		}
 

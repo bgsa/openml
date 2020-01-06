@@ -16,7 +16,7 @@ namespace OpenMLTest
 		{
 			Mat3<float> result;
 
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(0.0f, result[i], L"Value shoud be 0", LINE_INFO());
 		}
 
@@ -30,7 +30,7 @@ namespace OpenMLTest
 
 			Mat3<float> result = Mat3<float>(emptyMatrix);
 
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(emptyMatrix[i], result[i], L"Value shoud be 0", LINE_INFO());
 		}
 
@@ -44,7 +44,7 @@ namespace OpenMLTest
 
 			float* result = matrix.getValues();
 
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(matrix[i], result[i], L"Value shoud be 0", LINE_INFO());
 		}
 
@@ -254,7 +254,7 @@ namespace OpenMLTest
 		{
 			Mat3<float> result = Mat3<float>::identity();
 			
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				if (i % 4 == 0)
 					Assert::AreEqual(1.0f, result[i], L"Value shoud be 0", LINE_INFO()); 
 				else
@@ -276,7 +276,7 @@ namespace OpenMLTest
 				3.0f, 6.0f, 9.0f
 			};
 
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong value", LINE_INFO());
 		}
 
@@ -301,7 +301,7 @@ namespace OpenMLTest
 
 			Mat3f result = matrixA.multiply(matrixB);
 			
-			for (size_t i = 0; i < 9; i++)
+			for (int i = 0; i < 9; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 #endif
@@ -327,7 +327,7 @@ namespace OpenMLTest
 
 			Mat3f result = matrixA.multiply(matrixB);
 
-			for (size_t i = 0; i < 9; i++)
+			for (int i = 0; i < 9; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 #endif
@@ -342,7 +342,7 @@ namespace OpenMLTest
 
 			Mat3f result = Mat3f::createScale(2.0f, 4.0f, -3.0f);
 
-			for (size_t i = 0; i < 9; i++)
+			for (int i = 0; i < 9; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 
@@ -361,7 +361,7 @@ namespace OpenMLTest
 
 			matrixA.scale(2.0f, 4.0f, -3.0f);
 
-			for (size_t i = 0; i < 9; i++)
+			for (int i = 0; i < 9; i++)
 				Assert::AreEqual(expected[i], matrixA[i], L"Wrong number", LINE_INFO());
 		}
 
@@ -377,7 +377,7 @@ namespace OpenMLTest
 
 			Mat3f result = Mat3f::createRotate(angle, 1.0f, 0.0f, 0.0f);
 
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 
@@ -392,7 +392,7 @@ namespace OpenMLTest
 
 			Mat3f result = Mat3f::createTranslate(5.0f, 2.0f, -3.0f);
 
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 #endif
@@ -444,7 +444,7 @@ namespace OpenMLTest
 
 			Mat3f result = matrix.clone();
 
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(matrix[i], result[i], L"Wrong number", LINE_INFO());
 		}
 
@@ -473,14 +473,14 @@ namespace OpenMLTest
 			Mat3f lowerMatrixResult = decomposeLU[0];
 			Mat3f upperMatrixResult = decomposeLU[1];
 
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(lowerMatrixResult[i], lowerMatrixExpected[i], L"Wrong number", LINE_INFO());
 
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(upperMatrixResult[i], upperMatrixExpected[i], L"Wrong number", LINE_INFO());
 
 			Mat3f result = lowerMatrixResult * upperMatrixResult;
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(result[i], matrix[i], L"Wrong number", LINE_INFO());
 		}
 #endif
@@ -511,13 +511,13 @@ namespace OpenMLTest
 			Mat3f upperMatrixResult = decomposeLU[1];
 			Mat3f result = lowerMatrixResult * upperMatrixResult;
 
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(result[i], matrix[i], L"Wrong number", LINE_INFO());
 
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(lowerMatrixResult[i], lowerMatrixExpected[i], L"Wrong number", LINE_INFO());
 
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(upperMatrixResult[i], upperMatrixExpected[i], L"Wrong number", LINE_INFO());
 		}
 #endif
@@ -554,17 +554,17 @@ namespace OpenMLTest
 			Mat3f diagonalMatrixResult = decomposeLDU[1];
 			Mat3f upperMatrixResult = decomposeLDU[2];
 
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(lowerMatrixResult[i], lowerMatrixExpected[i], L"Wrong number", LINE_INFO());
 
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(upperMatrixResult[i], upperMatrixExpected[i], L"Wrong number", LINE_INFO());
 
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(diagonalMatrixResult[i], diagonalMatrixExpected[i], L"Wrong number", LINE_INFO());
 
 			Mat3f result = lowerMatrixResult * diagonalMatrixResult * upperMatrixResult;
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(result[i], matrix[i], L"Wrong number", LINE_INFO());
 		}
 #endif
@@ -602,16 +602,16 @@ namespace OpenMLTest
 			Mat3f upperMatrixResult = decomposeLDU[2];
 			Mat3f result = lowerMatrixResult * diagonalMatrixResult * upperMatrixResult;
 
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(result[i], matrix[i], L"Wrong number", LINE_INFO());
 
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(lowerMatrixResult[i], lowerMatrixExpected[i], L"Wrong number", LINE_INFO());
 
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(upperMatrixResult[i], upperMatrixExpected[i], L"Wrong number", LINE_INFO());
 
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(diagonalMatrixResult[i], diagonalMatrixExpected[i], L"Wrong number", LINE_INFO());
 		}
 #endif
@@ -630,7 +630,7 @@ namespace OpenMLTest
 
 			Assert::AreEqual(ceil(expectedValue), ceil(result.autovalue), L"Wrong number", LINE_INFO());
 
-			for (size_t i = 0; i < MAT3_ROWSIZE; i++)
+			for (int i = 0; i < MAT3_ROWSIZE; i++)
 				Assert::AreEqual(ceil(expectedVector[i]), ceil(result.autovector[i]), L"Wrong number", LINE_INFO());
 		}
 
@@ -649,7 +649,7 @@ namespace OpenMLTest
 
 			Mat3f result = -matrixA;
 
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 
@@ -673,7 +673,7 @@ namespace OpenMLTest
 
 			Mat3f result = matrixA - matrixB;
 
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 
@@ -697,7 +697,7 @@ namespace OpenMLTest
 
 			Mat3f result = matrixA + matrixB;
 
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 
@@ -716,7 +716,7 @@ namespace OpenMLTest
 
 			Mat3f result = matrixA / 2.0f;
 
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(expected[i], result[i], L"Wrong number", LINE_INFO());
 		}
 
@@ -735,7 +735,7 @@ namespace OpenMLTest
 
 			matrixA /= 2.0f;
 
-			for (size_t i = 0; i < MAT3_SIZE; i++)
+			for (int i = 0; i < MAT3_SIZE; i++)
 				Assert::AreEqual(expected[i], matrixA[i], L"Wrong number", LINE_INFO());
 		}
 

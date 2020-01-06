@@ -14,10 +14,16 @@ namespace OpenMLTest
 		{
 			DOP18 kdop = DOP18();
 
-			for (size_t i = 0; i < DOP18_ORIENTATIONS; i++)
+			for (int i = 0; i < 3; i++)
 			{
 				Assert::AreEqual(-0.5f, kdop.min[i], L"Wrong value.", LINE_INFO());
 				Assert::AreEqual(0.5f, kdop.max[i], L"Wrong value.", LINE_INFO());
+			}
+
+			for (int i = 3; i < DOP18_ORIENTATIONS; i++)
+			{
+				Assert::AreEqual(-0.375f, kdop.min[i], L"Wrong value.", LINE_INFO());
+				Assert::AreEqual(0.375f, kdop.max[i], L"Wrong value.", LINE_INFO());
 			}
 		}
 
@@ -26,13 +32,13 @@ namespace OpenMLTest
 			DOP18 kdop = DOP18();
 			Vec3f result = Vec3f(0.0f);
 
-			for (size_t i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++)
 				Assert::AreEqual(result[i], kdop.centerOfBoundingVolume()[i], L"Wrong value.", LINE_INFO());
 
 			kdop.translate(10.0f, 3.0f, 1.0f);
 			result = Vec3f(10.0f, 3.0f, 1.0f);
 
-			for (size_t i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++)
 				Assert::AreEqual(result[i], kdop.centerOfBoundingVolume()[i], L"Wrong value.", LINE_INFO());
 		}
 
@@ -44,22 +50,22 @@ namespace OpenMLTest
 			Assert::IsTrue(isCloseEnough(kdop.min[0], 9.5f), L"Wrong value.", LINE_INFO());
 			Assert::IsTrue(isCloseEnough(kdop.min[1], 2.5f), L"Wrong value.", LINE_INFO());
 			Assert::IsTrue(isCloseEnough(kdop.min[2], 0.5f), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(kdop.min[3], 9.9403f), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(kdop.min[4], 9.9403f), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(kdop.min[5], 2.6622f), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(kdop.min[6], 2.6622f), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(kdop.min[7], 9.5498f), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(kdop.min[8], 9.5498f), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(kdop.min[3], 10.0653f), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(kdop.min[4], 10.0653f), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(kdop.min[5], 2.7872f), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(kdop.min[6], 2.7872f), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(kdop.min[7], 9.6748f), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(kdop.min[8], 9.6748f), L"Wrong value.", LINE_INFO());
 			
 			Assert::IsTrue(isCloseEnough(kdop.max[0], 10.5f), L"Wrong value.", LINE_INFO());
 			Assert::IsTrue(isCloseEnough(kdop.max[1], 3.5f), L"Wrong value.", LINE_INFO());
 			Assert::IsTrue(isCloseEnough(kdop.max[2], 1.5f), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(kdop.max[3], 10.9403f), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(kdop.max[4], 10.9403f), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(kdop.max[5], 3.6622f), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(kdop.max[6], 3.6622f), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(kdop.max[7], 10.5498f), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(kdop.max[8], 10.5498f), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(kdop.max[3], 10.8153f), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(kdop.max[4], 10.8153f), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(kdop.max[5], 3.5372f), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(kdop.max[6], 3.5372f), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(kdop.max[7], 10.4248f), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(kdop.max[8], 10.4248f), L"Wrong value.", LINE_INFO());
 		}
 
 		TEST_METHOD(DOP18_scale)
@@ -67,16 +73,16 @@ namespace OpenMLTest
 			DOP18 kdop = DOP18();
 			kdop.scale(2.0f, 2.0f, 2.0f);
 
-			for (size_t i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++)
 			{
 				Assert::AreEqual(-1.0f, kdop.min[i], L"Wrong value.", LINE_INFO());
 				Assert::AreEqual(1.0f, kdop.max[i], L"Wrong value.", LINE_INFO());
 			}
 
-			for (size_t i = 3; i < DOP18_ORIENTATIONS; i++)
+			for (int i = 3; i < DOP18_ORIENTATIONS; i++)
 			{
-				Assert::IsTrue(isCloseEnough(kdop.min[i], -1.4142f), L"Wrong value.", LINE_INFO());
-				Assert::IsTrue(isCloseEnough(kdop.max[i], 1.4142f), L"Wrong value.", LINE_INFO());
+				Assert::IsTrue(isCloseEnough(kdop.min[i], -1.0606f), L"Wrong value.", LINE_INFO());
+				Assert::IsTrue(isCloseEnough(kdop.max[i], 1.0606f), L"Wrong value.", LINE_INFO());
 			}
 		}
 
@@ -89,7 +95,7 @@ namespace OpenMLTest
 
 			kdop1.rotate(float(degreesToRadians(15)), 1.0f, 1.0f, 1.0f);
 
-			for (size_t i = 0; i < DOP18_ORIENTATIONS; i++)
+			for (int i = 0; i < DOP18_ORIENTATIONS; i++)
 			{
 				Assert::AreEqual(kdop1.min[i], kdop2.min[i], L"Wrong value.", LINE_INFO());
 				Assert::AreEqual(kdop1.max[i], kdop2.max[i], L"Wrong value.", LINE_INFO());

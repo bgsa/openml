@@ -11221,26 +11221,26 @@ namespace OpenMLTest
 
 						Vec3f result = grid.findCell(point);
 
-						for (size_t i = 0; i < 3; i++)
+						for (int i = 0; i < 3; i++)
 							Assert::AreEqual(result[i], expected[i], L"Wrong value.", LINE_INFO());
 					}
 
 			point = Vec3f(12.0f, 1.0f, 34.0f);
 			result = grid.findCell(point);
 			expected = Vec3f(1.0f, 0.0f, 3.0f);
-			for (size_t i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++)
 				Assert::AreEqual(result[i], expected[i], L"Wrong value.", LINE_INFO());
 
 			point = Vec3f(-2.0f, -2.0f, -2.0f);
 			result = grid.findCell(point);
 			expected = Vec3f(-1.0f, -1.0f, -1.0f);
-			for (size_t i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++)
 				Assert::AreEqual(result[i], expected[i], L"Wrong value.", LINE_INFO());
 
 			point = Vec3f(-11.0f, -11.0f, -11.0f);
 			result = grid.findCell(point);
 			expected = Vec3f(-2.0f, -2.0f, -2.0f);
-			for (size_t i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++)
 				Assert::AreEqual(result[i], expected[i], L"Wrong value.", LINE_INFO());
 		}
 

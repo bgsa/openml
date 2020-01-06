@@ -39,6 +39,13 @@ namespace OpenML
 
 #define DECIMAL_BASE (10)
 
+#ifdef ENV_32BITS
+	#define SHIFT_BIT 1
+#elif ENV_64BITS
+	#define SHIFT_BIT 1i64
+#else
+	#error "Environment not 32 or 64-bit"
+#endif
 
 	///<summary>
 	///Fast multiplication by 2
@@ -46,7 +53,7 @@ namespace OpenML
 	template <typename T>
 	inline T API_INTERFACE multiplyBy2(T value)
 	{
-		return (value << 1);
+		return (value << SHIFT_BIT);
 	}
 	///<summary>
 	///Fast multiplication by 10
@@ -62,7 +69,7 @@ namespace OpenML
 	template <typename T>
 	inline T API_INTERFACE divideBy2(T value)
 	{
-		return (value >> 1);
+		return (value >> SHIFT_BIT);
 	}
 
 
@@ -109,7 +116,7 @@ namespace OpenML
 	///</summary>
 	inline int API_INTERFACE modifyBit(int value, int index, int bit)
 	{
-		return (value & ~(1 << index)) | ((bit << index) & (1 << index));
+		return (value & ~(SHIFT_BIT << index)) | ((bit << index) & (SHIFT_BIT << index));
 	}
 
 	///<summary>
@@ -133,14 +140,14 @@ namespace OpenML
 	///</summary>
 	inline int API_INTERFACE getBit(int value, int index)
 	{
-		return (value & (1 << index)) >> index;
+		return (value & (SHIFT_BIT << index)) >> index;
 	}
 	///<summary>
 	///GFet a bit of a integer value, given a index bit
 	///</summary>
 	inline int API_INTERFACE getBit(size_t value, int index)
 	{
-		return (value & (1 << index)) >> index;
+		return (value & (SHIFT_BIT << index)) >> index;
 	}
 
 	///<summary>

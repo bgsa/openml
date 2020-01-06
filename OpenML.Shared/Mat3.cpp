@@ -411,7 +411,7 @@ bool Mat3<T>::isIdentity() const
 {
 	Mat3<T> identityMatrix = Mat3<T>::identity();
 
-	for (size_t i = 0; i < MAT3_SIZE; i++)
+	for (int i = 0; i < MAT3_SIZE; i++)
 		if (values[i] != identityMatrix[i])
 			return false;
 
@@ -526,14 +526,14 @@ Mat3<T> Mat3<T>::operator/(T value)
 template <typename T>
 void Mat3<T>::operator/=(T value)
 {
-	for (size_t i = 0; i < MAT3_SIZE; i++)
+	for (int i = 0; i < MAT3_SIZE; i++)
 		values[i] /= value;
 }
 
 template <typename T>
 bool Mat3<T>::operator==(const Mat3<T>& matrix)
 {
-	for (size_t i = 0; i < MAT3_SIZE; i++)
+	for (int i = 0; i < MAT3_SIZE; i++)
 		if (values[i] != matrix[i])
 			return false;
 
@@ -543,7 +543,7 @@ bool Mat3<T>::operator==(const Mat3<T>& matrix)
 template <typename T>
 bool Mat3<T>::operator!=(const Mat3<T>& matrix)
 {
-	for (size_t i = 0; i < MAT3_SIZE; i++)
+	for (int i = 0; i < MAT3_SIZE; i++)
 		if (values[i] != matrix[i])
 			return true;
 
@@ -553,7 +553,7 @@ bool Mat3<T>::operator!=(const Mat3<T>& matrix)
 template <typename T>
 bool Mat3<T>::operator==(T value)
 {
-	for (size_t i = 0; i < MAT3_SIZE; i++)
+	for (int i = 0; i < MAT3_SIZE; i++)
 		if (values[i] != value)
 			return false;
 

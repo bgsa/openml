@@ -94,11 +94,11 @@ public:
 
 		//string content = printMatrix(upperMatrix, rowSize, colSize);
 
-		for (long row = rowSize - 1; row >= 0; row--)
+		for (int row = rowSize - 1; row >= 0; row--)
 		{			
 			result[row] = upperMatrix[row * colSize + colSize - 1];
 
-			for (size_t column = colSize - 1; column > size_t(row) + 1; column--)
+			for (int column = colSize - 1; column > size_t(row) + 1; column--)
 			{
 				result[row] -= upperMatrix[row * colSize + column - 1] * result[column - 1];
 			}

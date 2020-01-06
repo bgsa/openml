@@ -103,6 +103,11 @@ namespace OpenML
 		///</summary>
 		API_INTERFACE Vec3f* findIntersectionOnSegment(const Plane3D& plane) const;
 
+		/// <summary>
+		/// Find intersection RAY of line against a plane
+		/// </summary>
+		API_INTERFACE Vec3f* findIntersectionOnRay(const Plane3D& plane) const;
+
 		///<summary>
 		/// Get the closest point in the SEGMENT of line, given an arbitrary point
 		///</summary>

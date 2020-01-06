@@ -156,6 +156,20 @@ Vec3f* Line3D::findIntersectionOnSegment(const Plane3D& plane) const
 	return nullptr;
 }
 
+Vec3f* Line3D::findIntersectionOnRay(const Plane3D& plane) const
+{
+	Vec3f lineDirection = (point2 - point1).normalize();
+	float d = plane.getDcomponent();
+
+	// Ray = Point1 + t . lineDirection
+	// Plane: (n . X) = d
+	// put the Ray on the Plane (X), Compute the t value for the directed line ab intersecting the plane.
+	float t = -(plane.normalVector.dot(point1) + d) / plane.normalVector.dot(lineDirection);
+ 
+	Vec3f intersectionPoint = point1 + t * lineDirection;
+	return ALLOC_NEW(Vec3f)(intersectionPoint);
+}
+
 DetailedCollisionStatus<float> Line3D::findIntersectionOnRay(const Sphere& sphere) const
 {
 	Vec3f lineDirection = direction();

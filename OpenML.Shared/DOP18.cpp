@@ -5,22 +5,22 @@ DOP18::DOP18()
 	min[0] = -0.5f;
 	min[1] = -0.5f;
 	min[2] = -0.5f;
-	min[3] = -0.5f;
-	min[4] = -0.5f;
-	min[5] = -0.5f;
-	min[6] = -0.5f;
-	min[7] = -0.5f;
-	min[8] = -0.5f;
+	min[3] = -0.375f;
+	min[4] = -0.375f;
+	min[5] = -0.375f;
+	min[6] = -0.375f;
+	min[7] = -0.375f;
+	min[8] = -0.375f;
 
 	max[0] = 0.5f;
 	max[1] = 0.5f;
 	max[2] = 0.5f;
-	max[3] = 0.5f;
-	max[4] = 0.5f;
-	max[5] = 0.5f;
-	max[6] = 0.5f;
-	max[7] = 0.5f;
-	max[8] = 0.5f;
+	max[3] = 0.375f;
+	max[4] = 0.375f;
+	max[5] = 0.375f;
+	max[6] = 0.375f;
+	max[7] = 0.375f;
+	max[8] = 0.375f;
 }
 
 Vec3f DOP18::centerOfBoundingVolume()

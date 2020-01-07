@@ -87,9 +87,11 @@ Vec3f* Line3D::findIntersection(const Line3D& line2) const
 	float denominador = dAcrossB.squaredLength();
 
 	float s = numerador / denominador;
+	int valueSign = sign(s);
+	s = std::fabsf(s);
 
-	if (s >= 0 && s <= 1)
-		return ALLOC_NEW(Vec3f)(da * s + point1);
+	if (s >= 0.0f && s <= 1.0f)
+		return ALLOC_NEW(Vec3f)(da * s * valueSign + point1);
 
 	return nullptr;
 }

@@ -39,6 +39,14 @@ namespace OpenML
 	class DOP18
 		: public BoundingVolumeDOP18
 	{
+	private:
+		void fixTopDegeneration(const Plane3D* planes);
+		void fixBottomDegeneration(const Plane3D* planes);
+		void fixLeftDegeneration(const Plane3D* planes);
+		void fixRightDegeneration(const Plane3D* planes);
+		void fixFrontDegeneration(const Plane3D* planes);
+		void fixDepthDegeneration(const Plane3D* planes);
+
 	public:
 		float min[DOP18_ORIENTATIONS];
 		float max[DOP18_ORIENTATIONS];
@@ -81,41 +89,7 @@ namespace OpenML
 		/// <summary>
 		/// Get the k-DOP planes
 		/// </summary>
-		API_INTERFACE inline Plane3D* planes()
-		{
-			const Vec3f* n = normals();
-
-			Plane3D* result = ALLOC_NEW_ARRAY(Plane3D, 18) {
-				Plane3D(Vec3f(min[0], 0.0f, 0.0f), n[0]), // left
-					Plane3D(Vec3f(max[0], 0.0f, 0.0f), n[1]), // right
-
-					Plane3D(Vec3f(0.0f, max[1], 0.0f), n[2]), // up
-					Plane3D(Vec3f(0.0f, min[1], 0.0f), n[3]), // down
-
-					Plane3D(Vec3f(0.0f, 0.0f, min[2]), n[4]), // front
-					Plane3D(Vec3f(0.0f, 0.0f, max[2]), n[5]), // depth
-
-					Plane3D(Vec3f(min[3], max[3], 0.0f), n[6]), // up-left
-					Plane3D(Vec3f(max[3], min[3], 0.0f), n[7]), // down-right
-
-					Plane3D(Vec3f(max[4], max[4], 0.0f), n[8]), // up-right
-					Plane3D(Vec3f(min[4], min[4], 0.0f), n[9]), // down-left
-
-					Plane3D(Vec3f(0.0f, max[5], min[5]), n[10]), // up-front
-					Plane3D(Vec3f(0.0f, min[5], max[5]), n[11]), // down-depth
-
-					Plane3D(Vec3f(0.0f, max[6], max[6]), n[12]), // up-depth
-					Plane3D(Vec3f(0.0f, min[6], min[6]), n[13]), // down-front
-
-					Plane3D(Vec3f(min[7], 0.0f, max[7]), n[14]), // left-depth
-					Plane3D(Vec3f(max[7], 0.0f, min[7]), n[15]), // right-front
-
-					Plane3D(Vec3f(max[8], 0.0f, max[8]), n[16]), // right-depth
-					Plane3D(Vec3f(min[8], 0.0f, min[8]), n[17]), // left-front
-			};
-
-			return result;
-		}
+		API_INTERFACE inline Plane3D* planes();
 
 		///<summary>
 		/// Get the center of k-DOP bounding volumne
@@ -146,6 +120,11 @@ namespace OpenML
 		/// Check collision with another k-DOP
 		/// </summary>
 		API_INTERFACE CollisionStatus collisionStatus(const DOP18& kDop);
+
+		/// <summary>
+		/// Fix degenerated 18-DOP pulling their planes on the right position
+		/// </summary>
+		API_INTERFACE void fixDegenerations();
 
 	};
 

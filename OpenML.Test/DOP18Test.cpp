@@ -50,39 +50,45 @@ namespace OpenMLTest
 			Assert::IsTrue(isCloseEnough(kdop.min[0], 9.5f), L"Wrong value.", LINE_INFO());
 			Assert::IsTrue(isCloseEnough(kdop.min[1], 2.5f), L"Wrong value.", LINE_INFO());
 			Assert::IsTrue(isCloseEnough(kdop.min[2], 0.5f), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(kdop.min[3], 10.0653f), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(kdop.min[4], 10.0653f), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(kdop.min[5], 2.7872f), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(kdop.min[6], 2.7872f), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(kdop.min[7], 9.6748f), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(kdop.min[8], 9.6748f), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(kdop.min[3], -0.375f), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(kdop.min[4], -0.375f), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(kdop.min[5], -0.375f), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(kdop.min[6], -0.375f), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(kdop.min[7], -0.375f), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(kdop.min[8], -0.375f), L"Wrong value.", LINE_INFO());
 			
 			Assert::IsTrue(isCloseEnough(kdop.max[0], 10.5f), L"Wrong value.", LINE_INFO());
 			Assert::IsTrue(isCloseEnough(kdop.max[1], 3.5f), L"Wrong value.", LINE_INFO());
 			Assert::IsTrue(isCloseEnough(kdop.max[2], 1.5f), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(kdop.max[3], 10.8153f), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(kdop.max[4], 10.8153f), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(kdop.max[5], 3.5372f), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(kdop.max[6], 3.5372f), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(kdop.max[7], 10.4248f), L"Wrong value.", LINE_INFO());
-			Assert::IsTrue(isCloseEnough(kdop.max[8], 10.4248f), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(kdop.max[3], 0.375f), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(kdop.max[4], 0.375f), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(kdop.max[5], 0.375f), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(kdop.max[6], 0.375f), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(kdop.max[7], 0.375f), L"Wrong value.", LINE_INFO());
+			Assert::IsTrue(isCloseEnough(kdop.max[8], 0.375f), L"Wrong value.", LINE_INFO());
 		}
 
-		TEST_METHOD(DOP18_scale)
+		TEST_METHOD(DOP18_scale_withFixing)
 		{
 			DOP18 kdop = DOP18();
 			kdop.scale(2.0f, 2.0f, 2.0f);
 
 			for (int i = 0; i < 3; i++)
 			{
-				Assert::AreEqual(-1.0f, kdop.min[i], L"Wrong value.", LINE_INFO());
-				Assert::AreEqual(1.0f, kdop.max[i], L"Wrong value.", LINE_INFO());
+				Assert::AreEqual(-0.75f, kdop.min[i], L"Wrong value.", LINE_INFO());
+				Assert::AreEqual(0.75f, kdop.max[i], L"Wrong value.", LINE_INFO());
 			}
+		}
 
-			for (int i = 3; i < DOP18_ORIENTATIONS; i++)
+		TEST_METHOD(DOP18_scale_withoutFixing)
+		{
+			DOP18 kdop = DOP18();
+			kdop.scale(1.1f, 1.1f, 1.1f);
+
+			for (int i = 0; i < 3; i++)
 			{
-				Assert::IsTrue(isCloseEnough(kdop.min[i], -1.0606f), L"Wrong value.", LINE_INFO());
-				Assert::IsTrue(isCloseEnough(kdop.max[i], 1.0606f), L"Wrong value.", LINE_INFO());
+				Assert::AreEqual(-0.75f, kdop.min[i], L"Wrong value.", LINE_INFO());
+				Assert::AreEqual(0.75f, kdop.max[i], L"Wrong value.", LINE_INFO());
 			}
 		}
 
@@ -109,6 +115,26 @@ namespace OpenMLTest
 
 			kdop2.translate(10.0f, 3.0f, 1.0f);
 			CollisionStatus result = kdop1.collisionStatus(kdop2);
+			Assert::AreEqual(CollisionStatus::OUTSIDE, result, L"Wrong value.", LINE_INFO());
+
+			kdop2 = DOP18();
+			kdop2.translate(1.1f, 0.0f, 0.0f);
+			result = kdop1.collisionStatus(kdop2);
+			Assert::AreEqual(CollisionStatus::OUTSIDE, result, L"Wrong value.", LINE_INFO());
+
+			kdop2 = DOP18();
+			kdop2.translate(0.0f, 1.1f, 0.0f);
+			result = kdop1.collisionStatus(kdop2);
+			Assert::AreEqual(CollisionStatus::OUTSIDE, result, L"Wrong value.", LINE_INFO());
+
+			kdop2 = DOP18();
+			kdop2.translate(0.0f, -1.1f, 0.0f);
+			result = kdop1.collisionStatus(kdop2);
+			Assert::AreEqual(CollisionStatus::OUTSIDE, result, L"Wrong value.", LINE_INFO());
+
+			kdop2 = DOP18();
+			kdop2.translate(0.0f, 0.0f, -1.1f);
+			result = kdop1.collisionStatus(kdop2);
 			Assert::AreEqual(CollisionStatus::OUTSIDE, result, L"Wrong value.", LINE_INFO());
 
 			kdop2 = DOP18();

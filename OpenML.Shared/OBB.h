@@ -20,6 +20,14 @@ namespace OpenML
 		OBB(const Vec3f& center = Vec3f(0.0f));
 
 		/// <summary>
+		/// Not Implemented !!
+		/// </summary>
+		API_INTERFACE Vec3f centerOfBoundingVolume() const override
+		{
+			return Vec3f(0.0f); // Not Implemented
+		}
+
+		/// <summary>
 		/// Translate the OBB
 		/// </summary>
 		API_INTERFACE OBB* translate(float xAxis, float yAxis, float zAxis) override;

@@ -42,7 +42,7 @@ DOP18::DOP18()
 	max[8] = 0.375f;
 }
 
-Vec3f DOP18::centerOfBoundingVolume()
+Vec3f DOP18::centerOfBoundingVolume() const
 {
 	return Vec3f(
 		(max[0] + min[0]) * 0.5f,
@@ -72,9 +72,46 @@ DOP18* DOP18::rotate(float angleInRadians, float xAxis, float yAxis, float zAxis
 
 CollisionStatus DOP18::collisionStatus(const DOP18& kDop)
 {
-	for (int i = 0; i < DOP18_ORIENTATIONS; i++) 
-		if (this->min[i] > kDop.max[i] || this->max[i] < kDop.min[i])
+	// check aligned-axis orientation
+	for (int i = 0; i < 3; i++)
+		if (min[i] > kDop.max[i] || max[i] < kDop.min[i])
 			return CollisionStatus::OUTSIDE;
+
+	Vec3f center = centerOfBoundingVolume();
+	Vec3f kDopCenter = kDop.centerOfBoundingVolume();
+
+	float distanceFromOriginXY = center.x * center.x + center.y * center.y;
+	float distanceFromOriginKDopXY = kDopCenter.x * kDopCenter.x + kDopCenter.y * kDopCenter.y;
+
+	float distanceFromOriginXZ = center.x * center.x + center.z * center.z;
+	float distanceFromOriginKDopXZ = kDopCenter.x * kDopCenter.x + kDopCenter.z * kDopCenter.z;
+
+	float distanceFromOriginYZ = center.y * center.y + center.z * center.z;
+	float distanceFromOriginKDopYZ = kDopCenter.y * kDopCenter.y + kDopCenter.z * kDopCenter.z;
+
+	if (min[3] + distanceFromOriginXY > kDop.max[3] + distanceFromOriginKDopXY
+		|| max[3] + distanceFromOriginXY < kDop.min[3] + distanceFromOriginKDopXY)  // up-left
+		return CollisionStatus::OUTSIDE;
+
+	if (min[4] + distanceFromOriginXY > kDop.max[4] + distanceFromOriginKDopXY
+		|| max[4] + distanceFromOriginXY < kDop.min[4] + distanceFromOriginKDopXY) // down-right
+		return CollisionStatus::OUTSIDE;
+
+	if (min[5] + distanceFromOriginXZ > kDop.max[5] + distanceFromOriginKDopXZ
+		|| max[5] + distanceFromOriginXZ < kDop.min[5] + distanceFromOriginKDopXZ) // up-front
+		return CollisionStatus::OUTSIDE;
+
+	if (min[6] + distanceFromOriginXZ > kDop.max[6] + distanceFromOriginXZ
+		|| max[6] + distanceFromOriginKDopXZ < kDop.min[6] + distanceFromOriginKDopXZ) // down-depth
+		return CollisionStatus::OUTSIDE;
+
+	if (min[7] + distanceFromOriginYZ > kDop.max[7] + distanceFromOriginKDopYZ
+		|| max[7] + distanceFromOriginYZ < kDop.min[7] + distanceFromOriginKDopYZ) // left-depth
+		return CollisionStatus::OUTSIDE;
+
+	if (min[8] + distanceFromOriginXZ > kDop.max[8] + distanceFromOriginKDopYZ
+		|| max[8] + distanceFromOriginXZ < kDop.min[8] + distanceFromOriginKDopYZ) // right-front
+		return CollisionStatus::OUTSIDE;
 
 	return CollisionStatus::INSIDE;
 }

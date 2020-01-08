@@ -94,7 +94,7 @@ namespace OpenML
 		///<summary>
 		/// Get the center of k-DOP bounding volumne
 		///</summary>
-		API_INTERFACE inline Vec3f centerOfBoundingVolume() override;
+		API_INTERFACE inline Vec3f centerOfBoundingVolume() const override;
 
 		/// <summary>
 		/// Translate the k-DOP

@@ -33,7 +33,7 @@ Vec3f AABB::center() const
 	return (maxPoint + minPoint) * 0.5f;
 }
 
-Vec3f AABB::centerOfBoundingVolume()
+Vec3f AABB::centerOfBoundingVolume() const
 {
 	return center();
 }

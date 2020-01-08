@@ -15,7 +15,7 @@ namespace OpenML
 
 		ParticleSystem* particleSystem = NULL;
 		
-		API_INTERFACE virtual Vec3f centerOfBoundingVolume();
+		API_INTERFACE virtual Vec3f centerOfBoundingVolume() const = 0;
 
 		API_INTERFACE virtual T* translate(float xAxis, float yAxis, float zAxis) = 0;
 		API_INTERFACE virtual T* rotate(float angleInRadians, float xAxis, float yAxis, float zAxis) = 0;

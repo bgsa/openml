@@ -45,7 +45,7 @@ namespace OpenML
 		///<summary>
 		///Get the center of bounding volumne (AABB)
 		///</summary>
-		API_INTERFACE inline Vec3f centerOfBoundingVolume() override;
+		API_INTERFACE inline Vec3f centerOfBoundingVolume() const override;
 
 		///<summary>
 		///Get the SQUARED distance from a point and AABB

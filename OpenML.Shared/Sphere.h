@@ -53,7 +53,7 @@ namespace OpenML
 		/// <summary>
 		/// Get the center of sphere
 		/// </summary>
-		API_INTERFACE inline Vec3f centerOfBoundingVolume() override {
+		API_INTERFACE inline Vec3f centerOfBoundingVolume() const override {
 			return center;
 		}
 

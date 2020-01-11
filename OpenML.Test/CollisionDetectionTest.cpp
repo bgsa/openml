@@ -1022,7 +1022,7 @@ namespace OpenMLTest
 
 	public:
 
-		TEST_METHOD(CollisionDetection_bruteForce_Test)
+		TEST_METHOD(CollisionDetection_bruteForce_AABB_Test)
 		{
 			CollisionDetection collisionDetection;
 			size_t count = 1000;
@@ -1038,6 +1038,28 @@ namespace OpenMLTest
 			Assert::AreEqual(size_t(9), result.size(), L"wrong value", LINE_INFO());
 
 			ALLOC_RELEASE(aabbs);
+		}
+
+		TEST_METHOD(CollisionDetection_bruteForce_kDop_Test)
+		{
+			CollisionDetection collisionDetection;
+			size_t count = 5;
+			DOP18 kdops[5] = { DOP18(), DOP18(), DOP18(), DOP18(), DOP18() };
+
+			kdops[0].translate(0.0f, 0.0f, 2.0f);
+			kdops[1].translate(10.0f, 1.0f, 0.0f);
+			kdops[2].translate(11.0f, 2.0f, 1.0f);
+			kdops[3].translate(-10.0f, 0.0f, 0.0f);
+			kdops[4].translate(10.0f, 1.5f, 0.0f);
+
+			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
+
+			std::vector<std::pair<DOP18, DOP18>> result = collisionDetection.bruteForce(kdops, count);
+
+			std::chrono::high_resolution_clock::time_point currentTime2 = std::chrono::high_resolution_clock::now();
+			std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
+
+			Assert::AreEqual(size_t(1), result.size(), L"wrong value", LINE_INFO());
 		}
 
 	};

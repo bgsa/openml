@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SWEEP_AND_PRUNE_HEADER
+#define SWEEP_AND_PRUNE_HEADER
 
 #include "OpenML.h"
 #include "AABB.h"
@@ -17,18 +18,18 @@ namespace OpenML
 	class SweepAndPruneResult
 	{
 	public:
-		size_t* aabbIndexes;
+		size_t* indexes;
 		size_t count;
 
-		SweepAndPruneResult(size_t* aabbIndexes,  size_t count)
+		SweepAndPruneResult(size_t* indexes,  size_t count)
 		{
-			this->aabbIndexes = aabbIndexes;
+			this->indexes = indexes;
 			this->count = count;
 		}
 
 		~SweepAndPruneResult()
 		{
-			ALLOC_RELEASE(aabbIndexes);
+			ALLOC_RELEASE(indexes);
 		}
 	};
 
@@ -60,3 +61,5 @@ namespace OpenML
 	};
 
 }
+
+#endif // SWEEP_AND_PRUNE_HEADER

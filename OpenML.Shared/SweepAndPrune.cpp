@@ -38,7 +38,7 @@ void erase_element(T* array, size_t count, size_t index)
 
 SweepAndPruneResult SweepAndPrune::findCollisions(AABB* aabbs, size_t count)
 {
-	size_t* aabbIndexes = ALLOC_ARRAY(size_t, count*2);
+	size_t* indexes = ALLOC_ARRAY(size_t, count*2);
 	size_t aabbIndex = 0;
 
 	size_t* activeListIndex = ALLOC_ARRAY(size_t, count);
@@ -65,8 +65,8 @@ SweepAndPruneResult SweepAndPrune::findCollisions(AABB* aabbs, size_t count)
 					&&(aabbs[i].maxPoint.y >= aabbs[activeListAABBIndex].minPoint.y && aabbs[i].minPoint.y <= aabbs[activeListAABBIndex].maxPoint.y)
 					&&(aabbs[i].maxPoint.z >= aabbs[activeListAABBIndex].minPoint.z && aabbs[i].minPoint.z <= aabbs[activeListAABBIndex].maxPoint.z))
 				{
-					aabbIndexes[aabbIndex++] = i;
-					aabbIndexes[aabbIndex++] = activeListAABBIndex;
+					indexes[aabbIndex++] = i;
+					indexes[aabbIndex++] = activeListAABBIndex;
 				}
 			}
 		}
@@ -75,7 +75,7 @@ SweepAndPruneResult SweepAndPrune::findCollisions(AABB* aabbs, size_t count)
 	}
 
 	ALLOC_RELEASE(activeListIndex);
-	return SweepAndPruneResult(aabbIndexes, aabbIndex >> 1);
+	return SweepAndPruneResult(indexes, aabbIndex >> 1);
 }
 
 #ifdef OPENCL_ENABLED
@@ -109,7 +109,7 @@ SweepAndPruneResult SweepAndPrune::findCollisionsGPU(GpuDevice* gpu, AABB* aabbs
 	cl_mem indexesBuffer = buffers[1];
 
 	GpuCommand* command = gpu->commandManager->createCommand();
-	size_t* aabbIndexes = command
+	size_t* indexes = command
 		->setInputParameter((float*)aabbs, sizeof(AABB) * count)
 		->setInputParameter(&count, SIZEOF_UINT)
 		->setInputParameter(&globalIndex, SIZEOF_UINT)
@@ -124,7 +124,7 @@ SweepAndPruneResult SweepAndPrune::findCollisionsGPU(GpuDevice* gpu, AABB* aabbs
 	command->~GpuCommand();
 	gpu->releaseBuffer(indexesBuffer);
 	gpu->releaseBuffer(elementsBuffer);
-	return SweepAndPruneResult(aabbIndexes, globalIndex);
+	return SweepAndPruneResult(indexes, globalIndex);
 }
 
 #endif

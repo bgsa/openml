@@ -80,14 +80,14 @@ CollisionStatus DOP18::collisionStatus(const DOP18& kDop)
 	Vec3f center = centerOfBoundingVolume();
 	Vec3f kDopCenter = kDop.centerOfBoundingVolume();
 
-	float distanceFromOriginXY = center.x * center.x + center.y * center.y;
-	float distanceFromOriginKDopXY = kDopCenter.x * kDopCenter.x + kDopCenter.y * kDopCenter.y;
+	float distanceFromOriginXY = std::sqrt(center.x * center.x + center.y * center.y);
+	float distanceFromOriginKDopXY = std::sqrt(kDopCenter.x * kDopCenter.x + kDopCenter.y * kDopCenter.y);
 
-	float distanceFromOriginXZ = center.x * center.x + center.z * center.z;
-	float distanceFromOriginKDopXZ = kDopCenter.x * kDopCenter.x + kDopCenter.z * kDopCenter.z;
+	float distanceFromOriginXZ = std::sqrt(center.x * center.x + center.z * center.z);
+	float distanceFromOriginKDopXZ = std::sqrt(kDopCenter.x * kDopCenter.x + kDopCenter.z * kDopCenter.z);
 
-	float distanceFromOriginYZ = center.y * center.y + center.z * center.z;
-	float distanceFromOriginKDopYZ = kDopCenter.y * kDopCenter.y + kDopCenter.z * kDopCenter.z;
+	float distanceFromOriginYZ = std::sqrt(center.y * center.y + center.z * center.z);
+	float distanceFromOriginKDopYZ = std::sqrt(kDopCenter.y * kDopCenter.y + kDopCenter.z * kDopCenter.z);
 
 	if (min[3] + distanceFromOriginXY > kDop.max[3] + distanceFromOriginKDopXY
 		|| max[3] + distanceFromOriginXY < kDop.min[3] + distanceFromOriginKDopXY)  // up-left
@@ -109,8 +109,8 @@ CollisionStatus DOP18::collisionStatus(const DOP18& kDop)
 		|| max[7] + distanceFromOriginYZ < kDop.min[7] + distanceFromOriginKDopYZ) // left-depth
 		return CollisionStatus::OUTSIDE;
 
-	if (min[8] + distanceFromOriginXZ > kDop.max[8] + distanceFromOriginKDopYZ
-		|| max[8] + distanceFromOriginXZ < kDop.min[8] + distanceFromOriginKDopYZ) // right-front
+	if (min[8] + distanceFromOriginXZ > kDop.max[8] + distanceFromOriginKDopXZ
+		|| max[8] + distanceFromOriginXZ < kDop.min[8] + distanceFromOriginKDopXZ) // right-front
 		return CollisionStatus::OUTSIDE;
 
 	return CollisionStatus::INSIDE;

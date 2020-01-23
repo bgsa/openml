@@ -8,25 +8,25 @@ __kernel void findMinMax(
     __constant size_t* offsetSum
     )
 {
-    __private size_t elementsPerWorkItem = *n / get_global_size(0);
+    __private size_t elementsPerWorkItem = max((int) (*n / get_global_size(0)), 1);
     __private size_t threadIndex = get_global_id(0);
     __private size_t inputIndex = (elementsPerWorkItem * threadIndex);
     __private size_t offset = elementsPerWorkItem;
 
-    __private float min = FLT_MAX;
-    __private float max = -FLT_MAX;
+    __private float minValue = FLT_MAX;
+    __private float maxValue = -FLT_MAX;
 
     for( size_t i = 0 ; i < elementsPerWorkItem ; i++ )
     {
-        if( min > input[(inputIndex + i) * OFFSET_GLOBAL] )
-            min = input[(inputIndex + i) * OFFSET_GLOBAL];
+        if( minValue > input[(inputIndex + i) * OFFSET_GLOBAL] )
+            minValue = input[(inputIndex + i) * OFFSET_GLOBAL];
 
-        if( max < input[(inputIndex + i) * OFFSET_GLOBAL] )
-            max = input[(inputIndex + i) * OFFSET_GLOBAL];
+        if( maxValue < input[(inputIndex + i) * OFFSET_GLOBAL] )
+            maxValue = input[(inputIndex + i) * OFFSET_GLOBAL];
     }
 
-    input[inputIndex * OFFSET_GLOBAL] = min;
-    input[(inputIndex + 1) * OFFSET_GLOBAL] = max;
+    input[inputIndex * OFFSET_GLOBAL] = minValue;
+    input[(inputIndex + 1) * OFFSET_GLOBAL] = maxValue;
 
     barrier(CLK_GLOBAL_MEM_FENCE);
 
@@ -34,16 +34,16 @@ __kernel void findMinMax(
     {
         if (threadIndex % i == 0)
         {
-            if (min > input[(inputIndex + offset) * OFFSET_GLOBAL]) 
+            if (minValue > input[(inputIndex + offset) * OFFSET_GLOBAL]) 
             {
-                min = input[(inputIndex + offset) * OFFSET_GLOBAL];
-                input[inputIndex * OFFSET_GLOBAL] = min;
+                minValue = input[(inputIndex + offset) * OFFSET_GLOBAL];
+                input[inputIndex * OFFSET_GLOBAL] = minValue;
             }
 
-            if (max < input[(inputIndex + offset + 1) * OFFSET_GLOBAL]) 
+            if (maxValue < input[(inputIndex + offset + 1) * OFFSET_GLOBAL]) 
             {
-                max = input[(inputIndex + offset + 1) * OFFSET_GLOBAL];
-                input[(inputIndex + 1) * OFFSET_GLOBAL] = max;
+                maxValue = input[(inputIndex + offset + 1) * OFFSET_GLOBAL];
+                input[(inputIndex + 1) * OFFSET_GLOBAL] = maxValue;
             }
 
             offset <<= 1;
@@ -54,8 +54,8 @@ __kernel void findMinMax(
 
     if (get_local_id(0) == 0) 
     {
-        output[get_group_id(0)] = min;
-        output[get_group_id(0) + get_num_groups(0)] = max;
+        output[get_group_id(0)] = minValue;
+        output[get_group_id(0) + get_num_groups(0)] = maxValue;
     }
 }
 
@@ -70,13 +70,13 @@ __kernel void findMax(
     __private size_t inputIndex = elementsPerWorkItem * threadIndex;
     __private size_t offset = elementsPerWorkItem;
 
-    __private float max = -FLT_MAX;
+    __private float maxValue = -FLT_MAX;
 
     for( size_t i = 0 ; i < elementsPerWorkItem ; i++ )
-        if( max < input[inputIndex + i] )
-            max = input[inputIndex + i];
+        if( maxValue < input[inputIndex + i] )
+            maxValue = input[inputIndex + i];
 
-    input[inputIndex] = max;
+    input[inputIndex] = maxValue;
 
     barrier(CLK_GLOBAL_MEM_FENCE);
 
@@ -84,10 +84,10 @@ __kernel void findMax(
     {
         if (threadIndex % i == 0)
         {
-            if (max < input[inputIndex + offset]) 
+            if (maxValue < input[inputIndex + offset]) 
             {
-                max = input[inputIndex + offset];
-                input[inputIndex] = max;
+                maxValue = input[inputIndex + offset];
+                input[inputIndex] = maxValue;
             }
 
             offset <<= 1;
@@ -97,5 +97,5 @@ __kernel void findMax(
     }
 
     if (get_local_id(0) == 0) 
-        output[get_group_id(0)] = max;
+        output[get_group_id(0)] = maxValue;
 }

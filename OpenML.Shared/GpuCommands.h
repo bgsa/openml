@@ -4,6 +4,7 @@
 #define GPU_COMMANDS
 
 #include "OpenML.h"
+#include <algorithm>
 #include "GpuContext.h"
 #include "GpuCommand.h"
 #include "IFileManager.h"

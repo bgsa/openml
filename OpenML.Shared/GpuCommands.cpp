@@ -43,9 +43,9 @@ cl_mem gpuCommands_findMaxGPUBuffer(GpuDevice* gpu, float* input, size_t n, size
 float* gpuCommands_findMinMaxGPU(GpuDevice* gpu, float* input, size_t n, size_t strider, size_t offset)
 {
 	float* output = ALLOC_ARRAY(float, 2);
-	const size_t globalWorkSize[3] = { gpu->maxWorkGroupSize, 0 , 0 };
-	const size_t localWorkSize[3] = { nextPowOf2(n) / gpu->maxWorkGroupSize, 0, 0 };
-	const size_t groupCount = gpu->maxWorkGroupSize / localWorkSize[0];
+	const size_t globalWorkSize[3] = { nextPowOf2(std::min(gpu->maxWorkGroupSize, n)), 0 , 0 };
+	const size_t localWorkSize[3] = { std::max(nextPowOf2(n) / gpu->maxWorkGroupSize, size_t(1)), 0, 0 };
+	const size_t groupCount = globalWorkSize[0] / localWorkSize[0];
 
 	cl_mem outputBuffer = gpu->createBuffer(SIZEOF_FLOAT * groupCount * 2, CL_MEM_READ_WRITE);
 
@@ -63,7 +63,7 @@ float* gpuCommands_findMinMaxGPU(GpuDevice* gpu, float* input, size_t n, size_t 
 
 	output[0] = FLT_MAX;
 	output[1] = -FLT_MAX;
-	for (size_t i = 0; i < groupCount; i++)   // check the remaining itens provided from GPU
+	for (size_t i = 0; i < groupCount - 1; i++)   // check the remaining itens provided from GPU
 	{
 		if (output[0] > outputGPU[i])
 			output[0] = outputGPU[i];

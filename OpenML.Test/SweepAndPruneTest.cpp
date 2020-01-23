@@ -1115,8 +1115,6 @@ namespace OpenMLTest
 			GpuDevice* gpu = context->defaultDevice;
 			SweepAndPrune::init(gpu);
 
-			GpuCommandManager* commandManager = context->defaultDevice->commandManager;
-			
 			//const size_t count = 1000;
 			const size_t count = (size_t) std::pow(2.0, 17.0);
 			AABB* aabbs1 = getRandomAABBs(count, 1000);

@@ -176,3 +176,56 @@ SweepAndPruneResult SweepAndPruneKdop::findCollisions(DOP18* kdops, size_t count
 	sapMutex.unlock();
 	return SweepAndPruneResult(newIndexes, divideBy2(newKdopsCount));
 }
+
+#if OPENCL_ENABLED
+
+static size_t sapKdopProgramIndex = UINT_MAX;
+
+void SweepAndPruneKdop::init(GpuDevice* gpu)
+{
+	if (sapKdopProgramIndex != UINT_MAX)
+		return;
+
+	AlgorithmSorting::init(gpu);
+
+	IFileManager* fileManager = Factory::getFileManagerInstance();
+
+	std::string source = fileManager->readTextFile("SweepAndPruneKdop.cl");
+
+	sapKdopProgramIndex = gpu->commandManager->cacheProgram(source.c_str(), sizeof(char) * source.length());
+
+	delete fileManager;
+}
+
+SweepAndPruneResult SweepAndPruneKdop::findCollisions(GpuDevice* gpu, DOP18* kdops, size_t count)
+{
+	const size_t globalWorkSize[3] = { gpu->maxWorkGroupSize, 0, 0 };
+	const size_t localWorkSize[3] = { nextPowOf2(count) / gpu->maxWorkGroupSize, 0, 0 };
+	size_t globalIndex = 0;
+
+	cl_mem* buffers = AlgorithmSorting::radixGPUBuffer(gpu, (float*)&kdops[0], count, 20, 2);
+	cl_mem elementsBuffer = buffers[0];
+	cl_mem indexesBuffer = buffers[1];
+
+	GpuCommand* command = gpu->commandManager->createCommand();
+	size_t* indexes = command
+		->setInputParameter((float*)kdops, sizeof(DOP18) * count)
+		->setInputParameter(&count, SIZEOF_UINT)
+		->setInputParameter(&globalIndex, SIZEOF_UINT)
+		->setInputParameter(buffers[1], SIZEOF_UINT * count)
+		->setOutputParameter(SIZEOF_UINT * count * 2)
+		->buildFromProgram(gpu->commandManager->cachedPrograms[sapKdopProgramIndex], "sweepAndPrune")
+		->execute(1, globalWorkSize, localWorkSize)
+		->fetch<size_t>();
+
+	globalIndex = divideBy2(*command->fetchInOutParameter<size_t>(2));
+
+	command->~GpuCommand();
+	gpu->releaseBuffer(indexesBuffer);
+	gpu->releaseBuffer(elementsBuffer);
+	return SweepAndPruneResult(indexes, globalIndex);
+
+	return SweepAndPruneResult(NULL, 0);
+}
+
+#endif

@@ -1,4 +1,6 @@
 #define OVERLOAD  __attribute__((overloadable))
+#define THREAD_ID get_global_id(0)
+#define THREAD_COUNT get_global_size(0)
 
 #define OFFSET_GLOBAL (*strider) + *offset
 
@@ -17,12 +19,16 @@ size_t OVERLOAD digit(int value, size_t index)
 
 /// Init the indexes array of elements
 __kernel void initIndexes(
-    __global   size_t* elementsPerWorkItem_global,
+    __constant size_t* elementsPerWorkItem_global,
+    __constant size_t* inputLength,
     __global   size_t* indexes
     )
 {
+    if (THREAD_ID + 1 > *inputLength) // guard
+        return;
+
     __private size_t elementsPerWorkItem = *elementsPerWorkItem_global;
-    __private size_t inputThreadIndex = get_global_id(0) * elementsPerWorkItem;
+    __private size_t inputThreadIndex = THREAD_ID * elementsPerWorkItem;
 
     for (size_t i = 0 ; i < elementsPerWorkItem ; i++)
         indexes[inputThreadIndex + i] = inputThreadIndex + i;
@@ -30,6 +36,7 @@ __kernel void initIndexes(
 
 __kernel void count(
     __global   float * input,
+    __constant size_t* inputLength,
     __constant size_t* elementsPerWorkItem, 
     __constant size_t* digitIndex,
     __constant bool  * useExpoent,
@@ -39,6 +46,9 @@ __kernel void count(
     __constant size_t* offset
     )
 {
+    if (THREAD_ID + 1 > *inputLength) // guard
+        return;
+
     __private size_t bucket[10];
     __private size_t currentDigit = 0;
     __private size_t globalBucketOffset = 10 * get_global_id(0);
@@ -67,11 +77,15 @@ __kernel void count(
 __kernel void prefixScan(
     __constant size_t* previousOffsetTable,
     __global   size_t* nextOffsetTable,
-    __constant size_t* offset_global
+    __constant size_t* offset_parameter,
+    __global   size_t* inputLength
     )
 {
-    __private size_t globalBufferIndex = 10 * get_global_id(0);
-    __private size_t offset = *offset_global;
+    if (THREAD_ID + 1 > *inputLength) // guard
+        return;
+
+    __private size_t globalBufferIndex = THREAD_ID * 10;
+    __private size_t offset = *offset_parameter;
 
     if (globalBufferIndex < offset)
     {
@@ -87,6 +101,7 @@ __kernel void prefixScan(
 
 __kernel void reorder(
     __constant float * input,
+    __global   size_t* inputLength,
     __constant size_t* elementsPerWorkItem_global,
     __constant size_t* digitIndex_global,
     __constant bool  * useExpoent,
@@ -99,12 +114,15 @@ __kernel void reorder(
     __constant size_t* offset
     )
 {
+    if (THREAD_ID + 1 > *inputLength) // guard
+        return;
+
     __private size_t elementsPerWorkItem = *elementsPerWorkItem_global;
     __private size_t digitIndex = *digitIndex_global;
-    __private size_t indexesInputBegin = get_global_id(0) * elementsPerWorkItem;
-    __private size_t inputThreadIndex = get_global_id(0) * elementsPerWorkItem * *strider; // 1023 * 128
-    __private size_t offsetTable_Index = get_global_id(0) * 10;
-    __private size_t offsetTable_LastBucketIndex = (get_global_size(0) * 10) - 10;
+    __private size_t indexesInputBegin = THREAD_ID * elementsPerWorkItem;
+    __private size_t inputThreadIndex = THREAD_ID * elementsPerWorkItem * *strider; // 1023 * 128
+    __private size_t offsetTable_Index = THREAD_ID * 10;
+    __private size_t offsetTable_LastBucketIndex = ( min(THREAD_COUNT, *inputLength) * 10) - 10;
 
     __private size_t globalAddress;
     __private size_t currentDigit;

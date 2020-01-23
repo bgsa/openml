@@ -407,13 +407,6 @@ cl_mem* AlgorithmSorting::radixGPUBuffer(GpuDevice* gpu, float* input, size_t n,
 		->execute(1, globalWorkSize, localWorkSize)
 		->~GpuCommand();
 
-	//size_t* buffer = new size_t[n];
-	//gpu->commandManager->executeReadBuffer(indexesInputBuffer, SIZEOF_UINT * n, buffer, true);
-	// OK
-
-	//useExpoent = true;
-	//digitIndex = 1;
-	
 	GpuCommand* commandCount = gpu->commandManager
 		->createCommand()
 		->setInputParameter(inputBuffer, inputBufferSize)
@@ -431,10 +424,6 @@ cl_mem* AlgorithmSorting::radixGPUBuffer(GpuDevice* gpu, float* input, size_t n,
 		->updateInputParameterValue(3, &digitIndex)
 		->execute(1, globalWorkSize, localWorkSize);
 
-	//size_t* bufferX = new size_t[n*10];
-	//gpu->commandManager->executeReadBuffer(offsetTable1, offsetTableSize, bufferX, true);
-	// OK
-
 	const cl_mem elementsPerWorkItemBuffer = commandCount->getInputParameter(2);
 	const cl_mem useExpoentBuffer = commandCount->getInputParameter(4);
 	const cl_mem minValueBuffer = commandCount->getInputParameter(5);
@@ -450,10 +439,6 @@ cl_mem* AlgorithmSorting::radixGPUBuffer(GpuDevice* gpu, float* input, size_t n,
 		->buildFromProgram(gpu->commandManager->cachedPrograms[radixSortProgramIndex], "prefixScan")
 		->updateInputParameterValue(2, &offset)
 		->execute(1, globalWorkSize, localWorkSize);
-
-	//size_t* bufferX = new size_t[n*10];
-	//gpu->commandManager->executeReadBuffer(offsetTable2, offsetTableSize, bufferX, true);
-	// ok
 
 	GpuCommand* commandReorder = gpu->commandManager
 		->createCommand()
@@ -492,29 +477,10 @@ cl_mem* AlgorithmSorting::radixGPUBuffer(GpuDevice* gpu, float* input, size_t n,
 
 		offsetTableResult = offsetChanged ? offsetTable1 : offsetTable2;
 
-		size_t* table = new size_t[n*10];
-		gpu->commandManager->executeReadBuffer(offsetTable1, offsetTableSize, table, true);
-		gpu->commandManager->executeReadBuffer(offsetTable2, offsetTableSize, table, true);
-		gpu->commandManager->executeReadBuffer(offsetTableResult, offsetTableSize, table, true);
-
-		float* in = new float[inputBufferSize];
-		gpu->commandManager->executeReadBuffer(outputBuffer, inputBufferSize, in, true);
-
-		size_t* inIndex1 = new size_t[n];
-		gpu->commandManager->executeReadBuffer(indexesInputBuffer, SIZEOF_UINT * n, inIndex1, true);
-		gpu->commandManager->executeReadBuffer(indexesOutputBuffer, SIZEOF_UINT * n, inIndex1, true);
-
 		commandReorder
 			->updateInputParameter(5, offsetTableResult)
 			->swapInputParameter(7,8)
 			->execute(1, globalWorkSize, localWorkSize);
-
-		size_t* outIndex1 = new size_t[n];
-		gpu->commandManager->executeReadBuffer(indexesInputBuffer, SIZEOF_UINT * n, outIndex1, true);
-		gpu->commandManager->executeReadBuffer(indexesOutputBuffer, SIZEOF_UINT * n, outIndex1, true);
-
-		float* out = new float[inputBufferSize];
-		gpu->commandManager->executeReadBuffer(outputBuffer, inputBufferSize, out, true);
 
 		if (++digitIndex > maxDigits)  // check the algorithm reach the result
 		{
@@ -531,10 +497,6 @@ cl_mem* AlgorithmSorting::radixGPUBuffer(GpuDevice* gpu, float* input, size_t n,
 			->copyParameters(0, outputBuffer)
 			->updateInputParameterValue(3, &digitIndex)
 			->execute(1, globalWorkSize, localWorkSize);
-
-		size_t* bufferX = new size_t[n*10];
-		gpu->commandManager->executeReadBuffer(offsetTable1, offsetTableSize, bufferX, true);
-		gpu->commandManager->executeReadBuffer(offsetTable2, offsetTableSize, bufferX, true);
 
 		if (offsetChanged)
 			commandPrefixScan->swapInputParameter(0, 1);
@@ -562,12 +524,6 @@ cl_mem* AlgorithmSorting::radixGPUBuffer(GpuDevice* gpu, float* input, size_t n,
 	cl_mem* result = ALLOC_ARRAY(cl_mem, 2);
 	result[0] = outputBuffer;
 	result[1] = indexesOutputBuffer;
-
-	size_t* values = (size_t*) ALLOC_SIZE(SIZEOF_UINT * n);
-	gpu->commandManager->executeReadBuffer(indexesOutputBuffer, SIZEOF_UINT * n, values, true);
-
-	float* values2 = (float*)ALLOC_SIZE(inputBufferSize);
-	gpu->commandManager->executeReadBuffer(outputBuffer, inputBufferSize, values2, true);
 
 	return result;
 }

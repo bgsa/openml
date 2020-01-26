@@ -358,7 +358,7 @@ void AlgorithmSorting::init(GpuDevice* gpu)
 	if (radixSortProgramIndex != UINT_MAX)
 		return;
 
-	gpuCommands_init(gpu);
+	GpuCommands::init(gpu);
 
 	IFileManager* fileManager = Factory::getFileManagerInstance();
 
@@ -370,7 +370,7 @@ void AlgorithmSorting::init(GpuDevice* gpu)
 
 cl_mem* AlgorithmSorting::radixGPUBuffer(GpuDevice* gpu, float* input, size_t n, size_t strider, size_t offsetParameter)
 {
-	const float* minMaxValues = gpuCommands_findMinMaxGPU(gpu, input, n, strider, offsetParameter);
+	const float* minMaxValues = GpuCommands::findMinMaxGPU(gpu, input, n, strider, offsetParameter);
 	float minValue = minMaxValues[0] * -1.0f;
 
 	const size_t countAsPowOf2 = nextPowOf2(n); //required for OpenCL

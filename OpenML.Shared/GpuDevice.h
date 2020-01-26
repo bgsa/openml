@@ -3,6 +3,7 @@
 #pragma once
 
 #include <OpenML.h>
+#include <algorithm>
 #include <CL/cl.h>
 
 #include "GpuCommandManager.h"
@@ -40,7 +41,12 @@ namespace OpenML
 		bool isCPU();
 
 		cl_mem createBuffer(size_t sizeOfValue, cl_mem_flags memoryFlags);
+		cl_mem createBuffer(void * value, size_t sizeOfValue, cl_mem_flags memoryFlags);
 		void releaseBuffer(cl_mem memoryBuffer);
+
+		size_t getLocalWorkSize(size_t elementsLength);
+
+		size_t getThreadLength(size_t elementsLength);
 
 		~GpuDevice();
 	};

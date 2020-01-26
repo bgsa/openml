@@ -203,29 +203,46 @@ SweepAndPruneResult SweepAndPruneKdop::findCollisions(GpuDevice* gpu, DOP18* kdo
 	const size_t localWorkSize[3] = { nextPowOf2(count) / gpu->maxWorkGroupSize, 0, 0 };
 	size_t globalIndex = 0;
 
-	cl_mem* buffers = AlgorithmSorting::radixGPUBuffer(gpu, (float*)&kdops[0], count, 20, 2);
-	cl_mem elementsBuffer = buffers[0];
-	cl_mem indexesBuffer = buffers[1];
+	cl_mem buffer = gpu->createBuffer(SIZEOF_UINT * count, CL_MEM_READ_ONLY);
 
 	GpuCommand* command = gpu->commandManager->createCommand();
-	size_t* indexes = command
-		->setInputParameter((float*)kdops, sizeof(DOP18) * count)
-		->setInputParameter(&count, SIZEOF_UINT)
-		->setInputParameter(&globalIndex, SIZEOF_UINT)
-		->setInputParameter(buffers[1], SIZEOF_UINT * count)
+	command
+		->setInputParameter((float*)kdops, sizeof(DOP18) * count, CL_MEM_READ_ONLY, false)
+		->setInputParameter(&count, SIZEOF_UINT, CL_MEM_READ_ONLY, false)
+		->setInputParameter(&globalIndex, SIZEOF_UINT, CL_MEM_READ_ONLY, false)
+		->setInputParameter(buffer, SIZEOF_UINT * count, CL_MEM_READ_ONLY, false)
 		->setOutputParameter(SIZEOF_UINT * count * 2)
-		->buildFromProgram(gpu->commandManager->cachedPrograms[sapKdopProgramIndex], "sweepAndPrune")
-		->execute(1, globalWorkSize, localWorkSize)
-		->fetch<size_t>();
+		->buildFromProgram(gpu->commandManager->cachedPrograms[sapKdopProgramIndex], "sweepAndPrune");
 
-	globalIndex = divideBy2(*command->fetchInOutParameter<size_t>(2));
+	size_t* indexes = NULL;
+
+	for (size_t axis = 0; axis < DOP18_ORIENTATIONS; axis++)
+	{
+		// TODO: passar o buffer dos kdops para o RadixSorting
+		cl_mem* buffers = AlgorithmSorting::radixGPUBuffer(gpu, (float*)kdops, count, DOP18_STRIDER, DOP18_OFFSET + axis);
+		cl_mem elementsBuffer = buffers[0];
+		cl_mem indexesBuffer = buffers[1];
+
+		indexes = command
+			->updateInputParameterValue(1, &count)
+			->updateInputParameterValue(2, &globalIndex)
+			->updateInputParameterValue(3, &indexes)
+			->buildFromProgram(gpu->commandManager->cachedPrograms[sapKdopProgramIndex], "sweepAndPrune")
+			->execute(1, globalWorkSize, localWorkSize)
+			->fetch<size_t>();
+
+		count = divideBy2(*command->fetchInOutParameter<size_t>(2));
+
+		// TODO: remover indices duplicados e rodar SAP novamente
+
+
+		gpu->releaseBuffer(indexesBuffer);
+		gpu->releaseBuffer(elementsBuffer);
+	}
 
 	command->~GpuCommand();
-	gpu->releaseBuffer(indexesBuffer);
-	gpu->releaseBuffer(elementsBuffer);
-	return SweepAndPruneResult(indexes, globalIndex);
 
-	return SweepAndPruneResult(NULL, 0);
+	return SweepAndPruneResult(indexes, count);
 }
 
 #endif

@@ -81,11 +81,51 @@ namespace OpenMLTest
 
 	public:
 
+		TEST_METHOD(GpuCommands_createIndexes)
+		{
+			GpuContext* context = GpuContext::init();
+			GpuDevice* gpu = context->defaultDevice;
+			GpuCommands::init(gpu);
+
+			const size_t count = 10;
+
+			cl_mem indexes = GpuCommands::creteIndexes(gpu, count);
+
+			size_t* values = ALLOC_ARRAY(size_t, count);
+			gpu->commandManager->executeReadBuffer(indexes, count * SIZEOF_UINT, (void*)values, true);
+
+			for (size_t i = 0; i < count; i++)
+				Assert::AreEqual(i, values[i], L"Wrong value.", LINE_INFO());
+
+			gpu->releaseBuffer(indexes);
+			ALLOC_RELEASE(values);
+		}
+
+		TEST_METHOD(GpuCommands_createIndexes_Many)
+		{
+			GpuContext* context = GpuContext::init();
+			GpuDevice* gpu = context->defaultDevice;
+			GpuCommands::init(gpu);
+
+			const size_t count = (size_t) std::powf(2.0f, 17.0f);
+
+			cl_mem indexes = GpuCommands::creteIndexes(gpu, count);
+
+			size_t* values = ALLOC_ARRAY(size_t, count);
+			gpu->commandManager->executeReadBuffer(indexes, count * SIZEOF_UINT, (void*)values, true);
+
+			for (size_t i = 0; i < count; i++)
+				Assert::AreEqual(i, values[i], L"Wrong value.", LINE_INFO());
+
+			gpu->releaseBuffer(indexes);
+			ALLOC_RELEASE(values);
+		}
+
 		TEST_METHOD(GpuCommands_findMinMaxGPU)
 		{
 			GpuContext* context = GpuContext::init();
 			GpuDevice* gpu = context->defaultDevice;
-			gpuCommands_init(gpu);
+			GpuCommands::init(gpu);
 
 			const size_t count = (size_t)std::pow(2.0, 17.0);
 			float* input = getRandom(count);
@@ -109,7 +149,7 @@ namespace OpenMLTest
 
 			currentTime = std::chrono::high_resolution_clock::now();
 
-			float* result = gpuCommands_findMinMaxGPU(gpu, input, count, 1, 0);
+			float* result = GpuCommands::findMinMaxGPU(gpu, input, count, 1, 0);
 
 			currentTime2 = std::chrono::high_resolution_clock::now();
 			std::chrono::milliseconds ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
@@ -124,7 +164,7 @@ namespace OpenMLTest
 		{
 			GpuContext* context = GpuContext::init();
 			GpuDevice* gpu = context->defaultDevice;
-			gpuCommands_init(gpu);
+			GpuCommands::init(gpu);
 
 			const size_t offsetMultiplier = 8;
 			const size_t offsetSum = 2;
@@ -137,13 +177,10 @@ namespace OpenMLTest
 
 			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 
-			int aa = 0;
 			for (size_t i = 0; i < count; i++)
 			{
-				if (aabbs[i].minPoint.x > max) {
+				if (aabbs[i].minPoint.x > max)
 					max = aabbs[i].minPoint.x;
-					aa = i;
-				}
 
 				if (aabbs[i].minPoint.x < min)
 					min = aabbs[i].minPoint.x;
@@ -154,7 +191,7 @@ namespace OpenMLTest
 
 			currentTime = std::chrono::high_resolution_clock::now();
 
-			float* result = gpuCommands_findMinMaxGPU(gpu, (float*)aabbs, count, offsetMultiplier, offsetSum);
+			float* result = GpuCommands::findMinMaxGPU(gpu, (float*)aabbs, count, offsetMultiplier, offsetSum);
 			
 			currentTime2 = std::chrono::high_resolution_clock::now();
 			std::chrono::milliseconds ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
@@ -164,13 +201,68 @@ namespace OpenMLTest
 
 			ALLOC_RELEASE(aabbs);
 		}
+
+		TEST_METHOD(GpuCommands_findMinMaxIndexesGPU_withOffsets)
+		{
+			GpuContext* context = GpuContext::init();
+			GpuDevice* gpu = context->defaultDevice;
+			GpuCommands::init(gpu);
+
+			const size_t offsetMultiplier = 8;
+			const size_t offsetSum = 2;
+
+			const size_t count = (size_t)std::pow(2.0, 17.0);
+			AABB* aabbs = getRandomAABBs(count);
+
+			float min = FLT_MAX;
+			float max = -FLT_MAX;
+
+			size_t expectedIndexesMinMax[2];
+			for (size_t i = 0; i < count; i++)
+			{
+				if (aabbs[i].minPoint.x > max) {
+					max = aabbs[i].minPoint.x;
+					expectedIndexesMinMax[0] = i;
+				}
+
+				if (aabbs[i].minPoint.x < min) {
+					min = aabbs[i].minPoint.x;
+					expectedIndexesMinMax[1] = i;
+				}
+			}
+
+			size_t threadCount = gpu->getThreadLength(count);
+			
+			cl_mem indexes = GpuCommands::creteIndexes(gpu, count);
+			cl_mem elements = gpu->createBuffer((void*)aabbs, sizeof(AABB) * count * SIZEOF_FLOAT, CL_MEM_READ_WRITE);
+			cl_mem indexesLength = gpu->createBuffer((void*)&count, SIZEOF_UINT, CL_MEM_READ_WRITE);
+			cl_mem strider = gpu->createBuffer((void*)&offsetMultiplier, SIZEOF_UINT, CL_MEM_READ_ONLY);
+			cl_mem offset = gpu->createBuffer((void*)&offsetSum, SIZEOF_UINT, CL_MEM_READ_ONLY);
+			cl_mem output = gpu->createBuffer(threadCount * 2 * SIZEOF_FLOAT, CL_MEM_READ_WRITE);
+
+			GpuCommands::findMinMaxIndexesGPU(gpu, elements, indexes, indexesLength, strider, offset, count, offsetMultiplier, output);
+
+			float* result = ALLOC_ARRAY(float, threadCount * 2);
+			gpu->commandManager->executeReadBuffer(output, threadCount * 2 * SIZEOF_FLOAT, result, true);
+
+			Assert::AreEqual(min, result[0], L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(max, result[1], L"Wrong value.", LINE_INFO());
+
+			gpu->releaseBuffer(elements);
+			gpu->releaseBuffer(indexes);
+			gpu->releaseBuffer(indexesLength);
+			gpu->releaseBuffer(strider);
+			gpu->releaseBuffer(offset);
+			gpu->releaseBuffer(output);
+			ALLOC_RELEASE(aabbs);
+		}
 		
 
 		TEST_METHOD(GpuCommands_findMaxGPU)
 		{
 			GpuContext* context = GpuContext::init();
 			GpuDevice* gpu = context->defaultDevice;
-			gpuCommands_init(gpu);
+			GpuCommands::init(gpu);
 
 			const size_t count = (size_t)std::pow(2.0, 17.0);
 			float* input = getRandom(count);
@@ -188,7 +280,7 @@ namespace OpenMLTest
 
 			currentTime = std::chrono::high_resolution_clock::now();
 
-			float result = gpuCommands_findMaxGPU(gpu, input, count, 1, 0);
+			float result = GpuCommands::findMaxGPU(gpu, input, count, 1, 0);
 
 			currentTime2 = std::chrono::high_resolution_clock::now();
 			std::chrono::milliseconds ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
@@ -202,7 +294,7 @@ namespace OpenMLTest
 		{
 			GpuContext* context = GpuContext::init();
 			GpuDevice* gpu = context->defaultDevice;
-			gpuCommands_init(gpu);
+			GpuCommands::init(gpu);
 
 			const size_t count = (size_t)std::pow(2.0, 17.0);
 			float* input = getRandom(count);
@@ -220,7 +312,7 @@ namespace OpenMLTest
 
 			currentTime = std::chrono::high_resolution_clock::now();
 
-			cl_mem buffer = gpuCommands_findMaxGPUBuffer(gpu, input, count, 1, 0);
+			cl_mem buffer = GpuCommands::findMaxGPUBuffer(gpu, input, count, 1, 0);
 			float* output = ALLOC_ARRAY(float, 8);
 			gpu->commandManager->executeReadBuffer(buffer, SIZEOF_FLOAT*8, output, true);
 			float result = -FLT_MAX;

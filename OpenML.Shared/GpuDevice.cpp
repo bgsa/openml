@@ -60,6 +60,16 @@ GpuDevice::GpuDevice(cl_device_id id)
 	ALLOC_RELEASE(profileAsArray);;
 }
 
+size_t GpuDevice::getLocalWorkSize(size_t elementsLength)
+{
+	return std::max(nextPowOf2(elementsLength) / maxWorkGroupSize, size_t(1));
+}
+
+size_t OpenML::GpuDevice::getThreadLength(size_t elementsLength)
+{
+	return std::min(maxWorkItemSizes[0], elementsLength);
+}
+
 bool GpuDevice::isGPU() 
 {
 	return (type & CL_DEVICE_TYPE_GPU) || (type & CL_DEVICE_TYPE_ALL);
@@ -75,6 +85,17 @@ cl_mem GpuDevice::createBuffer(size_t sizeOfValue, cl_mem_flags memoryFlags)
 	cl_int errorCode;
 	cl_mem memoryBuffer = clCreateBuffer(deviceContext, memoryFlags, sizeOfValue, NULL, &errorCode);
 	HANDLE_OPENCL_ERROR(errorCode);
+
+	return memoryBuffer;
+}
+
+cl_mem GpuDevice::createBuffer(void* value, size_t sizeOfValue, cl_mem_flags memoryFlags)
+{
+	cl_int errorCode;
+	cl_mem memoryBuffer = clCreateBuffer(deviceContext, memoryFlags, sizeOfValue, NULL, &errorCode);
+	HANDLE_OPENCL_ERROR(errorCode);
+
+	HANDLE_OPENCL_ERROR(clEnqueueWriteBuffer(commandManager->commandQueue, memoryBuffer, CL_FALSE, 0, sizeOfValue, value, 0, NULL, NULL));
 
 	return memoryBuffer;
 }

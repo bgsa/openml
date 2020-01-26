@@ -1,7 +1,8 @@
 #define THREAD_ID get_global_id(0)
+#define THREAD_COUNT get_global_size(0)
 
-#define strider 8
-#define offset  1
+#define strider 20
+#define offset  2
 
 #define MIN_POINT_X kdops[indexes[i] * strider + offset + 1]
 #define MIN_POINT_Y kdops[indexes[i] * strider + offset + 2]
@@ -24,7 +25,7 @@ __kernel void sweepAndPrune(
     __global   size_t* indexes, 
 	__global   size_t* output)
 {
-    __private size_t elementsPerWorkItem = *kdopsCount / get_global_size(0);
+    __private size_t elementsPerWorkItem = max( *kdopsCount / THREAD_COUNT , 1 );
     __private size_t inputThreadIndex = THREAD_ID * elementsPerWorkItem;
     __private size_t outputIndex = 0;
 

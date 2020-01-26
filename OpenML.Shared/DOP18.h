@@ -6,6 +6,8 @@
 #include "Plane3D.h"
 
 #define DOP18_ORIENTATIONS 9
+#define DOP18_STRIDER 20
+#define DOP18_OFFSET 2
 
 namespace OpenML
 {

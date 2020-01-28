@@ -256,7 +256,61 @@ namespace OpenMLTest
 			gpu->releaseBuffer(output);
 			ALLOC_RELEASE(aabbs);
 		}
-		
+
+		TEST_METHOD(GpuCommands_findMinMaxIndexesGPU_withOffsets_andFewData)
+		{
+			GpuContext* context = GpuContext::init();
+			GpuDevice* gpu = context->defaultDevice;
+			GpuCommands::init(gpu);
+
+			const size_t offsetMultiplier = 8;
+			const size_t offsetSum = 2;
+
+			const size_t count = 5;
+			AABB* aabbs = getRandomAABBs(count);
+
+			float min = FLT_MAX;
+			float max = -FLT_MAX;
+
+			size_t expectedIndexesMinMax[2];
+			for (size_t i = 0; i < count; i++)
+			{
+				if (aabbs[i].minPoint.x > max) {
+					max = aabbs[i].minPoint.x;
+					expectedIndexesMinMax[0] = i;
+				}
+
+				if (aabbs[i].minPoint.x < min) {
+					min = aabbs[i].minPoint.x;
+					expectedIndexesMinMax[1] = i;
+				}
+			}
+
+			size_t threadCount = gpu->getThreadLength(count);
+
+			cl_mem indexes = GpuCommands::creteIndexes(gpu, count);
+			cl_mem elements = gpu->createBuffer((void*)aabbs, sizeof(AABB) * count * SIZEOF_FLOAT, CL_MEM_READ_WRITE);
+			cl_mem indexesLength = gpu->createBuffer((void*)&count, SIZEOF_UINT, CL_MEM_READ_WRITE);
+			cl_mem strider = gpu->createBuffer((void*)&offsetMultiplier, SIZEOF_UINT, CL_MEM_READ_ONLY);
+			cl_mem offset = gpu->createBuffer((void*)&offsetSum, SIZEOF_UINT, CL_MEM_READ_ONLY);
+			cl_mem output = gpu->createBuffer(threadCount * 2 * SIZEOF_FLOAT, CL_MEM_READ_WRITE);
+
+			GpuCommands::findMinMaxIndexesGPU(gpu, elements, indexes, indexesLength, strider, offset, count, offsetMultiplier, output);
+
+			float* result = ALLOC_ARRAY(float, threadCount * 2);
+			gpu->commandManager->executeReadBuffer(output, threadCount * 2 * SIZEOF_FLOAT, result, true);
+
+			Assert::AreEqual(min, result[0], L"Wrong value.", LINE_INFO());
+			Assert::AreEqual(max, result[1], L"Wrong value.", LINE_INFO());
+
+			gpu->releaseBuffer(elements);
+			gpu->releaseBuffer(indexes);
+			gpu->releaseBuffer(indexesLength);
+			gpu->releaseBuffer(strider);
+			gpu->releaseBuffer(offset);
+			gpu->releaseBuffer(output);
+			ALLOC_RELEASE(aabbs);
+		}
 
 		TEST_METHOD(GpuCommands_findMaxGPU)
 		{

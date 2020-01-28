@@ -5,6 +5,9 @@
 #define GROUP_ID            get_group_id(0)
 #define GROUP_LENGTH        get_num_groups(0)
 
+#define isEven(value) value % 2 == 0
+#define isOdd(value)  value % 2 != 0
+
 #define OFFSET_GLOBAL (*strider) + (*offsetSum)
 
 __kernel void findMinMax(
@@ -116,6 +119,9 @@ __kernel void findMinMaxIndexes(
     __global   float * output
     )
 {
+    if (THREAD_ID + 1 > *indexesLength) // guard
+        return;
+
     __private size_t elementsPerWorkItem = max((int) (*indexesLength / THREAD_LENGTH), 1);
     __private size_t threadIndex = THREAD_ID;
     __private size_t inputIndex = elementsPerWorkItem * threadIndex;
@@ -124,13 +130,18 @@ __kernel void findMinMaxIndexes(
     __private float minValue = FLT_MAX;
     __private float maxValue = -FLT_MAX;
 
+    size_t currentIndex;
+
     for( size_t i = 0 ; i < elementsPerWorkItem ; i++ )
     {
-        if( minValue > input[(inputIndex + i) * OFFSET_GLOBAL] )
-            minValue = input[(inputIndex + i) * OFFSET_GLOBAL];
+        //currentIndex = (inputIndex + i) * OFFSET_GLOBAL;
+        currentIndex = indexes[ (inputIndex + i) ] * OFFSET_GLOBAL;
 
-        if( maxValue < input[(inputIndex + i) * OFFSET_GLOBAL] )
-            maxValue = input[(inputIndex + i) * OFFSET_GLOBAL];
+        if( minValue > input[ currentIndex ] )
+            minValue = input[ currentIndex ];
+
+        if( maxValue < input[ currentIndex ] )
+            maxValue = input[ currentIndex ];
     }
 
     output[outputIndex] = minValue;
@@ -160,9 +171,11 @@ __kernel void findMinMaxIndexes(
 
     barrier(CLK_GLOBAL_MEM_FENCE); // each group found the min and max values
 
-    if (THREAD_LOCAL_ID == 0)  // first thread of each group, keep processing
+    size_t newIndexLength = isEven(*indexesLength) ? *indexesLength : *indexesLength - 1;
+
+    if (THREAD_LOCAL_ID == 0 && GROUP_ID < newIndexLength)  // first thread of each group, keep processing
     {
-        for(size_t i = 1; i < GROUP_LENGTH + 1; i=i*2 )
+        for(size_t i = 2; i < min(GROUP_LENGTH, *indexesLength); i=i*2 )
         {
             if (GROUP_ID % i == 0)
             {
@@ -172,15 +185,26 @@ __kernel void findMinMaxIndexes(
                     output[outputIndex] = minValue;
                 }
 
-                if (maxValue < output[outputIndex + (i * THREAD_LOCAL_LENGTH) + 1]) 
+                if (maxValue < output[ outputIndex + (i * THREAD_LOCAL_LENGTH) + 1 ]) 
                 {
-                    maxValue = output[outputIndex + (i * THREAD_LOCAL_LENGTH) + 1];
+                    maxValue = output[ outputIndex + (i * THREAD_LOCAL_LENGTH) + 1 ];
                     output[outputIndex + 1] = maxValue;
                 }
             }
 
             barrier(CLK_GLOBAL_MEM_FENCE);
         }
+    }
+
+    barrier(CLK_GLOBAL_MEM_FENCE);
+
+    if (THREAD_ID == 0) // check if the last group was verified
+    {
+        if (output[ (*indexesLength-1) * 2 ] < minValue)
+            output[0] = output[ (*indexesLength-1) * 2 ];
+
+        if (output[ (*indexesLength-1) * 2 + 1 ] > maxValue ) 
+            output[1] = output[ (*indexesLength-1) * 2 + 1 ];
     }
 
 }

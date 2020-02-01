@@ -261,8 +261,8 @@ namespace OpenMLTest
 			GpuDevice* gpu = context->defaultDevice;
 			AlgorithmSorting::init(gpu);
 
-			const size_t strider = 8;
-			const size_t offset = 2;
+			const size_t strider = AABB_STRIDER;
+			const size_t offset = AABB_OFFSET;
 
 			const size_t count = (size_t)std::pow(2.0, 17.0);
 			AABB* input1 = getRandomAABBs(count);
@@ -315,6 +315,50 @@ namespace OpenMLTest
 			for (size_t i = 0; i < count; i++)
 				Assert::AreEqual(input1[i], input2[indexes[i]], L"Wrong value.", LINE_INFO());
 
+			ALLOC_RELEASE(input1);
+		}
+
+		TEST_METHOD(AlgorithmSorting_radixGPUIndexed_Test1)
+		{
+			GpuContext* context = GpuContext::init();
+			GpuDevice* gpu = context->defaultDevice;
+			AlgorithmSorting::init(gpu);
+
+			size_t count = (size_t)std::pow(2.0, 17.0);
+			float* input1 = getRandom(count);
+			float* input2 = ALLOC_COPY(input1, float, count);
+
+			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
+
+			AlgorithmSorting::native(input1, count);
+
+			std::chrono::high_resolution_clock::time_point currentTime2 = std::chrono::high_resolution_clock::now();
+			std::chrono::milliseconds ms1 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
+
+			currentTime = std::chrono::high_resolution_clock::now();
+
+			size_t strider = 1;
+			size_t offset = 0;
+			cl_mem input = gpu->createBuffer(input2, count * strider * SIZEOF_FLOAT, CL_MEM_READ_ONLY);
+			cl_mem indexesGpu = GpuCommands::creteIndexes(gpu, count);
+			cl_mem indexesLength = gpu->createBuffer(&count, SIZEOF_UINT, CL_MEM_READ_WRITE);
+			cl_mem striderGpu = gpu->createBuffer(&strider, SIZEOF_UINT, CL_MEM_READ_ONLY);
+			cl_mem offsetGpu = gpu->createBuffer(&offset, SIZEOF_UINT, CL_MEM_READ_ONLY);
+			cl_mem outputMinMax = gpu->createBuffer(count * 2 * SIZEOF_FLOAT, CL_MEM_READ_WRITE);
+			cl_mem output = gpu->createBuffer(count * SIZEOF_UINT, CL_MEM_READ_WRITE);
+
+			AlgorithmSorting::radixGPUBufferIndexed(gpu, input, indexesGpu, indexesLength, striderGpu, offsetGpu, count, strider, offset, outputMinMax, output);
+
+			currentTime2 = std::chrono::high_resolution_clock::now();
+			std::chrono::milliseconds ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
+
+			size_t* orderedIndexes = ALLOC_ARRAY(size_t, count);
+			gpu->commandManager->executeReadBuffer(output, count * SIZEOF_UINT, orderedIndexes, true);
+
+			for (size_t i = 0; i < count; i++)
+				Assert::AreEqual(input1[i], input2[orderedIndexes[i]], L"Wrong value.", LINE_INFO());
+
+			gpu->releaseBuffer(7, input, indexesGpu, indexesLength, striderGpu, offsetGpu, outputMinMax, output);
 			ALLOC_RELEASE(input1);
 		}
 

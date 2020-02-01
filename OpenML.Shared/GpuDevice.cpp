@@ -105,6 +105,17 @@ void GpuDevice::releaseBuffer(cl_mem memoryBuffer)
 	HANDLE_OPENCL_ERROR(clReleaseMemObject(memoryBuffer));
 }
 
+void GpuDevice::releaseBuffer(size_t length, cl_mem memoryBuffers ...)
+{
+	va_list parameters;
+	va_start(parameters, memoryBuffers);
+
+	for (int i = 0; i < length - 1; ++i)
+		releaseBuffer(va_arg(parameters, cl_mem));
+
+	va_end(parameters);
+}
+
 GpuDevice::~GpuDevice()
 {
 	if (commandManager != nullptr)

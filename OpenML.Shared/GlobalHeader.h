@@ -26,6 +26,7 @@
 #include <iostream>
 #include <sstream>
 #include <cassert>
+#include <stdarg.h>
 #include <MemoryAllocatorManager.h>
 
 namespace OpenML 

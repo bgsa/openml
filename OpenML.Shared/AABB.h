@@ -9,6 +9,8 @@
 
 namespace OpenML
 {
+#define AABB_STRIDER 8
+#define AABB_OFFSET 2
 
 	class AABB
 		: public BoundingVolumeAABB

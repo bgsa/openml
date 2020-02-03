@@ -1113,7 +1113,8 @@ namespace OpenMLTest
 		{
 			GpuContext* context = GpuContext::init();
 			GpuDevice* gpu = context->defaultDevice;
-			SweepAndPrune::init(gpu);
+			SweepAndPrune* sap = ALLOC_NEW(SweepAndPrune)();
+			sap->init(gpu);
 
 			//const size_t count = 1000;
 			const size_t count = (size_t) std::pow(2.0, 17.0);
@@ -1126,7 +1127,7 @@ namespace OpenMLTest
 			std::chrono::milliseconds ms1 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime1);
 
 			currentTime1 = std::chrono::high_resolution_clock::now();
-			SweepAndPruneResult result2 = SweepAndPrune::findCollisionsGPU(gpu, aabbs2, count);
+			SweepAndPruneResult result2 = sap->findCollisionsGPU(gpu, aabbs2, count);
 			currentTime2 = std::chrono::high_resolution_clock::now();
 			std::chrono::milliseconds ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime1);
 
@@ -1134,7 +1135,7 @@ namespace OpenMLTest
 
 			Assert::AreEqual(result1.count, result2.count, L"wrong value", LINE_INFO());
 
-			ALLOC_RELEASE(aabbs1);
+			ALLOC_DELETE(sap, SweepAndPrune);
 		}
 
 #endif

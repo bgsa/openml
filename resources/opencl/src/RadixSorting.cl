@@ -4,7 +4,7 @@
 #define THREAD_COUNT get_global_size(0)
 
 #define OFFSET_GLOBAL (*strider) + *offset
-
+#define MAX_DIGITS_DECIMALS 4
 #define BUCKET_LENGTH 10
 
 
@@ -21,12 +21,12 @@ size_t OVERLOAD digit(int value, size_t index)
 }
 
 __kernel void count(
-    __global   float * input,
-    __global   size_t* indexes,
+    __constant float * input,
+    __constant size_t* indexes,
     __constant size_t* inputLength,
     __constant size_t* digitIndex,
     __constant bool  * useExpoent,
-    __constant float * minValue,
+    __constant float * minMaxValues,
     __global   size_t* offsetTable,
     __constant size_t* strider,
     __constant size_t* offset
@@ -35,34 +35,28 @@ __kernel void count(
     if (THREAD_ID + 1 > *inputLength) // guard
         return;
 
-    __private size_t bucket[BUCKET_LENGTH];
-    __private size_t currentDigit = 0;
     __private size_t globalBucketOffset = BUCKET_LENGTH * THREAD_ID;
     __private size_t elementsPerWorkItem = max( (int) (*inputLength / THREAD_COUNT) , 1 );
     __private size_t inputThreadIndex = THREAD_ID * elementsPerWorkItem;
-
+    __private float  minValue = -min(0.0f, minMaxValues[0]);
+    __private size_t bucket[BUCKET_LENGTH];
+    
     for(size_t i = 0 ; i < BUCKET_LENGTH; i++)
         bucket[i] = 0;
 
     if (*useExpoent)
         for (size_t i = 0 ; i < elementsPerWorkItem; i++) //make a histogram for expoent of float
         {
-            size_t idx = indexes[inputThreadIndex + i];
-
-            //currentDigit = digit((int) (input[idx * OFFSET_GLOBAL] + minValue[0]), *digitIndex);
-            currentDigit = digit((int) (input[idx * OFFSET_GLOBAL]), *digitIndex);
-
-            bucket[currentDigit]++;
+            bucket[
+                digit((int) (input[indexes[inputThreadIndex + i] * OFFSET_GLOBAL] + minValue), *digitIndex)
+            ]++;
         }
     else
         for (size_t i = 0 ; i < elementsPerWorkItem ; i++) //make a histogram for mantissa of float
         {
-            size_t idx = indexes[inputThreadIndex + i];
-
-            //currentDigit = digit(input[idx * OFFSET_GLOBAL] + minValue[0], *digitIndex);
-            currentDigit = digit(input[idx * OFFSET_GLOBAL], *digitIndex);
-
-            bucket[currentDigit]++;
+            bucket[
+                digit(input[indexes[inputThreadIndex + i] * OFFSET_GLOBAL] + minValue, *digitIndex)
+            ]++;
         }
 
     for (size_t i = 0 ; i < BUCKET_LENGTH; i++) //write on global bucket in order to do prefix scan
@@ -72,15 +66,15 @@ __kernel void count(
 __kernel void prefixScan(
     __constant size_t* previousOffsetTable,
     __global   size_t* nextOffsetTable,
-    __global   size_t* offset_parameter,
-    __global   size_t* inputLength
+    __global   size_t* offsetPrefixScan,
+    __constant size_t* inputLength
     )
 {
     if (THREAD_ID + 1 > *inputLength) // guard
         return;
 
     __private size_t offsetTableIndex = THREAD_ID * BUCKET_LENGTH;
-    __private size_t offset = *offset_parameter;
+    __private size_t offset = *offsetPrefixScan;
 
     if (offsetTableIndex < offset)
         for(size_t i = 0; i < BUCKET_LENGTH; i++)
@@ -91,20 +85,22 @@ __kernel void prefixScan(
                                                     + previousOffsetTable[offsetTableIndex + i];
 
     barrier(CLK_GLOBAL_MEM_FENCE);
-    *offset_parameter = *offset_parameter * 2;
+    if (THREAD_ID == 0)
+        offsetPrefixScan[0] = *offsetPrefixScan * 2;
 }
 
 __kernel void reorder(
     __constant float * input,
-    __global   size_t* inputLength,
-    __constant size_t* digitIndex_global,
-    __constant bool  * useExpoent,
+    __constant size_t* inputLength,
+    __global   size_t* digitIndex_global,
+    __global   bool  * useExpoent,
     __global   size_t* offsetTable,
-    __constant float * minValue,
+    __constant float * minMaxValues,
     __constant size_t* indexesInput,
     __global   size_t* indexesOutput,
     __constant size_t* strider,
-    __constant size_t* offset
+    __constant size_t* offset,
+    __global   size_t* offsetPrefixScan
     )
 {
     if (THREAD_ID + 1 > *inputLength) // guard
@@ -115,6 +111,7 @@ __kernel void reorder(
     __private size_t indexesInputBegin = THREAD_ID * elementsPerWorkItem;
     __private size_t offsetTable_Index = THREAD_ID * BUCKET_LENGTH;
     __private size_t offsetTable_LastBucketIndex = ( min(THREAD_COUNT, *inputLength) * BUCKET_LENGTH) - BUCKET_LENGTH;
+    __private float  minValue = -min(0.0f, minMaxValues[0]);
 
     __private size_t globalAddress;
     __private size_t currentDigit;
@@ -127,9 +124,7 @@ __kernel void reorder(
     if (*useExpoent)
         for (int i = elementsPerWorkItem - 1; i >= 0; i--)
         {
-            size_t idx = indexesInput[indexesInputBegin + i];
-            //currentDigit = digit((int) (input[idx * OFFSET_GLOBAL] + minValue[0]), digitIndex);  // get the digit to process            
-            currentDigit = digit((int) (input[idx * OFFSET_GLOBAL]), digitIndex);  // get the digit to process            
+            currentDigit = digit((int) (input[indexesInput[indexesInputBegin + i] * OFFSET_GLOBAL] + minValue), digitIndex);  // get the digit to process            
             
             globalAddress = startIndex[currentDigit] + offsetTable[offsetTable_Index + currentDigit] - 1; // get the global output address where the element is going to be stored
 
@@ -140,9 +135,7 @@ __kernel void reorder(
     else
         for (int i = elementsPerWorkItem - 1; i >= 0; i--)
         {
-            size_t idx = indexesInput[indexesInputBegin + i];
-            //currentDigit = digit(input[idx * OFFSET_GLOBAL] + minValue[0], digitIndex);  // get the digit to process
-            currentDigit = digit(input[idx * OFFSET_GLOBAL], digitIndex);  // get the digit to process
+            currentDigit = digit(input[indexesInput[indexesInputBegin + i] * OFFSET_GLOBAL] + minValue, digitIndex);  // get the digit to process
 
             globalAddress = startIndex[currentDigit] + offsetTable[offsetTable_Index + currentDigit] - 1; // get the global output address where the element is going to be stored
 
@@ -150,4 +143,21 @@ __kernel void reorder(
 
             offsetTable[offsetTable_Index + currentDigit]--;    // decrement the offset table to store the others elements before
         }
+
+
+    barrier(CLK_GLOBAL_MEM_FENCE);
+    if (THREAD_ID)
+        offsetPrefixScan[0] = BUCKET_LENGTH;
+
+    if (THREAD_ID == 0)
+    {
+        if ( !useExpoent[0] && digitIndex == MAX_DIGITS_DECIMALS - 1) // if decimal digits is being processed and it already have processed 4 digits ...
+        {
+            useExpoent[0] = true;
+            digitIndex_global[0] = 0;
+        }
+        else
+            digitIndex_global[0] = *digitIndex_global + 1;
+    }
+
 }

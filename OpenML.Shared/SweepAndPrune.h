@@ -10,6 +10,7 @@
 	#include "GpuContext.h"
 	#include "Factory.h"
 	#include "IFileManager.h"
+	#include "GpuRadixSorting.h"
 #endif
 
 namespace OpenML
@@ -35,6 +36,12 @@ namespace OpenML
 
 	class SweepAndPrune
 	{
+	private:
+
+#if OPENCL_ENABLED
+		GpuRadixSorting* radixSorting;
+#endif
+
 	public:
 
 		///<summary>
@@ -48,15 +55,17 @@ namespace OpenML
 		///<summary>
 		/// Init Sweep And Prune Algorithm on GPU
 		///</summary>
-		static void init(GpuDevice* gpu);
+		API_INTERFACE void init(GpuDevice* gpu);
 
 		///<summary>
 		/// Find the collisions using Sweep and Prune method in GPU
 		/// Returns the pair indexes
 		///</summary>
-		API_INTERFACE static SweepAndPruneResult findCollisionsGPU(GpuDevice* gpuCommandManager, AABB* aabbs, size_t count);
+		API_INTERFACE SweepAndPruneResult findCollisionsGPU(GpuDevice* gpuCommandManager, AABB* aabbs, size_t count);
 
 #endif
+
+		API_INTERFACE ~SweepAndPrune();
 
 	};
 

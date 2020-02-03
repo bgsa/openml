@@ -87,7 +87,8 @@ void SweepAndPrune::init(GpuDevice* gpu)
 	if (sapProgramIndex != UINT_MAX)
 		return;
 
-	AlgorithmSorting::init(gpu);
+	radixSorting = ALLOC_NEW(GpuRadixSorting)();
+	radixSorting->init(gpu);
 
 	IFileManager* fileManager = Factory::getFileManagerInstance();
 
@@ -104,16 +105,16 @@ SweepAndPruneResult SweepAndPrune::findCollisionsGPU(GpuDevice* gpu, AABB* aabbs
 	const size_t localWorkSize[3] = { nextPowOf2(count) / gpu->maxWorkGroupSize, 0, 0 };
 	size_t globalIndex = 0;
 
-	cl_mem* buffers = AlgorithmSorting::radixGPUBuffer(gpu, (float*) aabbs, count, 8, 2);
-	cl_mem elementsBuffer = buffers[0];
-	cl_mem indexesBuffer = buffers[1];
+	//cl_mem* buffers = AlgorithmSorting::radixGPUBuffer(gpu, (float*) aabbs, count, 8, 2);
+	radixSorting->setParameters((float*)aabbs, count, 8, 2);
+	cl_mem indexesBuffer = radixSorting->execute();
 
 	GpuCommand* command = gpu->commandManager->createCommand();
 	size_t* indexes = command
 		->setInputParameter((float*)aabbs, sizeof(AABB) * count)
 		->setInputParameter(&count, SIZEOF_UINT)
 		->setInputParameter(&globalIndex, SIZEOF_UINT)
-		->setInputParameter(buffers[1], SIZEOF_UINT * count)
+		->setInputParameter(indexesBuffer, SIZEOF_UINT * count)
 		->setOutputParameter(SIZEOF_UINT * count * 2)
 		->buildFromProgram(gpu->commandManager->cachedPrograms[sapProgramIndex], "sweepAndPrune")
 		->execute(1, globalWorkSize, localWorkSize)
@@ -123,8 +124,14 @@ SweepAndPruneResult SweepAndPrune::findCollisionsGPU(GpuDevice* gpu, AABB* aabbs
 
 	command->~GpuCommand();
 	gpu->releaseBuffer(indexesBuffer);
-	gpu->releaseBuffer(elementsBuffer);
 	return SweepAndPruneResult(indexes, globalIndex);
 }
 
 #endif
+
+SweepAndPrune::~SweepAndPrune()
+{
+#if OPENCL_ENABLED
+	ALLOC_DELETE(radixSorting, GpuRadixSorting);
+#endif
+}

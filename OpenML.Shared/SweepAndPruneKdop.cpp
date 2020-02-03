@@ -186,7 +186,8 @@ void SweepAndPruneKdop::init(GpuDevice* gpu)
 	if (sapKdopProgramIndex != UINT_MAX)
 		return;
 
-	AlgorithmSorting::init(gpu);
+	radixSorting = ALLOC_NEW(GpuRadixSorting)();
+	radixSorting->init(gpu);
 
 	IFileManager* fileManager = Factory::getFileManagerInstance();
 
@@ -216,12 +217,13 @@ SweepAndPruneResult SweepAndPruneKdop::findCollisions(GpuDevice* gpu, DOP18* kdo
 
 	size_t* indexes = NULL;
 
+	// TODO: ...
+	//radixSorting->setParameters((float*)kdops, count, DOP18_STRIDER, DOP18_OFFSET + axis);
+
 	for (size_t axis = 0; axis < DOP18_ORIENTATIONS; axis++)
 	{
 		// TODO: passar o buffer dos kdops para o RadixSorting
-		cl_mem* buffers = AlgorithmSorting::radixGPUBuffer(gpu, (float*)kdops, count, DOP18_STRIDER, DOP18_OFFSET + axis);
-		cl_mem elementsBuffer = buffers[0];
-		cl_mem indexesBuffer = buffers[1];
+		cl_mem indexesBuffer = radixSorting->execute();
 
 		indexes = command
 			->updateInputParameterValue(1, &count)
@@ -235,9 +237,7 @@ SweepAndPruneResult SweepAndPruneKdop::findCollisions(GpuDevice* gpu, DOP18* kdo
 
 		// TODO: remover indices duplicados e rodar SAP novamente
 
-
 		gpu->releaseBuffer(indexesBuffer);
-		gpu->releaseBuffer(elementsBuffer);
 	}
 
 	command->~GpuCommand();

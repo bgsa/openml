@@ -48,7 +48,8 @@ namespace OpenMLTest
 		{
 			GpuContext* context = GpuContext::init();
 			GpuDevice* gpu = context->defaultDevice;
-			SweepAndPruneKdop::init(gpu);
+			SweepAndPruneKdop* sapKdop = ALLOC_NEW(SweepAndPruneKdop)();
+			sapKdop->init(gpu);
 
 			CollisionDetection collisionDetection;
 			size_t count = 5;
@@ -64,7 +65,7 @@ namespace OpenMLTest
 
 			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 
-			SweepAndPruneResult result = SweepAndPruneKdop::findCollisions(gpu, kdops, count);
+			SweepAndPruneResult result = sapKdop->findCollisions(gpu, kdops, count);
 
 			std::chrono::high_resolution_clock::time_point currentTime2 = std::chrono::high_resolution_clock::now();
 			std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);

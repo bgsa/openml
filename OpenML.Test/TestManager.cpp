@@ -12,12 +12,9 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace OpenML;
 
-//TEST_DESCRIPTION("asdasdas")
-//TEST_OWNER(ownerAlias)
-
 TEST_MODULE_INITIALIZE(ModuleInitialize)
 {
-	MemoryAllocatorManager::init();
+	MemoryAllocatorManager::init(ONE_GIGABYTE);
 	Logger::WriteMessage("TEST MODULE INITIALIZED");
 }
 

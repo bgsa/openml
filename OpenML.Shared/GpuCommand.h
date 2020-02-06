@@ -17,14 +17,14 @@ namespace OpenML
 		cl_device_id deviceId;
 		cl_context deviceContext;
 
-		cl_program program = nullptr;
-		cl_command_queue commandQueue = nullptr;
-		cl_kernel kernel = nullptr;
+		cl_program program = NULL;
+		cl_command_queue commandQueue = NULL;
+		cl_kernel kernel = NULL;
 
 		std::vector<cl_mem> inputParameters;
 		std::vector<size_t> inputParametersSize;
 		std::vector<bool> inputParametersKeep;
-		cl_mem outputParameter = nullptr;
+		cl_mem outputParameter = NULL;
 		size_t outputSize = 0;
 				
 		GpuCommand(cl_device_id deviceId, cl_context deviceContext, cl_command_queue commandQueue);
@@ -42,6 +42,7 @@ namespace OpenML
 		GpuCommand* updateInputParameterValue(size_t index, const void* value);
 		GpuCommand* updateInputParameter(size_t index, cl_mem memoryBuffer);
 
+		cl_mem getOutputParameter();
 		GpuCommand* setOutputParameter(size_t sizeOfValue);
 
 		GpuCommand* swapInputParameter(size_t index1, size_t index2);

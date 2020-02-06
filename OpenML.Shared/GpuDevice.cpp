@@ -89,13 +89,14 @@ cl_mem GpuDevice::createBuffer(size_t sizeOfValue, cl_mem_flags memoryFlags)
 	return memoryBuffer;
 }
 
-cl_mem GpuDevice::createBuffer(void* value, size_t sizeOfValue, cl_mem_flags memoryFlags)
+cl_mem GpuDevice::createBuffer(void* value, size_t sizeOfValue, cl_mem_flags memoryFlags, bool writeValueOnDevice)
 {
 	cl_int errorCode;
-	cl_mem memoryBuffer = clCreateBuffer(deviceContext, memoryFlags, sizeOfValue, NULL, &errorCode);
+	cl_mem memoryBuffer = clCreateBuffer(deviceContext, memoryFlags, sizeOfValue, value, &errorCode);
 	HANDLE_OPENCL_ERROR(errorCode);
 
-	HANDLE_OPENCL_ERROR(clEnqueueWriteBuffer(commandManager->commandQueue, memoryBuffer, CL_FALSE, 0, sizeOfValue, value, 0, NULL, NULL));
+	if (writeValueOnDevice)
+		HANDLE_OPENCL_ERROR(clEnqueueWriteBuffer(commandManager->commandQueue, memoryBuffer, CL_FALSE, 0, sizeOfValue, value, 0, NULL, NULL));
 
 	return memoryBuffer;
 }

@@ -48,10 +48,15 @@ GpuCommand* GpuCommand::setInputParameter(void* value, size_t sizeOfValue)
 	return setInputParameter(value, sizeOfValue, CL_MEM_READ_ONLY);
 }
 
+cl_mem GpuCommand::getOutputParameter()
+{
+	return outputParameter;
+}
+
 GpuCommand* GpuCommand::setOutputParameter(size_t sizeOfValue)
 {
 	cl_int errorCode;
-	outputParameter = clCreateBuffer(deviceContext, CL_MEM_WRITE_ONLY, sizeOfValue, NULL, &errorCode);
+	outputParameter = clCreateBuffer(deviceContext, CL_MEM_WRITE_ONLY | CL_MEM_ALLOC_HOST_PTR, sizeOfValue, NULL, &errorCode);
 	outputSize = sizeOfValue;
 
 	HANDLE_OPENCL_ERROR(errorCode);

@@ -87,44 +87,57 @@ void SweepAndPrune::init(GpuDevice* gpu)
 	if (sapProgramIndex != UINT_MAX)
 		return;
 
+	this->gpu = gpu;
+
 	radixSorting = ALLOC_NEW(GpuRadixSorting)();
 	radixSorting->init(gpu);
 
 	IFileManager* fileManager = Factory::getFileManagerInstance();
 
-	std::string source = fileManager->readTextFile("SweepAndPrune.cl");
+	std::string source = fileManager->readTextFile("SweepAndPruneKdop.cl");
 
 	sapProgramIndex = gpu->commandManager->cacheProgram(source.c_str(), sizeof(char) * source.length());
 
 	delete fileManager;
 }
 
-SweepAndPruneResult SweepAndPrune::findCollisionsGPU(GpuDevice* gpu, AABB* aabbs, size_t count)
+SweepAndPruneResult SweepAndPrune::findCollisionsGPU(float* input, size_t inputLength, size_t strider, size_t offset, size_t minPointIndex, size_t maxPointIndex)
 {
 	const size_t globalWorkSize[3] = { gpu->maxWorkGroupSize, 0, 0 };
-	const size_t localWorkSize[3] = { nextPowOf2(count) / gpu->maxWorkGroupSize, 0, 0 };
+	const size_t localWorkSize[3] = { nextPowOf2(inputLength) / gpu->maxWorkGroupSize, 0, 0 };
 	size_t globalIndex = 0;
 
-	//cl_mem* buffers = AlgorithmSorting::radixGPUBuffer(gpu, (float*) aabbs, count, 8, 2);
-	radixSorting->setParameters((float*)aabbs, count, 8, 2);
-	cl_mem indexesBuffer = radixSorting->execute();
+	size_t outputSize = inputLength * 1000 * SIZEOF_UINT;
+	size_t* outputIndexes = ALLOC_ARRAY(size_t, inputLength * 1000);
+	cl_mem output = gpu->createBuffer(outputIndexes, outputSize, CL_MEM_READ_WRITE | CL_MEM_USE_HOST_PTR, false);
+
+	radixSorting->setParameters(input, inputLength, strider, offset);
+	cl_mem indexes = radixSorting->execute();
+
+	size_t* in = ALLOC_ARRAY(size_t, inputLength);
+	gpu->commandManager->executeReadBuffer(indexes, inputLength * SIZEOF_UINT, in, true);
 
 	GpuCommand* command = gpu->commandManager->createCommand();
-	size_t* indexes = command
-		->setInputParameter((float*)aabbs, sizeof(AABB) * count)
-		->setInputParameter(&count, SIZEOF_UINT)
-		->setInputParameter(&globalIndex, SIZEOF_UINT)
-		->setInputParameter(indexesBuffer, SIZEOF_UINT * count)
-		->setOutputParameter(SIZEOF_UINT * count * 2)
+	command
+		->setInputParameter(radixSorting->inputGpu, inputLength * strider * SIZEOF_FLOAT)
+		->setInputParameter(radixSorting->indexesLengthGpu, SIZEOF_UINT)
+		->setInputParameter(indexes, inputLength * SIZEOF_UINT)
+		->setInputParameter(radixSorting->striderGpu, SIZEOF_UINT)
+		->setInputParameter(radixSorting->offsetGpu, SIZEOF_UINT)
+		->setInputParameter(&minPointIndex, SIZEOF_UINT, CL_MEM_READ_ONLY)
+		->setInputParameter(&maxPointIndex, SIZEOF_UINT, CL_MEM_READ_ONLY)
+		->setInputParameter(&globalIndex, SIZEOF_UINT, CL_MEM_READ_WRITE)
+		->setInputParameter(output, outputSize)
 		->buildFromProgram(gpu->commandManager->cachedPrograms[sapProgramIndex], "sweepAndPrune")
-		->execute(1, globalWorkSize, localWorkSize)
-		->fetch<size_t>();
-	
-	globalIndex = *command->fetchInOutParameter<size_t>(2) >> 1; //divide by 2
+		->execute(1, globalWorkSize, localWorkSize);
+
+	gpu->commandManager->executeReadBuffer(output, outputSize, outputIndexes, true);
+
+	globalIndex = *command->fetchInOutParameter<size_t>(7) >> 1; //divide by 2
 
 	command->~GpuCommand();
-	gpu->releaseBuffer(indexesBuffer);
-	return SweepAndPruneResult(indexes, globalIndex);
+	gpu->releaseBuffer(indexes);
+	return SweepAndPruneResult(outputIndexes, globalIndex);
 }
 
 #endif

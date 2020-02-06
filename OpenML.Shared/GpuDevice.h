@@ -41,7 +41,7 @@ namespace OpenML
 		bool isCPU();
 
 		cl_mem createBuffer(size_t sizeOfValue, cl_mem_flags memoryFlags);
-		cl_mem createBuffer(void * value, size_t sizeOfValue, cl_mem_flags memoryFlags);
+		cl_mem createBuffer(void * value, size_t sizeOfValue, cl_mem_flags memoryFlags, bool writeValueOnDevice = true);
 		void releaseBuffer(cl_mem memoryBuffer);
 		void releaseBuffer(size_t length, cl_mem memoryBuffers ...);
 

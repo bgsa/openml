@@ -24,11 +24,6 @@ namespace OpenML
 		GpuCommand* commandPrefixScanSwaped;
 		GpuCommand* commandReorder;
 
-		cl_mem inputGpu;
-		cl_mem indexesGpu;
-		cl_mem indexesLengthGpu;
-		cl_mem striderGpu;
-		cl_mem offsetGpu;
 		cl_mem outputMinMaxGpu;
 		cl_mem offsetTable1;
 		cl_mem offsetTable2;
@@ -40,6 +35,11 @@ namespace OpenML
 		cl_mem outputIndexes;
 
 	public:
+		cl_mem inputGpu;
+		cl_mem indexesGpu;
+		cl_mem indexesLengthGpu;
+		cl_mem striderGpu;
+		cl_mem offsetGpu;
 
 		API_INTERFACE GpuRadixSorting* init(GpuDevice* gpu);
 

@@ -39,6 +39,7 @@ namespace OpenML
 	private:
 
 #if OPENCL_ENABLED
+		GpuDevice* gpu = NULL;
 		GpuRadixSorting* radixSorting;
 #endif
 
@@ -61,7 +62,7 @@ namespace OpenML
 		/// Find the collisions using Sweep and Prune method in GPU
 		/// Returns the pair indexes
 		///</summary>
-		API_INTERFACE SweepAndPruneResult findCollisionsGPU(GpuDevice* gpuCommandManager, AABB* aabbs, size_t count);
+		API_INTERFACE SweepAndPruneResult findCollisionsGPU(float* input, size_t count, size_t strider = 1, size_t offset = 0, size_t minPointIndex = 0, size_t maxPointIndex = 1);
 
 #endif
 

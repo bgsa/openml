@@ -1122,12 +1122,15 @@ namespace OpenMLTest
 			AABB* aabbs2 = ALLOC_COPY(aabbs1, AABB, count);
 
 			std::chrono::high_resolution_clock::time_point currentTime1 = std::chrono::high_resolution_clock::now();
+
 			SweepAndPruneResult result1 = SweepAndPrune::findCollisions(aabbs1, count);
+
 			std::chrono::high_resolution_clock::time_point currentTime2 = std::chrono::high_resolution_clock::now();
 			std::chrono::milliseconds ms1 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime1);
-
 			currentTime1 = std::chrono::high_resolution_clock::now();
-			SweepAndPruneResult result2 = sap->findCollisionsGPU(gpu, aabbs2, count);
+
+			SweepAndPruneResult result2 = sap->findCollisionsGPU((float*)aabbs2, count, AABB_STRIDER, AABB_OFFSET, 0, 3);
+
 			currentTime2 = std::chrono::high_resolution_clock::now();
 			std::chrono::milliseconds ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime1);
 

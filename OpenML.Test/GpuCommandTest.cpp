@@ -36,7 +36,7 @@ namespace OpenMLTest
 
 			IFileManager* fileManager = Factory::getFileManagerInstance();
 			std::string source = fileManager->readTextFile("sumVector.cl");
-			size_t sumProgram = gpu->commandManager->cacheProgram(source.c_str(), sizeof(char) * source.length());
+			size_t sumProgram = gpu->commandManager->cacheProgram(source.c_str(), sizeof(char) * source.length(), NULL);
 
 			GpuCommand* command = gpu->commandManager->createCommand();
 

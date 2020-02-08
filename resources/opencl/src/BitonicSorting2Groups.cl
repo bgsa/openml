@@ -1,3 +1,5 @@
+#include "OpenCLBase.cl"
+
 __kernel void sort(
     __global volatile float* input, 
     __constant size_t* n,

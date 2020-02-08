@@ -56,7 +56,7 @@ namespace OpenML
 		///<summary>
 		/// Init Sweep And Prune Algorithm on GPU
 		///</summary>
-		API_INTERFACE void init(GpuDevice* gpu);
+		API_INTERFACE void init(GpuDevice* gpu, const char* buildOptions = NULL);
 
 		///<summary>
 		/// Find the collisions using Sweep and Prune method in GPU

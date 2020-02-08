@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GlobalHeader.h"
+#include "OpenML.h"
 #include "CppUnitTest.h"
 #include "SystemOfLinearEquations.h"
 

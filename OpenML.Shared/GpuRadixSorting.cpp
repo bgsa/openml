@@ -2,19 +2,19 @@
 
 #include "GpuRadixSorting.h"
 
-GpuRadixSorting* GpuRadixSorting::init(GpuDevice* gpu)
+GpuRadixSorting* GpuRadixSorting::init(GpuDevice* gpu, const char* buildOptions)
 {
 	if (this->gpu != NULL)
 		return this;
 
 	this->gpu = gpu;
 
-	GpuCommands::init(gpu);
+	GpuCommands::init(gpu, buildOptions);
 
 	IFileManager* fileManager = Factory::getFileManagerInstance();
 
 	std::string sourceRadixSort = fileManager->readTextFile("RadixSorting.cl");
-	radixSortProgramIndex = gpu->commandManager->cacheProgram(sourceRadixSort.c_str(), SIZEOF_CHAR * sourceRadixSort.length());
+	radixSortProgramIndex = gpu->commandManager->cacheProgram(sourceRadixSort.c_str(), SIZEOF_CHAR * sourceRadixSort.length(), buildOptions);
 
 	delete fileManager;
 	return this;
@@ -69,8 +69,6 @@ GpuRadixSorting* GpuRadixSorting::setParameters(float* input, size_t inputLength
 		->setInputParameter(useExpoentGpu, SIZEOF_BOOL)
 		->setInputParameter(outputMinMaxGpu, SIZEOF_FLOAT * 2)
 		->setInputParameter(offsetTable1, offsetTableSize)
-		->setInputParameter(striderGpu, SIZEOF_UINT)
-		->setInputParameter(offsetGpu, SIZEOF_UINT)
 		->buildFromProgram(program, "count");
 
 	commandPrefixScan = gpu->commandManager
@@ -99,8 +97,6 @@ GpuRadixSorting* GpuRadixSorting::setParameters(float* input, size_t inputLength
 		->setInputParameter(outputMinMaxGpu, SIZEOF_FLOAT * 2)
 		->setInputParameter(outputIndexes, SIZEOF_UINT * inputLength)
 		->setInputParameter(indexesGpu, SIZEOF_UINT * inputLength)
-		->setInputParameter(striderGpu, SIZEOF_UINT)
-		->setInputParameter(offsetGpu, SIZEOF_UINT)
 		->setInputParameter(offsetPrefixScanGpu, SIZEOF_UINT)
 		->buildFromProgram(program, "reorder");
 

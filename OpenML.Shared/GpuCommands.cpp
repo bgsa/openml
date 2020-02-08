@@ -8,7 +8,7 @@ namespace OpenML
 	static size_t findMinMaxProgramIndex = UINT_MAX;
 	static size_t basicProgramIndex = UINT_MAX;
 
-	void GpuCommands::init(GpuDevice* gpu)
+	void GpuCommands::init(GpuDevice* gpu, const char* buildOptions)
 	{
 		if (findMinMaxProgramIndex != UINT_MAX)
 			return;
@@ -16,10 +16,10 @@ namespace OpenML
 		IFileManager* fileManager = Factory::getFileManagerInstance();
 
 		std::string sourceFindMinMax = fileManager->readTextFile("FindMinMax.cl");
-		findMinMaxProgramIndex = gpu->commandManager->cacheProgram(sourceFindMinMax.c_str(), SIZEOF_CHAR * sourceFindMinMax.length());
+		findMinMaxProgramIndex = gpu->commandManager->cacheProgram(sourceFindMinMax.c_str(), SIZEOF_CHAR * sourceFindMinMax.length(), buildOptions);
 
 		std::string sourceBasic = fileManager->readTextFile("BasicCommands.cl");
-		basicProgramIndex = gpu->commandManager->cacheProgram(sourceBasic.c_str(), SIZEOF_CHAR * sourceBasic.length());
+		basicProgramIndex = gpu->commandManager->cacheProgram(sourceBasic.c_str(), SIZEOF_CHAR * sourceBasic.length(), buildOptions);
 
 		delete fileManager;
 	}

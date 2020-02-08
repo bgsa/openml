@@ -82,7 +82,7 @@ SweepAndPruneResult SweepAndPrune::findCollisions(AABB* aabbs, size_t count)
 
 static size_t sapProgramIndex = UINT_MAX;
 
-void SweepAndPrune::init(GpuDevice* gpu)
+void SweepAndPrune::init(GpuDevice* gpu, const char* buildOptions)
 {
 	if (sapProgramIndex != UINT_MAX)
 		return;
@@ -90,13 +90,13 @@ void SweepAndPrune::init(GpuDevice* gpu)
 	this->gpu = gpu;
 
 	radixSorting = ALLOC_NEW(GpuRadixSorting)();
-	radixSorting->init(gpu);
+	radixSorting->init(gpu, buildOptions);
 
 	IFileManager* fileManager = Factory::getFileManagerInstance();
 
 	std::string source = fileManager->readTextFile("SweepAndPruneKdop.cl");
 
-	sapProgramIndex = gpu->commandManager->cacheProgram(source.c_str(), sizeof(char) * source.length());
+	sapProgramIndex = gpu->commandManager->cacheProgram(source.c_str(), sizeof(char) * source.length(), buildOptions);
 
 	delete fileManager;
 }
@@ -107,8 +107,8 @@ SweepAndPruneResult SweepAndPrune::findCollisionsGPU(float* input, size_t inputL
 	const size_t localWorkSize[3] = { nextPowOf2(inputLength) / gpu->maxWorkGroupSize, 0, 0 };
 	size_t globalIndex = 0;
 
-	size_t outputSize = inputLength * 1000 * SIZEOF_UINT;
-	size_t* outputIndexes = ALLOC_ARRAY(size_t, inputLength * 1000);
+	size_t outputSize = inputLength * 2 * SIZEOF_UINT;
+	size_t* outputIndexes = ALLOC_ARRAY(size_t, inputLength * 2);
 	cl_mem output = gpu->createBuffer(outputIndexes, outputSize, CL_MEM_READ_WRITE | CL_MEM_USE_HOST_PTR, false);
 
 	radixSorting->setParameters(input, inputLength, strider, offset);

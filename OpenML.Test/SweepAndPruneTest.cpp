@@ -1113,13 +1113,19 @@ namespace OpenMLTest
 		{
 			GpuContext* context = GpuContext::init();
 			GpuDevice* gpu = context->defaultDevice;
-			SweepAndPrune* sap = ALLOC_NEW(SweepAndPrune)();
-			sap->init(gpu);
 
 			//const size_t count = 1000;
-			const size_t count = (size_t) std::pow(2.0, 17.0);
-			AABB* aabbs1 = getRandomAABBs(count, 1000);
+			const size_t count = (size_t)std::pow(2.0, 17.0);
+			AABB* aabbs1 = getRandomAABBs(count, 10000);
 			AABB* aabbs2 = ALLOC_COPY(aabbs1, AABB, count);
+
+			std::ostringstream buildOptions;
+			buildOptions << " -DINPUT_LENGTH=" << count;
+			buildOptions << " -DINPUT_STRIDE=" << AABB_STRIDER;
+			buildOptions << " -DINPUT_OFFSET=" << AABB_OFFSET;
+
+			SweepAndPrune* sap = ALLOC_NEW(SweepAndPrune)();
+			sap->init(gpu, buildOptions.str().c_str());
 
 			std::chrono::high_resolution_clock::time_point currentTime1 = std::chrono::high_resolution_clock::now();
 

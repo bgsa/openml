@@ -124,10 +124,15 @@ namespace OpenMLTest
 			std::chrono::high_resolution_clock::time_point currentTime2 = std::chrono::high_resolution_clock::now();
 			std::chrono::milliseconds ms1 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
 
+			std::ostringstream buildOptions;
+			buildOptions << " -DINPUT_LENGTH=" << 131072;
+			buildOptions << " -DINPUT_STRIDE=1";
+			buildOptions << " -DINPUT_OFFSET=0";
+
 			size_t strider = 1;
 			size_t offset = 0;
 			GpuRadixSorting* radixGpu = ALLOC_NEW(GpuRadixSorting)();
-			radixGpu->init(gpu)->setParameters(input2, count, strider, offset);
+			radixGpu->init(gpu, buildOptions.str().c_str())->setParameters(input2, count, strider, offset);
 
 			currentTime = std::chrono::high_resolution_clock::now();
 
@@ -152,15 +157,18 @@ namespace OpenMLTest
 			GpuContext* context = GpuContext::init();
 			GpuDevice* gpu = context->defaultDevice;
 
-			const size_t strider = AABB_STRIDER;
-			const size_t offset = AABB_OFFSET;
 			const size_t count = (size_t)std::pow(2.0, 17.0);
 			AABB* input1 = getRandomAABBs(count);
 			AABB* input2 = ALLOC_COPY(input1, AABB, count);
 
+			std::ostringstream buildOptions;
+			buildOptions << " -DINPUT_LENGTH=" << count;
+			buildOptions << " -DINPUT_STRIDE=" << AABB_STRIDER;
+			buildOptions << " -DINPUT_OFFSET=" << AABB_OFFSET;
+
 			GpuRadixSorting* radixSorting = ALLOC_NEW(GpuRadixSorting)();
-			radixSorting->init(gpu)
-				->setParameters((float*)input2, count, strider, offset);
+			radixSorting->init(gpu, buildOptions.str().c_str())
+				->setParameters((float*)input2, count, AABB_STRIDER, AABB_OFFSET);
 
 			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 

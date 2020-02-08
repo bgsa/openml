@@ -85,7 +85,7 @@ namespace OpenMLTest
 		{
 			GpuContext* context = GpuContext::init();
 			GpuDevice* gpu = context->defaultDevice;
-			GpuCommands::init(gpu);
+			GpuCommands::init(gpu, NULL);
 
 			const size_t count = 10;
 
@@ -105,7 +105,7 @@ namespace OpenMLTest
 		{
 			GpuContext* context = GpuContext::init();
 			GpuDevice* gpu = context->defaultDevice;
-			GpuCommands::init(gpu);
+			GpuCommands::init(gpu, NULL);
 
 			const size_t count = (size_t) std::powf(2.0f, 17.0f);
 
@@ -125,7 +125,7 @@ namespace OpenMLTest
 		{
 			GpuContext* context = GpuContext::init();
 			GpuDevice* gpu = context->defaultDevice;
-			GpuCommands::init(gpu);
+			GpuCommands::init(gpu, NULL);
 
 			const size_t count = (size_t)std::pow(2.0, 17.0);
 			float* input = getRandom(count);
@@ -164,7 +164,7 @@ namespace OpenMLTest
 		{
 			GpuContext* context = GpuContext::init();
 			GpuDevice* gpu = context->defaultDevice;
-			GpuCommands::init(gpu);
+			GpuCommands::init(gpu, NULL);
 
 			const size_t offsetMultiplier = 8;
 			const size_t offsetSum = 2;
@@ -206,7 +206,7 @@ namespace OpenMLTest
 		{
 			GpuContext* context = GpuContext::init();
 			GpuDevice* gpu = context->defaultDevice;
-			GpuCommands::init(gpu);
+			GpuCommands::init(gpu, NULL);
 
 			const size_t offsetMultiplier = 8;
 			const size_t offsetSum = 2;
@@ -261,7 +261,7 @@ namespace OpenMLTest
 		{
 			GpuContext* context = GpuContext::init();
 			GpuDevice* gpu = context->defaultDevice;
-			GpuCommands::init(gpu);
+			GpuCommands::init(gpu, NULL);
 
 			const size_t offsetMultiplier = 8;
 			const size_t offsetSum = 2;
@@ -316,7 +316,7 @@ namespace OpenMLTest
 		{
 			GpuContext* context = GpuContext::init();
 			GpuDevice* gpu = context->defaultDevice;
-			GpuCommands::init(gpu);
+			GpuCommands::init(gpu, NULL);
 
 			const size_t count = (size_t)std::pow(2.0, 17.0);
 			float* input = getRandom(count);
@@ -348,7 +348,7 @@ namespace OpenMLTest
 		{
 			GpuContext* context = GpuContext::init();
 			GpuDevice* gpu = context->defaultDevice;
-			GpuCommands::init(gpu);
+			GpuCommands::init(gpu, NULL);
 
 			const size_t count = (size_t)std::pow(2.0, 17.0);
 			float* input = getRandom(count);

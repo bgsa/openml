@@ -33,8 +33,17 @@ size_t GpuCommandManager::cacheProgram(const char* source, size_t sourceSize, co
 
 	cachedPrograms.emplace_back(program);
 
-	HANDLE_OPENCL_BUILD_ERROR(clBuildProgram(program, 1, &deviceId, buildOptions, NULL, NULL), program, deviceId);
+	const char* defaultOptions = "-Werror -cl-denorms-are-zero -cl-mad-enable -cl-finite-math-only \0";
 
+	char* options = StringHelper::crate();
+	StringHelper::copy(defaultOptions, options);
+
+	if (buildOptions != NULL)
+		StringHelper::append(buildOptions, options, DEFAULT_STRING_LENGTH);
+
+	HANDLE_OPENCL_BUILD_ERROR(clBuildProgram(program, 1, &deviceId, options, NULL, NULL), program, deviceId);
+
+	ALLOC_RELEASE(options);
 	return cachedPrograms.size() - 1;
 }
 

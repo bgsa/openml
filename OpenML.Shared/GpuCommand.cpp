@@ -138,14 +138,14 @@ GpuCommand* GpuCommand::buildFromProgram(cl_program program, const char* kernelN
 	return this;
 }
 
-GpuCommand* GpuCommand::build(const char* source, size_t sourceSize, const char* kernelName)
+GpuCommand* GpuCommand::build(const char* source, size_t sourceSize, const char* kernelName, const char* buildOptions)
 {
 	cl_int errorCode;
 	program = clCreateProgramWithSource(deviceContext, 1, &source, &sourceSize, &errorCode);
 
 	HANDLE_OPENCL_ERROR(errorCode);
 
-	HANDLE_OPENCL_BUILD_ERROR(clBuildProgram(program, 1, &deviceId, NULL, NULL, NULL), program, deviceId);
+	HANDLE_OPENCL_BUILD_ERROR(clBuildProgram(program, 1, &deviceId, buildOptions, NULL, NULL), program, deviceId);
 	
 	return buildFromProgram(program, kernelName);
 }

@@ -1,12 +1,12 @@
-#define OVERLOAD  __attribute__((overloadable))
+#include "OpenCLBase.cl"
 
-#define THREAD_ID get_global_id(0)
-#define THREAD_COUNT get_global_size(0)
-
-#define OFFSET_GLOBAL (*strider) + *offset
+#define OFFSET_GLOBAL INPUT_STRIDE + INPUT_OFFSET
 #define MAX_DIGITS_DECIMALS 4
 #define BUCKET_LENGTH 10
 
+#ifndef INPUT_LENGTH
+    #define INPUT_LENGTH (*inputLength)
+#endif
 
 size_t OVERLOAD digit(float value, size_t index)
 {
@@ -27,16 +27,14 @@ __kernel void count(
     __constant size_t* digitIndex,
     __constant bool  * useExpoent,
     __constant float * minMaxValues,
-    __global   size_t* offsetTable,
-    __constant size_t* strider,
-    __constant size_t* offset
+    __global   size_t* offsetTable
     )
 {
-    if (THREAD_ID + 1 > *inputLength) // guard
+    if (THREAD_ID + 1 > INPUT_LENGTH) // guard
         return;
 
     __private size_t globalBucketOffset = BUCKET_LENGTH * THREAD_ID;
-    __private size_t elementsPerWorkItem = max( (int) (*inputLength / THREAD_COUNT) , 1 );
+    __private size_t elementsPerWorkItem = max( (int) (INPUT_LENGTH / THREAD_LENGTH) , 1 );
     __private size_t inputThreadIndex = THREAD_ID * elementsPerWorkItem;
     __private float  minValue = -min(0.0f, minMaxValues[0]);
     __private size_t bucket[BUCKET_LENGTH];
@@ -70,7 +68,7 @@ __kernel void prefixScan(
     __constant size_t* inputLength
     )
 {
-    if (THREAD_ID + 1 > *inputLength) // guard
+    if (THREAD_ID + 1 > INPUT_LENGTH) // guard
         return;
 
     __private size_t offsetTableIndex = THREAD_ID * BUCKET_LENGTH;
@@ -98,19 +96,17 @@ __kernel void reorder(
     __constant float * minMaxValues,
     __constant size_t* indexesInput,
     __global   size_t* indexesOutput,
-    __constant size_t* strider,
-    __constant size_t* offset,
     __global   size_t* offsetPrefixScan
     )
 {
-    if (THREAD_ID + 1 > *inputLength) // guard
+    if (THREAD_ID + 1 > INPUT_LENGTH) // guard
         return;
 
-    __private size_t elementsPerWorkItem = max( (int) (*inputLength / THREAD_COUNT) , 1 );
+    __private size_t elementsPerWorkItem = max( (int) (INPUT_LENGTH / THREAD_LENGTH) , 1 );
     __private size_t digitIndex = *digitIndex_global;
     __private size_t indexesInputBegin = THREAD_ID * elementsPerWorkItem;
     __private size_t offsetTable_Index = THREAD_ID * BUCKET_LENGTH;
-    __private size_t offsetTable_LastBucketIndex = ( min(THREAD_COUNT, *inputLength) * BUCKET_LENGTH) - BUCKET_LENGTH;
+    __private size_t offsetTable_LastBucketIndex = ( min( (int)THREAD_LENGTH, INPUT_LENGTH) * BUCKET_LENGTH) - BUCKET_LENGTH;
     __private float  minValue = -min(0.0f, minMaxValues[0]);
 
     __private size_t globalAddress;

@@ -1,51 +1,71 @@
-#pragma once
+#ifndef OPENML_HEADER
+#define OPENML_HEADER
 
-#include "GlobalHeader.h"
+#include <cassert>
+#include <cmath>
+#include <iostream>
+#include <sstream>
+#include <stdarg.h>
 
-namespace OpenML 
-{
-	const float DefaultErrorMargin = 0.0001f;
-	
+#include <apollo.h>
+
 #define EULER_NUMBER (2.71828f)   // e^1 = 2.71828
-
-#define PI (3.14159265358979323846)
-#define TWO_PI (6.28318530717958647692)
-#define HALF_PI (1.57079632679489661923)
-#define PI_DIV_180 (0.017453292519943296)
-#define INV_PI_DIV_180 (57.2957795130823229)
-#define	PI_DIV_360 (0.008726646259971647)
 
 #define MAX_DIGITS_EXPOENT  (5)
 #define MAX_DIGITS_MANTISSA (4)
 
-#define SIZEOF_BOOL      (1)
-#define SIZEOF_CHAR      (1)
-#define SIZEOF_SHORT     (2)
-#define SIZEOF_UINT      (4)
-#define SIZEOF_INT       (4)
-#define SIZEOF_LONG      (4)
-#define SIZEOF_LONG_LONG (8)
-#define SIZEOF_FLOAT     (4)
-#define SIZEOF_DOUBLE    (8)
-	
-#define degreesToRadians(x)	((x) * PI_DIV_180)
-#define radiansToDegrees(x)	((x) * INV_PI_DIV_180)
+namespace OpenML
+{
+	const float DefaultErrorMargin = 0.0001f;
 
-#define hourToDegrees(x) ( x * (1.0 / 15.0) )
-#define hourToRadians(x) degreesToRadians(hourToDegrees(x))
+	template <typename T>
+	class Vec2;
+	template <typename T>
+	class Vec3;
+	template <typename T>
+	class Vec4;
 
-#define degreesToHout(x) ((x) * 15.0))
-#define radiansToHour(x) degreesToHout(radiansToDegrees(x))
+	template <typename T>
+	class Vec2List;
+	template <typename T>
+	class Vec3List;
 
-#define DECIMAL_BASE (10)
+	template <typename T>
+	class Mat;
+	template <typename T>
+	class Mat2;
+	template <typename T>
+	class Mat3;
+	template <typename T>
+	class Mat4;
 
-#ifdef ENV_32BITS
-	#define SHIFT_BIT 1
-#elif ENV_64BITS
-	#define SHIFT_BIT 1i64
-#else
-	#error "Environment not 32 or 64-bit"
-#endif
+	template <typename T>
+	class Quat;
+
+	template <class T>
+	class BoundingVolume;
+
+	template <typename T>
+	class BinaryTree;
+	template <typename T>
+	class BinaryTreeNode;
+
+	template <typename T>
+	class Line2D;
+	class Line3D;
+	class Plane3D;
+	template <typename T>
+	class Triangle2D;
+	template <typename T>
+	class Circle2D;
+
+	class AABB;
+	class OBB;
+	class Sphere;
+	class DOP18;
+
+	template <typename T>
+	class Rectangle2D;
 
 	///<summary>
 	///Fast multiplication by 2
@@ -71,7 +91,6 @@ namespace OpenML
 	{
 		return (value >> SHIFT_BIT);
 	}
-
 
 	///<summary>
 	///Check the number is even or not
@@ -191,7 +210,6 @@ namespace OpenML
 		return result;
 	}
 
-
 	///<summary>
 	///Check the numbers have the same sign
 	///</summary>
@@ -294,7 +312,6 @@ namespace OpenML
 		return isCloseEnough(value, compare, T(DefaultErrorMargin));
 	}
 
-
 	///<summary>
 	///Get the count of digits of the number given by value parameter
 	///</summary>
@@ -362,3 +379,5 @@ namespace OpenML
 #include "Circle2D.h"
 
 #include "Rectangle2D.h"
+
+#endif // !OPENML_HEADER

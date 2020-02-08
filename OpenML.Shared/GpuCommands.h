@@ -20,7 +20,7 @@ namespace OpenML
 		/// <summary>
 		/// Init algorithms for GPU
 		/// </summary>
-		API_INTERFACE static void init(GpuDevice* gpu);
+		API_INTERFACE static void init(GpuDevice* gpu, const char* buildOptions);
 
 		/// <summary>
 		/// Create Indexes buffer ( 0, 1, 2, ... , length ) on GPU

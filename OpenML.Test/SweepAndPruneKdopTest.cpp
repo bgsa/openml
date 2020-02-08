@@ -49,7 +49,7 @@ namespace OpenMLTest
 			GpuContext* context = GpuContext::init();
 			GpuDevice* gpu = context->defaultDevice;
 			SweepAndPruneKdop* sapKdop = ALLOC_NEW(SweepAndPruneKdop)();
-			sapKdop->init(gpu);
+			sapKdop->init(gpu, NULL);
 
 			CollisionDetection collisionDetection;
 			size_t count = 5;

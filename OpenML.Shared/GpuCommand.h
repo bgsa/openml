@@ -50,7 +50,7 @@ namespace OpenML
 		GpuCommand* copyParameters(size_t targetParameterIndex, cl_mem destination);
 		
 		GpuCommand* buildFromProgram(cl_program program, const char* kernelName);
-		GpuCommand* build(const char* source, size_t sourceSize, const char* kernelName);
+		GpuCommand* build(const char* source, size_t sourceSize, const char* kernelName, const char* buildOptions = NULL);
 
 		GpuCommand* execute(size_t workDimnmsion, const size_t* globalWorkSize, const size_t* localWorkSize, const size_t* globalOffset = NULL);
 

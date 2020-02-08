@@ -181,19 +181,19 @@ SweepAndPruneResult SweepAndPruneKdop::findCollisions(DOP18* kdops, size_t count
 
 static size_t sapKdopProgramIndex = UINT_MAX;
 
-void SweepAndPruneKdop::init(GpuDevice* gpu)
+void SweepAndPruneKdop::init(GpuDevice* gpu, const char* buildOptions)
 {
 	if (sapKdopProgramIndex != UINT_MAX)
 		return;
 
 	radixSorting = ALLOC_NEW(GpuRadixSorting)();
-	radixSorting->init(gpu);
+	radixSorting->init(gpu, NULL);
 
 	IFileManager* fileManager = Factory::getFileManagerInstance();
 
 	std::string source = fileManager->readTextFile("SweepAndPruneKdop.cl");
 
-	sapKdopProgramIndex = gpu->commandManager->cacheProgram(source.c_str(), sizeof(char) * source.length());
+	sapKdopProgramIndex = gpu->commandManager->cacheProgram(source.c_str(), sizeof(char) * source.length(), buildOptions);
 
 	delete fileManager;
 }

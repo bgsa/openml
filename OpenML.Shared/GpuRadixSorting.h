@@ -38,7 +38,6 @@ namespace OpenML
 		cl_mem inputGpu;
 		cl_mem indexesGpu;
 		cl_mem indexesLengthGpu;
-		cl_mem striderGpu;
 		cl_mem offsetGpu;
 
 		API_INTERFACE GpuRadixSorting* init(GpuDevice* gpu, const char* buildOptions);

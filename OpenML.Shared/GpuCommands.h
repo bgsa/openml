@@ -49,7 +49,7 @@ namespace OpenML
 		/// Find minimum and maximum value from an array of elements using indexes
 		/// Elements and indexes should be on GPU memory
 		/// </summary>
-		API_INTERFACE static void findMinMaxIndexesGPU(GpuDevice* gpu, cl_mem elements, cl_mem indexes, cl_mem indexesLength, cl_mem strider, cl_mem offset, size_t indexesLengthCpu, size_t striderCpu, cl_mem output);
+		API_INTERFACE static void findMinMaxIndexesGPU(GpuDevice* gpu, cl_mem elements, cl_mem indexes, cl_mem indexesLength,cl_mem offset, size_t indexesLengthCpu, size_t striderCpu, cl_mem output);
 
 	};
 }

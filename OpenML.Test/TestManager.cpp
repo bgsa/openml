@@ -3,6 +3,7 @@
 #include "CppUnitTest.h"
 #include "TestHeader.h"
 #include <chrono>
+#include <algorithm>
 #include "MemoryAllocatorManager.h"
 
 #if OPENCL_ENABLED
@@ -14,7 +15,7 @@ using namespace OpenML;
 
 TEST_MODULE_INITIALIZE(ModuleInitialize)
 {
-	MemoryAllocatorManager::init(ONE_GIGABYTE);
+	MemoryAllocatorManager::init(ONE_MEGABYTE * 512);
 	Logger::WriteMessage("TEST MODULE INITIALIZED");
 }
 

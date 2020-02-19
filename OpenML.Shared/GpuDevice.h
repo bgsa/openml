@@ -30,7 +30,13 @@ namespace OpenML
 		size_t maxWorkItemSizes[3];
 		cl_ulong globalMemorySize;
 		cl_ulong globalMemoryCacheSize;
-		cl_ulong  localMemorySize;
+		cl_ulong localMemorySize;
+		cl_ulong localMemoryLength;
+		cl_ulong maxMemoryAllocSize;
+		cl_ulong constantsBufferSize;
+		cl_uint maxConstantArgument;
+		cl_uint memoryAlign;
+		cl_uint clockFrequency;
 		std::string profile;
 
 		GpuCommandManager* commandManager = nullptr;

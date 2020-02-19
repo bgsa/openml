@@ -157,6 +157,11 @@ namespace OpenMLTest
 			GpuContext* context = GpuContext::init();
 			GpuDevice* gpu = context->defaultDevice;
 
+			std::chrono::milliseconds times[10];
+
+			for (size_t i = 0; i < 10; i++)
+			{
+
 			const size_t count = (size_t)std::pow(2.0, 17.0);
 			AABB* input1 = getRandomAABBs(count);
 			AABB* input2 = ALLOC_COPY(input1, AABB, count);
@@ -165,6 +170,8 @@ namespace OpenMLTest
 			buildOptions << " -DINPUT_LENGTH=" << count;
 			buildOptions << " -DINPUT_STRIDE=" << AABB_STRIDER;
 			buildOptions << " -DINPUT_OFFSET=" << AABB_OFFSET;
+			//buildOptions << " –cl-fast-relaxed-math";
+			//buildOptions << " -cl-unsafe-math-optimizations";
 
 			GpuRadixSorting* radixSorting = ALLOC_NEW(GpuRadixSorting)();
 			radixSorting->init(gpu, buildOptions.str().c_str())
@@ -183,6 +190,7 @@ namespace OpenMLTest
 
 			currentTime2 = std::chrono::high_resolution_clock::now();
 			std::chrono::milliseconds ms2 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime2 - currentTime);
+			times[i] = ms2;
 
 			size_t* result = ALLOC_ARRAY(size_t, count * SIZEOF_UINT);
 			gpu->commandManager->executeReadBuffer(output, count * SIZEOF_UINT, result, true);
@@ -191,6 +199,9 @@ namespace OpenMLTest
 				Assert::AreEqual(input1[i].minPoint.x, input2[result[i]].minPoint.x, L"Wrong value.", LINE_INFO());
 
 			ALLOC_RELEASE(input1);
+			ALLOC_DELETE(radixSorting, GpuRadixSorting);
+
+			}
 		}
 
 	};

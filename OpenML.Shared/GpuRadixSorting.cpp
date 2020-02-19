@@ -30,7 +30,6 @@ GpuRadixSorting* GpuRadixSorting::setParameters(float* input, size_t inputLength
 	inputGpu = gpu->createBuffer(input, inputSize, CL_MEM_READ_ONLY);
 	indexesGpu = GpuCommands::creteIndexes(gpu, inputLength);
 	indexesLengthGpu = gpu->createBuffer(&inputLength, SIZEOF_UINT, CL_MEM_READ_ONLY);
-	striderGpu = gpu->createBuffer(&strider, SIZEOF_UINT, CL_MEM_READ_ONLY);
 	offsetGpu = gpu->createBuffer(&offset, SIZEOF_UINT, CL_MEM_READ_ONLY);
 	outputMinMaxGpu = gpu->createBuffer(inputLength * 2 * SIZEOF_FLOAT, CL_MEM_READ_WRITE);
 	offsetPrefixScanGpu = gpu->createBuffer(&offsetPrefixScanCpu, SIZEOF_UINT, CL_MEM_READ_WRITE);
@@ -38,7 +37,7 @@ GpuRadixSorting* GpuRadixSorting::setParameters(float* input, size_t inputLength
 	useExpoentGpu = gpu->createBuffer(&useExpoent, SIZEOF_UINT, CL_MEM_READ_WRITE);
 	outputIndexes = gpu->createBuffer(inputLength * SIZEOF_UINT, CL_MEM_READ_WRITE);
 
-	GpuCommands::findMinMaxIndexesGPU(gpu, inputGpu, indexesGpu, indexesLengthGpu, striderGpu, offsetGpu, inputLength, strider, outputMinMaxGpu);
+	GpuCommands::findMinMaxIndexesGPU(gpu, inputGpu, indexesGpu, indexesLengthGpu, offsetGpu, inputLength, strider, outputMinMaxGpu);
 	gpu->commandManager->executeReadBuffer(outputMinMaxGpu, SIZEOF_FLOAT * 2, minMaxValues, true);
 
 	const size_t elementsLengthAsPowOf2 = nextPowOf2(inputLength); //required for OpenCL
@@ -171,7 +170,7 @@ cl_mem GpuRadixSorting::execute()
 
 GpuRadixSorting::~GpuRadixSorting()
 {
-	gpu->releaseBuffer(11, inputGpu, indexesGpu, indexesLengthGpu, striderGpu, offsetGpu,
+	gpu->releaseBuffer(11, inputGpu, indexesGpu, indexesLengthGpu, offsetGpu,
 						outputMinMaxGpu, offsetPrefixScanGpu, digitIndexGpu, useExpoentGpu,
 						offsetTable1, offsetTable2);
 

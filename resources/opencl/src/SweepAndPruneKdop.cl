@@ -1,31 +1,30 @@
 #include "OpenCLBase.cl"
 
-#define MIN_POINT input[indexes[i] * strider + minPointIndex]
-#define MAX_POINT input[indexes[i] * strider + maxPointIndex]
+#define MIN_POINT input[indexes[i] * INPUT_STRIDE + minPointIndex]
+#define MAX_POINT input[indexes[i] * INPUT_STRIDE + maxPointIndex]
 
-#define MIN_POINT_NEXT input[indexes[j] * strider + minPointIndex]
-#define MAX_POINT_NEXT input[indexes[j] * strider + maxPointIndex]
+#define MIN_POINT_NEXT input[indexes[j] * INPUT_STRIDE + minPointIndex]
+#define MAX_POINT_NEXT input[indexes[j] * INPUT_STRIDE + maxPointIndex]
 
 
-#define MIN_POINT_X input[indexes[i] * strider + 1 + 1]
-#define MIN_POINT_Y input[indexes[i] * strider + 1 + 2]
-#define MIN_POINT_Z input[indexes[i] * strider + 1 + 3]
-#define MAX_POINT_X input[indexes[i] * strider + 1 + 4]
-#define MAX_POINT_Y input[indexes[i] * strider + 1 + 5]
-#define MAX_POINT_Z input[indexes[i] * strider + 1 + 6]
+#define MIN_POINT_X input[indexes[i] * INPUT_STRIDE + 1 + 1]
+#define MIN_POINT_Y input[indexes[i] * INPUT_STRIDE + 1 + 2]
+#define MIN_POINT_Z input[indexes[i] * INPUT_STRIDE + 1 + 3]
+#define MAX_POINT_X input[indexes[i] * INPUT_STRIDE + 1 + 4]
+#define MAX_POINT_Y input[indexes[i] * INPUT_STRIDE + 1 + 5]
+#define MAX_POINT_Z input[indexes[i] * INPUT_STRIDE + 1 + 6]
 
-#define MIN_POINT_X_NEXT_AABB input[indexes[j] * strider + 1 + 1]
-#define MIN_POINT_Y_NEXT_AABB input[indexes[j] * strider + 1 + 2]
-#define MIN_POINT_Z_NEXT_AABB input[indexes[j] * strider + 1 + 3]
-#define MAX_POINT_X_NEXT_AABB input[indexes[j] * strider + 1 + 4]
-#define MAX_POINT_Y_NEXT_AABB input[indexes[j] * strider + 1 + 5]
-#define MAX_POINT_Z_NEXT_AABB input[indexes[j] * strider + 1 + 6]
+#define MIN_POINT_X_NEXT_AABB input[indexes[j] * INPUT_STRIDE + 1 + 1]
+#define MIN_POINT_Y_NEXT_AABB input[indexes[j] * INPUT_STRIDE + 1 + 2]
+#define MIN_POINT_Z_NEXT_AABB input[indexes[j] * INPUT_STRIDE + 1 + 3]
+#define MAX_POINT_X_NEXT_AABB input[indexes[j] * INPUT_STRIDE + 1 + 4]
+#define MAX_POINT_Y_NEXT_AABB input[indexes[j] * INPUT_STRIDE + 1 + 5]
+#define MAX_POINT_Z_NEXT_AABB input[indexes[j] * INPUT_STRIDE + 1 + 6]
 
 __kernel void sweepAndPrune(
 	__constant float * input, 
 	__constant size_t* inputLength, 
     __constant size_t* indexes,
-    __constant size_t* strider_global,
 	__constant size_t* offset_global,
     __constant size_t* minPointIndex_global,
     __constant size_t* maxPointIndex_global,
@@ -35,7 +34,6 @@ __kernel void sweepAndPrune(
     __private size_t elementsPerWorkItem = max( (int) (*inputLength / THREAD_LENGTH) , 1 );
     __private size_t inputIndex = THREAD_ID * elementsPerWorkItem;
     __private size_t outputIndex = 0;
-    __private size_t strider = *strider_global;
     __private size_t minPointIndex = *minPointIndex_global + *offset_global;
     __private size_t maxPointIndex = *maxPointIndex_global + *offset_global;
     __private size_t maxOutputLength = *inputLength * 2;

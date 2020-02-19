@@ -34,6 +34,7 @@ size_t GpuCommandManager::cacheProgram(const char* source, size_t sourceSize, co
 	cachedPrograms.emplace_back(program);
 
 	const char* defaultOptions = "-Werror -cl-denorms-are-zero -cl-mad-enable -cl-finite-math-only \0";
+	// -cl-no-signed-zero   -cl-fast-relaxed-math    not working
 
 	char* options = StringHelper::crate();
 	StringHelper::copy(defaultOptions, options);

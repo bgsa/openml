@@ -122,7 +122,6 @@ SweepAndPruneResult SweepAndPrune::findCollisionsGPU(float* input, size_t inputL
 		->setInputParameter(radixSorting->inputGpu, inputLength * strider * SIZEOF_FLOAT)
 		->setInputParameter(radixSorting->indexesLengthGpu, SIZEOF_UINT)
 		->setInputParameter(indexes, inputLength * SIZEOF_UINT)
-		->setInputParameter(radixSorting->striderGpu, SIZEOF_UINT)
 		->setInputParameter(radixSorting->offsetGpu, SIZEOF_UINT)
 		->setInputParameter(&minPointIndex, SIZEOF_UINT, CL_MEM_READ_ONLY)
 		->setInputParameter(&maxPointIndex, SIZEOF_UINT, CL_MEM_READ_ONLY)

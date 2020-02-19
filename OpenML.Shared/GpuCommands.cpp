@@ -106,11 +106,10 @@ namespace OpenML
 		return output;
 	}
 
-	void GpuCommands::findMinMaxIndexesGPU(GpuDevice* gpu, cl_mem elements, cl_mem indexes, cl_mem indexesLength, cl_mem strider, cl_mem offset, size_t indexesLengthCpu, size_t striderCpu, cl_mem output)
+	void GpuCommands::findMinMaxIndexesGPU(GpuDevice* gpu, cl_mem elements, cl_mem indexes, cl_mem indexesLength, cl_mem offset, size_t indexesLengthCpu, size_t striderCpu, cl_mem output)
 	{
 		const size_t globalWorkSize[3] = { nextPowOf2(std::min(gpu->maxWorkGroupSize, indexesLengthCpu)), 0 , 0 };
 		const size_t localWorkSize[3] = { gpu->getLocalWorkSize(indexesLengthCpu) , 0, 0 };
-		const size_t groupCount = globalWorkSize[0] / localWorkSize[0];
 		const size_t threadLength = gpu->getThreadLength(indexesLengthCpu);
 		
 		GpuCommand* commandFindMinMax = gpu->commandManager->createCommand();
@@ -119,7 +118,6 @@ namespace OpenML
 			->setInputParameter(elements, SIZEOF_FLOAT * indexesLengthCpu * striderCpu)
 			->setInputParameter(indexes, SIZEOF_UINT * indexesLengthCpu)
 			->setInputParameter(indexesLength, SIZEOF_UINT)
-			->setInputParameter(strider, SIZEOF_UINT)
 			->setInputParameter(offset, SIZEOF_UINT)
 			->setInputParameter(output, threadLength * 2 * SIZEOF_FLOAT)
 			->buildFromProgram(gpu->commandManager->cachedPrograms[findMinMaxProgramIndex], "findMinMaxIndexes")

@@ -353,6 +353,7 @@ copy /Y $(SolutionDir)resources\opencl\src\*.cl $(OutDir)</Command>
     <ClCompile Include="GpuCommandsTest.cpp" />
     <ClCompile Include="GpuCommandTest.cpp" />
     <ClCompile Include="GpuContextTest.cpp" />
+    <ClCompile Include="GpuInsertionSortingTest.cpp" />
     <ClCompile Include="GpuRadixSortingTest.cpp" />
     <ClCompile Include="HashGridTest.cpp" />
     <ClCompile Include="Line2DTest.cpp" />

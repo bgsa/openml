@@ -5,6 +5,7 @@
 #include <chrono>
 #include "Randomizer.h"
 #include <GpuCommands.h>
+#include <GpuFindMinMax.h>
 #include <limits>
 #include <AABB.h>
 
@@ -233,21 +234,20 @@ namespace OpenMLTest
 			std::chrono::nanoseconds times[maxIterations];
 			std::chrono::nanoseconds minTime(99999999999);
 
-			for (size_t i = 0; i < maxIterations; i++)
-			{
-				const size_t count = (size_t)std::pow(2.0, 17.0);
-				AABB* aabbs = getRandomAABBs(count);
-				size_t threadCount = gpu->getThreadLength(count);
-				float* result = ALLOC_ARRAY(float, threadCount * 2);
+			const size_t count = (size_t)std::pow(2.0, 17.0);
+			const size_t threadCount = gpu->getThreadLength(count);
 
-				std::ostringstream buildOptions;
-				buildOptions
-					<< " -DLOCAL_MEM_LENGTH=" << gpu->localMemoryLength
-					<< " -DINPUT_LENGTH=" << count
-					<< " -DINPUT_STRIDE=" << AABB_STRIDER
-					<< " -DINPUT_OFFSET=" << AABB_OFFSET
-					<< " -DINPUT_OFFSET=" << AABB_OFFSET;
-				GpuCommands::init(gpu, buildOptions.str().c_str());
+			std::ostringstream buildOptions;
+			buildOptions
+				<< " -DLOCAL_MEM_LENGTH=" << gpu->localMemoryLength
+				<< " -DINPUT_LENGTH=" << count
+				<< " -DINPUT_STRIDE=" << AABB_STRIDER
+				<< " -DINPUT_OFFSET=" << AABB_OFFSET
+				<< " -DINPUT_OFFSET=" << AABB_OFFSET;
+
+			for (size_t i = 0; i < maxIterations; i++)
+			{	
+				AABB* aabbs = getRandomAABBs(count);
 
 				float min = FLT_MAX;
 				float max = -FLT_MAX;
@@ -266,23 +266,21 @@ namespace OpenMLTest
 					}
 				}
 
-				cl_mem indexes = GpuCommands::creteIndexes(gpu, count);
-				cl_mem elements = gpu->createBuffer((void*)aabbs, sizeof(AABB) * count * SIZEOF_FLOAT, CL_MEM_READ_WRITE);
-				cl_mem indexesLength = gpu->createBuffer((void*)&count, SIZEOF_UINT, CL_MEM_READ_WRITE);
-				cl_mem offset = gpu->createBuffer((void*)&offsetCpu, SIZEOF_UINT, CL_MEM_READ_ONLY);
-				cl_mem output = gpu->createBuffer(threadCount * 2 * SIZEOF_FLOAT, CL_MEM_READ_WRITE);
+				GpuFindMinMax* findMinMax = ALLOC_NEW(GpuFindMinMax)();
+				findMinMax->init(gpu, buildOptions.str().c_str());
+				findMinMax->setParameters((float*)aabbs, count, AABB_STRIDER, AABB_OFFSET);
 
 				std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 
-				GpuCommands::findMinMaxIndexesGPU(gpu, elements, indexes, indexesLength, offset, count, AABB_STRIDER, output);
+				findMinMax->execute();
 
 				std::chrono::high_resolution_clock::time_point currentTime2 = std::chrono::high_resolution_clock::now();
 				times[i] = std::chrono::duration_cast<std::chrono::nanoseconds>(currentTime2 - currentTime);
 				minTime = std::min(times[i], minTime);
 
-				gpu->commandManager->executeReadBuffer(output, threadCount * 2 * SIZEOF_FLOAT, result, true);
+				float* result = ALLOC_ARRAY(float, threadCount * 2);
+				gpu->commandManager->executeReadBuffer(findMinMax->output, threadCount * 2 * SIZEOF_FLOAT, result, true);
 
-				/*
 				float temp = 0;
 				size_t tt = 0;
 				for (size_t i = 0; i < threadCount * 2; i++)
@@ -291,19 +289,13 @@ namespace OpenMLTest
 						temp = result[i];
 						tt = i;
 					}
-				*/
-				
-
-
-
-
 
 				//Assert::AreEqual(temp, result[256 * (tt / 256) + 1], L"Wrong value.", LINE_INFO());
 
 				Assert::AreEqual(min, result[0], L"Wrong value.", LINE_INFO());
 				Assert::AreEqual(max, result[1], L"Wrong value.", LINE_INFO());
 
-				gpu->releaseBuffer(5, elements, indexes, indexesLength, offset, output);
+				ALLOC_DELETE(findMinMax, GpuFindMinMax);
 				ALLOC_RELEASE(aabbs);
 			}
 		}
